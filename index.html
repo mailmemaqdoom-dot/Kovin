@@ -1,0 +1,1879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>KOVIN — Helping you choose what feels right.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+<style>
+/* ═══════════════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════════════ */
+:root {
+  --navy:       #1F2F4A;
+  --cream:      #F8F4ED;
+  --green:      #3E9C7C;
+  --mist:       #E7EEF7;
+  --gold:       #E3C27D;
+  --charcoal:   #111827;
+  --navy-60:    rgba(31,47,74,0.6);
+  --navy-10:    rgba(31,47,74,0.1);
+  --green-12:   rgba(62,156,124,0.12);
+  --gold-15:    rgba(227,194,125,0.15);
+  --white-90:   rgba(255,255,255,0.9);
+  --easing:     cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ═══════════════════════════════════════════
+   RESET & BASE
+═══════════════════════════════════════════ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; background: #1a1a1a; font-family: 'Sora', sans-serif; font-weight: 300; overflow: hidden; }
+
+#app {
+  width: 100%;
+  height: 100%;
+  max-width: 430px;
+  margin: 0 auto;
+  position: relative;
+  background: var(--cream);
+  overflow: hidden;
+}
+
+/* ═══════════════════════════════════════════
+   SCREEN SYSTEM
+═══════════════════════════════════════════ */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: opacity 0.5s var(--easing), transform 0.5s var(--easing);
+  pointer-events: none;
+  overflow: hidden;
+}
+.screen.active  { opacity: 1; transform: translateX(0); pointer-events: all; }
+.screen.gone    { opacity: 0; transform: translateX(-5%); pointer-events: none; transition: opacity 0.35s ease, transform 0.35s ease; }
+.screen-scroll  { overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.screen-scroll::-webkit-scrollbar { display: none; }
+
+/* ═══════════════════════════════════════════
+   SCREEN 1 — ENTRY
+═══════════════════════════════════════════ */
+#screen-entry {
+  background: var(--navy);
+  justify-content: flex-end;
+}
+
+.entry-canvas {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* Geometric signal rings */
+.signal-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(62,156,124,0.15);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: ringPulse 4s ease-in-out infinite;
+}
+.signal-ring:nth-child(1) { width: 160px; height: 160px; animation-delay: 0s; }
+.signal-ring:nth-child(2) { width: 260px; height: 260px; animation-delay: 0.6s; border-color: rgba(62,156,124,0.1); }
+.signal-ring:nth-child(3) { width: 380px; height: 380px; animation-delay: 1.2s; border-color: rgba(62,156,124,0.06); }
+.signal-ring:nth-child(4) { width: 520px; height: 520px; animation-delay: 1.8s; border-color: rgba(62,156,124,0.04); }
+
+@keyframes ringPulse {
+  0%,100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+  50%      { opacity: 1;   transform: translate(-50%, -50%) scale(1.03); }
+}
+
+/* Device silhouette */
+.entry-device {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -58%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.phone-silhouette {
+  width: 68px;
+  height: 120px;
+  border-radius: 14px;
+  border: 2px solid rgba(248,244,237,0.25);
+  background: rgba(248,244,237,0.05);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: deviceFloat 3s ease-in-out infinite;
+}
+.phone-silhouette::before {
+  content: '';
+  width: 24px; height: 4px;
+  background: rgba(248,244,237,0.2);
+  border-radius: 2px;
+  position: absolute;
+  top: 10px;
+}
+.phone-screen-glow {
+  width: 52px; height: 84px;
+  background: linear-gradient(160deg, rgba(62,156,124,0.3) 0%, rgba(31,47,74,0.1) 100%);
+  border-radius: 6px;
+  position: relative;
+  overflow: hidden;
+}
+.phone-screen-glow::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 180deg, transparent 70%, rgba(62,156,124,0.4) 80%, transparent 90%);
+  animation: screenSpin 6s linear infinite;
+}
+@keyframes screenSpin { to { transform: rotate(360deg); } }
+@keyframes deviceFloat {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
+.entry-content {
+  position: relative;
+  padding: 0 28px 52px;
+  z-index: 2;
+}
+
+.entry-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(62,156,124,0.15);
+  border: 1px solid rgba(62,156,124,0.3);
+  padding: 5px 12px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+.entry-pill-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+.entry-pill-text {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--green);
+  font-weight: 500;
+}
+
+.entry-headline {
+  font-family: 'Instrument Serif', serif;
+  font-size: 34px;
+  line-height: 1.2;
+  color: var(--cream);
+  margin-bottom: 12px;
+}
+.entry-headline em { font-style: italic; color: var(--gold); }
+
+.entry-sub {
+  font-size: 14px;
+  color: rgba(248,244,237,0.5);
+  line-height: 1.7;
+  margin-bottom: 32px;
+  font-weight: 300;
+}
+
+.btn-entry {
+  width: 100%;
+  padding: 17px;
+  background: var(--green);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-family: 'Sora', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-bottom: 12px;
+  box-shadow: 0 6px 28px rgba(62,156,124,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn-entry:active { transform: scale(0.98); opacity: 0.9; }
+
+.btn-entry-ghost {
+  width: 100%;
+  padding: 15px;
+  background: transparent;
+  color: rgba(248,244,237,0.45);
+  border: 1px solid rgba(248,244,237,0.12);
+  border-radius: 14px;
+  font-family: 'Sora', sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn-entry-ghost:active { background: rgba(248,244,237,0.06); }
+
+/* logo */
+.entry-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+.logo-icon {
+  width: 38px; height: 38px;
+  border-radius: 11px;
+  background: var(--green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.logo-wordmark {
+  font-family: 'Sora', sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 5px;
+  color: var(--cream);
+}
+
+/* ═══════════════════════════════════════════
+   BOTTOM NAV
+═══════════════════════════════════════════ */
+#bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 430px;
+  background: rgba(248,244,237,0.94);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-top: 1px solid rgba(31,47,74,0.08);
+  padding: 10px 8px 22px;
+  display: none;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 200;
+}
+
+.nav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 14px;
+  border-radius: 12px;
+  transition: all 0.18s ease;
+}
+.nav-btn:active { background: var(--navy-10); }
+.nav-btn .nav-ico { width: 22px; height: 22px; transition: color 0.18s; }
+.nav-btn .nav-lbl { font-size: 9.5px; letter-spacing: 0.5px; font-weight: 400; transition: color 0.18s; }
+.nav-btn.active .nav-ico,
+.nav-btn.active .nav-lbl { color: var(--green); }
+.nav-btn:not(.active) .nav-ico,
+.nav-btn:not(.active) .nav-lbl { color: rgba(17,24,39,0.3); }
+
+/* ═══════════════════════════════════════════
+   SHARED HEADER ELEMENTS
+═══════════════════════════════════════════ */
+.back-btn {
+  position: absolute;
+  top: 52px;
+  left: 20px;
+  width: 38px; height: 38px;
+  background: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 12px rgba(31,47,74,0.1);
+  transition: all 0.18s ease;
+  z-index: 10;
+  color: var(--navy);
+}
+.back-btn:active { transform: scale(0.93); }
+
+.eyebrow {
+  font-size: 10px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.eyebrow-green { color: var(--green); }
+.eyebrow-gold  { color: #b89048; }
+
+/* ═══════════════════════════════════════════
+   SCREEN 2 — SITUATIONS
+═══════════════════════════════════════════ */
+#screen-situations {
+  background: var(--cream);
+}
+
+.situations-header {
+  padding: 52px 24px 18px;
+  background: white;
+  position: relative;
+  border-bottom: 1px solid rgba(31,47,74,0.06);
+}
+
+.sit-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 28px;
+  line-height: 1.25;
+  color: var(--navy);
+  text-align: center;
+  margin: 10px 0 6px;
+}
+.sit-title em { font-style: italic; color: var(--green); }
+
+.sit-sub {
+  font-size: 12.5px;
+  color: rgba(17,24,39,0.48);
+  text-align: center;
+  line-height: 1.65;
+}
+
+.situations-grid {
+  padding: 16px 16px 100px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+/* Special: first card full-width */
+.sit-card-wide { grid-column: 1 / -1; }
+
+.sit-card {
+  background: white;
+  border-radius: 20px;
+  padding: 18px 16px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  transition: all 0.22s ease;
+  box-shadow: 0 2px 14px rgba(31,47,74,0.06);
+  position: relative;
+  overflow: hidden;
+}
+.sit-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--green-12);
+  opacity: 0;
+  transition: opacity 0.22s ease;
+  border-radius: 20px;
+}
+.sit-card:active::before { opacity: 1; }
+.sit-card:active { border-color: var(--green); transform: scale(0.98); }
+
+.sit-card-wide .sit-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+}
+
+.sit-emoji-wrap {
+  width: 48px; height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.sit-card-name {
+  font-family: 'Instrument Serif', serif;
+  font-size: 18px;
+  color: var(--navy);
+  line-height: 1.2;
+  margin: 10px 0 4px;
+}
+.sit-card-wide .sit-card .sit-card-name { font-size: 20px; margin: 0 0 4px; }
+
+.sit-card-hint {
+  font-size: 11.5px;
+  color: rgba(17,24,39,0.45);
+  line-height: 1.5;
+}
+
+.sit-card-arrow {
+  position: absolute;
+  top: 16px; right: 16px;
+  color: rgba(31,47,74,0.2);
+}
+.sit-card-wide .sit-card .sit-card-arrow {
+  position: static;
+  margin-left: auto;
+  color: var(--green);
+  opacity: 0.6;
+}
+
+/* ═══════════════════════════════════════════
+   SCREEN 3 — STORY
+═══════════════════════════════════════════ */
+#screen-story { background: var(--cream); }
+
+.story-header {
+  background: white;
+  padding: 52px 24px 22px;
+  position: relative;
+  border-bottom: 1px solid rgba(31,47,74,0.06);
+}
+
+.story-chapter-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  color: var(--green);
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.story-h1 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 26px;
+  line-height: 1.3;
+  color: var(--navy);
+  text-align: center;
+}
+.story-h1 em { font-style: italic; }
+
+.story-dots {
+  display: flex;
+  gap: 5px;
+  justify-content: center;
+  margin-top: 16px;
+}
+.dot {
+  height: 5px;
+  border-radius: 99px;
+  background: rgba(31,47,74,0.15);
+  transition: all 0.3s ease;
+}
+.dot.on { background: var(--green); width: 22px; }
+.dot.off { background: rgba(31,47,74,0.15); width: 5px; }
+
+.story-scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 18px 18px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.story-scroll-area::-webkit-scrollbar { display: none; }
+
+.story-footer {
+  padding: 16px 18px 18px;
+  background: var(--cream);
+}
+
+/* Story blocks */
+
+/* — FEEL block (dark, emotional) — */
+.block-feel {
+  background: var(--navy);
+  border-radius: 22px;
+  padding: 24px 22px;
+  position: relative;
+  overflow: hidden;
+}
+.block-feel::after {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 160px; height: 160px;
+  background: radial-gradient(circle, rgba(62,156,124,0.2) 0%, transparent 65%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.feel-device-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(248,244,237,0.08);
+  padding: 4px 10px;
+  border-radius: 20px;
+  margin-bottom: 14px;
+}
+.feel-device-tag span { font-size: 14px; }
+.feel-device-tag p {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(248,244,237,0.5);
+  font-weight: 400;
+}
+.feel-quote {
+  font-family: 'Instrument Serif', serif;
+  font-size: 22px;
+  font-style: italic;
+  color: var(--cream);
+  line-height: 1.45;
+  margin-bottom: 10px;
+  position: relative;
+  padding-left: 4px;
+}
+.feel-quote::before {
+  content: '\201C';
+  position: absolute;
+  top: -16px; left: -6px;
+  font-size: 64px;
+  line-height: 1;
+  color: rgba(227,194,125,0.25);
+  font-family: 'Instrument Serif', serif;
+}
+.feel-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 500;
+}
+
+/* — VALIDATE block — */
+.block-validate {
+  background: var(--green-12);
+  border-left: 3px solid var(--green);
+  border-radius: 0 16px 16px 0;
+  padding: 18px 20px;
+}
+.validate-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 19px;
+  color: var(--navy);
+  margin-bottom: 7px;
+}
+.validate-text {
+  font-size: 13px;
+  color: rgba(17,24,39,0.65);
+  line-height: 1.75;
+}
+
+/* — GUIDE block — */
+.block-guide {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  box-shadow: 0 2px 14px rgba(31,47,74,0.06);
+}
+.guide-eyebrow {
+  font-size: 9.5px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: #b89048;
+  font-weight: 500;
+  margin-bottom: 9px;
+}
+.guide-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 19px;
+  color: var(--navy);
+  line-height: 1.3;
+  margin-bottom: 14px;
+}
+.guide-steps { display: flex; flex-direction: column; gap: 11px; }
+.guide-step { display: flex; gap: 11px; align-items: flex-start; }
+.step-n {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: white;
+  font-size: 10.5px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+  font-family: 'DM Mono', monospace;
+}
+.step-t {
+  font-size: 13px;
+  color: rgba(17,24,39,0.68);
+  line-height: 1.65;
+}
+
+/* story next button */
+.btn-story-next {
+  width: 100%;
+  padding: 16px;
+  background: var(--navy);
+  color: var(--cream);
+  border: none;
+  border-radius: 14px;
+  font-family: 'Sora', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  box-shadow: 0 4px 20px rgba(31,47,74,0.22);
+  transition: all 0.2s ease;
+}
+.btn-story-next:active { transform: scale(0.98); opacity: 0.88; }
+
+/* ═══════════════════════════════════════════
+   SCREEN 4 — RECOMMENDATIONS
+═══════════════════════════════════════════ */
+#screen-recs { background: var(--cream); }
+
+.recs-header {
+  background: white;
+  padding: 52px 24px 20px;
+  border-bottom: 1px solid rgba(31,47,74,0.06);
+  text-align: center;
+  position: relative;
+}
+
+.recs-h1 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 26px;
+  color: var(--navy);
+  line-height: 1.3;
+  margin: 8px 0 6px;
+}
+.recs-h1 em { font-style: italic; color: var(--green); }
+
+.recs-sub {
+  font-size: 12.5px;
+  color: rgba(17,24,39,0.45);
+  line-height: 1.6;
+}
+
+.recs-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 16px 16px 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.recs-scroll::-webkit-scrollbar { display: none; }
+
+/* Rec Card */
+.rec-card {
+  background: white;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 2px 18px rgba(31,47,74,0.08);
+  cursor: pointer;
+  transition: all 0.22s ease;
+}
+.rec-card:active { transform: scale(0.99); box-shadow: 0 4px 28px rgba(31,47,74,0.12); }
+
+.rec-card-top {
+  padding: 18px 18px 14px;
+  display: flex;
+  gap: 13px;
+  align-items: flex-start;
+}
+
+.rec-device-icon {
+  width: 52px; height: 52px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  flex-shrink: 0;
+}
+
+.rec-badge {
+  font-size: 9.5px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: 3px 9px;
+  border-radius: 99px;
+  display: inline-block;
+  margin-bottom: 5px;
+}
+.badge-pick   { background: var(--green-12); color: var(--green); }
+.badge-value  { background: var(--gold-15); color: #9a7530; }
+.badge-solid  { background: var(--navy-10); color: var(--navy); }
+
+.rec-device-name {
+  font-family: 'Instrument Serif', serif;
+  font-size: 22px;
+  color: var(--navy);
+  line-height: 1.15;
+  margin-bottom: 3px;
+}
+.rec-device-spec {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: rgba(17,24,39,0.4);
+  line-height: 1.5;
+  font-weight: 300;
+}
+
+.rec-divider { height: 1px; background: rgba(31,47,74,0.05); margin: 0 18px; }
+
+.rec-card-bottom {
+  padding: 13px 18px 17px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.rec-why-block { flex: 1; }
+.rec-why-label {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(17,24,39,0.35);
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+.rec-why-text {
+  font-size: 13px;
+  color: rgba(17,24,39,0.65);
+  line-height: 1.65;
+}
+
+.rec-cta-btn {
+  width: 40px; height: 40px;
+  background: var(--green);
+  border-radius: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 3px 14px rgba(62,156,124,0.35);
+  border: none;
+  cursor: pointer;
+  margin-top: 2px;
+}
+
+/* Trust Section */
+.trust-block {
+  background: var(--navy);
+  border-radius: 22px;
+  padding: 22px;
+  overflow: hidden;
+  position: relative;
+}
+.trust-block::before {
+  content: '';
+  position: absolute;
+  bottom: -60px; right: -60px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(227,194,125,0.12) 0%, transparent 65%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.trust-eyebrow { margin-bottom: 10px; }
+.trust-h { font-family: 'Instrument Serif', serif; font-size: 21px; color: var(--cream); line-height: 1.35; margin-bottom: 15px; }
+
+.trust-points { display: flex; flex-direction: column; gap: 9px; margin-bottom: 18px; }
+.trust-point { display: flex; align-items: center; gap: 9px; }
+.trust-tick {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: rgba(62,156,124,0.18);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.trust-tick svg { width: 11px; height: 11px; color: var(--green); }
+.trust-point-txt { font-size: 12.5px; color: rgba(248,244,237,0.65); line-height: 1.45; }
+
+.trust-location-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(248,244,237,0.07);
+  border-radius: 10px;
+  padding: 9px 13px;
+  margin-bottom: 16px;
+}
+.trust-location-row svg { width: 13px; height: 13px; color: var(--gold); flex-shrink: 0; }
+.trust-loc-text { font-size: 12px; color: rgba(248,244,237,0.55); line-height: 1.4; }
+.trust-loc-text strong { color: var(--cream); font-weight: 400; }
+
+.btn-wa {
+  width: 100%;
+  padding: 14px 18px;
+  background: #20b858;
+  color: white;
+  border: none;
+  border-radius: 13px;
+  font-family: 'Sora', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  box-shadow: 0 4px 18px rgba(32,184,88,0.35);
+  position: relative;
+  z-index: 1;
+  transition: all 0.2s ease;
+}
+.btn-wa:active { transform: scale(0.98); opacity: 0.9; }
+
+/* ═══════════════════════════════════════════
+   SCREEN 5 — CONNECT
+═══════════════════════════════════════════ */
+#screen-connect { background: var(--cream); }
+
+.connect-scroll {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 56px 18px 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.connect-scroll::-webkit-scrollbar { display: none; }
+
+.connect-hero-card {
+  background: var(--navy);
+  border-radius: 24px;
+  padding: 28px 22px;
+  text-align: center;
+  overflow: hidden;
+  position: relative;
+}
+.connect-hero-card::before {
+  content: '';
+  position: absolute;
+  top: -60px; left: 50%;
+  transform: translateX(-50%);
+  width: 260px; height: 260px;
+  background: radial-gradient(circle, rgba(62,156,124,0.18) 0%, transparent 65%);
+  border-radius: 50%;
+}
+.connect-orb {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--green) 0%, #27735b 100%);
+  margin: 0 auto 18px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px;
+  position: relative;
+  box-shadow: 0 8px 30px rgba(62,156,124,0.4);
+}
+.connect-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 28px;
+  color: var(--cream);
+  line-height: 1.25;
+  margin-bottom: 8px;
+  position: relative;
+}
+.connect-sub {
+  font-size: 13px;
+  color: rgba(248,244,237,0.52);
+  line-height: 1.7;
+  max-width: 270px;
+  margin: 0 auto 22px;
+  position: relative;
+}
+
+.connect-card {
+  background: white;
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 2px 14px rgba(31,47,74,0.07);
+  display: flex;
+  gap: 13px;
+  align-items: flex-start;
+}
+.connect-card-ico {
+  width: 44px; height: 44px;
+  border-radius: 13px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.connect-card-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 17px;
+  color: var(--navy);
+  margin-bottom: 3px;
+}
+.connect-card-text {
+  font-size: 12.5px;
+  color: rgba(17,24,39,0.52);
+  line-height: 1.6;
+}
+
+.hours-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.hour-card {
+  background: white;
+  border-radius: 14px;
+  padding: 13px 15px;
+  box-shadow: 0 2px 10px rgba(31,47,74,0.05);
+}
+.hour-day { font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: rgba(17,24,39,0.38); margin-bottom: 3px; }
+.hour-time { font-family: 'Instrument Serif', serif; font-size: 19px; color: var(--navy); }
+
+/* ═══════════════════════════════════════════
+   SCREEN 6 — ABOUT
+═══════════════════════════════════════════ */
+#screen-about { background: var(--cream); }
+
+.about-scroll {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 56px 18px 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.about-scroll::-webkit-scrollbar { display: none; }
+
+.about-hero {
+  background: var(--navy);
+  border-radius: 24px;
+  padding: 28px 22px;
+  position: relative;
+  overflow: hidden;
+}
+.about-hero::before {
+  content: '';
+  position: absolute;
+  top: -40px; right: -40px;
+  width: 180px; height: 180px;
+  background: radial-gradient(circle, rgba(227,194,125,0.15) 0%, transparent 65%);
+  border-radius: 50%;
+}
+.about-tag { margin-bottom: 11px; }
+.about-h {
+  font-family: 'Instrument Serif', serif;
+  font-size: 25px;
+  color: var(--cream);
+  line-height: 1.3;
+  margin-bottom: 12px;
+  position: relative;
+}
+.about-p {
+  font-size: 13px;
+  color: rgba(248,244,237,0.55);
+  line-height: 1.75;
+  position: relative;
+}
+
+.value-list { display: flex; flex-direction: column; gap: 11px; }
+.value-item {
+  background: white;
+  border-radius: 18px;
+  padding: 17px 18px;
+  display: flex;
+  gap: 13px;
+  align-items: flex-start;
+  box-shadow: 0 2px 12px rgba(31,47,74,0.06);
+}
+.value-emoji { font-size: 22px; line-height: 1; padding-top: 2px; }
+.value-name {
+  font-family: 'Instrument Serif', serif;
+  font-size: 17px;
+  color: var(--navy);
+  margin-bottom: 3px;
+}
+.value-text { font-size: 12.5px; color: rgba(17,24,39,0.52); line-height: 1.6; }
+
+.about-cta-block {
+  background: var(--green-12);
+  border-radius: 20px;
+  padding: 22px;
+  text-align: center;
+}
+.about-cta-title { font-family: 'Instrument Serif', serif; font-size: 21px; color: var(--navy); margin-bottom: 7px; }
+.about-cta-sub { font-size: 12.5px; color: rgba(17,24,39,0.5); margin-bottom: 18px; line-height: 1.6; }
+.btn-about-start {
+  width: 100%;
+  padding: 15px;
+  background: var(--navy);
+  color: var(--cream);
+  border: none;
+  border-radius: 13px;
+  font-family: 'Sora', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(31,47,74,0.25);
+  transition: all 0.2s ease;
+}
+.btn-about-start:active { transform: scale(0.98); }
+
+/* ═══════════════════════════════════════════
+   STAGGER ANIMATION HELPERS
+═══════════════════════════════════════════ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.au1 { animation: fadeUp 0.45s ease forwards; animation-delay: 0.06s; opacity: 0; }
+.au2 { animation: fadeUp 0.45s ease forwards; animation-delay: 0.14s; opacity: 0; }
+.au3 { animation: fadeUp 0.45s ease forwards; animation-delay: 0.22s; opacity: 0; }
+.au4 { animation: fadeUp 0.45s ease forwards; animation-delay: 0.30s; opacity: 0; }
+.au5 { animation: fadeUp 0.45s ease forwards; animation-delay: 0.38s; opacity: 0; }
+.au6 { animation: fadeUp 0.45s ease forwards; animation-delay: 0.46s; opacity: 0; }
+
+/* Desktop frame */
+@media (min-width: 431px) {
+  body { display: flex; align-items: center; justify-content: center; }
+  #app {
+    height: min(860px, 95vh);
+    border-radius: 48px;
+    box-shadow:
+      0 50px 100px rgba(0,0,0,0.5),
+      0 0 0 1px rgba(255,255,255,0.08),
+      inset 0 0 0 2px rgba(255,255,255,0.04);
+    overflow: hidden;
+  }
+  .screen { border-radius: 48px; }
+  #bottom-nav { border-radius: 0 0 48px 48px; }
+}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+     SCREEN 1 — ENTRY
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ -->
+<div class="screen active" id="screen-entry">
+
+  <div class="entry-canvas">
+    <div class="signal-ring"></div>
+    <div class="signal-ring"></div>
+    <div class="signal-ring"></div>
+    <div class="signal-ring"></div>
+    <div class="entry-device">
+      <div class="phone-silhouette">
+        <div class="phone-screen-glow"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="entry-content">
+    <div class="entry-logo au1">
+      <div class="logo-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round">
+          <rect x="5" y="2" width="14" height="20" rx="2"/>
+          <path d="M12 18h.01"/>
+        </svg>
+      </div>
+      <div class="logo-wordmark">KOVIN</div>
+    </div>
+
+    <div class="entry-pill au2">
+      <div class="entry-pill-dot"></div>
+      <span class="entry-pill-text">Device Guidance</span>
+    </div>
+
+    <h1 class="entry-headline au3">
+      Your device<br>should <em>work for<br>your life.</em>
+    </h1>
+
+    <p class="entry-sub au4">
+      Not sure which phone to buy? Frustrated with slow performance? Something broke? We guide you through it — calmly.
+    </p>
+
+    <button class="btn-entry au5" onclick="go('situations')">
+      Tell us your situation
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+    <button class="btn-entry-ghost au6" onclick="go('about')">
+      What is KOVIN?
+    </button>
+  </div>
+</div>
+
+<!-- ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+     SCREEN 2 — SITUATIONS
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ -->
+<div class="screen screen-scroll" id="screen-situations">
+
+  <div class="situations-header">
+    <button class="back-btn" onclick="go('entry')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    </button>
+    <div class="eyebrow eyebrow-green" style="text-align:center; margin-bottom:9px;">Your Situation</div>
+    <div class="sit-title">What's happening<br>with your <em>device?</em></div>
+    <div class="sit-sub">Choose the moment that feels closest to yours</div>
+  </div>
+
+  <div class="situations-grid" id="sit-grid">
+    <!-- rendered by JS -->
+  </div>
+
+</div>
+
+<!-- ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+     SCREEN 3 — STORY
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ -->
+<div class="screen" id="screen-story">
+
+  <div class="story-header">
+    <button class="back-btn" onclick="go('situations')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    </button>
+    <div class="story-chapter-label" id="js-chapter">Chapter I</div>
+    <div class="story-h1" id="js-story-h1">Understanding your moment</div>
+    <div class="story-dots" id="js-dots"></div>
+  </div>
+
+  <div class="story-scroll-area" id="js-story-body"></div>
+
+  <div class="story-footer">
+    <button class="btn-story-next" onclick="go('recs')">
+      <span>See what fits your situation</span>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </button>
+  </div>
+
+</div>
+
+<!-- ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+     SCREEN 4 — RECOMMENDATIONS
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ -->
+<div class="screen" id="screen-recs">
+
+  <div class="recs-header">
+    <button class="back-btn" onclick="go('story')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+    </button>
+    <div class="eyebrow eyebrow-gold au1">Matched for you</div>
+    <div class="recs-h1 au2" id="js-recs-h1">These feel <em>right</em><br>for your situation</div>
+    <div class="recs-sub au3">3 options, not 30. Because clarity matters more than choice overload.</div>
+  </div>
+
+  <div class="recs-scroll" id="js-recs-body"></div>
+
+</div>
+
+<!-- ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+     SCREEN 5 — CONNECT
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ -->
+<div class="screen" id="screen-connect">
+  <div class="connect-scroll">
+
+    <div class="connect-hero-card au1">
+      <div class="connect-orb">🛠️</div>
+      <div class="connect-title">Talk to someone<br>who actually knows</div>
+      <div class="connect-sub">No scripts. No bots. Just someone in Coimbatore who understands devices and listens to your situation first.</div>
+      <button class="btn-wa" onclick="openWA()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Chat with us on WhatsApp
+      </button>
+    </div>
+
+    <div class="connect-card au2">
+      <div class="connect-card-ico" style="background: rgba(62,156,124,0.1);">📍</div>
+      <div>
+        <div class="connect-card-title">Coimbatore-based</div>
+        <div class="connect-card-text">We understand local needs, what people here use, and what actually lasts in our climate and lifestyle.</div>
+      </div>
+    </div>
+
+    <div class="connect-card au3">
+      <div class="connect-card-ico" style="background: rgba(31,47,74,0.07);">🎧</div>
+      <div>
+        <div class="connect-card-title">We listen first</div>
+        <div class="connect-card-text">Tell us your situation. We ask questions before we recommend anything. That's the KOVIN way.</div>
+      </div>
+    </div>
+
+    <div class="connect-card au4">
+      <div class="connect-card-ico" style="background: var(--gold-15);">🔧</div>
+      <div>
+        <div class="connect-card-title">Repair & advice too</div>
+        <div class="connect-card-text">Not just sales. If your device can be fixed or upgraded, we'll tell you that honestly before suggesting a new one.</div>
+      </div>
+    </div>
+
+    <div class="au5">
+      <div class="eyebrow eyebrow-green" style="margin-bottom: 10px; padding-left: 2px;">Availability</div>
+      <div class="hours-row">
+        <div class="hour-card">
+          <div class="hour-day">Mon – Fri</div>
+          <div class="hour-time">9am – 7pm</div>
+        </div>
+        <div class="hour-card">
+          <div class="hour-day">Saturday</div>
+          <div class="hour-time">10am – 5pm</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+     SCREEN 6 — ABOUT
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓ -->
+<div class="screen" id="screen-about">
+  <div class="about-scroll">
+
+    <div class="about-hero au1">
+      <div class="about-tag">
+        <span class="eyebrow" style="color: var(--gold);">Our Belief</span>
+      </div>
+      <div class="about-h">Choosing a device shouldn't feel like solving a puzzle.</div>
+      <div class="about-p">
+        KOVIN exists because most people don't want to read spec sheets — they want someone to understand their situation and say "this one, for these reasons." That's all we do.
+      </div>
+    </div>
+
+    <div class="value-list">
+      <div class="value-item au2">
+        <div class="value-emoji">🧭</div>
+        <div>
+          <div class="value-name">Situation first</div>
+          <div class="value-text">We never lead with a product. We ask about your life — how you use your phone, what breaks, what frustrates you.</div>
+        </div>
+      </div>
+      <div class="value-item au3">
+        <div class="value-emoji">🔬</div>
+        <div>
+          <div class="value-name">Honest over impressive</div>
+          <div class="value-text">If a ₹12,000 phone does what you need, we won't recommend a ₹40,000 one. That's not how we work.</div>
+        </div>
+      </div>
+      <div class="value-item au4">
+        <div class="value-emoji">🌿</div>
+        <div>
+          <div class="value-name">Calm, no pressure</div>
+          <div class="value-text">No countdowns. No "only 2 left" tricks. Your pace, your decision, your comfort.</div>
+        </div>
+      </div>
+      <div class="value-item au5">
+        <div class="value-emoji">🔧</div>
+        <div>
+          <div class="value-name">Repair before replace</div>
+          <div class="value-text">We always ask: can this be fixed? Upgrades and repairs are often the smarter answer.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-cta-block au6">
+      <div class="about-cta-title">Ready to find what fits?</div>
+      <div class="about-cta-sub">Tell us your situation and we'll guide you — no overwhelm, no pressure.</div>
+      <button class="btn-about-start" onclick="go('situations')">Start my journey →</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     BOTTOM NAV
+═══════════════════════════════════════ -->
+<nav id="bottom-nav">
+  <button class="nav-btn" id="nav-home" onclick="go('entry')">
+    <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H4a1 1 0 01-1-1z"/><path d="M9 21V12h6v9"/>
+    </svg>
+    <span class="nav-lbl">Home</span>
+  </button>
+  <button class="nav-btn" id="nav-journey" onclick="go('situations')">
+    <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <circle cx="12" cy="12" r="9"/><path d="M8 12h4l3-4"/>
+    </svg>
+    <span class="nav-lbl">Journey</span>
+  </button>
+  <button class="nav-btn" id="nav-connect" onclick="go('connect')">
+    <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
+    </svg>
+    <span class="nav-lbl">Connect</span>
+  </button>
+  <button class="nav-btn" id="nav-about" onclick="go('about')">
+    <svg class="nav-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+      <circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>
+    </svg>
+    <span class="nav-lbl">About</span>
+  </button>
+</nav>
+
+</div><!-- /#app -->
+
+<script>
+/* ═══════════════════════════════════════════
+   STATIC DATA — Device & Electronics Domain
+   Structure mirrors future API response shape
+═══════════════════════════════════════════ */
+const SITUATIONS = [
+  {
+    id: 'slow-phone',
+    emoji: '🐌',
+    iconBg: 'rgba(31,47,74,0.07)',
+    name: 'My phone feels slow',
+    hint: 'Lagging, freezing, taking forever',
+    wide: true,
+    story: {
+      chapter: 'Chapter I — Performance',
+      headline: 'That frustration every day — it builds.',
+      deviceTag: { emoji: '📱', label: 'Phone Performance' },
+      feel: 'Every tap feels like waiting. Every app takes too long. You just want your phone to work without thinking about it.',
+      validate: {
+        title: "You're not imagining it.",
+        text: "A slow phone isn't just annoying — it breaks your focus, wastes your time, and quietly stresses you out all day. Whether it's age, storage, or the wrong device for your use, there's a clear path forward."
+      },
+      guide: {
+        eyebrow: 'Clarity Path',
+        title: "What's actually causing slowness — and what fixes it",
+        steps: [
+          'Most phones slow down after 2–3 years — storage and memory fill up',
+          'Sometimes a factory reset or storage cleanup buys 6–12 more months',
+          'If it's older than 3 years and choppy on basic apps, an upgrade will transform your day'
+        ]
+      }
+    },
+    recs: [
+      {
+        emoji: '📱', iconBg: 'rgba(62,156,124,0.1)',
+        badge: 'Best Pick', badgeClass: 'badge-pick',
+        name: 'Redmi Note 13',
+        spec: '6GB RAM · 128GB · 5000mAh · ₹17,999',
+        whyLabel: 'Why this fits',
+        why: 'Fast enough for everything daily — and stays fast for 3+ years. The most common "I wish I bought this earlier" phone.'
+      },
+      {
+        emoji: '⚡', iconBg: 'rgba(227,194,125,0.15)',
+        badge: 'Upgrade', badgeClass: 'badge-value',
+        name: 'Poco X6',
+        spec: '8GB RAM · 256GB · 67W fast charge · ₹22,999',
+        whyLabel: 'Why this fits',
+        why: 'If you use your phone heavily — videos, maps, multiple apps — this one never stutters. Noticeable difference from day one.'
+      },
+      {
+        emoji: '🔧', iconBg: 'rgba(31,47,74,0.07)',
+        badge: 'Try First', badgeClass: 'badge-solid',
+        name: 'Storage Cleanup Service',
+        spec: 'In-store · 30 mins · Free check · ₹299 service',
+        whyLabel: 'Why this might work',
+        why: "If your phone is under 2 years old, it might just need a deep clean. We check it first — if it helps, you save ₹15,000."
+      }
+    ]
+  },
+  {
+    id: 'battery-drain',
+    emoji: '🔋',
+    iconBg: 'rgba(227,194,125,0.15)',
+    name: 'Battery dies too fast',
+    hint: 'Doesn't last the day',
+    wide: false,
+    story: {
+      chapter: 'Chapter II — Battery',
+      headline: "Always hunting for a charger.",
+      deviceTag: { emoji: '🔋', label: 'Battery Life' },
+      feel: "You leave home at 8am with 100%. By noon, you're looking for a socket. By 3pm, it's on low power mode. Your phone doesn't finish the day with you.",
+      validate: {
+        title: "Battery anxiety is real.",
+        text: "Constantly worrying about your phone dying changes how you move through your day — you plan routes around charging points, avoid using the camera, skip calls. You shouldn't have to live like that."
+      },
+      guide: {
+        eyebrow: 'Clarity Path',
+        title: "Battery dying fast — here's what's really happening",
+        steps: [
+          'Phone batteries degrade after 500–800 charge cycles (roughly 1.5–2 years of daily charging)',
+          'Battery replacement is often the best fix — ₹800–1500 and your phone feels new',
+          'If battery is fine but drain is fast, some apps are quietly running in the background'
+        ]
+      }
+    },
+    recs: [
+      {
+        emoji: '🔋', iconBg: 'rgba(62,156,124,0.1)',
+        badge: 'Best Pick', badgeClass: 'badge-pick',
+        name: 'Battery Replacement',
+        spec: 'In-store · 1–2 hours · Warranty included · From ₹999',
+        whyLabel: 'Why this fits',
+        why: 'Most battery issues are solved here. Same phone, restored performance. Often the smarter choice before spending ₹20,000 on a new one.'
+      },
+      {
+        emoji: '📱', iconBg: 'rgba(227,194,125,0.15)',
+        badge: 'Upgrade', badgeClass: 'badge-value',
+        name: 'Samsung Galaxy M34',
+        spec: '6000mAh · 2 days battery · 25W charge · ₹18,999',
+        whyLabel: 'Why this fits',
+        why: '6000mAh battery means most people finish the day at 40%. You stop thinking about charging entirely.'
+      },
+      {
+        emoji: '⚡', iconBg: 'rgba(31,47,74,0.07)',
+        badge: 'Quick Fix', badgeClass: 'badge-solid',
+        name: 'Anker Power Bank 20K',
+        spec: '20,000mAh · 2 USB + USB-C · ₹2,299',
+        whyLabel: 'Why this fits',
+        why: "If you're not ready for a new phone, this power bank gives you 2 full charges. Compact enough for your bag."
+      }
+    ]
+  },
+  {
+    id: 'parent-phone',
+    emoji: '👴',
+    iconBg: 'rgba(62,156,124,0.08)',
+    name: 'Phone for my parents',
+    hint: 'Simple, reliable, easy to use',
+    wide: false,
+    story: {
+      chapter: 'Chapter III — Family',
+      headline: "They just need it to work.",
+      deviceTag: { emoji: '👴', label: 'For Family' },
+      feel: "You want them to be reachable. To video call without confusion. To not have to explain the same thing every time you visit.",
+      validate: {
+        title: "Simple is actually harder to find.",
+        text: "Most phones are designed for people who enjoy technology. But your parents need something that does the basics without getting in the way — big text, clear calls, a camera that works without settings. That's a specific need."
+      },
+      guide: {
+        eyebrow: 'Clarity Path',
+        title: "What makes a phone good for parents",
+        steps: [
+          'Big, bright display and easy-to-read text — not just adjustable, but right from the start',
+          'Loud, clear call quality — earpiece and speaker both matter',
+          'Long battery life so they're never "sorry, my phone died"'
+        ]
+      }
+    },
+    recs: [
+      {
+        emoji: '📲', iconBg: 'rgba(62,156,124,0.1)',
+        badge: 'Best Pick', badgeClass: 'badge-pick',
+        name: 'Samsung Galaxy A15',
+        spec: '6.5" display · Loud speaker · 5000mAh · ₹13,999',
+        whyLabel: 'Why this fits',
+        why: "Big screen, simple UI, Samsung's One UI is the easiest Android for people new to smartphones. Most parents take to this naturally."
+      },
+      {
+        emoji: '📱', iconBg: 'rgba(227,194,125,0.15)',
+        badge: 'Value', badgeClass: 'badge-value',
+        name: 'Redmi A3',
+        spec: '6.71" display · 5000mAh · Simple interface · ₹8,499',
+        whyLabel: 'Why this fits',
+        why: "The largest screen in this price range. Easy to navigate, hard to break. Good first smartphone for parents."
+      },
+      {
+        emoji: '🔌', iconBg: 'rgba(31,47,74,0.07)',
+        badge: 'Add-On', badgeClass: 'badge-solid',
+        name: 'Setup & Teaching Session',
+        spec: 'In-store · 45 mins · WhatsApp, calls, camera set up · ₹199',
+        whyLabel: 'Why this helps',
+        why: "We set up the phone exactly how your parent needs it — large fonts, favourite contacts, camera shortcut. One visit, and they're confident."
+      }
+    ]
+  },
+  {
+    id: 'better-camera',
+    emoji: '📸',
+    iconBg: 'rgba(31,47,74,0.08)',
+    name: 'I want better photos',
+    hint: 'Memories, travel, everyday moments',
+    wide: false,
+    story: {
+      chapter: 'Chapter IV — Camera',
+      headline: "Your moments deserve better than blurry.",
+      deviceTag: { emoji: '📸', label: 'Camera Quality' },
+      feel: "You take a photo of something beautiful — your child, a trip, a meal — and when you look at it later, it just doesn't feel like what you saw.",
+      validate: {
+        title: "Camera quality shapes your memories.",
+        text: "The photos you take now are the ones you'll show people in 10 years. A better camera doesn't mean being a photographer — it means the automatic mode actually captures what you're looking at."
+      },
+      guide: {
+        eyebrow: 'Clarity Path',
+        title: "What actually makes a camera good (for real use)",
+        steps: [
+          'Megapixels matter less than sensor size and processing — a 50MP phone can be worse than a 12MP one',
+          'Night mode and portrait mode quality vary massively by phone — these are the shots that matter',
+          'Video stability (OIS) makes casual videos actually watchable'
+        ]
+      }
+    },
+    recs: [
+      {
+        emoji: '📸', iconBg: 'rgba(62,156,124,0.1)',
+        badge: 'Best Pick', badgeClass: 'badge-pick',
+        name: 'Google Pixel 8a',
+        spec: '64MP · Night Sight · 4K video · ₹34,999',
+        whyLabel: 'Why this fits',
+        why: "Google's camera processing is the best on any phone. Night shots look like daytime. Portraits look like they were edited. It just works."
+      },
+      {
+        emoji: '✨', iconBg: 'rgba(227,194,125,0.15)',
+        badge: 'Value', badgeClass: 'badge-value',
+        name: 'Samsung Galaxy A55',
+        spec: '50MP · OIS · Portrait mode · ₹29,999',
+        whyLabel: 'Why this fits',
+        why: "Samsung's colour processing makes photos vibrant and warm. Great portrait mode, solid night shots, and video that doesn't shake."
+      },
+      {
+        emoji: '🔭', iconBg: 'rgba(31,47,74,0.07)',
+        badge: 'Mid-Range', badgeClass: 'badge-solid',
+        name: 'Redmi Note 13 Pro+',
+        spec: '200MP · 2x optical zoom · Night mode · ₹26,999',
+        whyLabel: 'Why this fits',
+        why: "200MP sensor captures incredible detail. For people who share a lot to Instagram or want to crop and still see quality."
+      }
+    ]
+  },
+  {
+    id: 'broken-repair',
+    emoji: '🛠️',
+    iconBg: 'rgba(31,47,74,0.06)',
+    name: 'Something broke or isn\'t working',
+    hint: 'Screen, charging, sound, software',
+    wide: false,
+    story: {
+      chapter: 'Chapter V — Repair',
+      headline: "Something broke. Let's figure this out calmly.",
+      deviceTag: { emoji: '🛠️', label: 'Device Repair' },
+      feel: "Your screen cracked, or the charging port isn't working, or the audio is gone. You don't know if it's worth fixing or whether to just get a new one.",
+      validate: {
+        title: "Repair is often smarter than replace.",
+        text: "Most device problems — broken screens, charging faults, software issues — are fixable. And usually for far less than a new phone. The honest answer is: let's look at it first before deciding anything."
+      },
+      guide: {
+        eyebrow: 'Clarity Path',
+        title: "How to decide: repair or replace?",
+        steps: [
+          'If the phone is under 2 years old, repair is almost always worth it — same device, fixed cost',
+          'Screen repairs: ₹1,500–4,000 depending on model. Often done in 2–3 hours',
+          'If the repair cost is more than 50% of the phone's current value, then we discuss upgrading'
+        ]
+      }
+    },
+    recs: [
+      {
+        emoji: '🖥️', iconBg: 'rgba(62,156,124,0.1)',
+        badge: 'Most Common', badgeClass: 'badge-pick',
+        name: 'Screen Replacement',
+        spec: 'In-store · 2–3 hrs · All major brands · From ₹1,500',
+        whyLabel: 'Why this fits',
+        why: "Cracked screen is the #1 repair. Original-quality screens available for Samsung, Redmi, Realme, iPhone. Warranty on repair included."
+      },
+      {
+        emoji: '🔌', iconBg: 'rgba(227,194,125,0.15)',
+        badge: 'Quick Fix', badgeClass: 'badge-value',
+        name: 'Charging Port / Battery Fix',
+        spec: 'In-store · 1 hr · Diagnosis free · From ₹499',
+        whyLabel: 'Why this fits',
+        why: "Phone not charging? Usually it's the port, not the phone. Clean or replace the port — often solves it in under an hour."
+      },
+      {
+        emoji: '🔍', iconBg: 'rgba(31,47,74,0.07)',
+        badge: 'Start Here', badgeClass: 'badge-solid',
+        name: 'Free Device Diagnosis',
+        spec: 'In-store · 15 mins · No charge · Honest assessment',
+        whyLabel: 'Why this fits',
+        why: "Not sure what's wrong? Bring it in. We'll tell you exactly what it is, what it costs to fix, and whether it's worth it. No pressure, no upsell."
+      }
+    ]
+  },
+  {
+    id: 'earphones-sound',
+    emoji: '🎧',
+    iconBg: 'rgba(62,156,124,0.1)',
+    name: 'I need better sound',
+    hint: 'Earphones, speakers, audio',
+    wide: false,
+    story: {
+      chapter: 'Chapter VI — Audio',
+      headline: "Sound shapes how you experience everything.",
+      deviceTag: { emoji: '🎧', label: 'Audio & Sound' },
+      feel: "Your earphones keep falling out, or one side stopped working, or you just want the music to feel real — not tinny and flat.",
+      validate: {
+        title: "Good audio changes the experience entirely.",
+        text: "Whether it's calls on your commute, music while working out, or videos in the evening — the right earphones make it feel like a completely different thing. And there's a wide range between ₹500 and ₹5,000."
+      },
+      guide: {
+        eyebrow: 'Clarity Path',
+        title: "Choosing earphones for how you actually use them",
+        steps: [
+          'For calls + music: true wireless (TWS) earbuds with a mic are the most convenient',
+          'For sound quality that lasts: wired earphones still outperform wireless at the same price',
+          'Active noise cancellation matters most if you commute — less so if you\'re mostly indoors'
+        ]
+      }
+    },
+    recs: [
+      {
+        emoji: '🎧', iconBg: 'rgba(62,156,124,0.1)',
+        badge: 'Best Pick', badgeClass: 'badge-pick',
+        name: 'boAt Airdopes 141',
+        spec: 'TWS · 42hr total battery · IPX4 · ₹1,299',
+        whyLabel: 'Why this fits',
+        why: "The most recommended TWS earbuds in this price range. Comfortable fit, clear calls, solid music quality. Reliable for daily use."
+      },
+      {
+        emoji: '🔊', iconBg: 'rgba(227,194,125,0.15)',
+        badge: 'Premium Sound', badgeClass: 'badge-value',
+        name: 'Sony WF-C500',
+        spec: 'TWS · 20hr · Clear Bass · IPX4 · ₹4,999',
+        whyLabel: 'Why this fits',
+        why: "Sony's audio tuning at this price point is noticeably better. If music genuinely matters to you, this is the jump worth making."
+      },
+      {
+        emoji: '🎵', iconBg: 'rgba(31,47,74,0.07)',
+        badge: 'Reliable', badgeClass: 'badge-solid',
+        name: 'JBL Tune 215BT',
+        spec: 'Neckband · 15hr · Loud & Clear · ₹1,799',
+        whyLabel: 'Why this fits',
+        why: "Neckband stays secure, mic is excellent for calls, battery lasts 2 days easily. Best choice if earbuds keep falling out."
+      }
+    ]
+  }
+];
+
+/* ═══════════════════════════════════════════
+   STATE
+═══════════════════════════════════════════ */
+let current   = 'entry';
+let selected  = null;
+
+const IDS = {
+  entry:      'screen-entry',
+  situations: 'screen-situations',
+  story:      'screen-story',
+  recs:       'screen-recs',
+  connect:    'screen-connect',
+  about:      'screen-about'
+};
+
+const NAV_SCREENS = ['situations','story','recs','connect','about'];
+const NAV_MAP = {
+  entry: 'nav-home', situations: 'nav-journey',
+  story: 'nav-journey', recs: 'nav-journey',
+  connect: 'nav-connect', about: 'nav-about'
+};
+
+/* ═══════════════════════════════════════════
+   NAVIGATION ENGINE
+═══════════════════════════════════════════ */
+function go(next) {
+  if (next === current) return;
+
+  const from = document.getElementById(IDS[current]);
+  const to   = document.getElementById(IDS[next]);
+
+  from.classList.remove('active');
+  from.classList.add('gone');
+  setTimeout(() => from.classList.remove('gone'), 400);
+
+  to.classList.add('active');
+  to.scrollTop = 0;
+  current = next;
+
+  // Nav bar
+  const nav = document.getElementById('bottom-nav');
+  nav.style.display = NAV_SCREENS.includes(next) ? 'flex' : 'none';
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  const activeNav = NAV_MAP[next];
+  if (activeNav) document.getElementById(activeNav)?.classList.add('active');
+
+  // Render
+  if (next === 'situations') renderSituations();
+  if (next === 'story')      renderStory();
+  if (next === 'recs')       renderRecs();
+}
+
+/* ═══════════════════════════════════════════
+   RENDER: SITUATIONS GRID
+═══════════════════════════════════════════ */
+function renderSituations() {
+  const grid = document.getElementById('sit-grid');
+  grid.innerHTML = SITUATIONS.map((s, i) => {
+    const delay = `${0.04 * i}s`;
+    if (s.wide) {
+      return `
+        <div class="sit-card-wide" style="animation: fadeUp 0.4s ease forwards; animation-delay:${delay}; opacity:0;">
+          <div class="sit-card" onclick="pick('${s.id}')">
+            <div class="sit-emoji-wrap" style="background:${s.iconBg};">${s.emoji}</div>
+            <div class="sit-text" style="flex:1;">
+              <div class="sit-card-name">${s.name}</div>
+              <div class="sit-card-hint">${s.hint}</div>
+            </div>
+            <div class="sit-card-arrow">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </div>
+        </div>`;
+    }
+    return `
+      <div style="animation: fadeUp 0.4s ease forwards; animation-delay:${delay}; opacity:0;">
+        <div class="sit-card" onclick="pick('${s.id}')">
+          <div class="sit-card-arrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+          <div class="sit-emoji-wrap" style="background:${s.iconBg};">${s.emoji}</div>
+          <div class="sit-card-name">${s.name}</div>
+          <div class="sit-card-hint">${s.hint}</div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function pick(id) {
+  selected = SITUATIONS.find(s => s.id === id);
+  go('story');
+}
+
+/* ═══════════════════════════════════════════
+   RENDER: STORY BLOCKS
+═══════════════════════════════════════════ */
+function renderStory() {
+  if (!selected) return;
+  const s = selected.story;
+
+  document.getElementById('js-chapter').textContent  = s.chapter;
+  document.getElementById('js-story-h1').textContent = s.headline;
+
+  // Progress dots (3 steps always)
+  document.getElementById('js-dots').innerHTML =
+    [0,1,2].map(i => `<div class="dot ${i===0?'on':'off'}"></div>`).join('');
+
+  document.getElementById('js-story-body').innerHTML = `
+    <div class="block-feel au1">
+      <div class="feel-device-tag">
+        <span>${s.deviceTag.emoji}</span>
+        <p>${s.deviceTag.label}</p>
+      </div>
+      <div class="feel-quote">${s.feel}</div>
+      <div class="feel-label">The Situation</div>
+    </div>
+
+    <div class="block-validate au2">
+      <div class="validate-title">${s.validate.title}</div>
+      <div class="validate-text">${s.validate.text}</div>
+    </div>
+
+    <div class="block-guide au3">
+      <div class="guide-eyebrow">${s.guide.eyebrow}</div>
+      <div class="guide-title">${s.guide.title}</div>
+      <div class="guide-steps">
+        ${s.guide.steps.map((t,i) => `
+          <div class="guide-step">
+            <div class="step-n">${i+1}</div>
+            <div class="step-t">${t}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+  `;
+}
+
+/* ═══════════════════════════════════════════
+   RENDER: RECOMMENDATIONS
+═══════════════════════════════════════════ */
+function renderRecs() {
+  if (!selected) return;
+
+  const body = document.getElementById('js-recs-body');
+  body.innerHTML = selected.recs.map((r, i) => `
+    <div class="rec-card" style="animation:fadeUp 0.45s ease forwards; animation-delay:${0.08+i*0.1}s; opacity:0;" onclick="openWA()">
+      <div class="rec-card-top">
+        <div class="rec-device-icon" style="background:${r.iconBg};">${r.emoji}</div>
+        <div style="flex:1;">
+          <span class="rec-badge ${r.badgeClass}">${r.badge}</span>
+          <div class="rec-device-name">${r.name}</div>
+          <div class="rec-device-spec">${r.spec}</div>
+        </div>
+      </div>
+      <div class="rec-divider"></div>
+      <div class="rec-card-bottom">
+        <div class="rec-why-block">
+          <div class="rec-why-label">${r.whyLabel}</div>
+          <div class="rec-why-text">${r.why}</div>
+        </div>
+        <button class="rec-cta-btn" aria-label="Ask about ${r.name}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.3" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  `).join('');
+
+  // Trust block
+  body.innerHTML += `
+    <div class="trust-block" style="animation:fadeUp 0.45s ease forwards; animation-delay:0.42s; opacity:0;">
+      <div class="trust-eyebrow eyebrow" style="color:var(--gold); margin-bottom:9px;">Why KOVIN</div>
+      <div class="trust-h">Not just options — someone who understands your device situation.</div>
+      <div class="trust-points">
+        <div class="trust-point">
+          <div class="trust-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <div class="trust-point-txt">We check if repair beats replacement — always</div>
+        </div>
+        <div class="trust-point">
+          <div class="trust-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <div class="trust-point-txt">No inflated recommendations — honest fit for your budget</div>
+        </div>
+        <div class="trust-point">
+          <div class="trust-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+          <div class="trust-point-txt">Real humans, Coimbatore-based, available on WhatsApp</div>
+        </div>
+      </div>
+      <div class="trust-location-row">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <div class="trust-loc-text"><strong>Locally rooted.</strong> We know what Coimbatore families actually use and need from their devices.</div>
+      </div>
+      <button class="btn-wa" onclick="openWA()">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Ask us about these options
+      </button>
+    </div>
+  `;
+}
+
+/* ═══════════════════════════════════════════
+   WHATSAPP
+═══════════════════════════════════════════ */
+function openWA() {
+  const msg = selected
+    ? `Hi KOVIN! I went through the "${selected.name}" journey and I'd like to talk to someone about the options.`
+    : `Hi KOVIN! I'd like some guidance on a device.`;
+  window.open(`https://wa.me/919999999999?text=${encodeURIComponent(msg)}`, '_blank');
+}
+
+/* ═══════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════ */
+renderSituations();
+</script>
+</body>
+</html>
