@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mr. Kovai Mobiles & Electronics</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: ui-sans-serif, system-ui;
+      background: #F8F4ED;
+      color: #111827;
+    }
+    .fade {
+      animation: fadeIn 1s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from {opacity:0; transform: translateY(10px);}
+      to {opacity:1; transform: translateY(0);}
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- HERO -->
+<section class="min-h-screen flex flex-col justify-center items-center text-center px-6 fade">
+  <h1 class="text-4xl md:text-6xl font-bold text-[#1F2F4A] leading-tight">
+    Smart Devices. Clear Solutions.
+  </h1>
+  <p class="mt-4 text-lg max-w-xl text-gray-700">
+    Smartphones, accessories, electronics & repair services in Coimbatore with simple guidance and trusted support.
+  </p>
+  <a href="https://wa.me/0000000000" 
+     class="mt-6 bg-[#3E9C7C] text-white px-6 py-3 rounded-full">
+     Talk on WhatsApp
+  </a>
+</section>
+
+<!-- PROBLEMS -->
+<section class="px-6 py-16 max-w-5xl mx-auto fade">
+  <h2 class="text-2xl font-semibold text-[#1F2F4A] mb-6">Common Device Needs</h2>
+
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="p-4 bg-white rounded-xl shadow">Phone is slow</div>
+    <div class="p-4 bg-white rounded-xl shadow">Battery drains fast</div>
+    <div class="p-4 bg-white rounded-xl shadow">Need a new smartphone</div>
+    <div class="p-4 bg-white rounded-xl shadow">Screen or software issues</div>
+    <div class="p-4 bg-white rounded-xl shadow">Need accessories</div>
+    <div class="p-4 bg-white rounded-xl shadow">Home electronics setup</div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="px-6 py-16 bg-white fade">
+  <div class="max-w-5xl mx-auto">
+    <h2 class="text-2xl font-semibold text-[#1F2F4A] mb-6">What’s Available</h2>
+
+    <p class="text-gray-700 leading-relaxed">
+      Smartphones, mobile accessories, LED TVs, speakers, home theatre systems, and repair services are available with clear, practical guidance based on real usage needs.
+    </p>
+  </div>
+</section>
+
+<!-- TRUST -->
+<section class="px-6 py-16 max-w-5xl mx-auto fade">
+  <h2 class="text-2xl font-semibold text-[#1F2F4A] mb-4">Local Trust</h2>
+  <p class="text-gray-700">
+    Located in Coimbatore, offering in-person support, honest guidance, and reliable service for everyday device needs.
+  </p>
+</section>
+
+<!-- CTA -->
+<section class="px-6 py-20 text-center fade">
+  <h2 class="text-3xl font-bold text-[#1F2F4A]">
+    Get Clear Help for Your Device
+  </h2>
+  <p class="mt-3 text-gray-700">
+    Walk in or connect instantly for the right solution.
+  </p>
+
+  <a href="https://wa.me/0000000000" 
+     class="mt-6 inline-block bg-[#1F2F4A] text-white px-8 py-3 rounded-full">
+     Contact Now
+  </a>
+</section>
+
+</body>
+</html>
