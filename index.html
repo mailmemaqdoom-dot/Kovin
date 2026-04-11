@@ -159,6 +159,200 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 28px;height:62px;d
 @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
+/* ══════════════════════════════
+   GUIDED HELP SECTION
+══════════════════════════════ */
+.guided{padding:96px 24px 112px;max-width:860px;margin:0 auto}
+.guided-eye{font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin-bottom:16px;opacity:0;transition:opacity .7s var(--ease)}
+.guided-eye.in{opacity:1}
+.guided-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(36px,6vw,62px);line-height:1.1;color:var(--white);letter-spacing:-.01em;margin-bottom:52px;opacity:0;transform:translateY(20px);transition:all .8s .1s var(--ease)}
+.guided-title.in{opacity:1;transform:translateY(0)}
+
+/* Option list */
+.gopt-list{display:flex;flex-direction:column;gap:10px;margin-bottom:0}
+.gopt{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 24px;
+  background:var(--ink-2);
+  border:1px solid var(--border);
+  border-radius:var(--r);
+  cursor:pointer;
+  transition:all 300ms var(--ease);
+  gap:16px;
+  opacity:0;transform:translateY(16px);
+}
+.gopt.in{opacity:1;transform:translateY(0)}
+.gopt:hover{border-color:var(--border-h);background:rgba(255,255,255,.04)}
+.gopt.active{border-color:rgba(232,160,74,.35);background:rgba(232,160,74,.04)}
+.gopt-left{display:flex;align-items:center;gap:14px}
+.gopt-icon{
+  width:38px;height:38px;border-radius:12px;
+  background:var(--w08);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:17px;flex-shrink:0;
+  transition:all 300ms var(--ease);
+}
+.gopt.active .gopt-icon{background:var(--amber-dim);border-color:rgba(232,160,74,.3)}
+.gopt-label{font-size:15px;font-weight:400;color:var(--w70);transition:color 280ms var(--ease)}
+.gopt:hover .gopt-label,.gopt.active .gopt-label{color:var(--white)}
+.gopt-arrow{
+  width:28px;height:28px;border-radius:50%;border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:all 300ms var(--ease);
+}
+.gopt-arrow svg{width:12px;height:12px;color:var(--w40);transition:all 300ms var(--ease)}
+.gopt:hover .gopt-arrow,.gopt.active .gopt-arrow{border-color:rgba(232,160,74,.4);background:var(--amber-dim)}
+.gopt:hover .gopt-arrow svg,.gopt.active .gopt-arrow svg{color:var(--amber);transform:rotate(90deg)}
+
+/* Response panel */
+.gresp{
+  overflow:hidden;
+  max-height:0;
+  opacity:0;
+  transition:max-height 520ms cubic-bezier(0.4,0,0.2,1), opacity 380ms var(--ease), margin 400ms var(--ease);
+  margin-top:0;
+}
+.gresp.open{
+  max-height:600px;
+  opacity:1;
+  margin-top:12px;
+}
+.gresp-inner{
+  background:var(--ink-2);
+  border:1px solid rgba(232,160,74,.2);
+  border-radius:var(--r);
+  padding:32px 28px 28px;
+  position:relative;
+  overflow:hidden;
+}
+.gresp-inner::before{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:200px;height:200px;border-radius:50%;
+  background:radial-gradient(circle,rgba(232,160,74,.05),transparent 70%);
+  pointer-events:none;
+}
+.gresp-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--amber);background:var(--amber-dim);
+  padding:4px 11px;border-radius:50px;margin-bottom:18px;
+}
+.gresp-title{
+  font-family:'Cormorant Garamond',serif;font-weight:400;
+  font-size:26px;line-height:1.2;color:var(--white);margin-bottom:16px;
+}
+.gresp-points{display:flex;flex-direction:column;gap:9px;margin-bottom:28px}
+.gresp-pt{
+  display:flex;align-items:flex-start;gap:10px;
+  font-size:14px;font-weight:300;color:var(--w70);line-height:1.55;
+}
+.gresp-dot{
+  width:5px;height:5px;border-radius:50%;background:var(--amber);
+  flex-shrink:0;margin-top:8px;opacity:.7;
+}
+.gresp-btns{display:flex;flex-direction:column;gap:10px}
+@media(min-width:560px){.gresp-btns{flex-direction:row;flex-wrap:wrap}}
+.gbtn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:13px 20px;border-radius:50px;font-size:13px;font-weight:500;
+  cursor:pointer;font-family:'Outfit',sans-serif;transition:all 280ms var(--ease);
+  white-space:nowrap;border:none;
+}
+.gbtn-primary{background:var(--amber);color:#1a1200;position:relative;overflow:hidden}
+.gbtn-primary::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,.15),transparent);pointer-events:none}
+.gbtn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(232,160,74,.3)}
+.gbtn-ghost{background:transparent;color:var(--w70);border:1px solid var(--border)}
+.gbtn-ghost:hover{color:var(--white);border-color:var(--border-h);background:var(--w08);transform:translateY(-1px)}
+.gbtn-talk{background:transparent;color:var(--amber);border:1px solid rgba(232,160,74,.3)}
+.gbtn-talk:hover{background:var(--amber-dim);transform:translateY(-1px)}
+.gbtn svg{width:13px;height:13px;flex-shrink:0}
+
+/* ══════════════════════════════
+   HOW IT WORKS SECTION
+══════════════════════════════ */
+.hiw{
+  padding:80px 24px 100px;
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+  background:linear-gradient(to bottom,rgba(232,160,74,.025),transparent);
+}
+.hiw-inner{max-width:860px;margin:0 auto}
+.hiw-eye{font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin-bottom:16px;opacity:0;transition:opacity .7s var(--ease)}
+.hiw-eye.in{opacity:1}
+.hiw-title{
+  font-family:'Cormorant Garamond',serif;font-weight:300;
+  font-size:clamp(34px,5.5vw,58px);line-height:1.1;color:var(--white);
+  letter-spacing:-.01em;margin-bottom:16px;
+  opacity:0;transform:translateY(18px);transition:all .8s .1s var(--ease);
+}
+.hiw-title.in{opacity:1;transform:translateY(0)}
+.hiw-note{
+  font-size:15px;font-weight:300;color:var(--w40);
+  margin-bottom:64px;
+  opacity:0;transition:opacity .8s .2s var(--ease);
+}
+.hiw-note.in{opacity:1}
+
+.hiw-steps{
+  display:grid;grid-template-columns:1fr;gap:0;
+  position:relative;
+}
+@media(min-width:700px){.hiw-steps{grid-template-columns:repeat(3,1fr);gap:0}}
+
+/* Connector line on desktop */
+@media(min-width:700px){
+  .hiw-steps::before{
+    content:'';position:absolute;
+    top:28px;left:calc(33.333% + 28px);
+    width:calc(33.333% - 56px);height:1px;
+    background:linear-gradient(to right,rgba(232,160,74,.3),rgba(232,160,74,.1));
+  }
+  .hiw-steps::after{
+    content:'';position:absolute;
+    top:28px;left:calc(66.666% + 28px);
+    width:calc(33.333% - 56px);height:1px;
+    background:linear-gradient(to right,rgba(232,160,74,.1),transparent);
+  }
+}
+
+.hiw-step{
+  padding:0 0 40px;
+  opacity:0;transform:translateY(20px);
+  transition:all .7s var(--ease);
+}
+@media(min-width:700px){.hiw-step{padding:0 28px 0 0}}
+.hiw-step.in{opacity:1;transform:translateY(0)}
+.hiw-step:last-child{padding-bottom:0}
+
+.hiw-num{
+  width:56px;height:56px;border-radius:50%;
+  border:1px solid rgba(232,160,74,.3);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:24px;position:relative;
+  background:rgba(232,160,74,.05);
+}
+.hiw-num-inner{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;font-weight:300;color:var(--amber);
+}
+.hiw-step-title{
+  font-size:17px;font-weight:500;color:var(--white);
+  margin-bottom:10px;line-height:1.3;
+}
+.hiw-step-body{
+  font-size:14px;font-weight:300;color:var(--w40);line-height:1.65;
+}
+
+/* Connector on mobile */
+.hiw-step-connector{
+  display:block;
+  width:1px;height:32px;
+  background:linear-gradient(to bottom,rgba(232,160,74,.3),rgba(232,160,74,.05));
+  margin:0 0 24px 27px;
+}
+@media(min-width:700px){.hiw-step-connector{display:none}}
+.hiw-step:last-child .hiw-step-connector{display:none}
+
 @media(max-width:479px){
   nav{padding:0 18px}
   .hero-visual{width:210px;height:210px}
@@ -168,6 +362,11 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 28px;height:62px;d
   .cvis{height:145px}
   .ctitle{font-size:18px}
   .bstrip{padding:22px 18px}
+  .guided{padding:68px 16px 76px}
+  .hiw{padding:60px 16px 72px}
+  .gresp-inner{padding:24px 18px 22px}
+  .gresp-title{font-size:22px}
+  .gbtn{font-size:12px;padding:12px 16px}
 }
 </style>
 </head>
@@ -289,6 +488,163 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 28px;height:62px;d
   </div>
 </section>
 
+<div class="divider"></div>
+
+<!-- ════════════════════════
+     GUIDED HELP
+════════════════════════ -->
+<section class="guided">
+  <p class="guided-eye" id="guidedEye">Something not right?</p>
+  <h2 class="guided-title" id="guidedTitle">Tell it what's<br>happening</h2>
+
+  <div class="gopt-list" id="goptList">
+
+    <div class="gopt" data-key="not-working" tabindex="0" role="button">
+      <div class="gopt-left">
+        <div class="gopt-icon">📵</div>
+        <span class="gopt-label">Phone not working</span>
+      </div>
+      <div class="gopt-arrow">
+        <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6h8M6 2l4 4-4 4"/></svg>
+      </div>
+    </div>
+    <div class="gresp" id="resp-not-working">
+      <div class="gresp-inner">
+        <div class="gresp-tag">📵 Phone not working</div>
+        <div class="gresp-title">This is usually recoverable</div>
+        <div class="gresp-points">
+          <div class="gresp-pt"><div class="gresp-dot"></div><span>A phone that won't respond is often caused by a software crash, a failed update, or a drained battery that won't show any sign of life.</span></div>
+          <div class="gresp-pt"><div class="gresp-dot"></div><span>In most cases a forced restart or a short charging period brings it back. A technician can confirm this in minutes.</span></div>
+          <div class="gresp-pt"><div class="gresp-dot"></div><span>If it's a hardware fault, the repair cost will be explained clearly before anything is done.</span></div>
+        </div>
+        <div class="gresp-btns">
+          <button class="gbtn gbtn-primary"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 1v6M4 4l3-3 3 3M2 9v2a1 1 0 001 1h8a1 1 0 001-1V9"/></svg>Fix this for you</button>
+          <button class="gbtn gbtn-ghost"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 7h12M8 2l5 5-5 5"/></svg>Show better choices</button>
+          <a href="https://wa.me/917200006006?text=Hi%2C+my+phone+is+not+working.+Can+you+help%3F" target="_blank" class="gbtn gbtn-talk"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 6.5A6 6 0 01.5 7.5L1 13l2.5-1A6 6 0 0013 6.5z"/></svg>Talk here</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="gopt" data-key="battery" tabindex="0" role="button">
+      <div class="gopt-left">
+        <div class="gopt-icon">🔋</div>
+        <span class="gopt-label">Battery draining fast</span>
+      </div>
+      <div class="gopt-arrow">
+        <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6h8M6 2l4 4-4 4"/></svg>
+      </div>
+    </div>
+    <div class="gresp" id="resp-battery">
+      <div class="gresp-inner">
+        <div class="gresp-tag">🔋 Battery draining fast</div>
+        <div class="gresp-title">Battery health may have reduced over time</div>
+        <div class="gresp-points">
+          <div class="gresp-pt"><div class="gresp-dot"></div><span>After 300–500 charge cycles, most batteries lose the ability to hold a full charge — this is normal wear, not damage.</span></div>
+          <div class="gresp-pt"><div class="gresp-dot"></div><span>Replacing it usually restores normal use. The phone will feel like new and last through a full day again.</span></div>
+          <div class="gresp-pt"><div class="gresp-dot"></div><span>If the device is older, upgrading may be a better use of the money — that comparison will be shown before anything is decided.</span></div>
+        </div>
+        <div class="gresp-btns">
+          <button class="gbtn gbtn-primary"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 1v6M4 4l3-3 3 3M2 9v2a1 1 0 001 1h8a1 1 0 001-1V9"/></svg>Fix this for you</button>
+          <button class="gbtn gbtn-ghost"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 7h12M8 2l5 5-5 5"/></svg>Show better choices</button>
+          <a href="https://wa.me/917200006006?text=Hi%2C+my+battery+drains+fast.+Can+you+help%3F" target="_blank" class="gbtn gbtn-talk"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 6.5A6 6 0 01.5 7.5L1 13l2.5-1A6 6 0 0013 6.5z"/></svg>Talk here</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="gopt" data-key="screen" tabindex="0" role="button">
+      <div class="gopt-left">
+        <div class="gopt-icon">💔</div>
+        <span class="gopt-label">Screen damaged</span>
+      </div>
+      <div class="gopt-arrow">
+        <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6h8M6 2l4 4-4 4"/></svg>
+      </div>
+    </div>
+    <div class="gresp" id="resp-screen">
+      <div class="gresp-inner">
+        <div class="gresp-tag">💔 Screen damaged</div>
+        <div class="gresp-title">Screen repairs are very common and usually quick</div>
+        <div class="gresp-points">
+          <div class="gresp-pt"><div class="gresp-dot"></div><span>A cracked surface, dark blotches, or a completely dead display each have different repair costs — the difference will be explained before any work begins.</span></div>
+          <div class="gresp-pt"><div class="gresp-dot"></div><span>Most screen replacements are completed the same day. Genuine or quality-equivalent panels are used.</span></div>
+          <div class="gresp-pt"><div class="gresp-dot"></div><span>If the cost of repair approaches the value of the device, a better option will be suggested instead.</span></div>
+        </div>
+        <div class="gresp-btns">
+          <button class="gbtn gbtn-primary"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 1v6M4 4l3-3 3 3M2 9v2a1 1 0 001 1h8a1 1 0 001-1V9"/></svg>Fix this for you</button>
+          <button class="gbtn gbtn-ghost"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 7h12M8 2l5 5-5 5"/></svg>Show better choices</button>
+          <a href="https://wa.me/917200006006?text=Hi%2C+my+screen+is+damaged.+Can+you+help%3F" target="_blank" class="gbtn gbtn-talk"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 6.5A6 6 0 01.5 7.5L1 13l2.5-1A6 6 0 0013 6.5z"/></svg>Talk here</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="gopt" data-key="slow" tabindex="0" role="button">
+      <div class="gopt-left">
+        <div class="gopt-icon">🐢</div>
+        <span class="gopt-label">Feels slower than usual</span>
+      </div>
+      <div class="gopt-arrow">
+        <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6h8M6 2l4 4-4 4"/></svg>
+      </div>
+    </div>
+    <div class="gresp" id="resp-slow">
+      <div class="gresp-inner">
+        <div class="gresp-tag">🐢 Feels slower than usual</div>
+        <div class="gresp-title">Performance can almost always be recovered</div>
+        <div class="gresp-points">
+          <div class="gresp-pt"><div class="gresp-dot"></div><span>Slowness is usually caused by full storage, background apps, an old operating system, or a battery that's throttling the processor to protect itself.</span></div>
+          <div class="gresp-pt"><div class="gresp-dot"></div><span>A software cleanup or battery replacement is often all that's needed — and it costs a fraction of a new phone.</span></div>
+          <div class="gresp-pt"><div class="gresp-dot"></div><span>If the device is genuinely reaching its limit, honest guidance on upgrading will be given — not a push to spend more.</span></div>
+        </div>
+        <div class="gresp-btns">
+          <button class="gbtn gbtn-primary"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 1v6M4 4l3-3 3 3M2 9v2a1 1 0 001 1h8a1 1 0 001-1V9"/></svg>Fix this for you</button>
+          <button class="gbtn gbtn-ghost"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 7h12M8 2l5 5-5 5"/></svg>Show better choices</button>
+          <a href="https://wa.me/917200006006?text=Hi%2C+my+phone+feels+slow.+Can+you+help%3F" target="_blank" class="gbtn gbtn-talk"><svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 6.5A6 6 0 01.5 7.5L1 13l2.5-1A6 6 0 0013 6.5z"/></svg>Talk here</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ════════════════════════
+     HOW IT WORKS
+════════════════════════ -->
+<section class="hiw">
+  <div class="hiw-inner">
+    <p class="hiw-eye" id="hiwEye">How it works</p>
+    <h2 class="hiw-title" id="hiwTitle">What happens next</h2>
+    <p class="hiw-note" id="hiwNote">No pressure — just clarity.</p>
+
+    <div class="hiw-steps" id="hiwSteps">
+
+      <div class="hiw-step">
+        <div class="hiw-num"><div class="hiw-num-inner">1</div></div>
+        <div class="hiw-step-title">You show what's happening</div>
+        <div class="hiw-step-body">Select the issue above or describe it on WhatsApp. No forms, no accounts, no waiting.</div>
+        <div class="hiw-step-connector"></div>
+      </div>
+
+      <div class="hiw-step">
+        <div class="hiw-num"><div class="hiw-num-inner">2</div></div>
+        <div class="hiw-step-title">It's explained clearly</div>
+        <div class="hiw-step-body">The likely cause is explained in plain language. Costs are shared upfront. Nothing begins without agreement.</div>
+        <div class="hiw-step-connector"></div>
+      </div>
+
+      <div class="hiw-step">
+        <div class="hiw-num"><div class="hiw-num-inner">3</div></div>
+        <div class="hiw-step-title">You decide what works</div>
+        <div class="hiw-step-body">Repair, replace, or upgrade — the choice is always yours. The right answer is the one that fits how you use your device.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
 <div class="bstrip">
   <div class="blogo">Kov<span>·</span>in</div>
   <div class="bnote">Tamil Nadu's guided electronics system</div>
@@ -322,6 +678,100 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 28px;height:62px;d
   window.addEventListener('scroll',function(){
     if(orb1) orb1.style.transform='translateX(-50%) translateY('+(window.scrollY*.17)+'px)';
   },{passive:true});
+
+  /* ── Guided section reveal ── */
+  var gEye   = document.getElementById('guidedEye');
+  var gTitle = document.getElementById('guidedTitle');
+  var gopts  = document.querySelectorAll('.gopt');
+
+  var gHeadObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        if(gEye)   gEye.classList.add('in');
+        if(gTitle) gTitle.classList.add('in');
+        gHeadObs.disconnect();
+      }
+    });
+  },{threshold:0.3});
+  var guidedEl = document.querySelector('.guided');
+  if(guidedEl) gHeadObs.observe(guidedEl);
+
+  var gOptObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        var idx = Array.from(gopts).indexOf(e.target);
+        setTimeout(function(){ e.target.classList.add('in'); }, idx * 80);
+        gOptObs.unobserve(e.target);
+      }
+    });
+  },{threshold:0.1});
+  gopts.forEach(function(o){ gOptObs.observe(o); });
+
+  /* ── Guided option click: expand/collapse response ── */
+  var activeKey = null;
+  gopts.forEach(function(opt){
+    function toggle(){
+      var key  = opt.getAttribute('data-key');
+      var resp = document.getElementById('resp-' + key);
+      if(!resp) return;
+
+      if(activeKey && activeKey !== key){
+        var prev = document.getElementById('resp-' + activeKey);
+        var prevOpt = document.querySelector('.gopt[data-key="'+activeKey+'"]');
+        if(prev)    prev.classList.remove('open');
+        if(prevOpt) prevOpt.classList.remove('active');
+      }
+
+      var isOpen = resp.classList.contains('open');
+      if(isOpen){
+        resp.classList.remove('open');
+        opt.classList.remove('active');
+        activeKey = null;
+      } else {
+        resp.classList.add('open');
+        opt.classList.add('active');
+        activeKey = key;
+        setTimeout(function(){
+          resp.scrollIntoView({behavior:'smooth', block:'nearest'});
+        }, 80);
+      }
+    }
+    opt.addEventListener('click', toggle);
+    opt.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggle(); }
+    });
+  });
+
+  /* ── How it works reveal ── */
+  var hiwEye   = document.getElementById('hiwEye');
+  var hiwTitle = document.getElementById('hiwTitle');
+  var hiwNote  = document.getElementById('hiwNote');
+  var hiwSteps = document.querySelectorAll('.hiw-step');
+
+  var hiwObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        if(hiwEye)   hiwEye.classList.add('in');
+        if(hiwTitle) hiwTitle.classList.add('in');
+        if(hiwNote)  hiwNote.classList.add('in');
+        hiwObs.disconnect();
+      }
+    });
+  },{threshold:0.3});
+  var hiwEl = document.querySelector('.hiw');
+  if(hiwEl) hiwObs.observe(hiwEl);
+
+  var stepObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        var idx = Array.from(hiwSteps).indexOf(e.target);
+        setTimeout(function(){ e.target.classList.add('in'); }, idx * 140);
+        stepObs.unobserve(e.target);
+      }
+    });
+  },{threshold:0.15});
+  hiwSteps.forEach(function(s){ stepObs.observe(s); });
+
 })();
 </script>
 </body>
