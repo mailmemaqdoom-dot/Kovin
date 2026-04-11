@@ -3,960 +3,326 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kovin — Guided Electronics</title>
+<title>Kovin — Find what fits you</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --navy:          #0D1B2A;
-    --navy-mid:      #1A2E44;
-    --blue:          #1D4ED8;
-    --blue-light:    #3B82F6;
-    --bg:            #F4F5F7;
-    --bg-card:       #FFFFFF;
-    --accent:        #F97316;
-    --accent-green:  #10B981;
-    --text-primary:  #111827;
-    --text-secondary:#6B7280;
-    --text-muted:    #9CA3AF;
-    --border:        rgba(0,0,0,0.07);
-    --shadow-sm:     0 2px 8px rgba(0,0,0,0.06);
-    --shadow-md:     0 8px 32px rgba(0,0,0,0.10);
-    --shadow-lg:     0 20px 60px rgba(0,0,0,0.13);
-    --radius-sm:     12px;
-    --radius:        20px;
-    --radius-lg:     28px;
-    --ease:          cubic-bezier(0.4,0,0.2,1);
-    --t:             220ms;
-  }
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
-  body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text-primary);line-height:1.6;overflow-x:hidden}
-  a{text-decoration:none;color:inherit}
-  button{font-family:'Sora',sans-serif}
+:root {
+  --ink:      #0A0A0B;
+  --ink-2:    #18181B;
+  --ink-3:    #242428;
+  --border:   rgba(255,255,255,0.07);
+  --border-h: rgba(255,255,255,0.13);
+  --amber:    #E8A04A;
+  --amber-dim:rgba(232,160,74,0.15);
+  --amber-glow:rgba(232,160,74,0.05);
+  --white:    #FAFAF8;
+  --w70:      rgba(250,250,248,0.70);
+  --w40:      rgba(250,250,248,0.40);
+  --w20:      rgba(250,250,248,0.20);
+  --w08:      rgba(250,250,248,0.08);
+  --r:        20px;
+  --rl:       28px;
+  --ease:     cubic-bezier(0.4,0,0.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:'Outfit',sans-serif;background:var(--ink);color:var(--white);overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;z-index:1000;pointer-events:none;opacity:.03;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px}
+::selection{background:var(--amber-dim);color:var(--amber)}
 
-  /* ── NAV ── */
-  nav{
-    position:sticky;top:0;z-index:100;
-    background:rgba(244,245,247,0.88);
-    backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
-    border-bottom:1px solid var(--border);
-  }
-  .nav-inner{
-    max-width:1100px;margin:0 auto;padding:0 20px;
-    height:60px;display:flex;align-items:center;justify-content:space-between;
-  }
-  .nav-logo{display:flex;align-items:center;gap:10px}
-  .nav-logo-mark{
-    width:34px;height:34px;background:var(--navy);border-radius:10px;
-    display:flex;align-items:center;justify-content:center;flex-shrink:0;
-  }
-  .nav-logo-name{font-family:'DM Serif Display',serif;font-size:20px;color:var(--navy);letter-spacing:-0.3px}
-  .nav-actions{display:flex;gap:8px;align-items:center}
-  .nav-btn{
-    display:flex;align-items:center;gap:6px;
-    padding:8px 16px;border-radius:50px;font-size:13px;font-weight:500;
-    cursor:pointer;border:none;transition:all var(--t) var(--ease);
-    font-family:'Sora',sans-serif;
-  }
-  .nav-ghost{background:transparent;color:var(--text-secondary);border:1px solid var(--border)}
-  .nav-ghost:hover{background:var(--bg-card);color:var(--text-primary)}
-  .nav-wa{background:#25D366;color:#fff;box-shadow:0 4px 14px rgba(37,211,102,.3)}
-  .nav-wa:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(37,211,102,.4)}
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:0 28px;height:62px;display:flex;align-items:center;justify-content:space-between;background:rgba(10,10,11,.8);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;letter-spacing:.04em;color:var(--white)}
+.nav-logo span{color:var(--amber)}
+.nav-pill{font-size:12px;font-weight:500;letter-spacing:.04em;color:var(--w40);border:1px solid var(--border);padding:7px 16px;border-radius:50px;transition:all 280ms var(--ease);cursor:pointer;background:transparent;font-family:'Outfit',sans-serif}
+.nav-pill:hover{color:var(--amber);border-color:rgba(232,160,74,.35);background:var(--amber-glow)}
 
-  /* ── HERO ── */
-  .hero{
-    padding:80px 20px 56px;text-align:center;
-    max-width:680px;margin:0 auto;
-  }
-  .hero-eyebrow{
-    display:inline-flex;align-items:center;gap:6px;
-    background:rgba(29,78,216,.08);color:var(--blue);
-    font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
-    padding:6px 14px;border-radius:50px;margin-bottom:24px;
-  }
-  .hero h1{
-    font-family:'DM Serif Display',serif;
-    font-size:clamp(34px,6vw,58px);line-height:1.14;
-    color:var(--navy);letter-spacing:-.5px;margin-bottom:20px;
-  }
-  .hero h1 em{font-style:italic;color:var(--blue)}
-  .hero p{
-    font-size:17px;color:var(--text-secondary);line-height:1.7;
-    font-weight:300;max-width:480px;margin:0 auto 18px;
-  }
-  .hero-meta{
-    font-size:13px;color:var(--text-muted);
-    display:flex;align-items:center;justify-content:center;gap:8px;
-  }
-  .hero-meta::before,.hero-meta::after{content:'';width:32px;height:1px;background:var(--border)}
+/* HERO */
+.hero{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px;position:relative;overflow:hidden}
+.orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(110px)}
+.orb-1{width:560px;height:560px;top:-150px;left:50%;transform:translateX(-50%);background:radial-gradient(circle,rgba(232,160,74,.07) 0%,transparent 70%);animation:op 9s ease-in-out infinite alternate}
+.orb-2{width:380px;height:380px;bottom:0;right:-80px;background:radial-gradient(circle,rgba(90,80,70,.08) 0%,transparent 70%);animation:op 12s 2s ease-in-out infinite alternate-reverse}
+.orb-3{width:280px;height:280px;bottom:80px;left:-60px;background:radial-gradient(circle,rgba(232,160,74,.04) 0%,transparent 70%);animation:op 10s 1s ease-in-out infinite alternate}
+@keyframes op{from{opacity:.6}to{opacity:1}}
 
-  /* ── SELECTOR ── */
-  .section-wrap{max-width:880px;margin:0 auto;padding:0 20px}
-  .section-label{
-    font-size:11px;font-weight:700;letter-spacing:.12em;
-    text-transform:uppercase;color:var(--text-muted);margin-bottom:18px;
-  }
-  .issue-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(210px,1fr));
-    gap:14px;
-  }
-  .issue-card{
-    background:var(--bg-card);border:1.5px solid transparent;
-    border-radius:var(--radius);padding:24px 20px;cursor:pointer;
-    transition:all var(--t) var(--ease);box-shadow:var(--shadow-sm);
-    position:relative;overflow:hidden;user-select:none;
-    -webkit-tap-highlight-color:transparent;
-  }
-  .issue-card::after{
-    content:'';position:absolute;inset:0;
-    background:linear-gradient(135deg,rgba(29,78,216,.04),transparent);
-    opacity:0;transition:opacity var(--t) var(--ease);
-  }
-  .issue-card:hover{border-color:rgba(29,78,216,.2);box-shadow:var(--shadow-md);transform:translateY(-2px)}
-  .issue-card:hover::after{opacity:1}
-  .issue-card.selected{
-    border-color:var(--blue);
-    background:linear-gradient(135deg,rgba(29,78,216,.05),#fff);
-    box-shadow:0 0 0 4px rgba(29,78,216,.08),var(--shadow-md);
-  }
-  .issue-card.selected::after{opacity:1}
-  .issue-icon{
-    width:48px;height:48px;border-radius:14px;font-size:22px;
-    display:flex;align-items:center;justify-content:center;
-    margin-bottom:14px;transition:transform var(--t) var(--ease);
-  }
-  .issue-card:hover .issue-icon,.issue-card.selected .issue-icon{transform:scale(1.08)}
-  .issue-title{font-size:15px;font-weight:600;color:var(--navy);margin-bottom:4px}
-  .issue-sub{font-size:12px;color:var(--text-muted);line-height:1.5}
-  .issue-check{
-    position:absolute;top:16px;right:16px;
-    width:22px;height:22px;border-radius:50%;
-    background:var(--blue);display:flex;align-items:center;justify-content:center;
-    opacity:0;transform:scale(.6);transition:all var(--t) var(--ease);
-  }
-  .issue-card.selected .issue-check{opacity:1;transform:scale(1)}
+/* Hero visual */
+.hero-visual{position:relative;width:240px;height:240px;margin:0 auto 52px;opacity:0;animation:fadeUp 1s .1s var(--ease) forwards}
+.ring{position:absolute;inset:0;border-radius:50%;border:1px solid var(--border-h);animation:spin 20s linear infinite}
+.ring::before{content:'';position:absolute;top:-3px;left:50%;transform:translateX(-50%);width:6px;height:6px;border-radius:50%;background:var(--amber);box-shadow:0 0 12px var(--amber)}
+.ring-2{position:absolute;inset:22px;border-radius:50%;border:1px solid rgba(255,255,255,.04);animation:spin 14s reverse linear infinite}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.hdevice{position:absolute;inset:38px;border-radius:26px;background:linear-gradient(160deg,var(--ink-3),var(--ink-2),#1A1810);border:1px solid var(--border-h);display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 1px rgba(0,0,0,.5),0 40px 80px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.06)}
+.hscreen{width:62px;height:100px;border-radius:14px;background:linear-gradient(170deg,#1a1a1a,#0d0d0d);border:1px solid rgba(255,255,255,.08);position:relative;overflow:hidden}
+.hscreen::before{content:'';position:absolute;top:9px;left:50%;transform:translateX(-50%);width:20px;height:3px;background:rgba(255,255,255,.07);border-radius:4px}
+.hscreen::after{content:'';position:absolute;inset:16px 7px 7px;background:linear-gradient(160deg,rgba(232,160,74,.1),transparent);border-radius:9px}
+.chip{position:absolute;background:rgba(28,28,30,.9);border:1px solid var(--border-h);border-radius:50px;padding:5px 11px;font-size:11px;font-weight:500;color:var(--w70);letter-spacing:.03em;backdrop-filter:blur(8px);white-space:nowrap}
+.chip span{color:var(--amber);margin-right:4px}
+.chip-a{top:14px;right:-18px;animation:cfloat 6s ease-in-out infinite alternate}
+.chip-b{bottom:24px;left:-26px;animation:cfloat 7s 1.5s ease-in-out infinite alternate-reverse}
+.chip-c{bottom:68px;right:-34px;animation:cfloat 5s .8s ease-in-out infinite alternate}
+@keyframes cfloat{from{transform:translateY(0)}to{transform:translateY(-8px)}}
 
-  /* ── RESPONSE PANEL ── */
-  .response-panel{
-    max-width:880px;margin:0 auto 60px;padding:0 20px;
-    display:none;
-  }
-  .response-panel.visible{display:block}
-  .response-card{
-    background:var(--navy);border-radius:var(--radius-lg);
-    padding:40px;color:#fff;margin-bottom:16px;
-    animation:slideUp .4s var(--ease) both;
-    position:relative;overflow:hidden;
-  }
-  .response-card::before{
-    content:'';position:absolute;
-    top:-100px;right:-100px;width:300px;height:300px;
-    border-radius:50%;background:rgba(255,255,255,.03);pointer-events:none;
-  }
-  @keyframes slideUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-  .res-tag{
-    display:inline-flex;align-items:center;gap:6px;
-    background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);
-    border-radius:50px;padding:5px 13px;
-    font-size:12px;color:rgba(255,255,255,.65);font-weight:500;
-    margin-bottom:20px;
-  }
-  .res-title{
-    font-family:'DM Serif Display',serif;font-size:28px;
-    line-height:1.2;margin-bottom:14px;
-  }
-  .res-body{
-    font-size:15px;color:rgba(255,255,255,.68);line-height:1.75;
-    font-weight:300;max-width:580px;margin-bottom:28px;
-  }
-  .cost-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px}
-  .cost-pill{
-    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
-    border-radius:50px;padding:8px 16px;font-size:13px;font-weight:500;
-    display:flex;align-items:center;gap:7px;
-  }
-  .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-  .dot-g{background:#34D399}.dot-o{background:#F97316}.dot-b{background:#60A5FA}
-  .cost-lbl{color:rgba(255,255,255,.5);font-size:12px}
+/* Hero text */
+.hero-eye{font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin-bottom:20px;opacity:0;animation:fadeUp .8s .5s var(--ease) forwards}
+.hero h1{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(50px,10vw,92px);line-height:1.05;letter-spacing:-.01em;color:var(--white);margin-bottom:22px;opacity:0;animation:fadeUp .9s .65s var(--ease) forwards}
+.hero h1 em{font-style:italic;color:var(--w70)}
+.hero-sub{font-size:17px;font-weight:300;color:var(--w40);line-height:1.7;max-width:400px;margin:0 auto 46px;opacity:0;animation:fadeUp .9s .8s var(--ease) forwards}
+.hero-ctas{display:flex;flex-direction:column;gap:12px;align-items:center;opacity:0;animation:fadeUp .9s .95s var(--ease) forwards}
+@media(min-width:480px){.hero-ctas{flex-direction:row}}
+.btn-p{display:inline-flex;align-items:center;gap:9px;padding:15px 30px;background:var(--amber);color:#1a1200;border-radius:50px;font-size:14px;font-weight:600;border:none;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 280ms var(--ease);position:relative;overflow:hidden;letter-spacing:.01em}
+.btn-p::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,.15),transparent);pointer-events:none}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(232,160,74,.35),0 0 0 1px rgba(232,160,74,.4)}
+.btn-p svg{width:15px;height:15px;flex-shrink:0}
+.btn-g{display:inline-flex;align-items:center;gap:8px;padding:14px 26px;background:var(--w08);color:var(--w70);border-radius:50px;font-size:14px;font-weight:400;border:1px solid var(--border);cursor:pointer;font-family:'Outfit',sans-serif;transition:all 280ms var(--ease);backdrop-filter:blur(8px)}
+.btn-g:hover{color:var(--white);border-color:var(--border-h);background:rgba(255,255,255,.11);transform:translateY(-2px)}
+.scroll-cue{position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:fadeIn 1s 1.8s var(--ease) forwards}
+.scroll-line{width:1px;height:32px;background:linear-gradient(to bottom,transparent,var(--amber));animation:spulse 2.5s ease-in-out infinite}
+@keyframes spulse{0%,100%{opacity:.3}50%{opacity:1}}
+.scroll-lbl{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--w20)}
 
-  .step2-lbl{
-    font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
-    color:rgba(255,255,255,.35);margin-bottom:14px;
-  }
-  .option-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-  .opt-btn{
-    background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
-    border-radius:var(--radius-sm);padding:16px 10px;
-    cursor:pointer;transition:all var(--t) var(--ease);
-    text-align:center;color:#fff;
-  }
-  .opt-btn:hover{background:rgba(255,255,255,.15);transform:translateY(-1px)}
-  .opt-btn.active{
-    background:rgba(255,255,255,.18);
-    border-color:rgba(255,255,255,.35);
-    box-shadow:0 0 0 2px rgba(255,255,255,.1);
-  }
-  .opt-icon{font-size:20px;margin-bottom:8px}
-  .opt-lbl{font-size:13px;font-weight:600;margin-bottom:2px}
-  .opt-note{font-size:11px;color:rgba(255,255,255,.45)}
+/* SECTION DIVIDER */
+.divider{height:1px;background:linear-gradient(to right,transparent,var(--border-h),transparent);margin:0 28px}
 
-  /* ── CTA ROW ── */
-  .cta-row{
-    display:grid;grid-template-columns:1fr 1fr;gap:12px;
-    animation:slideUp .45s .1s var(--ease) both;
-  }
-  .cta-btn{
-    display:flex;align-items:center;justify-content:center;gap:10px;
-    padding:18px 20px;border-radius:var(--radius);
-    font-size:15px;font-weight:600;cursor:pointer;
-    border:none;transition:all var(--t) var(--ease);
-    font-family:'Sora',sans-serif;
-  }
-  .cta-wa{background:#25D366;color:#fff;box-shadow:0 6px 24px rgba(37,211,102,.35)}
-  .cta-wa:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(37,211,102,.45)}
-  .cta-call{background:var(--bg-card);color:var(--navy);border:1.5px solid var(--border);box-shadow:var(--shadow-sm)}
-  .cta-call:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
-  .cta-btn svg{width:20px;height:20px;flex-shrink:0}
+/* CURATED */
+.curated{padding:96px 24px 112px;max-width:1140px;margin:0 auto}
+.cur-eye{font-size:11px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin-bottom:16px;opacity:0;transition:opacity .7s var(--ease)}
+.cur-eye.in{opacity:1}
+.cur-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(36px,6vw,62px);line-height:1.1;color:var(--white);letter-spacing:-.01em;margin-bottom:60px;opacity:0;transform:translateY(20px);transition:all .8s .1s var(--ease)}
+.cur-title.in{opacity:1;transform:translateY(0)}
+.cur-title em{font-style:italic;color:var(--w40)}
 
-  /* ── INFO CARDS ── */
-  .info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-  .info-card{
-    background:var(--bg-card);border-radius:var(--radius);
-    padding:28px 22px;box-shadow:var(--shadow-sm);border:1px solid var(--border);
-  }
-  .info-icon{font-size:28px;margin-bottom:14px}
-  .info-title{font-size:14px;font-weight:600;color:var(--navy);margin-bottom:6px}
-  .info-body{font-size:13px;color:var(--text-muted);line-height:1.6}
+/* Cards */
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(min-width:900px){.cards{grid-template-columns:repeat(4,1fr);gap:18px}}
+.card{background:var(--ink-2);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden;cursor:pointer;transition:all 360ms var(--ease);position:relative;opacity:0;transform:translateY(32px)}
+.card.in{opacity:1;transform:translateY(0)}
+.card::before{content:'';position:absolute;inset:0;background:linear-gradient(160deg,rgba(255,255,255,.024),transparent);pointer-events:none;border-radius:inherit}
+.card:hover{border-color:var(--border-h);transform:translateY(-6px);box-shadow:0 2px 0 rgba(255,255,255,.04) inset,0 24px 64px rgba(0,0,0,.5),0 0 0 1px rgba(232,160,74,.07)}
 
-  /* ── TRUST BAR ── */
-  .trust-bar{
-    background:var(--bg-card);
-    border-top:1px solid var(--border);border-bottom:1px solid var(--border);
-    padding:40px 20px;
-  }
-  .trust-inner{
-    max-width:880px;margin:0 auto;
-    display:flex;gap:32px;flex-wrap:wrap;justify-content:space-around;align-items:center;
-  }
-  .trust-item{text-align:center;flex:1;min-width:110px}
-  .trust-val{font-family:'DM Serif Display',serif;font-size:34px;color:var(--navy);line-height:1}
-  .trust-lbl{font-size:12px;color:var(--text-muted);margin-top:4px}
-  .trust-div{width:1px;height:40px;background:var(--border)}
+/* Visual area */
+.cvis{height:172px;position:relative;overflow:hidden;border-radius:var(--rl) var(--rl) 0 0}
+@media(min-width:480px){.cvis{height:200px}}
+.cvbg{position:absolute;inset:0;transition:transform 600ms var(--ease)}
+.card:hover .cvbg{transform:scale(1.05)}
 
-  /* ── LOYALTY SECTION (PLACEHOLDER) ── */
-  .loyalty-section{
-    background:var(--bg-card);
-    border-top:1px solid var(--border);border-bottom:1px solid var(--border);
-    padding:60px 20px;
-  }
-  .loyalty-inner{max-width:880px;margin:0 auto}
-  .loyalty-header{
-    display:flex;align-items:flex-end;justify-content:space-between;
-    margin-bottom:32px;flex-wrap:wrap;gap:16px;
-  }
-  .loyalty-title{font-family:'DM Serif Display',serif;font-size:28px;color:var(--navy);line-height:1.2}
-  .loyalty-sub{font-size:13px;color:var(--text-muted);margin-top:4px}
-  .loyalty-cta{font-size:13px;color:var(--blue);font-weight:500;cursor:pointer;white-space:nowrap}
-  .loyalty-body{display:grid;grid-template-columns:1fr 2fr;gap:16px}
-  .points-card{
-    background:linear-gradient(135deg,var(--navy),#1D4ED8);
-    border-radius:var(--radius);padding:28px;color:#fff;
-    display:flex;flex-direction:column;justify-content:space-between;
-    min-height:160px;position:relative;overflow:hidden;
-  }
-  .points-card::before{
-    content:'';position:absolute;bottom:-40px;right:-40px;
-    width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.05);
-  }
-  .pts-lbl{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:8px}
-  .pts-val{font-family:'DM Serif Display',serif;font-size:40px;line-height:1}
-  .pts-note{font-size:12px;color:rgba(255,255,255,.45);margin-top:10px}
-  .pts-api{font-size:10px;color:rgba(255,255,255,.25);font-style:italic;margin-top:4px}
-  .rewards-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  .reward-card{
-    background:var(--bg);border-radius:var(--radius-sm);
-    padding:18px;border:1px solid var(--border);
-    display:flex;align-items:center;gap:14px;
-  }
-  .reward-card.locked{opacity:.4}
-  .reward-icon{
-    width:42px;height:42px;border-radius:12px;font-size:20px;
-    display:flex;align-items:center;justify-content:center;
-    background:var(--bg-card);flex-shrink:0;
-  }
-  .reward-name{font-size:13px;font-weight:600;color:var(--navy);margin-bottom:2px}
-  .reward-pts{font-size:12px;color:var(--text-muted)}
+/* Card 1 phone */
+.c1 .cvbg{background:linear-gradient(145deg,#1E1A14,#12100D)}
+.c1-ph{position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:62px;height:108px;background:linear-gradient(170deg,#2A2520,#1A1511);border-radius:15px;border:1px solid rgba(255,255,255,.1);box-shadow:0 -16px 50px rgba(232,160,74,.07),0 20px 40px rgba(0,0,0,.5)}
+.c1-ph::after{content:'';position:absolute;inset:8px 5px;background:linear-gradient(160deg,rgba(232,160,74,.08),transparent);border-radius:9px;border:1px solid rgba(255,255,255,.05)}
+.c1-glow{position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);width:52px;height:18px;background:radial-gradient(ellipse,rgba(232,160,74,.12),transparent 70%);filter:blur(4px)}
 
-  /* ── SAVED DEVICES (PLACEHOLDER) ── */
-  .devices-section{max-width:880px;margin:0 auto;padding:60px 20px}
-  .devices-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
-  .devices-title{font-family:'DM Serif Display',serif;font-size:24px;color:var(--navy)}
-  .badge-pill{
-    font-size:11px;background:rgba(249,115,22,.1);
-    color:var(--accent);border-radius:50px;padding:4px 11px;font-weight:600;
-  }
-  .device-list{display:grid;gap:12px}
-  .device-item{
-    background:var(--bg-card);border-radius:var(--radius);
-    padding:20px 22px;display:flex;align-items:center;gap:16px;
-    border:1px solid var(--border);box-shadow:var(--shadow-sm);
-  }
-  .device-emoji{font-size:26px;flex-shrink:0}
-  .device-info{flex:1}
-  .device-name{font-size:14px;font-weight:600;color:var(--navy)}
-  .device-meta{font-size:12px;color:var(--text-muted);margin-top:2px}
-  .device-badge{font-size:11px;font-weight:600;padding:4px 11px;border-radius:50px}
-  .badge-ok{background:rgba(16,185,129,.1);color:#059669}
-  .badge-warn{background:rgba(249,115,22,.1);color:var(--accent)}
-  .api-note{
-    font-size:11px;color:var(--text-muted);text-align:center;
-    padding:16px;border:1px dashed var(--border);border-radius:var(--radius-sm);
-    font-style:italic;line-height:1.6;
-  }
+/* Card 2 performance */
+.c2 .cvbg{background:linear-gradient(145deg,#141A1E,#0D1214)}
+.c2-dv{position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);width:86px;height:94px;background:linear-gradient(170deg,#1E2428,#12181C);border-radius:13px;border:1px solid rgba(255,255,255,.1)}
+.c2-sc{position:absolute;inset:5px;background:linear-gradient(145deg,#0a2040,#050D18);border-radius:8px;overflow:hidden}
+.c2-sc::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(60,140,255,.15),transparent)}
+.c2-gl{position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);width:56px;height:18px;background:radial-gradient(ellipse,rgba(60,140,255,.13),transparent 70%);filter:blur(6px)}
 
-  /* ── FOOTER ── */
-  footer{background:var(--navy);color:#fff;padding:52px 20px 32px}
-  .footer-inner{max-width:880px;margin:0 auto}
-  .footer-top{
-    display:flex;justify-content:space-between;align-items:flex-start;
-    margin-bottom:40px;flex-wrap:wrap;gap:28px;
-  }
-  .footer-brand-name{font-family:'DM Serif Display',serif;font-size:28px;margin-bottom:8px}
-  .footer-brand-sub{font-size:13px;color:rgba(255,255,255,.38);line-height:1.65;max-width:260px}
-  .footer-links{display:flex;flex-direction:column;gap:11px}
-  .footer-link{
-    display:flex;align-items:center;gap:10px;
-    font-size:14px;color:rgba(255,255,255,.65);
-    transition:color var(--t) var(--ease);
-  }
-  .footer-link:hover{color:#fff}
-  .footer-link svg{width:16px;height:16px;opacity:.6;flex-shrink:0}
-  .footer-divider{border:none;border-top:1px solid rgba(255,255,255,.08);margin-bottom:24px}
-  .footer-bottom{
-    display:flex;justify-content:space-between;align-items:center;
-    flex-wrap:wrap;gap:20px;
-  }
-  .footer-copy{font-size:12px;color:rgba(255,255,255,.28)}
-  .social-row{display:flex;gap:10px}
-  .social-btn{
-    width:40px;height:40px;border-radius:12px;
-    background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
-    display:flex;align-items:center;justify-content:center;
-    cursor:pointer;transition:all var(--t) var(--ease);
-    color:rgba(255,255,255,.55);
-  }
-  .social-btn:hover{background:rgba(255,255,255,.14);color:#fff;transform:translateY(-2px);border-color:rgba(255,255,255,.2)}
-  .social-btn svg{width:17px;height:17px}
+/* Card 3 audio */
+.c3 .cvbg{background:linear-gradient(145deg,#141414,#0D0D0D)}
+.c3-w{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);width:80px;height:76px}
+.c3-case{position:absolute;top:0;left:50%;transform:translateX(-50%);width:42px;height:32px;background:linear-gradient(170deg,#252525,#181818);border-radius:11px;border:1px solid rgba(255,255,255,.07)}
+.c3-pod{position:absolute;width:26px;height:42px;background:linear-gradient(170deg,#2C2C2C,#1C1C1C);border-radius:13px 13px 8px 8px;border:1px solid rgba(255,255,255,.08)}
+.c3-pod::after{content:'';position:absolute;top:8px;left:50%;transform:translateX(-50%);width:7px;height:7px;border-radius:50%;background:rgba(232,160,74,.28);box-shadow:0 0 8px rgba(232,160,74,.35)}
+.c3-l{left:4px;bottom:0;transform:rotate(-8deg)}
+.c3-r{right:4px;bottom:0;transform:rotate(8deg)}
+.c3-gl{position:absolute;bottom:-2px;left:50%;transform:translateX(-50%);width:54px;height:14px;background:radial-gradient(ellipse,rgba(232,160,74,.1),transparent 70%);filter:blur(4px)}
 
-  /* ── FLOATING WA ── */
-  .wa-float{
-    position:fixed;bottom:24px;right:24px;z-index:200;
-    width:56px;height:56px;border-radius:50%;background:#25D366;
-    display:flex;align-items:center;justify-content:center;
-    box-shadow:0 6px 24px rgba(37,211,102,.45);cursor:pointer;
-    transition:all var(--t) var(--ease);
-  }
-  .wa-float:hover{transform:scale(1.08);box-shadow:0 10px 32px rgba(37,211,102,.55)}
+/* Card 4 accessories */
+.c4 .cvbg{background:linear-gradient(145deg,#161411,#0F0D0B)}
+.c4-w{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:66px;height:78px}
+.c4-st{position:absolute;left:50%;transform:translateX(-50%);width:28px;background:linear-gradient(to bottom,#1E1B16,#141210);border-radius:4px}
+.c4-st-t{top:-18px;height:20px}
+.c4-st-b{bottom:-18px;height:20px}
+.c4-body{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:50px;height:56px;background:linear-gradient(170deg,#242018,#16140F);border-radius:15px;border:1px solid rgba(255,255,255,.09)}
+.c4-face{position:absolute;inset:5px;background:linear-gradient(145deg,#1a1800,#0d0c00);border-radius:10px;overflow:hidden}
+.c4-face::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(232,160,74,.18),transparent 55%)}
+.c4-gl{position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);width:46px;height:14px;background:radial-gradient(ellipse,rgba(232,160,74,.1),transparent 70%);filter:blur(5px)}
 
-  /* ── SPACING HELPERS ── */
-  .mb-60{margin-bottom:60px}
-  .mb-80{margin-bottom:80px}
+/* Card body */
+.cbody{padding:20px 18px 22px}
+.ctag{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);background:var(--amber-dim);padding:4px 10px;border-radius:50px;margin-bottom:11px}
+.ctitle{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:21px;line-height:1.2;color:var(--white);margin-bottom:7px;letter-spacing:.01em}
+.csub{font-size:13px;font-weight:300;color:var(--w40);line-height:1.55;margin-bottom:18px}
+.ccta{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:500;color:var(--w40);transition:all 240ms var(--ease)}
+.ccta svg{width:13px;height:13px;transition:transform 240ms var(--ease)}
+.card:hover .ccta{color:var(--amber)}
+.card:hover .ccta svg{transform:translateX(4px)}
 
-  /* ── FADE UP ANIMATION ── */
-  .fade-up{
-    opacity:0;transform:translateY(28px);
-    transition:opacity .55s var(--ease),transform .55s var(--ease);
-  }
-  .fade-up.in{opacity:1;transform:translateY(0)}
+/* BOTTOM STRIP */
+.bstrip{border-top:1px solid var(--border);padding:28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;max-width:1140px;margin:0 auto}
+.blogo{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:var(--w40);letter-spacing:.04em}
+.blogo span{color:var(--amber)}
+.bnote{font-size:12px;color:var(--w20);letter-spacing:.03em}
 
-  /* ── RESPONSIVE ── */
-  @media(max-width:700px){
-    .issue-grid{grid-template-columns:1fr 1fr}
-    .cta-row{grid-template-columns:1fr}
-    .info-grid{grid-template-columns:1fr}
-    .loyalty-body{grid-template-columns:1fr}
-    .rewards-grid{grid-template-columns:1fr 1fr}
-    .trust-div{display:none}
-    .nav-ghost{display:none}
-    .response-card{padding:28px 22px}
-    .footer-top{flex-direction:column}
-  }
-  @media(max-width:460px){
-    .issue-grid{grid-template-columns:1fr 1fr;gap:10px}
-    .rewards-grid{grid-template-columns:1fr}
-    .hero{padding:52px 0 36px}
-    .option-row{grid-template-columns:1fr 1fr 1fr}
-    .opt-lbl{font-size:12px}
-  }
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+@media(max-width:479px){
+  nav{padding:0 18px}
+  .hero-visual{width:210px;height:210px}
+  .chip{display:none}
+  .curated{padding:68px 16px 76px}
+  .cards{gap:10px}
+  .cvis{height:145px}
+  .ctitle{font-size:18px}
+  .bstrip{padding:22px 18px}
+}
 </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════════
-     NAV
-══════════════════════════════════════ -->
 <nav>
-  <div class="nav-inner">
-    <a href="#" class="nav-logo" aria-label="Kovin Home">
-      <div class="nav-logo-mark">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-          <path d="M3 9L7.5 4.5L12 9L7.5 13.5L3 9Z" fill="white" opacity=".55"/>
-          <path d="M7.5 9L10.5 6L13.5 9L10.5 12L7.5 9Z" fill="white"/>
-        </svg>
-      </div>
-      <span class="nav-logo-name">Kovin</span>
-    </a>
-    <div class="nav-actions">
-      <a href="tel:+917200006006" class="nav-btn nav-ghost">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81 19.79 19.79 0 01.12 2.18 2 2 0 012.11 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.07 6.07l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.91v2.01z"/></svg>
-        Call
-      </a>
-      <a href="https://wa.me/917200006006?text=Hi%2C+I+need+help+with+my+device." target="_blank" class="nav-btn nav-wa">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        WhatsApp
-      </a>
-    </div>
-  </div>
+  <div class="nav-logo">Kov<span>·</span>in</div>
+  <button class="nav-pill">Tamil Nadu</button>
 </nav>
 
-<!-- ══════════════════════════════════════
-     HERO
-══════════════════════════════════════ -->
-<section class="hero fade-up">
-  <div class="hero-eyebrow">🇮🇳 Tamil Nadu's Guided Electronics System</div>
-  <h1>Understand before<br><em>you decide.</em></h1>
-  <p>Tell Kovin what's happening with your device. Get a clear explanation, honest options, and the right next step — no guesswork.</p>
-  <div class="hero-meta">No registration needed</div>
+<section class="hero">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <div class="hero-visual">
+    <div class="ring"></div>
+    <div class="ring-2"></div>
+    <div class="hdevice">
+      <div class="hscreen"></div>
+    </div>
+    <div class="chip chip-a"><span>✦</span>Curated</div>
+    <div class="chip chip-b"><span>◎</span>Guided</div>
+    <div class="chip chip-c"><span>→</span>Repaired</div>
+  </div>
+
+  <p class="hero-eye">Kovin Electronics</p>
+  <h1>Find what<br><em>fits you</em></h1>
+  <p class="hero-sub">Phones, audio, and essentials —<br>chosen for how you use them.</p>
+
+  <div class="hero-ctas">
+    <button class="btn-p" onclick="document.querySelector('.curated').scrollIntoView({behavior:'smooth'})">
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 5l6 6 6-6"/></svg>
+      See what's chosen for you
+    </button>
+    <button class="btn-g">Fix something instead</button>
+  </div>
+
+  <div class="scroll-cue">
+    <div class="scroll-line"></div>
+    <span class="scroll-lbl">Scroll</span>
+  </div>
 </section>
 
-<!-- ══════════════════════════════════════
-     GUIDED ISSUE SELECTOR
-══════════════════════════════════════ -->
-<div class="section-wrap mb-60">
-  <p class="section-label fade-up">Step 1 — What's happening?</p>
-  <div class="issue-grid" id="issueGrid">
+<div class="divider"></div>
 
-    <div class="issue-card fade-up" data-issue="not-working" tabindex="0" role="button" aria-pressed="false">
-      <div class="issue-icon" style="background:rgba(239,68,68,.1)">📵</div>
-      <div class="issue-title">Phone not working</div>
-      <div class="issue-sub">Won't turn on, frozen, or stuck on boot</div>
-      <div class="issue-check"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+<section class="curated">
+  <p class="cur-eye" id="curEye">Picked for you</p>
+  <h2 class="cur-title" id="curTitle">Made for the<br><em>way you live</em></h2>
+
+  <div class="cards">
+
+    <div class="card c1">
+      <div class="cvis">
+        <div class="cvbg"></div>
+        <div class="c1-ph"></div>
+        <div class="c1-glow"></div>
+      </div>
+      <div class="cbody">
+        <div class="ctag">✦ Phones</div>
+        <div class="ctitle">Everyday phones</div>
+        <div class="csub">Reliable all-day battery. Simple to use. Nothing you don't need.</div>
+        <div class="ccta">Explore <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h10M8 3l4 4-4 4"/></svg></div>
+      </div>
     </div>
 
-    <div class="issue-card fade-up" data-issue="battery" tabindex="0" role="button" aria-pressed="false">
-      <div class="issue-icon" style="background:rgba(249,115,22,.1)">🔋</div>
-      <div class="issue-title">Battery draining fast</div>
-      <div class="issue-sub">Drains quickly or doesn't charge properly</div>
-      <div class="issue-check"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="card c2">
+      <div class="cvis">
+        <div class="cvbg"></div>
+        <div class="c2-dv"><div class="c2-sc"></div></div>
+        <div class="c2-gl"></div>
+      </div>
+      <div class="cbody">
+        <div class="ctag">◎ Power</div>
+        <div class="ctitle">Performance devices</div>
+        <div class="csub">For creators, gamers, and those who demand more from their device.</div>
+        <div class="ccta">Explore <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h10M8 3l4 4-4 4"/></svg></div>
+      </div>
     </div>
 
-    <div class="issue-card fade-up" data-issue="screen" tabindex="0" role="button" aria-pressed="false">
-      <div class="issue-icon" style="background:rgba(59,130,246,.1)">💔</div>
-      <div class="issue-title">Screen broken</div>
-      <div class="issue-sub">Cracked glass, dark spots, or no display</div>
-      <div class="issue-check"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="card c3">
+      <div class="cvis">
+        <div class="cvbg"></div>
+        <div class="c3-w">
+          <div class="c3-case"></div>
+          <div class="c3-pod c3-l"></div>
+          <div class="c3-pod c3-r"></div>
+        </div>
+        <div class="c3-gl"></div>
+      </div>
+      <div class="cbody">
+        <div class="ctag">♪ Audio</div>
+        <div class="ctitle">Audio essentials</div>
+        <div class="csub">Earphones, speakers, headphones — for every ear and every budget.</div>
+        <div class="ccta">Explore <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h10M8 3l4 4-4 4"/></svg></div>
+      </div>
     </div>
 
-    <div class="issue-card fade-up" data-issue="slow" tabindex="0" role="button" aria-pressed="false">
-      <div class="issue-icon" style="background:rgba(139,92,246,.1)">🐢</div>
-      <div class="issue-title">Slow performance</div>
-      <div class="issue-sub">Lags, overheats, or apps keep crashing</div>
-      <div class="issue-check"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-    </div>
-
-    <div class="issue-card fade-up" data-issue="new-phone" tabindex="0" role="button" aria-pressed="false">
-      <div class="issue-icon" style="background:rgba(16,185,129,.1)">📱</div>
-      <div class="issue-title">Need a new phone</div>
-      <div class="issue-sub">Looking to upgrade or buy a first device</div>
-      <div class="issue-check"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-    </div>
-
-    <div class="issue-card fade-up" data-issue="accessories" tabindex="0" role="button" aria-pressed="false">
-      <div class="issue-icon" style="background:rgba(245,158,11,.1)">🎧</div>
-      <div class="issue-title">Accessories needed</div>
-      <div class="issue-sub">Earphones, cases, chargers, cables</div>
-      <div class="issue-check"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-    </div>
-
-    <div class="issue-card fade-up" data-issue="tv-audio" tabindex="0" role="button" aria-pressed="false">
-      <div class="issue-icon" style="background:rgba(236,72,153,.1)">📺</div>
-      <div class="issue-title">TV / Audio issues</div>
-      <div class="issue-sub">Smart TV, speakers, or home audio problems</div>
-      <div class="issue-check"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="card c4">
+      <div class="cvis">
+        <div class="cvbg"></div>
+        <div class="c4-w">
+          <div class="c4-st c4-st-t"></div>
+          <div class="c4-body">
+            <div class="c4-face"></div>
+          </div>
+          <div class="c4-st c4-st-b"></div>
+        </div>
+        <div class="c4-gl"></div>
+      </div>
+      <div class="cbody">
+        <div class="ctag">→ Accessories</div>
+        <div class="ctitle">Smart accessories</div>
+        <div class="csub">Watches, cables, chargers — details that complete the experience.</div>
+        <div class="ccta">Explore <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h10M8 3l4 4-4 4"/></svg></div>
+      </div>
     </div>
 
   </div>
+</section>
+
+<div class="bstrip">
+  <div class="blogo">Kov<span>·</span>in</div>
+  <div class="bnote">Tamil Nadu's guided electronics system</div>
 </div>
 
-<!-- ══════════════════════════════════════
-     RESPONSE PANEL (shown after selection)
-══════════════════════════════════════ -->
-<div class="response-panel" id="responsePanel">
-  <div class="response-card" id="responseCard">
-    <div class="res-tag" id="resTag"></div>
-    <div class="res-title" id="resTitle"></div>
-    <div class="res-body" id="resBody"></div>
-    <div class="cost-row" id="costRow"></div>
-    <p class="step2-lbl">Step 2 — What would you like to do?</p>
-    <div class="option-row" id="optionRow"></div>
-  </div>
-  <div class="cta-row" id="ctaRow">
-    <a id="waBtn" href="#" target="_blank" class="cta-btn cta-wa">
-      <svg viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-      Chat on WhatsApp
-    </a>
-    <a href="tel:+917200006006" class="cta-btn cta-call">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81 19.79 19.79 0 01.12 2.18 2 2 0 012.11 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.07 6.07l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.91v2.01z"/></svg>
-      Call Now
-    </a>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════
-     WHY KOVIN
-══════════════════════════════════════ -->
-<div class="section-wrap mb-80">
-  <div class="info-grid">
-    <div class="info-card fade-up">
-      <div class="info-icon">🔍</div>
-      <div class="info-title">Diagnosis first</div>
-      <div class="info-body">Your device will be checked and explained clearly before any repair begins. No surprises, no hidden charges.</div>
-    </div>
-    <div class="info-card fade-up">
-      <div class="info-icon">⚖️</div>
-      <div class="info-title">Honest guidance</div>
-      <div class="info-body">You get a clear recommendation — repair, replace, or upgrade — with the reasoning explained in plain language.</div>
-    </div>
-    <div class="info-card fade-up">
-      <div class="info-icon">✅</div>
-      <div class="info-title">Your decision</div>
-      <div class="info-body">Proceed only when you're fully comfortable. The choice is always yours — zero pressure, zero urgency.</div>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════
-     TRUST BAR
-══════════════════════════════════════ -->
-<div class="trust-bar fade-up mb-80">
-  <div class="trust-inner">
-    <div class="trust-item">
-      <div class="trust-val">4,200+</div>
-      <div class="trust-lbl">Devices repaired</div>
-    </div>
-    <div class="trust-div"></div>
-    <div class="trust-item">
-      <div class="trust-val">98%</div>
-      <div class="trust-lbl">Satisfaction rate</div>
-    </div>
-    <div class="trust-div"></div>
-    <div class="trust-item">
-      <div class="trust-val">₹0</div>
-      <div class="trust-lbl">Diagnosis fee</div>
-    </div>
-    <div class="trust-div"></div>
-    <div class="trust-item">
-      <div class="trust-val">Same day</div>
-      <div class="trust-lbl">Most repairs done</div>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════
-     YOUR SPACE / LOYALTY (UI PLACEHOLDER)
-     ⚠️ Backend not connected yet.
-     API_HOOK: GET /api/loyalty/points?userId={id}
-     API_HOOK: GET /api/loyalty/rewards?userId={id}
-══════════════════════════════════════ -->
-<div class="loyalty-section fade-up mb-80">
-  <div class="loyalty-inner">
-    <div class="loyalty-header">
-      <div>
-        <div class="loyalty-title">Your Space</div>
-        <div class="loyalty-sub">Points, rewards &amp; your journey with Kovin</div>
-      </div>
-      <!-- Future: Link to User Account API: POST /api/auth/session -->
-      <div class="loyalty-cta">Sign in to activate →</div>
-    </div>
-    <div class="loyalty-body">
-      <!-- API_HOOK: GET /api/loyalty/points?userId={id} -->
-      <div class="points-card">
-        <div>
-          <div class="pts-lbl">Kovin Points</div>
-          <div class="pts-val">—</div>
-          <div class="pts-note">Sign in to see your balance</div>
-        </div>
-        <div class="pts-api">🔗 API: /loyalty/points</div>
-      </div>
-      <!-- API_HOOK: GET /api/loyalty/rewards?userId={id} -->
-      <div class="rewards-grid">
-        <div class="reward-card">
-          <div class="reward-icon">🎁</div>
-          <div><div class="reward-name">Free Screen Clean</div><div class="reward-pts">100 pts needed</div></div>
-        </div>
-        <div class="reward-card locked">
-          <div class="reward-icon">🔧</div>
-          <div><div class="reward-name">₹200 Off Repair</div><div class="reward-pts">500 pts needed</div></div>
-        </div>
-        <div class="reward-card locked">
-          <div class="reward-icon">🚀</div>
-          <div><div class="reward-name">Priority Service</div><div class="reward-pts">750 pts needed</div></div>
-        </div>
-        <div class="reward-card locked">
-          <div class="reward-icon">💎</div>
-          <div><div class="reward-name">Free Accessories</div><div class="reward-pts">1,000 pts needed</div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════
-     SAVED DEVICES (UI PLACEHOLDER)
-     ⚠️ Backend not connected yet.
-     API_HOOK: GET /api/devices?userId={id}
-══════════════════════════════════════ -->
-<div class="devices-section fade-up">
-  <div class="devices-header">
-    <div class="devices-title">Saved Devices</div>
-    <div class="badge-pill">Coming soon</div>
-  </div>
-  <div class="device-list">
-    <!-- API_HOOK: GET /api/devices?userId={id} — Replace below with dynamic list -->
-    <div class="device-item">
-      <div class="device-emoji">📱</div>
-      <div class="device-info">
-        <div class="device-name">iPhone 13 (Demo)</div>
-        <div class="device-meta">Added March 2025 · IMEI: ••••••••••••••</div>
-      </div>
-      <div class="device-badge badge-ok">Healthy</div>
-    </div>
-    <div class="device-item">
-      <div class="device-emoji">💻</div>
-      <div class="device-info">
-        <div class="device-name">MacBook Air M2 (Demo)</div>
-        <div class="device-meta">Added January 2025 · S/N: ••••••••</div>
-      </div>
-      <div class="device-badge badge-warn">Battery check</div>
-    </div>
-    <div class="api-note">
-      🔗 Real saved devices will appear here after sign-in<br>API endpoint: <code>/api/devices?userId={id}</code>
-    </div>
-  </div>
-</div>
-
-<!-- ══════════════════════════════════════
-     FOOTER
-══════════════════════════════════════ -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div>
-        <div class="footer-brand-name">Kovin</div>
-        <div class="footer-brand-sub">Guided electronics decisions for Tamil Nadu. Clarity before commitment, always.</div>
-      </div>
-      <div class="footer-links">
-        <a href="tel:+917200006006" class="footer-link">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 8.81 19.79 19.79 0 01.12 2.18 2 2 0 012.11 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 7.91a16 16 0 006.07 6.07l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.91v2.01z"/></svg>
-          +91 72000 06006
-        </a>
-        <a href="https://wa.me/917200006006" target="_blank" class="footer-link">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          WhatsApp support
-        </a>
-        <div class="footer-link">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          Tamil Nadu, India
-        </div>
-      </div>
-    </div>
-
-    <hr class="footer-divider">
-
-    <div class="footer-bottom">
-      <div class="footer-copy">© 2025 Kovin Electronics. Built with care in Tamil Nadu.</div>
-      <div class="social-row">
-        <!-- WhatsApp -->
-        <a href="https://wa.me/917200006006" target="_blank" class="social-btn" aria-label="WhatsApp">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        </a>
-        <!-- Instagram (placeholder) -->
-        <a href="https://instagram.com" target="_blank" class="social-btn" aria-label="Instagram">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-        </a>
-        <!-- Facebook (placeholder) -->
-        <a href="https://facebook.com" target="_blank" class="social-btn" aria-label="Facebook">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
-        </a>
-        <!-- Threads (placeholder) -->
-        <a href="https://threads.net" target="_blank" class="social-btn" aria-label="Threads">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.5 12.068V12c.024-3.497.892-6.285 2.58-8.29C5.745 1.724 8.377.538 11.876.5h.148c2.71.032 5.064.908 6.996 2.604 1.81 1.59 2.95 3.779 3.385 6.513l-2.14.338c-.726-4.542-3.687-6.968-8.241-7.003C6.43 3 3.55 5.516 3.521 12v.064c.028 6.509 2.939 9.009 8.504 9.048h.007c2.513-.015 4.389-.74 5.574-2.153.891-1.064 1.358-2.533 1.39-4.371C18.944 12.4 17.48 11 14.96 11h-.4l-.12.002a3.254 3.254 0 00-2.278 1.029c-.516.568-.8 1.37-.8 2.27 0 1.854 1.232 3.1 3.001 3.1.827 0 1.534-.264 1.983-.748a2.05 2.05 0 00.498-1.46c-.028-.77-.455-1.283-1.094-1.376l.25-1.994c1.74.22 2.825 1.4 2.867 3.188.029 1.192-.323 2.303-1.003 3.128-.84 1.01-2.084 1.58-3.502 1.58C12.682 20.72 11 18.875 11 16.3c0-1.403.462-2.637 1.33-3.58.914-1 2.22-1.552 3.661-1.558l.147-.003H16.6c3.506 0 5.378 1.842 5.35 5.214-.039 2.357-.672 4.285-1.88 5.725C18.65 23.32 15.944 24 12.186 24z"/></svg>
-        </a>
-      </div>
-    </div>
-  </div>
-</footer>
-
-<!-- Floating WhatsApp -->
-<a href="https://wa.me/917200006006?text=Hi%2C+I+need+help+with+my+device." target="_blank" class="wa-float" aria-label="WhatsApp">
-  <svg width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-</a>
-
-<!-- ══════════════════════════════════════
-     JAVASCRIPT
-══════════════════════════════════════ -->
 <script>
-/* ──────────────────────────────────────────────────────────────
-   ISSUE DATA — Static frontend content.
-   Future: Replace with API_HOOK: GET /api/issues/{issueId}/guidance
-────────────────────────────────────────────────────────────────*/
-const ISSUES = {
-  'not-working': {
-    emoji:'📵', label:'Phone not working',
-    title:'Several things can cause this',
-    body:'A completely unresponsive phone is often caused by a drained battery, a software crash, or a faulty charging port. In rarer cases it may be a hardware fault. Most of the time this is fully fixable without replacing the phone — a proper diagnosis will confirm the root cause.',
-    costs:[
-      {dot:'dot-g',lbl:'Repair estimate',val:'₹300 – ₹2,500'},
-    ],
-    opts:[
-      {icon:'🔧',lbl:'Repair',note:'Diagnose & fix',key:'repair'},
-      {icon:'🔄',lbl:'Replace',note:'New device',key:'replace'},
-      {icon:'⬆️',lbl:'Upgrade',note:'Better model',key:'upgrade'},
-    ]
-  },
-  'battery': {
-    emoji:'🔋', label:'Battery draining fast',
-    title:'Battery health is likely the cause',
-    body:'After 300–500 charge cycles, most batteries lose significant capacity. A phone that used to last all day now barely makes it to afternoon. Battery replacement is one of the most cost-effective repairs — and it makes your phone feel new again.',
-    costs:[
-      {dot:'dot-g',lbl:'Battery replacement',val:'₹500 – ₹1,800'},
-    ],
-    opts:[
-      {icon:'🔋',lbl:'Replace battery',note:'Most affordable',key:'repair'},
-      {icon:'🔄',lbl:'New phone',note:'Fresh start',key:'replace'},
-      {icon:'⬆️',lbl:'Upgrade model',note:'Better specs',key:'upgrade'},
-    ]
-  },
-  'screen': {
-    emoji:'💔', label:'Screen broken',
-    title:'Screen damage is very fixable',
-    body:'Cracked glass or a broken display is one of the most common repairs. Genuine or quality-equivalent panels are available for most models. Cost depends on phone model and damage type — a surface crack is cheaper than a full display replacement.',
-    costs:[
-      {dot:'dot-g',lbl:'Glass repair',val:'₹400 – ₹1,200'},
-      {dot:'dot-o',lbl:'Full display',val:'₹1,200 – ₹6,000'},
-    ],
-    opts:[
-      {icon:'🪟',lbl:'Fix screen',note:'Repair only',key:'repair'},
-      {icon:'🔄',lbl:'Replace phone',note:'If too costly',key:'replace'},
-      {icon:'⬆️',lbl:'Upgrade now',note:'Better model',key:'upgrade'},
-    ]
-  },
-  'slow': {
-    emoji:'🐢', label:'Slow performance',
-    title:'Performance can almost always be recovered',
-    body:'Slowness usually comes from full storage, outdated software, or background app overload. In some cases a weak battery causes the processor to throttle speed. A software cleanup or battery replacement is often all it takes before considering any hardware change.',
-    costs:[
-      {dot:'dot-g',lbl:'Software service',val:'₹300 – ₹800'},
-      {dot:'dot-o',lbl:'Battery (if throttling)',val:'₹500 – ₹1,800'},
-    ],
-    opts:[
-      {icon:'✨',lbl:'Service & clean',note:'Software fix',key:'repair'},
-      {icon:'🔄',lbl:'Replace phone',note:'Budget option',key:'replace'},
-      {icon:'⬆️',lbl:'Upgrade model',note:'Flagship speed',key:'upgrade'},
-    ]
-  },
-  'new-phone': {
-    emoji:'📱', label:'Need a new phone',
-    title:"Let's find the right fit for you",
-    body:"The best phone is one that matches how you actually use it — not just the most expensive one. Budget, camera, battery life, and brand preference all matter. Share what you're looking for on WhatsApp and the right recommendation will follow.",
-    costs:[
-      {dot:'dot-g',lbl:'Budget range',val:'₹8,000 – ₹15,000'},
-      {dot:'dot-o',lbl:'Mid-range',val:'₹15,000 – ₹35,000'},
-      {dot:'dot-b',lbl:'Premium',val:'₹35,000+'},
-    ],
-    opts:[
-      {icon:'💬',lbl:'Get guidance',note:'Personalised',key:'guide'},
-      {icon:'🔄',lbl:'Budget pick',note:'Under ₹15K',key:'budget'},
-      {icon:'⬆️',lbl:'Premium',note:'Best specs',key:'premium'},
-    ]
-  },
-  'accessories': {
-    emoji:'🎧', label:'Accessories needed',
-    title:'The right accessory makes a difference',
-    body:'From everyday chargers and cables to quality earphones and protective cases — using the right accessory protects your device and improves your experience. Only genuine or certified-compatible accessories are recommended to avoid device damage.',
-    costs:[
-      {dot:'dot-g',lbl:'Cables / chargers',val:'₹200 – ₹1,200'},
-      {dot:'dot-o',lbl:'Earphones',val:'₹500 – ₹4,000'},
-      {dot:'dot-b',lbl:'Cases / screen guards',val:'₹150 – ₹800'},
-    ],
-    opts:[
-      {icon:'🔌',lbl:'Chargers',note:'Cables & adapters',key:'chargers'},
-      {icon:'🎧',lbl:'Audio',note:'Earphones & more',key:'audio'},
-      {icon:'🛡️',lbl:'Protection',note:'Cases & covers',key:'protection'},
-    ]
-  },
-  'tv-audio': {
-    emoji:'📺', label:'TV / Audio issues',
-    title:'Home electronics need expert eyes',
-    body:'TV and audio issues — from picture quality problems to sound cutting out — are often caused by software glitches, loose connections, or component wear. Most problems are diagnosable quickly. Share the issue on WhatsApp for the fastest response.',
-    costs:[
-      {dot:'dot-g',lbl:'Diagnosis & minor fix',val:'₹500 – ₹1,500'},
-      {dot:'dot-o',lbl:'Component repair',val:'₹1,500 – ₹5,000'},
-    ],
-    opts:[
-      {icon:'🔍',lbl:'Diagnose',note:'Find the cause',key:'repair'},
-      {icon:'🛠️',lbl:'Service',note:'Repair & restore',key:'service'},
-      {icon:'📦',lbl:'Upgrade',note:'New device',key:'upgrade'},
-    ]
-  }
-};
+(function(){
+  var eye   = document.getElementById('curEye');
+  var title = document.getElementById('curTitle');
+  var cards = document.querySelectorAll('.card');
 
-/* ──────────────────────────────────────────────────────────────
-   STATE
-────────────────────────────────────────────────────────────────*/
-let activeIssue = null;
-let activeOption = null;
+  var headObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ eye.classList.add('in'); title.classList.add('in'); headObs.disconnect(); }
+    });
+  },{threshold:0.3});
+  headObs.observe(document.querySelector('.curated'));
 
-/* ──────────────────────────────────────────────────────────────
-   ISSUE CARD INTERACTION
-────────────────────────────────────────────────────────────────*/
-const grid = document.getElementById('issueGrid');
+  var cardObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        var idx = Array.from(cards).indexOf(e.target);
+        setTimeout(function(){ e.target.classList.add('in'); }, idx * 100);
+        cardObs.unobserve(e.target);
+      }
+    });
+  },{threshold:0.1});
+  cards.forEach(function(c){ cardObs.observe(c); });
 
-grid.addEventListener('click', e => {
-  const card = e.target.closest('.issue-card');
-  if (card) handleSelect(card);
-});
-
-grid.addEventListener('keydown', e => {
-  if (e.key === 'Enter' || e.key === ' ') {
-    const card = e.target.closest('.issue-card');
-    if (card) { e.preventDefault(); handleSelect(card); }
-  }
-});
-
-function handleSelect(card) {
-  document.querySelectorAll('.issue-card').forEach(c => {
-    c.classList.remove('selected');
-    c.setAttribute('aria-pressed','false');
-  });
-  card.classList.add('selected');
-  card.setAttribute('aria-pressed','true');
-  activeIssue = card.dataset.issue;
-  activeOption = null;
-  renderResponse(activeIssue);
-  setTimeout(() => {
-    document.getElementById('responsePanel').scrollIntoView({ behavior:'smooth', block:'nearest' });
-  }, 120);
-}
-
-/* ──────────────────────────────────────────────────────────────
-   RENDER RESPONSE
-────────────────────────────────────────────────────────────────*/
-function renderResponse(key) {
-  const d = ISSUES[key];
-  if (!d) return;
-
-  document.getElementById('resTag').textContent = d.emoji + '  ' + d.label;
-  document.getElementById('resTitle').textContent = d.title;
-  document.getElementById('resBody').textContent = d.body;
-
-  // Cost pills
-  document.getElementById('costRow').innerHTML = d.costs.map(c =>
-    `<div class="cost-pill">
-      <span class="dot ${c.dot}"></span>
-      <span class="cost-lbl">${c.lbl}</span>
-      <span>${c.val}</span>
-    </div>`
-  ).join('');
-
-  // Option buttons
-  document.getElementById('optionRow').innerHTML = d.opts.map(o =>
-    `<button class="opt-btn" data-key="${o.key}" onclick="selectOpt(this,'${key}')">
-      <div class="opt-icon">${o.icon}</div>
-      <div class="opt-lbl">${o.lbl}</div>
-      <div class="opt-note">${o.note}</div>
-    </button>`
-  ).join('');
-
-  // Default WA link
-  updateWA(d.label, null);
-
-  // Show panel
-  const panel = document.getElementById('responsePanel');
-  panel.classList.add('visible');
-  // Re-trigger animation
-  const card = document.getElementById('responseCard');
-  card.style.animation = 'none';
-  card.offsetHeight; // reflow
-  card.style.animation = '';
-}
-
-/* ──────────────────────────────────────────────────────────────
-   OPTION SELECTION
-────────────────────────────────────────────────────────────────*/
-function selectOpt(btn, issueKey) {
-  document.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  activeOption = btn.dataset.key;
-  const optLabel = btn.querySelector('.opt-lbl').textContent;
-  updateWA(ISSUES[issueKey].label, optLabel);
-  // API_HOOK: POST /api/sessions/intent {issueId: issueKey, option: activeOption}
-}
-
-function updateWA(issueLabel, optLabel) {
-  let msg = `Hi, I need help with my device.\nIssue: ${issueLabel}`;
-  if (optLabel) msg += `\nPreference: ${optLabel}`;
-  document.getElementById('waBtn').href =
-    'https://wa.me/917200006006?text=' + encodeURIComponent(msg);
-}
-
-/* ──────────────────────────────────────────────────────────────
-   SCROLL FADE-IN
-────────────────────────────────────────────────────────────────*/
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (!entry.isIntersecting) return;
-    const siblings = entry.target.parentElement.children;
-    const idx = Array.from(siblings).indexOf(entry.target);
-    const delay = entry.target.closest('.issue-grid') ? idx * 55 : 0;
-    setTimeout(() => entry.target.classList.add('in'), delay);
-    obs.unobserve(entry.target);
-  });
-}, { threshold: 0.1 });
-
-document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
-
-/* ──────────────────────────────────────────────────────────────
-   FUTURE BACKEND API STUBS
-   (Not functional — placeholders for backend integration)
-
-   // API_HOOK: GET /api/products?category={cat}&limit=8
-   async function loadProducts(category) {}
-
-   // API_HOOK: POST /api/bookings
-   // Body: { issueId, deviceType, preferredDate }
-   // Response: { bookingId, confirmationCode, eta }
-   async function bookRepair(payload) {}
-
-   // API_HOOK: GET /api/loyalty/points?userId={id}
-   // Response: { points, tier, nextRewardAt }
-   async function fetchPoints(userId) {}
-
-   // API_HOOK: GET /api/loyalty/rewards?userId={id}
-   // Response: [{ rewardId, name, pointsRequired, unlocked }]
-   async function fetchRewards(userId) {}
-
-   // API_HOOK: GET /api/devices?userId={id}
-   // Response: [{ deviceId, name, model, status, addedDate }]
-   async function fetchDevices(userId) {}
-
-   // API_HOOK: POST /api/auth/session
-   // Body: { phone } — OTP-based login (no password)
-   // Response: { sessionToken, userId }
-   async function startAuth(phone) {}
-────────────────────────────────────────────────────────────────*/
+  var orb1 = document.querySelector('.orb-1');
+  window.addEventListener('scroll',function(){
+    if(orb1) orb1.style.transform='translateX(-50%) translateY('+(window.scrollY*.17)+'px)';
+  },{passive:true});
+})();
 </script>
 </body>
 </html>
