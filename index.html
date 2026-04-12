@@ -534,6 +534,150 @@ footer{padding:clamp(34px,6vw,50px) 0 clamp(26px,5vw,38px);border-top:1px solid 
 @keyframes fU{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
 @keyframes fI{from{opacity:0}to{opacity:1}}
 
+
+/* ══════════════════════════════════════════
+   PRODUCT LAYER SECTION
+   API_HOOK: GET /api/products?section=devices&region=TamilNadu
+══════════════════════════════════════════ */
+.products{padding:var(--section-pad) 0}
+.prod-head{margin-bottom:clamp(36px,6vw,52px)}
+.prod-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(36px,6.5vw,62px);line-height:1.08;letter-spacing:-.015em;color:var(--white);margin-bottom:10px}
+.prod-sub{font-size:15px;font-weight:300;color:var(--w50);max-width:480px}
+.prod-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:clamp(28px,5vw,40px)}
+.prod-filter{font-size:12px;font-weight:500;letter-spacing:.03em;padding:8px 18px;border-radius:50px;border:1px solid var(--border);background:transparent;color:var(--w50);cursor:pointer;transition:all .25s var(--ease)}
+.prod-filter:hover{color:var(--white);border-color:var(--border-h);background:var(--w06)}
+.prod-filter.active{background:var(--amber);color:#180F00;border-color:transparent;font-weight:600}
+.prod-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,2vw,14px)}
+@media(min-width:600px){.prod-grid{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:880px){.prod-grid{grid-template-columns:repeat(4,1fr)}}
+.prod-card{background:var(--ink-2);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:border-color .3s var(--ease),transform .3s var(--ease),box-shadow .3s var(--ease);position:relative}
+.prod-card:hover{border-color:var(--border-a);transform:translateY(-5px);box-shadow:0 18px 56px rgba(0,0,0,.55),0 0 0 1px rgba(232,168,78,.07)}
+.prod-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--brand-from,transparent),var(--brand-to,transparent));opacity:.65}
+.prod-img{height:clamp(120px,18vw,168px);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:16px}
+.prod-img-bg{position:absolute;inset:0;transition:transform 600ms var(--ease)}
+.prod-card:hover .prod-img-bg{transform:scale(1.05)}
+.brand-samsung{--brand-from:#1428A0;--brand-to:#1428A0}
+.brand-apple{--brand-from:#666;--brand-to:#999}
+.brand-oneplus{--brand-from:#F5010C;--brand-to:#c4000a}
+.brand-sony{--brand-from:#00439C;--brand-to:#0063D7}
+.brand-jbl{--brand-from:#E8002D;--brand-to:#b80024}
+.brand-noise{--brand-from:#2ECC71;--brand-to:#1a7a42}
+.brand-realme{--brand-from:#FFD700;--brand-to:#e6b800}
+.brand-samsung .prod-img-bg{background:linear-gradient(145deg,#0c1a4a,#050d24)}
+.brand-apple .prod-img-bg{background:linear-gradient(145deg,#2a2a2a,#111)}
+.brand-oneplus .prod-img-bg{background:linear-gradient(145deg,#3a0000,#1a0000)}
+.brand-sony .prod-img-bg{background:linear-gradient(145deg,#001a3a,#000d1e)}
+.brand-jbl .prod-img-bg{background:linear-gradient(145deg,#3a0008,#1a0004)}
+.brand-noise .prod-img-bg{background:linear-gradient(145deg,#0a2a18,#04140c)}
+.brand-realme .prod-img-bg{background:linear-gradient(145deg,#2a2200,#141100)}
+.prod-emoji{font-size:clamp(40px,8vw,56px);position:relative;z-index:1;filter:drop-shadow(0 8px 24px rgba(0,0,0,.55));transition:transform .3s var(--spring)}
+.prod-card:hover .prod-emoji{transform:scale(1.08) translateY(-3px)}
+.prod-badge-wrap{position:absolute;top:10px;left:10px;z-index:2;display:flex;gap:5px;flex-wrap:wrap}
+.prod-badge{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:50px}
+.badge-new{background:var(--amber);color:#180F00}.badge-hot{background:#ef4444;color:#fff}.badge-pick{background:rgba(255,255,255,.1);color:var(--white);border:1px solid var(--border-h)}
+.prod-info{padding:14px 14px 16px}
+.prod-brand{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:4px}
+.prod-name{font-size:14px;font-weight:500;color:var(--white);line-height:1.3;margin-bottom:5px}
+.prod-spec{font-size:12px;font-weight:300;color:var(--w50);line-height:1.4;margin-bottom:10px}
+.prod-price-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.prod-price{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:var(--white)}
+.prod-price-mrp{font-size:11px;color:var(--w30);text-decoration:line-through}
+.prod-arrow{width:28px;height:28px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .25s var(--ease)}
+.prod-arrow svg{width:11px;height:11px;color:var(--w50);transition:all .25s var(--ease)}
+.prod-card:hover .prod-arrow{background:var(--amber-dim);border-color:var(--amber-ring)}
+.prod-card:hover .prod-arrow svg{color:var(--amber);transform:translateX(2px)}
+
+/* ══════════════════════════════════════════
+   PRODUCT DETAIL MODAL
+   API_HOOK: GET /api/products/{id}
+══════════════════════════════════════════ */
+.modal-overlay{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,0);backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);pointer-events:none;transition:background .35s var(--ease),backdrop-filter .35s var(--ease)}
+.modal-overlay.open{background:rgba(0,0,0,.74);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);pointer-events:auto}
+.modal{position:fixed;inset:0;z-index:801;display:flex;align-items:flex-end;justify-content:center;pointer-events:none}
+@media(min-width:640px){.modal{align-items:center}}
+.modal-sheet{background:var(--ink-2);width:100%;max-width:680px;border-radius:var(--rl) var(--rl) 0 0;max-height:92vh;overflow-y:auto;overflow-x:hidden;transform:translateY(100%);transition:transform .42s cubic-bezier(.32,0,.15,1);pointer-events:auto;position:relative;-webkit-overflow-scrolling:touch}
+@media(min-width:640px){.modal-sheet{border-radius:var(--rl);max-height:88vh;transform:translateY(28px) scale(.97);opacity:0;transition:transform .35s cubic-bezier(.32,0,.15,1),opacity .25s var(--ease)}}
+.modal-overlay.open .modal-sheet{transform:translateY(0);opacity:1}
+@media(min-width:640px){.modal-overlay.open .modal-sheet{transform:translateY(0) scale(1)}}
+.modal-handle{width:36px;height:4px;border-radius:4px;background:var(--w12);margin:14px auto 0}
+@media(min-width:640px){.modal-handle{display:none}}
+.modal-close{position:absolute;top:14px;right:14px;width:32px;height:32px;border-radius:50%;background:var(--w06);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2;transition:all .22s var(--ease)}
+.modal-close:hover{background:var(--w12);transform:scale(1.1)}.modal-close svg{width:14px;height:14px;color:var(--w70)}
+.modal-img-zone{position:relative;height:clamp(190px,32vw,250px);display:flex;align-items:center;justify-content:center;overflow:hidden;padding:20px}
+.modal-img-bg{position:absolute;inset:0}
+.modal-emoji{font-size:clamp(64px,14vw,86px);filter:drop-shadow(0 12px 32px rgba(0,0,0,.6));position:relative;z-index:1}
+.modal-content{padding:clamp(18px,4vw,26px)}
+.modal-brand-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.modal-brand{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--amber)}
+.modal-badges{display:flex;gap:5px}
+.modal-name{font-family:'Cormorant Garamond',serif;font-weight:400;font-size:clamp(22px,4vw,30px);line-height:1.18;color:var(--white);margin-bottom:5px}
+.modal-tagline{font-size:14px;font-weight:300;color:var(--w50);margin-bottom:20px}
+.modal-price-row{display:flex;align-items:baseline;gap:12px;margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid var(--border)}
+.modal-price{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--white)}
+.modal-price-mrp{font-size:14px;color:var(--w30);text-decoration:line-through}
+.modal-saving{font-size:12px;font-weight:600;color:#22c55e;background:rgba(34,197,94,.1);padding:3px 9px;border-radius:50px}
+.modal-section-title{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--w30);margin-bottom:10px;margin-top:20px}
+.modal-section-title:first-of-type{margin-top:0}
+.modal-desc{font-size:14px;font-weight:300;color:var(--w70);line-height:1.7;margin-bottom:4px}
+.modal-expect{display:flex;flex-direction:column;gap:9px}
+.modal-expect-item{display:flex;align-items:flex-start;gap:11px;font-size:13px;font-weight:300;color:var(--w70);line-height:1.55}
+.modal-expect-icon{font-size:16px;flex-shrink:0;margin-top:1px}
+.modal-fact{background:linear-gradient(135deg,rgba(232,168,78,.07),rgba(232,168,78,.02));border:1px solid var(--border-a);border-radius:var(--r);padding:16px 18px;margin-top:18px;display:flex;align-items:flex-start;gap:12px}
+.modal-fact-icon{font-size:18px;flex-shrink:0}
+.modal-fact-label{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:4px}
+.modal-fact-text{font-size:13px;font-weight:300;color:var(--w70);line-height:1.55}
+.modal-delivery{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:4px}
+@media(max-width:380px){.modal-delivery{grid-template-columns:1fr}}
+.del-opt{background:var(--ink-3);border:1px solid var(--border);border-radius:12px;padding:14px 12px;text-align:center;cursor:pointer;transition:all .25s var(--ease)}
+.del-opt:hover,.del-opt.sel{border-color:var(--amber-ring);background:var(--amber-dim)}
+.del-icon{font-size:20px;margin-bottom:7px}
+.del-name{font-size:12px;font-weight:500;color:var(--white);margin-bottom:2px}
+.del-note{font-size:11px;font-weight:300;color:var(--w50)}
+.modal-ctas{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.modal-btn-p{flex:1;min-width:140px;display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:15px 20px;border-radius:50px;background:var(--amber);color:#180F00;font-size:14px;font-weight:600;transition:transform .3s var(--spring),box-shadow .3s var(--ease);position:relative;overflow:hidden;min-height:52px;font-family:'Outfit',sans-serif;cursor:pointer;border:none}
+.modal-btn-p::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,.16),transparent);pointer-events:none}
+.modal-btn-p:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(232,168,78,.35)}
+.modal-btn-g{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:14px 18px;border-radius:50px;background:transparent;color:var(--w70);font-size:13px;font-weight:400;border:1px solid var(--border);transition:all .25s var(--ease);min-height:52px;font-family:'Outfit',sans-serif;cursor:pointer}
+.modal-btn-g:hover{color:var(--white);border-color:var(--border-h);background:var(--w06)}
+.modal-btn-p svg,.modal-btn-g svg{width:15px;height:15px;flex-shrink:0}
+
+/* ══════════════════════════════════════════
+   DEMO BOOKING SECTION
+   API_HOOK: POST /api/demo/booking
+   Body: { type, name, phone, preferredSlot }
+══════════════════════════════════════════ */
+.demo-sect{padding:var(--section-pad) 0;border-top:1px solid var(--border);background:linear-gradient(180deg,rgba(232,168,78,.018) 0%,transparent 100%)}
+.demo-inner{display:grid;grid-template-columns:1fr;gap:clamp(40px,7vw,60px)}
+@media(min-width:680px){.demo-inner{grid-template-columns:1fr 1fr;align-items:start}}
+.demo-title{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:clamp(32px,5.5vw,54px);line-height:1.1;letter-spacing:-.015em;color:var(--white);margin-bottom:13px}
+.demo-sub{font-size:15px;font-weight:300;color:var(--w50);line-height:1.68}
+.demo-options{display:flex;flex-direction:column;gap:12px}
+.demo-opt{background:var(--ink-2);border:1.5px solid var(--border);border-radius:var(--r);padding:20px 22px;cursor:pointer;transition:all .3s var(--ease);position:relative;overflow:hidden}
+.demo-opt::before{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:var(--acc,var(--amber));opacity:0;transition:opacity .3s var(--ease)}
+.demo-opt:hover,.demo-opt.sel{background:rgba(232,168,78,.03)}
+.demo-opt.sel::before,.demo-opt:hover::before{opacity:1}
+.demo-opt.video{--acc:#60a5fa}
+.demo-opt.video:hover,.demo-opt.video.sel{border-color:rgba(96,165,250,.35);background:rgba(96,165,250,.04)}
+.demo-opt.video::before{background:#60a5fa}
+.demo-opt.inperson:hover,.demo-opt.inperson.sel{border-color:var(--amber-ring)}
+.demo-opt-head{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+.demo-opt-icon{width:40px;height:40px;border-radius:11px;background:var(--w06);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;transition:all .25s var(--ease)}
+.demo-opt.sel .demo-opt-icon,.demo-opt.inperson:hover .demo-opt-icon{background:var(--amber-dim);border-color:var(--amber-ring)}
+.demo-opt.video.sel .demo-opt-icon,.demo-opt.video:hover .demo-opt-icon{background:rgba(96,165,250,.12);border-color:rgba(96,165,250,.3)}
+.demo-opt-label{font-size:16px;font-weight:500;color:var(--white);line-height:1.2}
+.demo-opt-badge{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:50px;background:var(--w06);color:var(--w50);border:1px solid var(--border);margin-left:auto;flex-shrink:0}
+.demo-opt.video .demo-opt-badge{background:rgba(96,165,250,.1);color:#60a5fa;border-color:rgba(96,165,250,.2)}
+.demo-opt-desc{font-size:13px;font-weight:300;color:var(--w50);line-height:1.6;padding-left:52px}
+.demo-form{margin-top:0;display:flex;flex-direction:column;gap:10px;max-height:0;overflow:hidden;opacity:0;transition:max-height .45s var(--ease),opacity .35s var(--ease),padding-top .35s var(--ease)}
+.demo-form.show{max-height:400px;opacity:1;padding-top:14px}
+.demo-input{width:100%;padding:13px 16px;background:var(--ink-3);border:1px solid var(--border);border-radius:var(--r);color:var(--white);font-family:'Outfit',sans-serif;font-size:14px;font-weight:300;outline:none;transition:border-color .25s var(--ease)}
+.demo-input::placeholder{color:var(--w30)}.demo-input:focus{border-color:var(--amber-ring)}
+.demo-submit{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:15px 28px;border-radius:50px;background:#25D366;color:#fff;font-size:14px;font-weight:600;font-family:'Outfit',sans-serif;transition:transform .3s var(--spring),box-shadow .3s var(--ease);position:relative;overflow:hidden;min-height:52px;width:100%;cursor:pointer;border:none}
+.demo-submit::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(255,255,255,.12),transparent);pointer-events:none}
+.demo-submit:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(37,211,102,.35)}
+.demo-submit svg{width:18px;height:18px;flex-shrink:0}
+.demo-note{font-size:12px;color:var(--w30);text-align:center}
+
 /* MOBILE */
 @media(max-width:479px){
   nav{padding:0 17px}.nav-lnk{display:none}
@@ -763,6 +907,161 @@ footer{padding:clamp(34px,6vw,50px) 0 clamp(26px,5vw,38px);border-top:1px solid 
 </section>
 
 <div class="divider"></div>
+
+
+<div class="divider"></div>
+
+<!-- PRODUCT LAYER
+     API_HOOK: GET /api/products?section=devices&region=TamilNadu
+     API_HOOK: GET /api/products/{id} — on modal open
+     Replace PRODUCTS array below with API response when backend is ready -->
+<section class="products" id="productLayer">
+  <div class="wrap">
+    <div class="prod-head">
+      <p class="eyebrow sr">Devices for you</p>
+      <h2 class="prod-title sr d1">Picked with<br>purpose</h2>
+      <p class="prod-sub sr d2">Each device is chosen for real-life value, not just specs. Click any to see what to expect.</p>
+    </div>
+    <div class="prod-filters sr d2">
+      <button class="prod-filter active" data-filter="all">All</button>
+      <button class="prod-filter" data-filter="phones">Phones</button>
+      <button class="prod-filter" data-filter="audio">Audio</button>
+      <button class="prod-filter" data-filter="accessories">Accessories</button>
+    </div>
+    <div class="prod-grid" id="prodGrid">
+      <!-- Product cards injected by JS from PRODUCTS data -->
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCT DETAIL MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalName">
+    <div class="modal-sheet" id="modalSheet">
+      <div class="modal-handle"></div>
+      <button class="modal-close" id="modalClose" aria-label="Close">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 1l12 12M13 1L1 13"/></svg>
+      </button>
+
+      <div class="modal-img-zone" id="modalImgZone">
+        <div class="modal-img-bg" id="modalImgBg"></div>
+        <div class="modal-emoji" id="modalEmoji">📱</div>
+      </div>
+
+      <div class="modal-content">
+        <div class="modal-brand-row">
+          <div class="modal-brand" id="modalBrand">Brand</div>
+          <div class="modal-badges" id="modalBadges"></div>
+        </div>
+        <div class="modal-name" id="modalName">Product name</div>
+        <div class="modal-tagline" id="modalTagline">Tagline</div>
+
+        <div class="modal-price-row">
+          <div class="modal-price" id="modalPrice">₹0</div>
+          <div class="modal-price-mrp" id="modalMrp"></div>
+          <div class="modal-saving" id="modalSaving"></div>
+        </div>
+
+        <div class="modal-section-title">About this device</div>
+        <div class="modal-desc" id="modalDesc"></div>
+
+        <div class="modal-section-title" style="margin-top:18px">What to expect</div>
+        <div class="modal-expect" id="modalExpect"></div>
+
+        <div class="modal-fact" id="modalFact">
+          <div class="modal-fact-icon">💡</div>
+          <div>
+            <div class="modal-fact-label">Interesting fact</div>
+            <div class="modal-fact-text" id="modalFactText"></div>
+          </div>
+        </div>
+
+        <div class="modal-section-title" style="margin-top:20px">How to get it</div>
+        <div class="modal-delivery">
+          <div class="del-opt sel" data-del="pickup">
+            <div class="del-icon">🏪</div>
+            <div class="del-name">Store pickup</div>
+            <div class="del-note">Same day, Coimbatore</div>
+          </div>
+          <div class="del-opt" data-del="local">
+            <div class="del-icon">🛵</div>
+            <div class="del-name">Local delivery</div>
+            <div class="del-note">Within Coimbatore</div>
+          </div>
+          <div class="del-opt" data-del="courier">
+            <div class="del-icon">📦</div>
+            <div class="del-name">Courier</div>
+            <div class="del-note">Across India, 2–5 days</div>
+          </div>
+        </div>
+
+        <div class="modal-ctas">
+          <button class="modal-btn-p" id="modalWaBtn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Order on WhatsApp
+          </button>
+          <button class="modal-btn-g" onclick="document.querySelector('.demo-sect').scrollIntoView({behavior:'smooth'});document.getElementById('modalOverlay').classList.remove('open');document.body.style.overflow=''">
+            Book a demo first
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- DEMO BOOKING
+     API_HOOK: POST /api/demo/booking
+     Body: { type:"video"|"inperson", name, phone, preferredSlot }
+     Response: { bookingId, confirmationMsg, whatsappLink }
+     Currently uses WhatsApp fallback -->
+<section class="demo-sect">
+  <div class="wrap">
+    <div class="demo-inner">
+      <div class="sr-l" id="demoText">
+        <p class="eyebrow" style="margin-bottom:14px">Book a demo</p>
+        <h2 class="demo-title">See it before<br>deciding</h2>
+        <p class="demo-sub">A quick demo removes all uncertainty. Choose what works — a video call anytime, or an in-person visit at the Coimbatore store.</p>
+      </div>
+      <div class="sr-r" id="demoOpts">
+        <div class="demo-options">
+          <div class="demo-opt video sel" id="demoVideo" data-type="video">
+            <div class="demo-opt-head">
+              <div class="demo-opt-icon">🎥</div>
+              <div>
+                <div class="demo-opt-label">Video call</div>
+              </div>
+              <div class="demo-opt-badge">Available to all</div>
+            </div>
+            <div class="demo-opt-desc">A 15–20 minute call to walk through the device, compare options, and answer questions — from anywhere in India.</div>
+          </div>
+          <div class="demo-opt inperson" id="demoInPerson" data-type="inperson">
+            <div class="demo-opt-head">
+              <div class="demo-opt-icon">🏪</div>
+              <div>
+                <div class="demo-opt-label">In-person visit</div>
+              </div>
+              <div class="demo-opt-badge" style="background:var(--amber-dim);color:var(--amber);border-color:var(--amber-ring)">Coimbatore only</div>
+            </div>
+            <div class="demo-opt-desc">Come in, hold the device, compare it to others, and leave with complete clarity. No pressure to buy on the day.</div>
+          </div>
+
+          <!-- Form shown after option click -->
+          <div class="demo-form" id="demoForm">
+            <input class="demo-input" id="demoName" type="text" placeholder="Your name" autocomplete="name">
+            <input class="demo-input" id="demoPhone" type="tel" placeholder="Phone number (WhatsApp)" autocomplete="tel">
+            <button class="demo-submit" id="demoSubmit">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+              Confirm via WhatsApp
+            </button>
+            <div class="demo-note">The details will open in WhatsApp to confirm the slot</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- GUIDED HELP
      API_HOOK: GET /api/repair/diagnosis/{issueKey}
@@ -1082,6 +1381,226 @@ footer{padding:clamp(34px,6vw,50px) 0 clamp(26px,5vw,38px);border-top:1px solid 
     opt.addEventListener('click', toggle);
     opt.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); toggle(); } });
   });
+
+  /* ── Product data
+     API_HOOK: Replace PRODUCTS array with GET /api/products?section=devices response ── */
+  var PRODUCTS = [
+    {id:'s23fe',brand:'Samsung',name:'Galaxy S23 FE',tagline:'Fan favourite. Flagship heart.',emoji:'📱',category:'phones',
+     price:'₹34,999',mrp:'₹44,999',saving:'Save ₹10,000',
+     bgClass:'brand-samsung',badges:['hot'],
+     spec:'6.4" AMOLED · 50MP · 4500mAh · Exynos 2200',
+     desc:'The Galaxy S23 FE delivers a flagship camera system and processing power at a mid-range price. It carries the same main sensor as the standard S23 — 50MP with optical image stabilisation — in a body built to last.',
+     expect:['50MP main camera with optical stabilisation, great in low light','Exynos 2200 with Xclipse GPU — handles gaming and multitasking smoothly','4500mAh battery with 25W fast charging, typically lasts a full day and a half'],
+     fact:"The S23 FE uses the same rear camera module as the standard Galaxy S23, which normally costs ₹20,000 more — Samsung simply moved the camera to a more accessible price point."},
+    {id:'ip15',brand:'Apple',name:'iPhone 15',tagline:'The phone that just works — beautifully.',emoji:'🍎',category:'phones',
+     price:'₹69,999',mrp:'₹79,900',saving:'Save ₹9,901',
+     bgClass:'brand-apple',badges:['pick'],
+     spec:'6.1" Super Retina · 48MP · A16 Bionic · Dynamic Island',
+     desc:'iPhone 15 brings Dynamic Island to the mainstream lineup for the first time, along with a significant camera upgrade to 48MP. It is built on the same A16 Bionic chip that powered last year's Pro models.',
+     expect:['48MP main sensor — significantly better zoom and detail than iPhone 14','USB-C replaces Lightning for the first time, making accessories universal','A16 Bionic chip is fast enough to handle anything for the next 5+ years'],
+     fact:"Apple's A16 Bionic in iPhone 15 is actually last year's Pro chip — meaning you get Pro-level processing at the standard price tier, a rare move in the industry."},
+    {id:'op12r',brand:'OnePlus',name:'12R',tagline:'Speed, endurance, no compromise.',emoji:'🔴',category:'phones',
+     price:'₹29,999',mrp:'₹35,999',saving:'Save ₹6,000',
+     bgClass:'brand-oneplus',badges:['new'],
+     spec:'6.78" AMOLED 120Hz · 50MP · Snapdragon 8 Gen 2 · 5500mAh',
+     desc:'The OnePlus 12R is built around the Snapdragon 8 Gen 2 — the same chip powering phones that cost twice as much. It pairs that raw power with a 5500mAh battery and 100W SUPERVOOC charging.',
+     expect:['100W fast charging fills the 5500mAh battery in about 26 minutes','Snapdragon 8 Gen 2 handles intense gaming without throttling','120Hz AMOLED display is smooth and vivid — comparable to flagships at ₹70K+'],
+     fact:"OnePlus charges the 12R's 5500mAh battery to 50% in under 13 minutes — faster than most phones charge to 20%."},
+    {id:'sony-wh',brand:'Sony',name:'WH-1000XM5',tagline:'The standard for silence.',emoji:'🎧',category:'audio',
+     price:'₹26,990',mrp:'₹34,990',saving:'Save ₹8,000',
+     bgClass:'brand-sony',badges:['pick'],
+     spec:'30hr battery · 8 mics · LDAC · Multipoint',
+     desc:'The WH-1000XM5 is widely regarded as the benchmark for consumer noise-cancelling headphones. Eight microphones work together to cancel ambient sound with industry-leading precision.',
+     expect:['8-microphone system blocks office noise, traffic and engine hum cleanly','LDAC codec streams audio at 3× the bandwidth of standard Bluetooth','30-hour battery with ANC on — works through a long-haul flight without charging'],
+     fact:"Sony's WH-1000XM5 uses 8 mics split across two processors — one dedicated purely to noise cancellation calculations, running independently from the audio processor."},
+    {id:'jbl-flip',brand:'JBL',name:'Flip 6',tagline:'Loud, clear, and built for outdoors.',emoji:'🔊',category:'audio',
+     price:'₹8,499',mrp:'₹11,999',saving:'Save ₹3,500',
+     bgClass:'brand-jbl',badges:['hot'],
+     spec:'IP67 · 12hr · PartyBoost · 30W rms',
+     desc:'The JBL Flip 6 produces a genuinely full sound at outdoor volumes without distortion. IP67 waterproofing means it handles rain, dust, and poolside splashes without concern.',
+     expect:['IP67 rating — fully submersible in 1m of water for up to 30 minutes','30W output: loud enough for a group in an open space','PartyBoost links multiple JBL speakers for larger setups'],
+     fact:"JBL's signature racetrack-shaped driver in the Flip 6 was originally developed for professional audio equipment in the 1970s — scaled down to consumer size for this line."},
+    {id:'noise-colorfit',brand:'Noise',name:'ColorFit Ultra 3',tagline:'Fitness clarity, all day.',emoji:'⌚',category:'accessories',
+     price:'₹2,999',mrp:'₹4,999',saving:'Save ₹2,000',
+     bgClass:'brand-noise',badges:['new'],
+     spec:'1.96" AMOLED · SpO2 · 7-day battery · BT calling',
+     desc:'The ColorFit Ultra 3 delivers an AMOLED display, accurate health tracking, and Bluetooth calling at a price that is difficult to argue with. It tracks over 100 workout modes and monitors blood oxygen continuously.',
+     expect:['1.96" AMOLED is sharp and readable in direct sunlight','SpO2 and stress monitoring run throughout the day in the background','7-day battery life means weekly charges, not daily ones'],
+     fact:"Noise is India's best-selling smartwatch brand by volume — outselling Samsung, Apple, and Garmin in unit terms in the Indian market, driven almost entirely by value-focused buyers."},
+    {id:'realme-buds',brand:'Realme',name:'Buds Air 5 Pro',tagline:'Transparent sound, sealed price.',emoji:'🎵',category:'audio',
+     price:'₹3,999',mrp:'₹5,999',saving:'Save ₹2,000',
+     bgClass:'brand-realme',badges:['pick'],
+     spec:'50dB ANC · 10mm driver · 38hr · LDAC',
+     desc:'The Buds Air 5 Pro brings 50dB active noise cancellation and LDAC high-resolution audio to under ₹4,000 — features that were exclusive to headphones costing ₹15,000+ just two years ago.',
+     expect:['50dB ANC blocks a significant amount of ambient noise for earbuds at this price','LDAC codec available for devices supporting high-res Bluetooth (most Android flagships)','38-hour total playback with the case — comfortably lasts a week of daily use'],
+     fact:"The 50dB ANC rating on the Buds Air 5 Pro matches the spec published by Sony for their WH-1000XM4 over-ear headphones — a remarkable claim for earbuds at a quarter of the price."},
+    {id:'samsung-watch',brand:'Samsung',name:'Galaxy Watch 6',tagline:'Health tracking done right.',emoji:'🕐',category:'accessories',
+     price:'₹24,999',mrp:'₹29,999',saving:'Save ₹5,000',
+     bgClass:'brand-samsung',badges:[],
+     spec:'1.5" Super AMOLED · BioActive sensor · 40hr · Wear OS',
+     desc:'The Galaxy Watch 6 packs Samsung's BioActive sensor — capable of ECG, body composition analysis, and advanced sleep tracking — into a refined and lightweight design that wears comfortably day and night.',
+     expect:['BioActive sensor measures body fat percentage and skeletal muscle mass accurately','ECG and blood pressure monitoring (blood pressure requires calibration with a cuff initially)','Wear OS 4 with Google integration: Maps, Pay, and Assistant built in'],
+     fact:"Samsung's BioActive sensor uses three measurement modes simultaneously — optical heart rate, electrical heart signals, and bioelectrical impedance — all from a single sensor tile on the watch back."}
+  ];
+
+  var activeFilter = 'all';
+  var openProductId = null;
+
+  function renderProducts(){
+    var grid = document.getElementById('prodGrid');
+    if(!grid) return;
+    var filtered = activeFilter === 'all' ? PRODUCTS : PRODUCTS.filter(function(p){ return p.category === activeFilter; });
+    grid.innerHTML = filtered.map(function(p, i){
+      var delay = (i % 4) * 0.08;
+      var badges = p.badges.map(function(b){
+        var label = b === 'new' ? 'New' : b === 'hot' ? 'Hot' : 'Top Pick';
+        var cls = 'badge-' + b;
+        return '<span class="prod-badge ' + cls + '">' + label + '</span>';
+      }).join('');
+      return '<div class="prod-card ' + p.bgClass + ' sr" style="transition-delay:' + delay + 's" data-pid="' + p.id + '" tabindex="0" role="button" aria-label="' + p.brand + ' ' + p.name + '">' +
+        '<div class="prod-img">' +
+          '<div class="prod-img-bg"></div>' +
+          '<div class="prod-badge-wrap">' + badges + '</div>' +
+          '<div class="prod-emoji">' + p.emoji + '</div>' +
+        '</div>' +
+        '<div class="prod-info">' +
+          '<div class="prod-brand">' + p.brand + '</div>' +
+          '<div class="prod-name">' + p.name + '</div>' +
+          '<div class="prod-spec">' + p.spec + '</div>' +
+          '<div class="prod-price-row">' +
+            '<div><div class="prod-price">' + p.price + '</div><div class="prod-price-mrp">' + (p.mrp || '') + '</div></div>' +
+            '<div class="prod-arrow"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 6h8M6 2l4 4-4 4"/></svg></div>' +
+          '</div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+
+    /* Re-observe new cards for scroll reveal */
+    grid.querySelectorAll('.sr').forEach(function(el){
+      if(io) io.observe(el);
+      else el.classList.add('in');
+    });
+
+    /* Click handlers */
+    grid.querySelectorAll('.prod-card').forEach(function(card){
+      function open(){
+        var pid = card.getAttribute('data-pid');
+        openModal(pid);
+      }
+      card.addEventListener('click', open);
+      card.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); open(); } });
+    });
+  }
+
+  /* Filter buttons */
+  document.querySelectorAll('.prod-filter').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('.prod-filter').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      activeFilter = btn.getAttribute('data-filter');
+      renderProducts();
+    });
+  });
+
+  /* ── Modal logic ── */
+  function openModal(pid){
+    var p = PRODUCTS.find(function(x){ return x.id === pid; });
+    if(!p) return;
+    openProductId = pid;
+
+    /* Populate fields */
+    document.getElementById('modalBrand').textContent = p.brand;
+    document.getElementById('modalName').textContent = p.name;
+    document.getElementById('modalTagline').textContent = p.tagline;
+    document.getElementById('modalDesc').textContent = p.desc;
+    document.getElementById('modalPrice').textContent = p.price;
+    document.getElementById('modalMrp').textContent = p.mrp || '';
+    document.getElementById('modalSaving').textContent = p.saving || '';
+    document.getElementById('modalEmoji').textContent = p.emoji;
+    document.getElementById('modalFactText').textContent = p.fact;
+
+    /* Background class */
+    var bg = document.getElementById('modalImgBg');
+    bg.className = 'modal-img-bg ' + p.bgClass;
+
+    /* Badges */
+    var bdg = document.getElementById('modalBadges');
+    bdg.innerHTML = p.badges.map(function(b){
+      var l = b==='new'?'New':b==='hot'?'Hot':'Top Pick';
+      return '<span class="prod-badge badge-'+b+'">'+l+'</span>';
+    }).join('');
+
+    /* Expect items */
+    var ex = document.getElementById('modalExpect');
+    ex.innerHTML = p.expect.map(function(e){
+      return '<div class="modal-expect-item"><div class="modal-expect-icon">✓</div><span>'+e+'</span></div>';
+    }).join('');
+
+    /* WhatsApp CTA */
+    var msg = encodeURIComponent('Hi, I'd like to know more about the ' + p.brand + ' ' + p.name + ' (' + p.price + '). Can you help me?');
+    document.getElementById('modalWaBtn').onclick = function(){
+      window.open('https://wa.me/917200006006?text=' + msg, '_blank');
+    };
+
+    /* Reset delivery selection */
+    document.querySelectorAll('.del-opt').forEach(function(d){ d.classList.remove('sel'); });
+    document.querySelector('.del-opt[data-del="pickup"]').classList.add('sel');
+
+    /* Show overlay */
+    document.getElementById('modalOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal(){
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+    openProductId = null;
+  }
+
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  document.getElementById('modalOverlay').addEventListener('click', function(e){
+    if(e.target === this) closeModal();
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && openProductId) closeModal();
+  });
+
+  /* Delivery option selection */
+  document.querySelectorAll('.del-opt').forEach(function(d){
+    d.addEventListener('click', function(){
+      document.querySelectorAll('.del-opt').forEach(function(x){ x.classList.remove('sel'); });
+      d.classList.add('sel');
+    });
+  });
+
+  /* ── Demo booking ── */
+  var selectedDemoType = 'video';
+  var demoForm = document.getElementById('demoForm');
+
+  ['demoVideo','demoInPerson'].forEach(function(id){
+    document.getElementById(id).addEventListener('click', function(){
+      document.getElementById('demoVideo').classList.remove('sel');
+      document.getElementById('demoInPerson').classList.remove('sel');
+      this.classList.add('sel');
+      selectedDemoType = this.getAttribute('data-type');
+      demoForm.classList.add('show');
+    });
+  });
+
+  document.getElementById('demoSubmit').addEventListener('click', function(){
+    var name = document.getElementById('demoName').value.trim();
+    var phone = document.getElementById('demoPhone').value.trim();
+    var typeLabel = selectedDemoType === 'video' ? 'video call' : 'in-person visit at Coimbatore store';
+    var msg = 'Hi, I'd like to book a demo (' + typeLabel + ')';
+    if(name) msg += '. My name is ' + name;
+    if(phone) msg += ', and my number is ' + phone;
+    msg += '. When is the next available slot?';
+    /* API_HOOK: POST /api/demo/booking before opening WhatsApp */
+    window.open('https://wa.me/917200006006?text=' + encodeURIComponent(msg), '_blank');
+  });
+
+  /* Initial product render */
+  renderProducts();
 
   /* Card keyboard */
   document.querySelectorAll('.card[tabindex]').forEach(function(c){
