@@ -518,7 +518,7 @@
     <div class="chat-btn" id="chat-btn">💬</div>
     <div class="chat-window" id="chat-window">
         <div class="chat-header"><span>Kovin Assistant</span><span style="cursor:pointer" id="chat-close">✕</span></div>
-        <div class="chat-body" id="chat-body"><div class="chat-msg msg-bot">Hello! How can I help you today? You can ask about our hours, location, or services.</div></div>
+        <div class="chat-body" id="chat-body"><div class="chat-msg msg-bot">Hello! I'm your Kovin Sales Assistant. How can I help you today?</div></div>
         <div class="chat-footer">
             <input type="text" class="chat-input" id="chat-input" placeholder="Type a message...">
             <button class="btn btn-primary" style="padding: 8px 16px; border-radius: 20px;" id="chat-send">Send</button>
@@ -630,32 +630,68 @@
 
         function toggleFaq(item) { item.classList.toggle('active'); }
 
-        // AI Chatbot
+        // Upgraded Sales Assistant AI Chatbot
         const chatBtn = document.getElementById('chat-btn');
         const chatWindow = document.getElementById('chat-window');
         const chatInput = document.getElementById('chat-input');
         const chatBody = document.getElementById('chat-body');
+        
         chatBtn.addEventListener('click', () => chatWindow.style.display = chatWindow.style.display === 'flex' ? 'none' : 'flex');
         document.getElementById('chat-close').addEventListener('click', () => chatWindow.style.display = 'none');
         
+        function addBotMessage(text, showWA = false) {
+            const botMsg = document.createElement('div');
+            botMsg.className = 'chat-msg msg-bot';
+            botMsg.innerHTML = text.replace(/\n/g, '<br>');
+            chatBody.appendChild(botMsg);
+            
+            if (showWA) {
+                const waLink = document.createElement('a');
+                waLink.href = 'https://wa.me/917200006006';
+                waLink.className = 'btn btn-whatsapp';
+                waLink.style.fontSize = '0.8rem';
+                waLink.style.padding = '8px 12px';
+                waLink.style.marginTop = '8px';
+                waLink.textContent = 'Connect on WhatsApp';
+                chatBody.appendChild(waLink);
+            }
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
         function handleChat() {
             const text = chatInput.value.trim().toLowerCase();
             if (!text) return;
-            const userMsg = document.createElement('div'); userMsg.className = 'chat-msg msg-user'; userMsg.textContent = chatInput.value;
-            chatBody.appendChild(userMsg); chatInput.value = '';
+
+            const userMsg = document.createElement('div');
+            userMsg.className = 'chat-msg msg-user';
+            userMsg.textContent = chatInput.value;
+            chatBody.appendChild(userMsg);
+            chatInput.value = '';
+            chatBody.scrollTop = chatBody.scrollHeight;
+
             setTimeout(() => {
-                let reply = "Please connect with our executive on WhatsApp for detailed assistance.";
-                if (text.includes('hour')) reply = "We are open Mon to Sun, 09:00 to 22:00 hrs.";
-                else if (text.includes('location')) reply = "We are in Tamil Nadu, India. Check the map on our site!";
-                const botMsg = document.createElement('div'); botMsg.className = 'chat-msg msg-bot'; botMsg.textContent = reply;
-                chatBody.appendChild(botMsg);
-                if (reply.includes('WhatsApp')) {
-                    const wa = document.createElement('a'); wa.href = 'https://wa.me/917200006006'; wa.className = 'btn btn-whatsapp'; wa.style.fontSize = '0.7rem'; wa.textContent = 'WhatsApp Us';
-                    chatBody.appendChild(wa);
+                // Intent Detection Logic
+                if (text.includes('charger') || text.includes('cable') || text.includes('earphone') || text.includes('case') || text.includes('cover') || text.includes('battery') || text.includes('accessory')) {
+                    addBotMessage("We have high-quality accessories available (Type-C / iPhone compatible).\n\n👉 Do you want budget or original quality?\n\nFor quick pricing and availability, connect on WhatsApp:", true);
+                } 
+                else if (text.includes('repair') || text.includes('fix') || text.includes('broken') || text.includes('screen') || text.includes('water') || text.includes('damage') || text.includes('software')) {
+                    addBotMessage("We provide professional repair services for most mobile brands.\n\n👉 Share your phone model for exact pricing.\n\nOr connect instantly on WhatsApp:", true);
                 }
-                chatBody.scrollTop = chatBody.scrollHeight;
-            }, 500);
+                else if (text.includes('price') || text.includes('cost') || text.includes('how much') || text.includes('rate') || text.includes('quotation')) {
+                    addBotMessage("Pricing depends on your specific phone model.\n\n👉 Please share your device model for accurate pricing.\n\nOr WhatsApp us for instant support:", true);
+                }
+                else if (text.includes('best') || text.includes('suggest') || text.includes('recommend') || text.includes('which one')) {
+                    addBotMessage("I can help you find the perfect device based on your needs.\n\n👉 What is your primary use (Gaming, Camera, or Battery)?\n\nFor personalized recommendations, chat with our expert on WhatsApp:", true);
+                }
+                else if (text.includes('where') || text.includes('location') || text.includes('address') || text.includes('time') || text.includes('hours') || text.includes('open')) {
+                    addBotMessage("We are located in Tamil Nadu, India. Our hours are Mon to Sun, 09:00 to 22:00 hrs.\n\nNeed directions or want to check if we're open now? WhatsApp us:", true);
+                }
+                else {
+                    addBotMessage("I can help you with that. For faster assistance and detailed information, please connect with our executive on WhatsApp:", true);
+                }
+            }, 600);
         }
+
         document.getElementById('chat-send').addEventListener('click', handleChat);
         chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleChat(); });
 
