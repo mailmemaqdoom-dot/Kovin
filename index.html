@@ -18,6 +18,8 @@
             --card-bg: #FFFFFF;
             --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
             --transition: all 0.3s ease;
+            --bulb-color: #FFD700;
+            --bulb-glow: 0 0 20px rgba(255, 215, 0, 0.6);
         }
 
         [data-theme="dark"] {
@@ -29,6 +31,8 @@
             --border: #333333;
             --card-bg: #1C1C1E;
             --shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            --bulb-color: #444;
+            --bulb-glow: none;
         }
 
         * {
@@ -61,6 +65,71 @@
             padding: 0 20px;
         }
 
+        /* Hanging Bulb Theme Toggle */
+        .bulb-container {
+            position: fixed;
+            top: 0;
+            right: 40px;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .bulb-wire {
+            width: 2px;
+            height: 60px;
+            background: #333;
+        }
+
+        .bulb {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--bulb-color);
+            box-shadow: var(--bulb-glow);
+            position: relative;
+            transition: var(--transition);
+            border: 2px solid #333;
+        }
+
+        .bulb::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 6px;
+            background: #333;
+            border-radius: 2px;
+        }
+
+        .pull-chain {
+            width: 2px;
+            height: 40px;
+            background: #666;
+            position: relative;
+            transition: height 0.1s;
+        }
+
+        .pull-handle {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #666;
+            position: absolute;
+            bottom: -5px;
+            left: -4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .bulb-container:active .pull-chain {
+            height: 50px;
+        }
+
         /* Header & Navbar */
         header {
             position: sticky;
@@ -89,6 +158,7 @@
             display: flex;
             gap: 24px;
             align-items: center;
+            margin-right: 80px; /* Space for bulb */
         }
 
         .nav-links a {
@@ -99,24 +169,6 @@
 
         .nav-links a:hover {
             color: var(--text-primary);
-        }
-
-        .theme-toggle {
-            background: none;
-            border: 1px solid var(--border);
-            padding: 6px 12px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            color: var(--text-primary);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: var(--transition);
-        }
-
-        .theme-toggle:hover {
-            background: var(--bg-secondary);
         }
 
         /* Hero Section */
@@ -166,12 +218,12 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            border: none;
         }
 
         .btn-primary {
             background-color: var(--text-primary);
             color: var(--bg-primary);
-            border: none;
         }
 
         .btn-primary:hover {
@@ -188,6 +240,11 @@
         .btn-secondary:hover {
             background-color: var(--bg-secondary);
             transform: translateY(-2px);
+        }
+
+        .btn-whatsapp {
+            background-color: #25D366;
+            color: white;
         }
 
         /* Stats Bar */
@@ -254,6 +311,7 @@
             transition: var(--transition);
             position: relative;
             overflow: hidden;
+            cursor: pointer;
         }
 
         .category-card:hover {
@@ -298,6 +356,7 @@
             transition: var(--transition);
             display: flex;
             flex-direction: column;
+            cursor: pointer;
         }
 
         .product-card:hover {
@@ -437,6 +496,26 @@
             font-size: 0.95rem;
         }
 
+        /* Map Section */
+        .map-section {
+            padding: 80px 0;
+            background-color: var(--bg-secondary);
+        }
+
+        .map-container {
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            height: 400px;
+            margin-bottom: 24px;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
         /* Contact Section */
         .contact-box {
             background-color: var(--text-primary);
@@ -506,6 +585,169 @@
             gap: 20px;
         }
 
+        .social-links a {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        .social-links a:hover {
+            color: var(--accent);
+        }
+
+        /* AI Chatbot */
+        .chat-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 1500;
+            transition: var(--transition);
+        }
+
+        .chat-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .chat-window {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            width: 350px;
+            height: 450px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            display: none;
+            flex-direction: column;
+            z-index: 1500;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 16px;
+            background-color: var(--accent);
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-body {
+            flex: 1;
+            padding: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .chat-msg {
+            padding: 10px 14px;
+            border-radius: 14px;
+            max-width: 80%;
+            font-size: 0.9rem;
+        }
+
+        .msg-bot {
+            background-color: var(--bg-secondary);
+            align-self: flex-start;
+        }
+
+        .msg-user {
+            background-color: var(--accent);
+            color: white;
+            align-self: flex-end;
+        }
+
+        .chat-footer {
+            padding: 16px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 8px;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 8px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background-color: var(--bg-secondary);
+            color: var(--text-primary);
+            outline: none;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(5px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: 24px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            box-shadow: var(--shadow);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.75rem;
+            margin-bottom: 16px;
+        }
+
+        .modal-desc {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .modal-features {
+            margin-bottom: 32px;
+        }
+
+        .modal-features li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.5rem; }
@@ -513,6 +755,7 @@
             .footer-grid { grid-template-columns: 1fr; gap: 40px; }
             .booking-grid { grid-template-columns: 1fr; }
             .nav-links { display: none; }
+            .bulb-container { right: 20px; }
         }
 
         /* Fade-in on scroll */
@@ -530,6 +773,15 @@
 </head>
 <body>
 
+    <!-- Hanging Bulb Theme Toggle -->
+    <div class="bulb-container" id="theme-toggle">
+        <div class="bulb-wire"></div>
+        <div class="bulb"></div>
+        <div class="pull-chain">
+            <div class="pull-handle"></div>
+        </div>
+    </div>
+
     <header>
         <div class="container">
             <nav>
@@ -538,10 +790,6 @@
                     <a href="#explore">Explore devices</a>
                     <a href="#fix">Fix a device</a>
                     <a href="#help">Get help</a>
-                    <button class="theme-toggle" id="theme-toggle">
-                        <span id="theme-icon">🌙</span>
-                        <span id="theme-text">Dark Mode</span>
-                    </button>
                 </div>
             </nav>
         </div>
@@ -589,22 +837,22 @@
                     <h2>Made for the way you live</h2>
                 </div>
                 <div class="category-grid">
-                    <div class="category-card">
+                    <div class="category-card" onclick="openModal('Phones', 'Everyday phones: Reliable all-day battery. Simple to use. Nothing extra.', ['Reliable Battery', 'Simple UI', 'Essential Features'])">
                         <span class="price-tag">From ₹8,000</span>
                         <h3>✦ Phones</h3>
                         <p>Everyday phones: Reliable all-day battery. Simple to use. Nothing extra.</p>
                     </div>
-                    <div class="category-card">
+                    <div class="category-card" onclick="openModal('Power', 'Performance devices: For creators, gamers, and those who demand more.', ['High Performance', 'Gaming Ready', 'Creator Tools'])">
                         <span class="price-tag">From ₹25,000</span>
                         <h3>◎ Power</h3>
                         <p>Performance devices: For creators, gamers, and those who demand more.</p>
                     </div>
-                    <div class="category-card">
+                    <div class="category-card" onclick="openModal('Audio', 'Audio essentials: Earphones, speakers, headphones — for every ear and budget.', ['Premium Sound', 'All Budgets', 'Noise Cancellation'])">
                         <span class="price-tag">From ₹1,200</span>
                         <h3>♪ Audio</h3>
                         <p>Audio essentials: Earphones, speakers, headphones — for every ear and budget.</p>
                     </div>
-                    <div class="category-card">
+                    <div class="category-card" onclick="openModal('Accessories', 'Smart accessories: Watches, cables, chargers — details that complete everything.', ['Smart Watches', 'Fast Chargers', 'Durable Cables'])">
                         <span class="price-tag">From ₹2,500</span>
                         <h3>→ Accessories</h3>
                         <p>Smart accessories: Watches, cables, chargers — details that complete everything.</p>
@@ -622,7 +870,7 @@
                 </div>
                 <div class="product-grid">
                     <!-- Product 1 -->
-                    <div class="product-card">
+                    <div class="product-card" onclick="openModal('Samsung Galaxy S23 FE', '6.4&quot; AMOLED · 50MP · 4500mAh · Exynos 2200', ['AMOLED Display', '50MP Camera', 'Fast Charging'])">
                         <span class="badge badge-hot">Hot</span>
                         <div class="product-info">
                             <h3>Samsung Galaxy S23 FE</h3>
@@ -634,7 +882,7 @@
                         </div>
                     </div>
                     <!-- Product 2 -->
-                    <div class="product-card">
+                    <div class="product-card" onclick="openModal('Apple iPhone 15', '6.1&quot; Super Retina · 48MP · A16 Bionic · Dynamic Island', ['Dynamic Island', 'A16 Bionic', '48MP Main Camera'])">
                         <span class="badge badge-top">Top Pick</span>
                         <div class="product-info">
                             <h3>Apple iPhone 15</h3>
@@ -646,7 +894,7 @@
                         </div>
                     </div>
                     <!-- Product 3 -->
-                    <div class="product-card">
+                    <div class="product-card" onclick="openModal('OnePlus 12R', '6.78&quot; AMOLED 120Hz · 50MP · Snapdragon 8 Gen 2 · 5500mAh', ['120Hz AMOLED', 'Snapdragon 8 Gen 2', '5500mAh Battery'])">
                         <span class="badge badge-new">New</span>
                         <div class="product-info">
                             <h3>OnePlus 12R</h3>
@@ -658,7 +906,7 @@
                         </div>
                     </div>
                     <!-- Product 4 -->
-                    <div class="product-card">
+                    <div class="product-card" onclick="openModal('Sony WH-1000XM5', '30hr battery · 8 mics · LDAC · Multipoint', ['Industry-leading ANC', '30hr Battery', 'Crystal Clear Calls'])">
                         <span class="badge badge-top">Top Pick</span>
                         <div class="product-info">
                             <h3>Sony WH-1000XM5</h3>
@@ -684,7 +932,7 @@
                     <div class="booking-card">
                         <h3>🎥 Video call</h3>
                         <p>Available to all. A 15–20 minute call to walk through the device, compare options, and answer questions — from anywhere in India.</p>
-                        <a href="https://wa.me/917200006006" class="btn btn-primary">Confirm via WhatsApp</a>
+                        <a href="https://wa.me/917200006006" class="btn btn-whatsapp">Confirm via WhatsApp</a>
                     </div>
                     <div class="booking-card">
                         <h3>🏪 In-person</h3>
@@ -703,18 +951,34 @@
                     <h2>Tell it what's happening</h2>
                 </div>
                 <div class="repair-options">
-                    <div class="repair-item">
+                    <div class="repair-item" onclick="openModal('Mobile Repair', 'Professional repair services for all mobile brands.', ['Screen Replacement', 'Battery Swap', 'Software Fix'])">
                         <span class="repair-icon">📱</span>
                         <span>Mobile</span>
                     </div>
-                    <div class="repair-item">
+                    <div class="repair-item" onclick="openModal('TV Repair', 'Expert diagnostics and repair for LED/Smart TVs.', ['Panel Repair', 'Power Issues', 'Backlight Fix'])">
                         <span class="repair-icon">📺</span>
                         <span>TV</span>
                     </div>
-                    <div class="repair-item">
+                    <div class="repair-item" onclick="openModal('Audio Repair', 'Fixing your favorite headphones and speakers.', ['Speaker Repair', 'Jack Replacement', 'Internal Wiring'])">
                         <span class="repair-icon">🎧</span>
                         <span>Audio</span>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Map Section -->
+        <section class="map-section reveal">
+            <div class="container">
+                <div class="section-header">
+                    <p>Visit Us</p>
+                    <h2>Our Location</h2>
+                </div>
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3916.123456789!2d77.0638796!3d11.0542557!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTHCsDAzJzE1LjMiTiA3N8KwMDMnNTAuMCJF!5e0!3m2!1sen!2sin!4v1713200000000!5m2!1sen!2sin" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+                <div style="text-align: center;">
+                    <a href="https://www.google.com/maps/dir/?api=1&destination=11.054255656739931,77.06387961818233" target="_blank" class="btn btn-primary">Get Directions</a>
                 </div>
             </div>
         </section>
@@ -752,7 +1016,7 @@
                 <div class="contact-box">
                     <p>Get in touch</p>
                     <h2>Need a quick answer?</h2>
-                    <a href="https://wa.me/917200006006" class="btn btn-primary" style="background-color: white; color: black;">Talk on WhatsApp</a>
+                    <a href="https://wa.me/917200006006" class="btn btn-whatsapp">Talk on WhatsApp</a>
                     <p style="margin-top: 20px; font-size: 0.9rem; opacity: 0.7;">Usually replied within a few minutes</p>
                 </div>
             </div>
@@ -765,6 +1029,11 @@
                 <div class="footer-brand">
                     <h2 class="logo">Kov·in</h2>
                     <p>Tamil Nadu's guided electronics system. We believe in clarity, not just sales.</p>
+                    <div class="social-links" style="margin-top: 24px;">
+                        <a href="https://www.instagram.com/mr.kovaimobiles?igsh=c3N1M2ZlZWJucWlw" target="_blank">Instagram</a>
+                        <a href="https://www.facebook.com/share/16XBGFRhQ3/" target="_blank">Facebook</a>
+                        <a href="https://wa.me/917200006006" target="_blank">WhatsApp</a>
+                    </div>
                 </div>
                 <div class="footer-col">
                     <h4>Find us</h4>
@@ -776,8 +1045,8 @@
                 <div class="footer-col">
                     <h4>Hours</h4>
                     <ul>
-                        <li>Mon – Sat</li>
-                        <li>9 am – 8 pm</li>
+                        <li>Mon – Sun</li>
+                        <li>09:00 – 22:00 hrs</li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -791,41 +1060,140 @@
             <div class="footer-bottom">
                 <p>© 2025 Kovin Electronics. All rights reserved.</p>
                 <div class="social-links">
-                    <a href="#">WhatsApp</a>
-                    <a href="#">Instagram</a>
-                    <a href="#">Facebook</a>
-                    <a href="#">Threads</a>
+                    <a href="#help">Stay in Touch</a>
                 </div>
             </div>
         </div>
     </footer>
 
+    <!-- AI Chatbot -->
+    <div class="chat-btn" id="chat-btn">💬</div>
+    <div class="chat-window" id="chat-window">
+        <div class="chat-header">
+            <span>Kovin Assistant</span>
+            <span style="cursor:pointer" id="chat-close">✕</span>
+        </div>
+        <div class="chat-body" id="chat-body">
+            <div class="chat-msg msg-bot">Hello! How can I help you today? You can ask about our hours, location, or services.</div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" class="chat-input" id="chat-input" placeholder="Type a message...">
+            <button class="btn btn-primary" style="padding: 8px 16px; border-radius: 20px;" id="chat-send">Send</button>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modal-overlay">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">✕</span>
+            <h2 class="modal-title" id="modal-title">Product Title</h2>
+            <p class="modal-desc" id="modal-desc">Product description goes here.</p>
+            <ul class="modal-features" id="modal-features">
+                <!-- Features will be injected here -->
+            </ul>
+            <div class="modal-actions">
+                <a href="https://wa.me/917200006006" class="btn btn-whatsapp" style="justify-content: center;">WhatsApp Inquiry</a>
+                <a href="tel:+917200006006" class="btn btn-secondary" style="justify-content: center;">Call Us</a>
+            </div>
+        </div>
+    </div>
+
     <script>
-        // Theme System
+        // Theme System (Hanging Bulb)
         const themeToggle = document.getElementById('theme-toggle');
-        const themeIcon = document.getElementById('theme-icon');
-        const themeText = document.getElementById('theme-text');
         const html = document.documentElement;
 
         function setTheme(theme) {
             html.setAttribute('data-theme', theme);
             localStorage.setItem('theme', theme);
-            if (theme === 'dark') {
-                themeIcon.textContent = '☀️';
-                themeText.textContent = 'Light Mode';
-            } else {
-                themeIcon.textContent = '🌙';
-                themeText.textContent = 'Dark Mode';
-            }
         }
 
-        // Initialize theme
         const savedTheme = localStorage.getItem('theme') || 'light';
         setTheme(savedTheme);
 
         themeToggle.addEventListener('click', () => {
             const currentTheme = html.getAttribute('data-theme');
             setTheme(currentTheme === 'light' ? 'dark' : 'light');
+        });
+
+        // Modal System
+        const modalOverlay = document.getElementById('modal-overlay');
+        const modalTitle = document.getElementById('modal-title');
+        const modalDesc = document.getElementById('modal-desc');
+        const modalFeatures = document.getElementById('modal-features');
+
+        function openModal(title, desc, features) {
+            modalTitle.textContent = title;
+            modalDesc.textContent = desc;
+            modalFeatures.innerHTML = features.map(f => `<li><span>✓</span> ${f}</li>`).join('');
+            modalOverlay.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modalOverlay.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+
+        // AI Chatbot Logic
+        const chatBtn = document.getElementById('chat-btn');
+        const chatWindow = document.getElementById('chat-window');
+        const chatClose = document.getElementById('chat-close');
+        const chatInput = document.getElementById('chat-input');
+        const chatSend = document.getElementById('chat-send');
+        const chatBody = document.getElementById('chat-body');
+
+        chatBtn.addEventListener('click', () => {
+            chatWindow.style.display = chatWindow.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        chatClose.addEventListener('click', () => {
+            chatWindow.style.display = 'none';
+        });
+
+        function addMessage(text, isUser) {
+            const msg = document.createElement('div');
+            msg.className = `chat-msg ${isUser ? 'msg-user' : 'msg-bot'}`;
+            msg.textContent = text;
+            chatBody.appendChild(msg);
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+
+        function handleChat() {
+            const text = chatInput.value.trim().toLowerCase();
+            if (!text) return;
+
+            addMessage(chatInput.value, true);
+            chatInput.value = '';
+
+            setTimeout(() => {
+                if (text.includes('hour') || text.includes('time')) {
+                    addMessage('We are open Mon to Sun, 09:00 to 22:00 hrs.', false);
+                } else if (text.includes('location') || text.includes('where') || text.includes('address')) {
+                    addMessage('We are located in Tamil Nadu, India. You can find the exact location on the map in our website.', false);
+                } else if (text.includes('repair') || text.includes('service')) {
+                    addMessage('We offer professional repair services for Mobiles, TVs, and Audio devices.', false);
+                } else {
+                    addMessage('Please connect with our executive on WhatsApp for detailed assistance.', false);
+                    const waBtn = document.createElement('a');
+                    waBtn.href = 'https://wa.me/917200006006';
+                    waBtn.className = 'btn btn-whatsapp';
+                    waBtn.style.fontSize = '0.8rem';
+                    waBtn.style.padding = '8px 12px';
+                    waBtn.textContent = 'WhatsApp Us';
+                    chatBody.appendChild(waBtn);
+                    chatBody.scrollTop = chatBody.scrollHeight;
+                }
+            }, 500);
+        }
+
+        chatSend.addEventListener('click', handleChat);
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleChat();
         });
 
         // Reveal on scroll
@@ -842,7 +1210,6 @@
         }
 
         window.addEventListener("scroll", reveal);
-        // Initial check
         reveal();
     </script>
 </body>
