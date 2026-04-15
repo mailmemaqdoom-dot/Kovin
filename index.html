@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Kovin — Find what fits you</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,7 +17,7 @@
             --border: #D2D2D7;
             --card-bg: #FFFFFF;
             --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-            --transition: all 0.3s ease;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             --bulb-color: #FFD700;
             --bulb-glow: 0 0 20px rgba(255, 215, 0, 0.6);
         }
@@ -40,6 +40,11 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
@@ -47,6 +52,7 @@
             color: var(--text-primary);
             line-height: 1.5;
             transition: var(--transition);
+            overflow-x: hidden;
         }
 
         a {
@@ -65,7 +71,7 @@
             padding: 0 20px;
         }
 
-        /* Hanging Bulb Theme Toggle */
+        /* Hanging Bulb Theme Toggle (Desktop Only) */
         .bulb-container {
             position: fixed;
             top: 0;
@@ -124,6 +130,7 @@
             cursor: pointer; transition: var(--transition); display: inline-flex;
             align-items: center; gap: 8px; border: none;
         }
+        .btn:active { transform: scale(0.95); }
         .btn-primary { background-color: var(--text-primary); color: var(--bg-primary); }
         .btn-primary:hover { opacity: 0.9; transform: translateY(-2px); }
         .btn-secondary { background-color: transparent; color: var(--text-primary); border: 1px solid var(--border); }
@@ -159,6 +166,7 @@
             display: flex; flex-direction: column; cursor: pointer;
         }
         .product-card:hover { box-shadow: var(--shadow); transform: translateY(-4px); }
+        .product-card:active { transform: scale(0.98); }
         .product-img { width: 100%; height: 200px; background: var(--bg-secondary); border-radius: 12px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
         .badge { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 16px; align-self: flex-start; }
         .badge-hot { background: #FF3B30; color: white; }
@@ -213,9 +221,23 @@
         .social-links a:hover { color: var(--accent); }
 
         /* AI Chatbot */
-        .chat-btn { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 50%; background-color: var(--accent); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 1500; transition: var(--transition); }
+        .chat-btn {
+            position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px;
+            border-radius: 50%; background-color: var(--accent); color: white;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 1500;
+            transition: var(--transition);
+        }
         .chat-btn:hover { transform: scale(1.1); }
-        .chat-window { position: fixed; bottom: 100px; right: 30px; width: 350px; height: 450px; background-color: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; box-shadow: var(--shadow); display: none; flex-direction: column; z-index: 1500; overflow: hidden; }
+        .chat-btn:active { transform: scale(0.9); }
+        .chat-btn svg { width: 30px; height: 30px; fill: currentColor; }
+
+        .chat-window {
+            position: fixed; bottom: 100px; right: 30px; width: 350px; height: 450px;
+            background-color: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 20px; box-shadow: var(--shadow); display: none;
+            flex-direction: column; z-index: 1500; overflow: hidden;
+        }
         .chat-header { padding: 16px; background-color: var(--accent); color: white; display: flex; justify-content: space-between; align-items: center; }
         .chat-body { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; }
         .chat-msg { padding: 10px 14px; border-radius: 14px; max-width: 80%; font-size: 0.9rem; }
@@ -240,14 +262,60 @@
         .option-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
         .modal-actions { display: flex; flex-direction: column; gap: 12px; }
 
-        /* Responsive */
+        /* Mobile Optimization (App-Like Experience) */
         @media (max-width: 768px) {
-            .hero h1 { font-size: 2.5rem; }
-            .stats-grid { grid-template-columns: 1fr; gap: 24px; }
-            .footer-grid { grid-template-columns: 1fr; gap: 40px; }
-            .booking-grid { grid-template-columns: 1fr; }
+            .container { padding: 0 16px; }
+            .hero { min-height: 80vh; display: flex; flex-direction: column; justify-content: center; padding: 40px 0; }
+            .hero h1 { font-size: 2.5rem; margin-bottom: 16px; }
+            .hero p { font-size: 1.1rem; margin-bottom: 32px; }
+            .hero-ctas { flex-direction: column; width: 100%; }
+            .btn { width: 100%; justify-content: center; padding: 16px; border-radius: 16px; }
+            
+            .stats-grid { grid-template-columns: 1fr; gap: 16px; }
+            .stat-item { padding: 20px; background: var(--bg-secondary); border-radius: 16px; }
+            
+            .section-header h2 { font-size: 2rem; }
+            .product-grid { grid-template-columns: 1fr; gap: 16px; }
+            .product-card { padding: 16px; border-radius: 16px; }
+            
+            .booking-grid { grid-template-columns: 1fr; gap: 16px; }
+            .booking-card { padding: 24px; border-radius: 20px; }
+            
+            .footer-grid { grid-template-columns: 1fr; gap: 32px; }
             .nav-links { display: none; }
-            .bulb-container { right: 20px; }
+            .bulb-container { display: none; }
+            
+            /* Mobile Theme Toggle */
+            .mobile-theme-toggle {
+                display: flex; align-items: center; justify-content: center;
+                width: 40px; height: 40px; border-radius: 50%;
+                background: var(--bg-secondary); cursor: pointer;
+                transition: var(--transition);
+            }
+            .mobile-theme-toggle svg { width: 20px; height: 20px; transition: transform 0.5s ease; }
+            [data-theme="dark"] .mobile-theme-toggle svg { transform: rotate(180deg); }
+
+            /* Mobile Sticky Bottom Nav */
+            .mobile-nav {
+                position: fixed; bottom: 0; left: 0; width: 100%;
+                background: var(--bg-primary); border-top: 1px solid var(--border);
+                display: flex; justify-content: space-around; align-items: center;
+                height: 70px; z-index: 1000; padding-bottom: env(safe-area-inset-bottom);
+            }
+            .mobile-nav-item {
+                display: flex; flex-direction: column; align-items: center;
+                font-size: 0.7rem; color: var(--text-secondary); gap: 4px;
+            }
+            .mobile-nav-item.active { color: var(--accent); font-weight: 600; }
+            .mobile-nav-item svg { width: 24px; height: 24px; }
+            
+            body { padding-bottom: 80px; }
+            .chat-btn { bottom: 90px; right: 20px; width: 50px; height: 50px; }
+            .chat-window { width: calc(100% - 40px); right: 20px; bottom: 150px; height: 60vh; }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-nav, .mobile-theme-toggle { display: none; }
         }
 
         /* Fade-in on scroll */
@@ -257,7 +325,7 @@
 </head>
 <body>
 
-    <!-- Hanging Bulb Theme Toggle -->
+    <!-- Hanging Bulb Theme Toggle (Desktop) -->
     <div class="bulb-container" id="theme-toggle">
         <div class="bulb-wire"></div>
         <div class="bulb"></div>
@@ -275,6 +343,20 @@
                     <a href="#fix">Fix</a>
                     <a href="#" class="disabled">Account <span class="badge-soon">Soon</span></a>
                     <a href="#" class="disabled">Loyalty <span class="badge-soon">Soon</span></a>
+                </div>
+                <!-- Mobile Theme Toggle -->
+                <div class="mobile-theme-toggle" id="mobile-theme-toggle">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
                 </div>
             </nav>
         </div>
@@ -514,8 +596,36 @@
         </div>
     </footer>
 
+    <!-- Mobile Sticky Bottom Nav -->
+    <div class="mobile-nav">
+        <a href="#" class="mobile-nav-item active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            <span>Home</span>
+        </a>
+        <a href="#explore" class="mobile-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><path d="M3 6h18"></path><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+            <span>Catalogue</span>
+        </a>
+        <a href="#fix" class="mobile-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+            <span>Fix</span>
+        </a>
+        <a href="#help" class="mobile-nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+            <span>Help</span>
+        </a>
+    </div>
+
     <!-- AI Chatbot -->
-    <div class="chat-btn" id="chat-btn">💬</div>
+    <div class="chat-btn" id="chat-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12A10 10 0 0 1 12 2z"></path>
+            <path d="M12 8v4"></path>
+            <path d="M12 16h.01"></path>
+            <path d="M7 12h.01"></path>
+            <path d="M17 12h.01"></path>
+        </svg>
+    </div>
     <div class="chat-window" id="chat-window">
         <div class="chat-header"><span>Kovin Assistant</span><span style="cursor:pointer" id="chat-close">✕</span></div>
         <div class="chat-body" id="chat-body"><div class="chat-msg msg-bot">Hello! I'm your Kovin Sales Assistant. How can I help you today?</div></div>
@@ -596,10 +706,14 @@
 
         // Theme System
         const themeToggle = document.getElementById('theme-toggle');
+        const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
         const html = document.documentElement;
         function setTheme(theme) { html.setAttribute('data-theme', theme); localStorage.setItem('theme', theme); }
         setTheme(localStorage.getItem('theme') || 'light');
-        themeToggle.addEventListener('click', () => setTheme(html.getAttribute('data-theme') === 'light' ? 'dark' : 'light'));
+        
+        const toggleAction = () => setTheme(html.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
+        themeToggle.addEventListener('click', toggleAction);
+        mobileThemeToggle.addEventListener('click', toggleAction);
 
         // Modal System
         const modalOverlay = document.getElementById('modal-overlay');
@@ -670,7 +784,6 @@
             chatBody.scrollTop = chatBody.scrollHeight;
 
             setTimeout(() => {
-                // Intent Detection Logic
                 if (text.includes('charger') || text.includes('cable') || text.includes('earphone') || text.includes('case') || text.includes('cover') || text.includes('battery') || text.includes('accessory')) {
                     addBotMessage("We have high-quality accessories available (Type-C / iPhone compatible).\n\n👉 Do you want budget or original quality?\n\nFor quick pricing and availability, connect on WhatsApp:", true);
                 } 
