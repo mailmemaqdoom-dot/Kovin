@@ -172,6 +172,16 @@
         .badge-hot { background: #FF3B30; color: white; }
         .badge-top { background: #FF9500; color: white; }
         .badge-new { background: #34C759; color: white; }
+        
+        /* Intelligent Product Tags */
+        .product-tags { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+        .tag {
+            font-size: 0.65rem; font-weight: 600; padding: 2px 8px;
+            border-radius: 8px; background: var(--bg-secondary);
+            color: var(--text-secondary); border: 1px solid var(--border);
+            text-transform: capitalize;
+        }
+
         .product-info h3 { font-size: 1.25rem; margin-bottom: 8px; }
         .product-specs { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 20px; min-height: 40px; }
         .product-price { margin-top: auto; display: flex; align-items: baseline; gap: 8px; }
@@ -701,6 +711,7 @@
                 price: '₹34,999', 
                 oldPrice: '₹44,999', 
                 badge: 'Built for more power', 
+                tags: ['Built for heavy use', 'Value that holds'],
                 icon: '📱', 
                 desc: 'Samsung Galaxy S23 FE. Features a 6.4" Dynamic AMOLED 2X display, Exynos 2200 processor, 50MP main camera, 4500mAh battery, and 128GB storage.', 
                 expect: 'This fits your usage if you need smooth performance for multitasking and a camera that captures clear details in any light. The battery experience is reliable for a full day of active use.', 
@@ -714,6 +725,7 @@
                 price: '₹39,999', 
                 oldPrice: '₹43,999', 
                 badge: 'Balanced for everything', 
+                tags: ['Camera focused', 'Clean experience'],
                 icon: '📱', 
                 desc: 'Google Pixel 7a. Features a 6.1" OLED display, Google Tensor G2 chip, 64MP dual camera system, 4385mAh battery, and 128GB storage.', 
                 expect: 'Chosen for you if you prefer a compact phone that takes incredible photos automatically. It provides a clean daily performance that feels fast and simple.', 
@@ -727,6 +739,7 @@
                 price: '₹54,990', 
                 oldPrice: '₹69,990', 
                 badge: 'New', 
+                tags: ['Worth noticing', 'Balanced choice'],
                 icon: '📺', 
                 desc: 'Sony Bravia 55" 4K Ultra HD LED. Features a 55-inch screen, X1 4K Processor, 4K resolution, and 20W Dolby Audio sound.', 
                 expect: 'This fits your usage for a cinematic movie experience at home. The display type ensures vibrant colors that look real for you.', 
@@ -740,6 +753,7 @@
                 price: '₹26,990', 
                 oldPrice: '₹34,990', 
                 badge: 'Top Pick', 
+                tags: ['Quiet performer', 'Chosen for you'],
                 icon: '🎧', 
                 desc: 'Sony WH-1000XM5 Wireless Headphones. Features 30-hour battery life, industry-leading noise cancellation, and Bluetooth 5.2 connectivity.', 
                 expect: 'Chosen for you to create a quiet space anywhere. The sound profile is balanced to make every instrument clear for you during long listening sessions.', 
@@ -753,6 +767,7 @@
                 price: '₹1,699', 
                 oldPrice: '₹1,900', 
                 badge: '', 
+                tags: ['Most picked', 'Battery focused'],
                 icon: '🔌', 
                 desc: 'Apple 20W USB-C Power Adapter. Compatible with iPhone 8 or later and various iPad models for fast charging.', 
                 expect: 'This fits your usage if you need to power up your device quickly and safely. It is chosen for you to ensure battery health over long-term use.', 
@@ -775,6 +790,9 @@
                     ${p.badge ? `<span class="badge badge-${p.badge.toLowerCase().replace(/ /g, '')}">${p.badge}</span>` : ''}
                     <div class="product-img">${p.icon}</div>
                     <div class="product-info">
+                        <div class="product-tags">
+                            ${p.tags ? p.tags.map(t => `<span class="tag">${t}</span>`).join('') : ''}
+                        </div>
                         <h3>${p.name}</h3>
                         <p class="product-specs">${p.specs}</p>
                         <div class="product-price">
