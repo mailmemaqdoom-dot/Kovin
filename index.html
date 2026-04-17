@@ -693,11 +693,71 @@
     <script>
         // Products Data
         const products = [
-            { id: 1, category: 'phones', name: 'Samsung Galaxy S23 FE', specs: '6.4" AMOLED · 50MP · 4500mAh', price: '₹34,999', oldPrice: '₹44,999', badge: 'Hot', icon: '📱', desc: 'A flagship experience at a great value.', expect: 'Smooth performance and great photos.', fact: 'The FE stands for Fan Edition.' },
-            { id: 2, category: 'phones', name: 'Apple iPhone 15', specs: '6.1" Super Retina · 48MP · A16 Bionic', price: '₹69,999', oldPrice: '₹79,900', badge: 'Top Pick', icon: '🍎', desc: 'The latest iPhone with Dynamic Island.', expect: 'Premium build and industry-leading video.', fact: 'The iPhone 15 is the first to use USB-C.' },
-            { id: 3, category: 'tv', name: 'Sony Bravia 4K LED', specs: '55" 4K Ultra HD · Smart TV · HDR', price: '₹54,990', oldPrice: '₹69,990', badge: 'New', icon: '📺', desc: 'Immersive 4K visuals with Sony color tech.', expect: 'Vibrant colors and smooth motion.', fact: 'Sony was the first to release an OLED TV.' },
-            { id: 4, category: 'speakers', name: 'Sony WH-1000XM5', specs: '30hr battery · 8 mics · LDAC', price: '₹26,990', oldPrice: '₹34,990', badge: 'Top Pick', icon: '🎧', desc: 'Industry-leading noise cancellation.', expect: 'Complete silence and high-fidelity audio.', fact: 'The XM5 uses two processors for ANC.' },
-            { id: 5, category: 'accessories', name: 'Apple 20W USB-C Power Adapter', specs: 'Fast charging · Compact design', price: '₹1,699', oldPrice: '₹1,900', badge: '', icon: '🔌', desc: 'Official Apple fast charger.', expect: 'Safe and reliable charging for your iPhone.', fact: 'Fast charging can reach 50% in 30 mins.' }
+            { 
+                id: 1, 
+                category: 'phones', 
+                name: 'Samsung Galaxy S23 FE', 
+                specs: '6.4" AMOLED · 50MP · 4500mAh', 
+                price: '₹34,999', 
+                oldPrice: '₹44,999', 
+                badge: 'Built for more power', 
+                icon: '📱', 
+                desc: 'Samsung Galaxy S23 FE. Features a 6.4" Dynamic AMOLED 2X display, Exynos 2200 processor, 50MP main camera, 4500mAh battery, and 128GB storage.', 
+                expect: 'This fits your usage if you need smooth performance for multitasking and a camera that captures clear details in any light. The battery experience is reliable for a full day of active use.', 
+                fact: 'The performance stability during long video calls is better-than-expected for this model.' 
+            },
+            { 
+                id: 2, 
+                category: 'phones', 
+                name: 'Google Pixel 7a', 
+                specs: '6.1" OLED · 64MP · Tensor G2', 
+                price: '₹39,999', 
+                oldPrice: '₹43,999', 
+                badge: 'Balanced for everything', 
+                icon: '📱', 
+                desc: 'Google Pixel 7a. Features a 6.1" OLED display, Google Tensor G2 chip, 64MP dual camera system, 4385mAh battery, and 128GB storage.', 
+                expect: 'Chosen for you if you prefer a compact phone that takes incredible photos automatically. It provides a clean daily performance that feels fast and simple.', 
+                fact: 'The call clarity and noise cancellation features offer a unique usage advantage in busy environments.' 
+            },
+            { 
+                id: 3, 
+                category: 'tv', 
+                name: 'Sony Bravia 4K LED', 
+                specs: '55" 4K Ultra HD · Smart TV · HDR', 
+                price: '₹54,990', 
+                oldPrice: '₹69,990', 
+                badge: 'New', 
+                icon: '📺', 
+                desc: 'Sony Bravia 55" 4K Ultra HD LED. Features a 55-inch screen, X1 4K Processor, 4K resolution, and 20W Dolby Audio sound.', 
+                expect: 'This fits your usage for a cinematic movie experience at home. The display type ensures vibrant colors that look real for you.', 
+                fact: 'The sound profile is surprisingly deep, often removing the need for an external speaker in medium-sized rooms.' 
+            },
+            { 
+                id: 4, 
+                category: 'speakers', 
+                name: 'Sony WH-1000XM5', 
+                specs: '30hr battery · 8 mics · LDAC', 
+                price: '₹26,990', 
+                oldPrice: '₹34,990', 
+                badge: 'Top Pick', 
+                icon: '🎧', 
+                desc: 'Sony WH-1000XM5 Wireless Headphones. Features 30-hour battery life, industry-leading noise cancellation, and Bluetooth 5.2 connectivity.', 
+                expect: 'Chosen for you to create a quiet space anywhere. The sound profile is balanced to make every instrument clear for you during long listening sessions.', 
+                fact: 'The quick-charge feature is a unique usage advantage, giving 3 hours of playback from just a 3-minute charge.' 
+            },
+            { 
+                id: 5, 
+                category: 'accessories', 
+                name: 'Apple 20W USB-C Power Adapter', 
+                specs: 'Fast charging · Compact design', 
+                price: '₹1,699', 
+                oldPrice: '₹1,900', 
+                badge: '', 
+                icon: '🔌', 
+                desc: 'Apple 20W USB-C Power Adapter. Compatible with iPhone 8 or later and various iPad models for fast charging.', 
+                expect: 'This fits your usage if you need to power up your device quickly and safely. It is chosen for you to ensure battery health over long-term use.', 
+                fact: 'The compact design makes it easy to carry, and it maintains a cool temperature even during fast-charging sessions.' 
+            }
         ];
 
         let selectedOption = 'Pickup';
@@ -712,7 +772,7 @@
                 card.className = 'product-card';
                 card.onclick = () => openModal(p.name, p.desc, ['High Quality', 'Authentic', 'Warranty Included'], p.expect, p.fact);
                 card.innerHTML = `
-                    ${p.badge ? `<span class="badge badge-${p.badge.toLowerCase().replace(' ', '')}">${p.badge}</span>` : ''}
+                    ${p.badge ? `<span class="badge badge-${p.badge.toLowerCase().replace(/ /g, '')}">${p.badge}</span>` : ''}
                     <div class="product-img">${p.icon}</div>
                     <div class="product-info">
                         <h3>${p.name}</h3>
