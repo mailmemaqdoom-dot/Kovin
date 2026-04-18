@@ -234,7 +234,10 @@
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 60px; }
         .footer-brand h2 { margin-bottom: 16px; color: var(--accent); }
         .footer-brand p { color: var(--text-secondary); font-size: 0.95rem; max-width: 300px; }
-        .footer-col h4 { margin-bottom: 20px; font-size: 1rem; color: var(--text-primary); }
+        .footer-col h4 { margin-bottom: 20px; font-size: 1rem; color: var(--text-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+        .footer-col h4:hover { color: var(--accent); }
+        .footer-col ul { display: none; margin-top: 16px; }
+        .footer-col.active ul { display: block; }
         .footer-col ul li { margin-bottom: 12px; font-size: 0.9rem; color: var(--text-secondary); }
         .footer-bottom { padding-top: 40px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--text-secondary); }
         
@@ -458,61 +461,6 @@
             </div>
         </section>
 
-        <!-- About Section -->
-        <section id="about" class="reveal" style="background-color: var(--bg-secondary);">
-            <div class="container">
-                <div class="section-header">
-                    <p>Our Philosophy</p>
-                    <h2>Clarity builds confidence</h2>
-                </div>
-                <div class="booking-grid">
-                    <div class="booking-card">
-                        <h3>Philosophy</h3>
-                        <p>Kovin Electronics operates on a customer-first principle. The focus remains on service quality and building long-term trust rather than short-term sales. Every interaction is designed to provide complete clarity, ensuring the right solution is delivered every time.</p>
-                    </div>
-                    <div class="booking-card">
-                        <h3>Ecosystem</h3>
-                        <p>A comprehensive support ecosystem is offered, combining high-quality products with expert repair services. From choosing a new device to maintaining an existing one, professional guidance is provided at every step.</p>
-                    </div>
-                </div>
-                
-                <div class="section-header" style="margin-top: 80px;">
-                    <h2>Technical Solution Partners</h2>
-                </div>
-                <div class="stats-grid">
-                    <div class="stat-item"><h3>CX Specialist</h3><p>Ensuring every visitor receives a seamless and transparent experience.</p></div>
-                    <div class="stat-item"><h3>Device Care Expert</h3><p>Dedicated to precision diagnostics and high-quality hardware restoration.</p></div>
-                    <div class="stat-item"><h3>Solution Partner</h3><p>Providing technical insights to help choose the perfect device for real-world use.</p></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Careers Section -->
-        <section id="careers" class="reveal">
-            <div class="container">
-                <div class="section-header">
-                    <p>Join the Team</p>
-                    <h2>Open Opportunities</h2>
-                </div>
-                <div class="product-grid">
-                    <div class="product-card">
-                        <div class="product-info">
-                            <h3>Service Consultant</h3>
-                            <p class="product-specs">Help customers find clarity in their tech choices. Focus on empathy and technical knowledge.</p>
-                            <a href="https://wa.me/917200006006" class="btn btn-secondary">Apply via WhatsApp</a>
-                        </div>
-                    </div>
-                    <div class="product-card">
-                        <div class="product-info">
-                            <h3>Repair Technician</h3>
-                            <p class="product-specs">Precision-focused role for hardware diagnostics and repair. Experience with modern electronics required.</p>
-                            <a href="https://wa.me/917200006006" class="btn btn-secondary">Apply via WhatsApp</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- Booking Section -->
         <section class="reveal" style="background-color: var(--bg-secondary);">
             <div class="container">
@@ -551,34 +499,6 @@
                     </div>
                     <div class="repair-item" onclick="openModal('Audio Repair', 'Fixing your favorite headphones and speakers.', ['Speaker Repair', 'Jack Replacement', 'Internal Wiring'], 'Restoring original sound quality using genuine components.', 'Interesting: High-end speakers can last over 20 years if maintained properly.')">
                         <span class="repair-icon">🎧</span><span>Audio</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- FAQ Section -->
-        <section class="reveal" style="background-color: var(--bg-secondary);">
-            <div class="container">
-                <div class="section-header">
-                    <p>FAQs</p>
-                    <h2>Common Questions</h2>
-                </div>
-                <div class="faq-container">
-                    <div class="faq-item" onclick="toggleFaq(this)">
-                        <div class="faq-question">What is the warranty policy? <span>+</span></div>
-                        <div class="faq-answer">All products come with a standard manufacturer warranty. For repairs, we provide a 90-day service warranty on the specific issue fixed.</div>
-                    </div>
-                    <div class="faq-item" onclick="toggleFaq(this)">
-                        <div class="faq-question">How long does delivery take? <span>+</span></div>
-                        <div class="faq-answer">Local delivery in Coimbatore is same-day. Courier across India typically takes 3-5 business days.</div>
-                    </div>
-                    <div class="faq-item" onclick="toggleFaq(this)">
-                        <div class="faq-question">Are the products authentic? <span>+</span></div>
-                        <div class="faq-answer">Yes, we only deal in 100% authentic products sourced directly from authorized distributors.</div>
-                    </div>
-                    <div class="faq-item" onclick="toggleFaq(this)">
-                        <div class="faq-question">What payment methods are accepted? <span>+</span></div>
-                        <div class="faq-answer">We accept UPI, Credit/Debit Cards, Net Banking, and Cash on Pickup.</div>
                     </div>
                 </div>
             </div>
@@ -626,21 +546,55 @@
                         </a>
                     </div>
                 </div>
-                <div class="footer-col">
-                    <h4>Company</h4>
+                <div class="footer-col" onclick="toggleFooterSection(this)">
+                    <h4>Our Philosophy <span>+</span></h4>
                     <ul>
-                        <li><a href="#about">About Us</a></li>
-                        <li><a href="#careers">Careers</a></li>
-                        <li><a href="#" onclick="openTerms()">Terms & Conditions</a></li>
+                        <li><strong>Philosophy:</strong> Kovin Electronics operates on a customer-first principle. The focus remains on service quality and building long-term trust rather than short-term sales.</li>
+                        <li><strong>Ecosystem:</strong> A comprehensive support ecosystem is offered, combining high-quality products with expert repair services.</li>
+                        <li><strong>CX Specialist:</strong> Ensuring every visitor receives a seamless and transparent experience.</li>
+                        <li><strong>Device Care Expert:</strong> Dedicated to precision diagnostics and high-quality hardware restoration.</li>
+                    </ul>
+                </div>
+                <div class="footer-col" onclick="toggleFooterSection(this)">
+                    <h4>FAQ <span>+</span></h4>
+                    <ul class="faq-container">
+                        <li class="faq-item" onclick="event.stopPropagation(); toggleFaq(this)">
+                            <div class="faq-question">How do I know which device fits my usage? <span>+</span></div>
+                            <div class="faq-answer">We use a guided system that focuses on your daily needs rather than just specs. Our "What this feels like for you" descriptions and intelligent tags are designed to help you choose with clarity.</div>
+                        </li>
+                        <li class="faq-item" onclick="event.stopPropagation(); toggleFaq(this)">
+                            <div class="faq-question">Are all products authentic? <span>+</span></div>
+                            <div class="faq-answer">Absolutely. We only deal in 100% original products sourced directly from authorized distributors. Every item undergoes a quality check before being listed.</div>
+                        </li>
+                        <li class="faq-item" onclick="event.stopPropagation(); toggleFaq(this)">
+                            <div class="faq-question">When can I expect my delivery? <span>+</span></div>
+                            <div class="faq-answer">For customers in Coimbatore, we offer same-day delivery. For the rest of India, our courier partners typically deliver within 3-5 business days.</div>
+                        </li>
+                        <li class="faq-item" onclick="event.stopPropagation(); toggleFaq(this)">
+                            <div class="faq-question">What is your return policy? <span>+</span></div>
+                            <div class="faq-answer">We offer a 7-day replacement policy for any manufacturing defects. Reach out via WhatsApp, and we will guide you through the process.</div>
+                        </li>
+                        <li class="faq-item" onclick="event.stopPropagation(); toggleFaq(this)">
+                            <div class="faq-question">What is the E-con platform? <span>+</span></div>
+                            <div class="faq-answer">E-con is our proprietary guided electronics system designed to bring transparency to tech commerce. It ensures you never buy the wrong device.</div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="footer-col" onclick="toggleFooterSection(this)">
+                    <h4>Join the Team <span>+</span></h4>
+                    <ul>
+                        <li><strong>Service Consultant:</strong> Help customers find clarity in their tech choices. Focus on empathy and technical knowledge. <a href="https://wa.me/917200006006" style="color: var(--accent);">Apply via WhatsApp</a></li>
+                        <li><strong>Repair Technician:</strong> Precision-focused role for hardware diagnostics and repair. Experience required. <a href="https://wa.me/917200006006" style="color: var(--accent);">Apply via WhatsApp</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
-                    <h4>Hours</h4>
-                    <ul><li>Mon – Sun</li><li>09:00 – 22:00 hrs</li></ul>
-                </div>
-                <div class="footer-col">
                     <h4>Contact</h4>
-                    <ul><li>+91 72000 06006</li><li>Tamil Nadu, India</li></ul>
+                    <ul>
+                        <li>+91 72000 06006</li>
+                        <li>Tamil Nadu, India</li>
+                        <li>Mon – Sun: 09:00 – 22:00</li>
+                        <li><a href="#" onclick="openTerms()" style="color: var(--accent);">Terms & Conditions</a></li>
+                    </ul>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -861,10 +815,29 @@
         }
 
         function openTerms() {
-            openModal('Terms & Conditions', 'By using our services, you agree to our terms. We prioritize your privacy and data security. All repairs are subject to diagnostic checks.', ['Privacy First', 'Secure Payments', 'Authentic Parts'], 'Clear communication and fair pricing.', 'Fact: We have served over 4,200 happy customers.');
+            const tcContent = `
+                <h3>Terms & Conditions for E-con Platform</h3>
+                <p><strong>1. Platform Usage Rules:</strong> By accessing the Kovin Electronics website and the E-con platform, you agree to use the services for lawful purposes only. Any attempt to disrupt the platform's integrity or scrape data without permission is strictly prohibited.</p>
+                <p><strong>2. User Responsibilities:</strong> Users are responsible for providing accurate information during inquiries and purchases. If you create an account (coming soon), you are responsible for maintaining the confidentiality of your credentials.</p>
+                <p><strong>3. Order and Payment Terms:</strong> All orders placed through the platform or via WhatsApp are subject to availability. We accept UPI, Credit/Debit Cards, Net Banking, and Cash on Pickup. Payments must be cleared before delivery or at the time of pickup.</p>
+                <p><strong>4. Shipping and Delivery Terms:</strong> We offer same-day delivery in Coimbatore and courier services across India. While we strive for timely delivery, Kovin Electronics is not liable for delays caused by third-party courier services or unforeseen circumstances.</p>
+                <p><strong>5. Return and Refund Policy:</strong> Replacements are provided for manufacturing defects reported within 7 days of delivery. Refunds are processed only if a replacement is unavailable. Items must be returned in their original packaging with all accessories.</p>
+                <p><strong>6. Warranty and Service Disclaimers:</strong> Products carry standard manufacturer warranties. For repairs, Kovin Electronics provides a 90-day service warranty on the specific issue addressed. We are not liable for pre-existing issues or data loss during the repair process.</p>
+                <p><strong>7. Privacy and Data Usage Policy:</strong> We value your privacy. Your contact details and inquiry history are used solely to provide personalized service and order updates. We do not sell your data to third parties.</p>
+                <p><strong>8. Limitation of Liability:</strong> Kovin Electronics shall not be liable for any indirect, incidental, or consequential damages arising from the use of our products or services. Our total liability is limited to the amount paid for the specific product or service.</p>
+                <p><strong>9. Account Suspension or Misuse Policy:</strong> We reserve the right to suspend access to the platform for any user found engaging in fraudulent activities, harassment of staff, or misuse of the guided system.</p>
+            `;
+            openModal('Terms & Conditions', 'Please read our comprehensive terms for the E-con platform.', [], 'Clear communication and fair pricing.', 'Fact: We have served over 4,200 happy customers.');
+            document.getElementById('modal-features').innerHTML = tcContent;
         }
 
         function toggleFaq(item) { item.classList.toggle('active'); }
+        
+        function toggleFooterSection(header) {
+            const isActive = header.classList.contains('active');
+            document.querySelectorAll('.footer-col').forEach(col => col.classList.remove('active'));
+            if (!isActive) header.classList.add('active');
+        }
 
         // Upgraded Sales Assistant AI Chatbot
         const chatBtn = document.getElementById('chat-btn');
