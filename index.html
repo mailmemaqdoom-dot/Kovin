@@ -177,7 +177,10 @@
         }
         .product-card:hover { box-shadow: var(--shadow); transform: translateY(-4px); border-color: var(--secondary-accent); }
         .product-card:active { transform: scale(0.98); }
-        .product-img { width: 100%; height: 200px; background: var(--bg-secondary); border-radius: 12px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; font-size: 3rem; }
+        .product-img { width: 100%; height: 200px; background: #FFFFFF; border-radius: 12px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .product-img img { width: 100%; height: 100%; object-fit: contain; transition: var(--transition); }
+        .product-card:hover .product-img img { transform: scale(1.05); }
+        
         .badge { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 16px; align-self: flex-start; }
         .badge-hot { background: var(--secondary-accent); color: white; }
         .badge-top { background: var(--accent); color: var(--bg-primary); }
@@ -681,7 +684,7 @@
                 oldPrice: '₹44,999', 
                 badge: 'Built for more power', 
                 tags: ['Built for heavy use', 'Value that holds'],
-                icon: '📱', 
+                image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/fWEumNteCudVVPuo.png', 
                 desc: 'Samsung Galaxy S23 FE. Features a 6.4" Dynamic AMOLED 2X display, Exynos 2200 processor, 50MP main camera, 4500mAh battery, and 128GB storage.', 
                 expect: 'This fits your usage if you need smooth performance for multitasking and a camera that captures clear details in any light. The battery experience is reliable for a full day of active use.', 
                 fact: 'The performance stability during long video calls is better-than-expected for this model.' 
@@ -695,7 +698,7 @@
                 oldPrice: '₹43,999', 
                 badge: 'Balanced for everything', 
                 tags: ['Camera focused', 'Clean experience'],
-                icon: '📱', 
+                image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/AeIhJBFyYYuVXncG.png', 
                 desc: 'Google Pixel 7a. Features a 6.1" OLED display, Google Tensor G2 chip, 64MP dual camera system, 4385mAh battery, and 128GB storage.', 
                 expect: 'Chosen for you if you prefer a compact phone that takes incredible photos automatically. It provides a clean daily performance that feels fast and simple.', 
                 fact: 'The call clarity and noise cancellation features offer a unique usage advantage in busy environments.' 
@@ -709,7 +712,7 @@
                 oldPrice: '₹69,990', 
                 badge: 'New', 
                 tags: ['Worth noticing', 'Balanced choice'],
-                icon: '📺', 
+                image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/PNuLvudbHcTmKOpp.png', 
                 desc: 'Sony Bravia 55" 4K Ultra HD LED. Features a 55-inch screen, X1 4K Processor, 4K resolution, and 20W Dolby Audio sound.', 
                 expect: 'This fits your usage for a cinematic movie experience at home. The display type ensures vibrant colors that look real for you.', 
                 fact: 'The sound profile is surprisingly deep, often removing the need for an external speaker in medium-sized rooms.' 
@@ -723,7 +726,7 @@
                 oldPrice: '₹34,990', 
                 badge: 'Top Pick', 
                 tags: ['Quiet performer', 'Chosen for you'],
-                icon: '🎧', 
+                image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/XIJzeXSRHorEqzFw.png', 
                 desc: 'Sony WH-1000XM5 Wireless Headphones. Features 30-hour battery life, industry-leading noise cancellation, and Bluetooth 5.2 connectivity.', 
                 expect: 'Chosen for you to create a quiet space anywhere. The sound profile is balanced to make every instrument clear for you during long listening sessions.', 
                 fact: 'The quick-charge feature is a unique usage advantage, giving 3 hours of playback from just a 3-minute charge.' 
@@ -737,10 +740,136 @@
                 oldPrice: '₹1,900', 
                 badge: '', 
                 tags: ['Most picked', 'Battery focused'],
-                icon: '🔌', 
+                image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/uVoVbsruMHDNSVBu.png', 
                 desc: 'Apple 20W USB-C Power Adapter. Compatible with iPhone 8 or later and various iPad models for fast charging.', 
                 expect: 'This fits your usage if you need to power up your device quickly and safely. It is chosen for you to ensure battery health over long-term use.', 
                 fact: 'The compact design makes it easy to carry, and it maintains a cool temperature even during fast-charging sessions.' 
+            },
+            { 
+                id: 6, 
+                category: 'accessories', 
+                name: 'Premium Tempered Glass', 
+                specs: '9H Hardness · Edge-to-edge', 
+                price: '₹499', 
+                oldPrice: '₹999', 
+                badge: 'Essential', 
+                tags: ['Worth noticing', 'Value that holds'],
+                image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/KelCDGFlqZNnFnFD.png', 
+                desc: 'High-quality 9H tempered glass screen protector. Provides edge-to-edge protection against scratches and impacts.', 
+                expect: 'Fits your usage by keeping your screen pristine without affecting touch sensitivity. Chosen for you to prevent costly screen repairs.', 
+                fact: 'Our tempered glass features an oleophobic coating that significantly reduces fingerprint smudges.' 
+            },
+            { 
+                id: 7, 
+                category: 'accessories', 
+                name: 'Sleek Protective Case', 
+                specs: 'Shockproof · Slim profile', 
+                price: '₹799', 
+                oldPrice: '₹1,499', 
+                badge: 'Most Picked', 
+                tags: ['Balanced choice', 'Chosen for you'],
+                image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/jdVRAWbtGZtmRYSW.png', 
+                desc: 'Durable, shock-absorbing back case with a slim profile. Designed to protect your device while maintaining its original look.', 
+                expect: 'This fits your usage if you want protection without the bulk. It feels premium in hand and provides a secure grip.', 
+                fact: 'The raised edges around the camera provide better-than-expected protection for the lenses.' 
+            },
+            { 
+                id: 8, 
+                category: 'accessories', 
+                name: 'Braided Fast Charge Cable', 
+                specs: 'USB-C to USB-C · 60W PD', 
+                price: '₹599', 
+                oldPrice: '₹1,199', 
+                badge: '', 
+                tags: ['Built for heavy use', 'Battery focused'],
+                image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/skNTrQiJTgkIzyjx.png', 
+                desc: 'Tangle-free braided charging cable supporting up to 60W Power Delivery. Built for durability and high-speed data transfer.', 
+                expect: 'Chosen for you if you are tired of cables breaking. It fits your usage for fast charging at home or in the office.', 
+                fact: 'The reinforced stress points make this cable last 10x longer than standard plastic cables.' 
+            },
+            { 
+                id: 9, 
+                category: 'accessories', 
+                name: '10000mAh Slim Power Bank', 
+                specs: 'Dual output · Fast charging', 
+                price: '₹1,499', 
+                oldPrice: '₹2,499', 
+                badge: 'Travel Ready', 
+                tags: ['Battery focused', 'Value that holds'],
+                image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/ZRDoBVIhYurGwJms.png', 
+                desc: 'Ultra-slim 10000mAh portable charger with dual USB outputs. Perfect for keeping your devices powered on the go.', 
+                expect: 'Fits your usage for long travel days or busy schedules. It is chosen for you to ensure you never run out of power.', 
+                fact: 'Despite its high capacity, it is thin enough to fit comfortably in your pocket alongside your phone.' 
+            },
+            { 
+                id: 10, 
+                category: 'accessories', 
+                name: 'Aluminum Phone Stand', 
+                specs: 'Adjustable angle · Non-slip', 
+                price: '₹399', 
+                oldPrice: '₹899', 
+                badge: '', 
+                tags: ['Clean experience', 'Worth noticing'],
+                image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/QLzXktccBITzJoEo.png', 
+                desc: 'Sturdy aluminum desktop stand with adjustable viewing angles. Features non-slip silicone pads to keep your device secure.', 
+                expect: 'Chosen for you to improve your desk ergonomics. It fits your usage for video calls or watching content hands-free.', 
+                fact: 'The hollow design allows for easy charging while the phone is mounted on the stand.' 
+            },
+            { 
+                id: 11, 
+                category: 'accessories', 
+                name: 'Premium Wireless Earbuds', 
+                specs: '24hr playtime · Auto-pairing', 
+                price: '₹2,999', 
+                oldPrice: '₹5,999', 
+                badge: 'Best Seller', 
+                tags: ['Quiet performer', 'Chosen for you'],
+                image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/akufQOVWgjtpdbDf.png', 
+                desc: 'True wireless earbuds with crystal clear sound and a compact charging case. Features touch controls and voice assistant support.', 
+                expect: 'Fits your usage for daily commutes or workouts. The sound profile is tuned to provide a rich audio experience for you.', 
+                fact: 'The auto-pairing feature works instantly the moment you open the case, providing a seamless experience.' 
+            },
+            { 
+                id: 12, 
+                category: 'accessories', 
+                name: 'Magnetic Car Mount', 
+                specs: '360° Rotation · Strong grip', 
+                price: '₹449', 
+                oldPrice: '₹999', 
+                badge: '', 
+                tags: ['Balanced choice', 'Worth noticing'],
+                image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/LeYyaTtVUntOTfPh.png', 
+                desc: 'Universal magnetic car mount that fits into any air vent. Provides a secure, one-handed mounting solution for your smartphone.', 
+                expect: 'Chosen for you to ensure safe navigation while driving. It fits your usage with its easy-to-adjust 360-degree rotation.', 
+                fact: 'The ultra-strong magnets ensure your phone stays in place even on the bumpiest roads.' 
+            },
+            { 
+                id: 13, 
+                category: 'accessories', 
+                name: 'Device Cleaning Kit', 
+                specs: 'Alcohol-free · Microfiber cloth', 
+                price: '₹249', 
+                oldPrice: '₹499', 
+                badge: '', 
+                tags: ['Clean experience', 'Value that holds'],
+                image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/QdzcPYGrRoKDynVN.png', 
+                desc: 'Professional cleaning solution for screens and electronics. Includes a non-toxic spray and a premium microfiber cloth.', 
+                expect: 'Fits your usage by keeping your devices looking brand new. Chosen for you to maintain the clarity of your displays.', 
+                fact: 'The anti-static formula helps repel dust, keeping your screen cleaner for longer periods.' 
+            },
+            { 
+                id: 14, 
+                category: 'accessories', 
+                name: 'Camera Lens Protector', 
+                specs: 'Ultra-clear · Scratch resistant', 
+                price: '₹299', 
+                oldPrice: '₹599', 
+                badge: 'New', 
+                tags: ['Camera focused', 'Worth noticing'],
+                image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/gmvKvvXVYoSPYHjl.png', 
+                desc: 'Tempered glass protection for your smartphone camera lenses. Maintains original photo quality while preventing scratches.', 
+                expect: 'Chosen for you if you want to protect your camera without compromising on photo clarity. Fits your usage for worry-free photography.', 
+                fact: 'The ultra-thin design makes it almost invisible once applied to your device.' 
             }
         ];
 
@@ -757,7 +886,9 @@
                 card.onclick = () => openModal(p.name, p.desc, ['High Quality', 'Authentic', 'Warranty Included'], p.expect, p.fact);
                 card.innerHTML = `
                     ${p.badge ? `<span class="badge badge-${p.badge.toLowerCase().replace(/ /g, '')}">${p.badge}</span>` : ''}
-                    <div class="product-img">${p.icon}</div>
+                    <div class="product-img">
+                        <img src="${p.image}" alt="${p.name}" loading="lazy">
+                    </div>
                     <div class="product-info">
                         <div class="product-tags">
                             ${p.tags ? p.tags.map(t => `<span class="tag">${t}</span>`).join('') : ''}
