@@ -6,387 +6,701 @@
     <title>Kovin — Find what fits you</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-primary: #00272c; /* Gun Metal */
-            --bg-primary-rgb: 0, 39, 44;
-            --bg-secondary: #001f23; /* Darker Gun Metal */
-            --text-primary: #FFFFFF;
-            --text-secondary: #ff947a; /* Salmon */
-            --accent: #ff947a; /* Salmon */
-            --secondary-accent: #780115; /* Maroon */
-            --border: #003d45;
-            --card-bg: #00353b;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --bulb-color: #ff947a;
-            --bulb-glow: 0 0 20px rgba(255, 148, 122, 0.6);
+            --ink: #1A1A2E;
+            --ink-rgb: 26, 26, 46;
+            --ink-light: #2D2D4A;
+            --paper: #F5F2ED;
+            --paper-warm: #EDE9E1;
+            --ceramic: #FFFFFF;
+            --copper: #B87333;
+            --copper-light: #D4913A;
+            --copper-glow: rgba(184, 115, 51, 0.18);
+            --steel: #4A6B8A;
+            --steel-light: #6B8FAD;
+            --slate: #7A8899;
+            --mist: #C8D4DE;
+            --border: rgba(26,26,46,0.10);
+            --border-warm: rgba(184,115,51,0.18);
+            --card-bg: #FDFBF8;
+            --card-hover: #FFFFFF;
+            --shadow-sm: 0 2px 8px rgba(26,26,46,0.07);
+            --shadow-md: 0 8px 32px rgba(26,26,46,0.10);
+            --shadow-lg: 0 20px 60px rgba(26,26,46,0.13);
+            --shadow-copper: 0 8px 32px rgba(184,115,51,0.18);
+            --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            --radius: 20px;
+            --font-display: 'DM Serif Display', Georgia, serif;
+            --font-body: 'DM Sans', system-ui, sans-serif;
+            --bulb-color: var(--copper);
+            --bulb-glow: 0 0 24px rgba(184, 115, 51, 0.5);
         }
 
         [data-theme="dark"] {
-            --bg-primary: #001a1d; /* Deepest Gun Metal */
-            --bg-primary-rgb: 0, 26, 29;
-            --bg-secondary: #001417;
-            --text-primary: #ff947a; /* Salmon for primary text in dark mode */
-            --text-secondary: #FFFFFF;
-            --accent: #780115; /* Maroon */
-            --secondary-accent: #ff947a; /* Salmon */
-            --border: #00272c;
-            --card-bg: #002126;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-            --bulb-color: #444;
+            --ink: #EDE9E1;
+            --ink-rgb: 237, 233, 225;
+            --ink-light: #C8D4DE;
+            --paper: #0F1020;
+            --paper-warm: #14152A;
+            --ceramic: #1A1B35;
+            --copper: #D4913A;
+            --copper-light: #E8A84B;
+            --copper-glow: rgba(212, 145, 58, 0.15);
+            --steel: #6B8FAD;
+            --steel-light: #8AAFC8;
+            --slate: #8899AA;
+            --mist: #2A3545;
+            --border: rgba(237,233,225,0.08);
+            --border-warm: rgba(212,145,58,0.20);
+            --card-bg: #1A1B35;
+            --card-hover: #1F2040;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.30);
+            --shadow-md: 0 8px 32px rgba(0,0,0,0.35);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.40);
+            --shadow-copper: 0 8px 32px rgba(212,145,58,0.20);
+            --bulb-color: #333;
             --bulb-glow: none;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-        html {
-            scroll-behavior: smooth;
-        }
+        html { scroll-behavior: smooth; }
 
         body {
-            background-color: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.5;
-            transition: var(--transition);
+            background-color: var(--paper);
+            color: var(--ink);
+            font-family: var(--font-body);
+            line-height: 1.6;
             overflow-x: hidden;
+            transition: background-color 0.4s ease, color 0.4s ease;
         }
 
-        a {
-            text-decoration: none;
-            color: inherit;
-            transition: var(--transition);
-        }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
 
-        ul {
-            list-style: none;
-        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        /* Hanging Bulb Theme Toggle (Desktop Only) */
+        /* ===== BULB TOGGLE ===== */
         .bulb-container {
-            position: fixed;
-            top: 0;
-            right: 40px;
-            z-index: 2000;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            transition: transform 0.1s;
+            position: fixed; top: 0; right: 48px; z-index: 2000;
+            display: flex; flex-direction: column; align-items: center; cursor: pointer;
+            transition: transform 0.15s;
         }
-
-        .bulb-wire { width: 2px; height: 60px; background: var(--secondary-accent); }
+        .bulb-container:hover { transform: scale(1.05); }
+        .bulb-wire { width: 1.5px; height: 56px; background: linear-gradient(to bottom, var(--copper), transparent); }
         .bulb {
-            width: 30px; height: 30px; border-radius: 50%;
+            width: 28px; height: 28px; border-radius: 50%;
             background: var(--bulb-color); box-shadow: var(--bulb-glow);
-            position: relative; transition: var(--transition); border: 2px solid var(--secondary-accent);
+            border: 2px solid var(--copper); transition: var(--transition); position: relative;
         }
         .bulb::after {
-            content: ''; position: absolute; top: -5px; left: 50%;
-            transform: translateX(-50%); width: 10px; height: 6px;
-            background: var(--secondary-accent); border-radius: 2px;
+            content: ''; position: absolute; top: -6px; left: 50%;
+            transform: translateX(-50%); width: 8px; height: 5px;
+            background: var(--copper); border-radius: 2px;
         }
-        .pull-chain { width: 2px; height: 40px; background: var(--text-secondary); position: relative; transition: height 0.1s; }
-        .pull-handle {
-            width: 10px; height: 10px; border-radius: 50%;
-            background: var(--text-secondary); position: absolute; bottom: -5px; left: -4px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-        .bulb-container:active .pull-chain { height: 50px; }
+        .pull-chain { width: 1.5px; height: 36px; background: var(--copper); position: relative; transition: height 0.1s; }
+        .pull-handle { width: 8px; height: 8px; border-radius: 50%; background: var(--copper); position: absolute; bottom: -4px; left: -3px; }
+        .bulb-container:active .pull-chain { height: 48px; }
 
-        /* Header & Navbar (Floating Desktop) */
+        /* ===== HEADER ===== */
         header {
             position: sticky; top: 0; z-index: 1000;
-            background: rgba(var(--bg-primary-rgb), 0.7);
-            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            background: rgba(245, 242, 237, 0.88);
+            backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
             border-bottom: 1px solid var(--border);
             transition: var(--transition);
         }
-        nav { display: flex; justify-content: space-between; align-items: center; height: 60px; }
-        .logo { font-weight: 700; font-size: 1.2rem; letter-spacing: -0.5px; color: var(--accent); }
-        .nav-links { display: flex; gap: 24px; align-items: center; margin-right: 80px; }
-        .nav-links a { font-size: 0.9rem; font-weight: 500; color: var(--text-secondary); position: relative; }
-        .nav-links a:hover { color: var(--text-primary); }
-        .nav-links a.active { color: var(--accent); }
+        [data-theme="dark"] header { background: rgba(15, 16, 32, 0.88); }
+
+        nav { display: flex; justify-content: space-between; align-items: center; height: 64px; }
+        .logo {
+            font-family: var(--font-display); font-size: 1.5rem; color: var(--ink);
+            letter-spacing: 0.02em; position: relative;
+        }
+        .logo::after {
+            content: ''; position: absolute; bottom: -2px; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(to right, var(--copper), transparent); border-radius: 2px;
+        }
+        .nav-links { display: flex; gap: 28px; align-items: center; margin-right: 88px; }
+        .nav-links a { font-size: 0.88rem; font-weight: 500; color: var(--slate); letter-spacing: 0.02em; position: relative; }
+        .nav-links a:hover { color: var(--ink); }
+        .nav-links a.active { color: var(--copper); }
         .nav-links a.active::after {
-            content: ''; position: absolute; bottom: -4px; left: 0; width: 100%; height: 2px;
-            background: var(--accent); border-radius: 2px;
+            content: ''; position: absolute; bottom: -6px; left: 0; width: 100%; height: 1.5px;
+            background: var(--copper); border-radius: 2px;
         }
-        .nav-links .disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
-        .badge-soon { font-size: 0.6rem; background: var(--secondary-accent); color: white; padding: 2px 6px; border-radius: 10px; margin-left: 4px; }
+        .nav-links .disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+        .badge-soon { font-size: 0.58rem; background: var(--copper); color: white; padding: 2px 6px; border-radius: 20px; margin-left: 4px; font-weight: 600; vertical-align: middle; }
 
-        /* Hero Section */
-        .hero { padding: 80px 0; text-align: center; background-color: var(--bg-primary); }
-        .hero-tag { font-size: 0.9rem; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; margin-bottom: 16px; display: block; }
-        .hero h1 { font-size: 3.5rem; font-weight: 700; letter-spacing: -1.5px; margin-bottom: 24px; line-height: 1.1; color: var(--text-primary); }
-        .hero p { font-size: 1.25rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto 40px; }
-        .hero-ctas { display: flex; gap: 16px; justify-content: center; }
-
+        /* ===== BTN SYSTEM ===== */
         .btn {
-            padding: 12px 24px; border-radius: 24px; font-weight: 600; font-size: 1rem;
+            padding: 13px 28px; border-radius: 40px; font-weight: 600; font-size: 0.95rem;
             cursor: pointer; transition: var(--transition); display: inline-flex;
-            align-items: center; gap: 8px; border: none;
+            align-items: center; gap: 8px; border: none; font-family: var(--font-body);
+            letter-spacing: 0.01em;
         }
-        .btn:active { transform: scale(0.95); }
-        .btn-primary { background-color: var(--accent); color: var(--bg-primary); }
-        .btn-primary:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255, 148, 122, 0.3); }
-        .btn-secondary { background-color: transparent; color: var(--text-primary); border: 1px solid var(--secondary-accent); }
-        .btn-secondary:hover { background-color: var(--secondary-accent); transform: translateY(-2px); }
-        .btn-whatsapp { background-color: #25D366; color: white; }
-
-        /* Stats Bar */
-        .stats-bar { padding: 40px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); background-color: var(--bg-secondary); }
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; text-align: center; }
-        .stat-item h3 { font-size: 2rem; font-weight: 700; margin-bottom: 4px; color: var(--accent); }
-        .stat-item p { font-size: 0.9rem; color: var(--text-secondary); font-weight: 500; }
-
-        /* Section Styling */
-        section { padding: 80px 0; }
-        .section-header { margin-bottom: 48px; text-align: center; }
-        .section-header h2 { font-size: 2.5rem; font-weight: 700; letter-spacing: -1px; margin-bottom: 12px; color: var(--text-primary); }
-        .section-header p { color: var(--text-secondary); font-size: 1.1rem; }
-
-        /* Filter System */
-        .filter-bar { display: flex; justify-content: center; gap: 12px; margin-bottom: 40px; flex-wrap: wrap; }
-        .filter-btn {
-            padding: 8px 20px; border-radius: 20px; border: 1px solid var(--border);
-            background: var(--card-bg); color: var(--text-secondary); cursor: pointer;
-            font-weight: 500; transition: var(--transition);
+        .btn:active { transform: scale(0.96); }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--copper), var(--copper-light));
+            color: white; box-shadow: var(--shadow-copper);
         }
-        .filter-btn.active { background: var(--accent); color: var(--bg-primary); border-color: var(--accent); }
-
-        /* Product Grid */
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px; }
-        .product-card {
-            background-color: var(--card-bg); border: 1px solid var(--border);
-            border-radius: 20px; padding: 24px; transition: var(--transition);
-            display: flex; flex-direction: column; cursor: pointer;
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(184,115,51,0.35); }
+        .btn-secondary {
+            background: transparent; color: var(--ink);
+            border: 1.5px solid var(--border-warm);
         }
-        .product-card:hover { box-shadow: var(--shadow); transform: translateY(-4px); border-color: var(--secondary-accent); }
-        .product-card:active { transform: scale(0.98); }
-        .product-img { width: 100%; height: 200px; background: #FFFFFF; border-radius: 12px; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .product-img img { width: 100%; height: 100%; object-fit: contain; transition: var(--transition); }
-        .product-card:hover .product-img img { transform: scale(1.05); }
-        
-        .badge { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; margin-bottom: 16px; align-self: flex-start; }
-        .badge-hot { background: var(--secondary-accent); color: white; }
-        .badge-top { background: var(--accent); color: var(--bg-primary); }
-        .badge-new { background: #34C759; color: white; }
-        
-        /* Intelligent Product Tags */
-        .product-tags { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
-        .tag {
-            font-size: 0.65rem; font-weight: 600; padding: 2px 8px;
-            border-radius: 8px; background: var(--bg-secondary);
-            color: var(--text-secondary); border: 1px solid var(--border);
-            text-transform: capitalize;
+        .btn-secondary:hover { background: var(--copper-glow); border-color: var(--copper); transform: translateY(-2px); }
+        .btn-whatsapp { background: #25D366; color: white; }
+        .btn-whatsapp:hover { background: #20B85A; transform: translateY(-2px); }
+        .btn-steel { background: var(--steel); color: white; }
+        .btn-steel:hover { background: var(--steel-light); transform: translateY(-2px); }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 92vh; display: flex; align-items: center;
+            position: relative; overflow: hidden; padding: 80px 0 60px;
+        }
+        .hero-bg {
+            position: absolute; inset: 0; z-index: 0;
+            background: radial-gradient(ellipse 80% 60% at 70% 40%, rgba(184,115,51,0.08) 0%, transparent 60%),
+                        radial-gradient(ellipse 50% 40% at 20% 80%, rgba(74,107,138,0.06) 0%, transparent 50%);
+        }
+        .hero-grid {
+            position: absolute; inset: 0; opacity: 0.025;
+            background-image: linear-gradient(var(--ink) 1px, transparent 1px), linear-gradient(90deg, var(--ink) 1px, transparent 1px);
+            background-size: 60px 60px;
+        }
+        [data-theme="dark"] .hero-grid { opacity: 0.04; }
+        .hero-content { position: relative; z-index: 1; max-width: 820px; }
+        .hero-tag {
+            display: inline-flex; align-items: center; gap: 10px;
+            font-size: 0.78rem; font-weight: 600; color: var(--copper);
+            text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 28px;
+        }
+        .hero-tag::before { content: ''; width: 32px; height: 1.5px; background: var(--copper); }
+
+        .hero h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.8rem, 6vw, 5rem);
+            line-height: 1.08; letter-spacing: -0.02em; margin-bottom: 28px;
+            color: var(--ink);
+            animation: heroFadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both;
+        }
+        .hero h1 em { font-style: italic; color: var(--copper); }
+        .hero-sub {
+            font-size: 1.15rem; color: var(--slate); max-width: 520px;
+            margin-bottom: 44px; line-height: 1.7; font-weight: 400;
+            animation: heroFadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both;
+        }
+        .hero-ctas {
+            display: flex; gap: 14px; flex-wrap: wrap;
+            animation: heroFadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.4s both;
+        }
+        .hero-trust {
+            display: flex; gap: 32px; margin-top: 56px; flex-wrap: wrap;
+            animation: heroFadeUp 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.55s both;
+        }
+        .hero-trust-item { display: flex; align-items: center; gap: 10px; }
+        .trust-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--copper); flex-shrink: 0; }
+        .hero-trust-item span { font-size: 0.85rem; color: var(--slate); }
+        .hero-trust-item strong { color: var(--ink); }
+
+        /* Hero floating card */
+        .hero-card {
+            position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+            width: 340px; background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 28px; padding: 28px; box-shadow: var(--shadow-lg);
+            z-index: 1;
+            animation: heroCardFloat 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.3s both;
+        }
+        .hero-card-label { font-size: 0.72rem; font-weight: 600; color: var(--copper); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 16px; }
+        .hero-card-stat { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--border); }
+        .hero-card-stat:last-child { border-bottom: none; }
+        .hero-card-num { font-family: var(--font-display); font-size: 1.8rem; color: var(--ink); }
+        .hero-card-desc { font-size: 0.82rem; color: var(--slate); text-align: right; line-height: 1.4; }
+        .live-dot { display: inline-flex; align-items: center; gap: 6px; font-size: 0.72rem; color: #34C759; font-weight: 600; margin-top: 16px; }
+        .live-dot::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #34C759; animation: pulse 2s infinite; }
+
+        @keyframes heroFadeUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes heroCardFloat {
+            from { opacity: 0; transform: translateY(calc(-50% + 30px)); }
+            to { opacity: 1; transform: translateY(-50%); }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+        @keyframes shimmer {
+            from { background-position: -200% center; }
+            to { background-position: 200% center; }
         }
 
-        .product-info h3 { font-size: 1.25rem; margin-bottom: 8px; color: var(--text-primary); }
-        .product-specs { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 20px; min-height: 40px; }
-        .product-price { margin-top: auto; display: flex; align-items: baseline; gap: 8px; }
-        .current-price { font-size: 1.25rem; font-weight: 700; color: var(--accent); }
-        .old-price { font-size: 0.9rem; color: var(--text-secondary); text-decoration: line-through; opacity: 0.6; }
-
-        /* Booking Section */
-        .booking-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 32px; }
-        .booking-card { background-color: var(--bg-secondary); border-radius: 24px; padding: 40px; border: 1px solid var(--border); }
-        .booking-card h3 { font-size: 1.75rem; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; color: var(--text-primary); }
-        .booking-card p { font-size: 1.05rem; color: var(--text-secondary); margin-bottom: 32px; }
-
-        /* Repair Section */
-        .repair-options { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
-        .repair-item { text-align: center; cursor: pointer; transition: var(--transition); }
-        .repair-item:hover { transform: scale(1.1); color: var(--accent); }
-        .repair-icon { font-size: 3rem; margin-bottom: 12px; display: block; }
-        .repair-item span { font-weight: 600; font-size: 1.1rem; }
-
-        /* FAQ Section */
-        .faq-container { max-width: 800px; margin: 0 auto; }
-        .faq-item { border-bottom: 1px solid var(--border); padding: 20px 0; cursor: pointer; }
-        .faq-question { font-weight: 600; display: flex; justify-content: space-between; align-items: center; color: var(--text-primary); }
-        .faq-answer { display: none; padding-top: 12px; color: var(--text-secondary); font-size: 0.95rem; }
-        .faq-item.active .faq-answer { display: block; }
-        .faq-item.active .faq-question { color: var(--accent); }
-
-        /* Map Section */
-        .map-section { padding: 80px 0; background-color: var(--bg-secondary); }
-        .map-container { border-radius: 24px; overflow: hidden; border: 1px solid var(--border); height: 400px; margin-bottom: 24px; }
-        .map-container iframe { width: 100%; height: 100%; border: none; filter: grayscale(1) invert(1) contrast(1.2); }
-
-        /* Contact Section */
-        .contact-box { background-color: var(--secondary-accent); color: white; border-radius: 32px; padding: 60px; text-align: center; }
-        .contact-box h2 { font-size: 2.5rem; margin-bottom: 16px; }
-        .contact-box p { opacity: 0.9; margin-bottom: 32px; }
-
-        /* Footer */
-        footer { padding: 80px 0 40px; background-color: var(--bg-secondary); border-top: 1px solid var(--border); }
-        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 60px; }
-        .footer-brand h2 { margin-bottom: 16px; color: var(--accent); }
-        .footer-brand p { color: var(--text-secondary); font-size: 0.95rem; max-width: 300px; }
-        .footer-col h4 { margin-bottom: 20px; font-size: 1rem; color: var(--text-primary); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
-        .footer-col h4:hover { color: var(--accent); }
-        .footer-col ul { display: none; margin-top: 16px; }
-        .footer-col.active ul { display: block; }
-        .footer-col ul li { margin-bottom: 12px; font-size: 0.9rem; color: var(--text-secondary); }
-        .footer-bottom { padding-top: 40px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: var(--text-secondary); }
-        
-        /* Social Links Refinement */
-        .social-links { display: flex; gap: 24px; align-items: center; }
-        .social-links a {
-            display: flex; align-items: center; justify-content: center;
-            width: 40px; height: 40px; border-radius: 50%;
-            background: var(--card-bg); border: 1px solid var(--border);
-            color: var(--text-secondary); transition: var(--transition);
+        /* ===== MARQUEE TRUST BAR ===== */
+        .trust-bar {
+            padding: 18px 0; background: var(--copper); overflow: hidden;
             position: relative;
         }
-        .social-links a svg { width: 20px; height: 20px; fill: currentColor; }
-        .social-links a:hover {
-            transform: translateY(-4px) scale(1.1);
-            color: var(--accent); border-color: var(--accent);
-            box-shadow: 0 4px 12px rgba(255, 148, 122, 0.2);
+        .marquee-track {
+            display: flex; gap: 60px; white-space: nowrap;
+            animation: marqueeScroll 20s linear infinite;
         }
-        .social-links a::after {
-            content: attr(aria-label); position: absolute; bottom: -30px;
-            background: var(--secondary-accent); color: white;
-            padding: 4px 8px; border-radius: 4px; font-size: 0.7rem;
-            opacity: 0; pointer-events: none; transition: var(--transition);
-            white-space: nowrap;
+        .marquee-track span {
+            font-size: 0.82rem; font-weight: 600; color: white; letter-spacing: 0.08em;
+            text-transform: uppercase; opacity: 0.9; flex-shrink: 0;
         }
-        .social-links a:hover::after { opacity: 1; bottom: -35px; }
+        .marquee-track span::before { content: '✦'; margin-right: 16px; opacity: 0.7; }
+        @keyframes marqueeScroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
-        /* AI Chatbot */
-        .chat-btn {
-            position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px;
-            border-radius: 50%; background-color: var(--accent); color: var(--bg-primary);
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 1500;
+        /* ===== STATS ===== */
+        .stats-bar { padding: 64px 0; background: var(--paper-warm); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; }
+        .stat-item {
+            text-align: center; padding: 0 40px; position: relative;
+        }
+        .stat-item:not(:last-child)::after {
+            content: ''; position: absolute; right: 0; top: 20%; height: 60%; width: 1px;
+            background: var(--border);
+        }
+        .stat-num {
+            font-family: var(--font-display); font-size: 3rem;
+            color: var(--ink); margin-bottom: 6px; display: block; line-height: 1;
+        }
+        .stat-label { font-size: 0.88rem; color: var(--slate); font-weight: 500; }
+        .stat-sub { font-size: 0.75rem; color: var(--copper); font-weight: 600; margin-top: 4px; }
+
+        /* ===== SECTIONS ===== */
+        section { padding: 96px 0; }
+        .section-header { margin-bottom: 56px; }
+        .section-eyebrow {
+            display: inline-flex; align-items: center; gap: 10px;
+            font-size: 0.75rem; font-weight: 600; color: var(--copper);
+            text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 16px;
+        }
+        .section-eyebrow::before { content: ''; width: 24px; height: 1.5px; background: var(--copper); }
+        .section-header h2 {
+            font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 2.8rem);
+            line-height: 1.15; letter-spacing: -0.02em; color: var(--ink); margin-bottom: 14px;
+        }
+        .section-header p { font-size: 1.05rem; color: var(--slate); max-width: 520px; }
+
+        /* ===== FILTER BAR ===== */
+        .filter-bar { display: flex; gap: 10px; margin-bottom: 48px; flex-wrap: wrap; }
+        .filter-btn {
+            padding: 9px 22px; border-radius: 40px; border: 1.5px solid var(--border);
+            background: var(--card-bg); color: var(--slate); cursor: pointer;
+            font-weight: 500; font-size: 0.88rem; transition: var(--transition); font-family: var(--font-body);
+        }
+        .filter-btn:hover { border-color: var(--copper); color: var(--copper); }
+        .filter-btn.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+        /* ===== PRODUCT GRID ===== */
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 28px; }
+        .product-card {
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: var(--radius); overflow: hidden; cursor: pointer;
+            transition: var(--transition); display: flex; flex-direction: column;
+            position: relative;
+        }
+        .product-card:hover {
+            box-shadow: var(--shadow-lg); transform: translateY(-6px);
+            border-color: var(--border-warm); background: var(--card-hover);
+        }
+        .product-card:active { transform: scale(0.98) translateY(-2px); }
+        .product-img {
+            width: 100%; height: 220px; background: var(--ceramic);
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
+            position: relative;
+        }
+        .product-img::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(to bottom, transparent 60%, rgba(26,26,46,0.04));
+        }
+        .product-img img {
+            width: 80%; height: 80%; object-fit: contain;
+            transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        .product-card:hover .product-img img { transform: scale(1.08); }
+        .product-body { padding: 22px; flex: 1; display: flex; flex-direction: column; }
+
+        .badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px;
+            font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.06em; margin-bottom: 14px; align-self: flex-start;
+        }
+        .badge-hot, .badge-builtyformore, .badge-builtformore, .badge-builformorep, .badge-builtformorepow { background: rgba(184,115,51,0.12); color: var(--copper); }
+        .badge-top, .badge-toppick, .badge-bestseller { background: var(--steel); color: white; }
+        .badge-new { background: rgba(52, 199, 89, 0.12); color: #28A745; }
+        .badge-essential { background: rgba(74,107,138,0.12); color: var(--steel); }
+        .badge-mostpicked { background: rgba(74,107,138,0.12); color: var(--steel); }
+        .badge-travelready { background: rgba(52, 199, 89, 0.12); color: #28A745; }
+        .badge-balancedforeverything { background: rgba(184,115,51,0.12); color: var(--copper); }
+
+        .product-tags { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+        .tag {
+            font-size: 0.65rem; font-weight: 600; padding: 3px 10px;
+            border-radius: 20px; background: var(--paper-warm); color: var(--slate);
+            border: 1px solid var(--border); letter-spacing: 0.03em;
+        }
+        .product-info h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 6px; color: var(--ink); line-height: 1.3; }
+        .product-specs { font-size: 0.82rem; color: var(--slate); margin-bottom: 18px; min-height: 38px; }
+        .product-price { margin-top: auto; display: flex; align-items: baseline; gap: 10px; }
+        .current-price { font-family: var(--font-display); font-size: 1.3rem; color: var(--ink); }
+        .old-price { font-size: 0.85rem; color: var(--mist); text-decoration: line-through; }
+        .saving-label { font-size: 0.7rem; background: rgba(52,199,89,0.12); color: #28A745; padding: 2px 8px; border-radius: 20px; font-weight: 600; }
+
+        /* ===== WISHLIST / COMPARE BADGES ===== */
+        .card-actions {
+            position: absolute; top: 14px; right: 14px; display: flex; gap: 8px;
+            opacity: 0; transition: var(--transition);
+        }
+        .product-card:hover .card-actions { opacity: 1; }
+        .card-action-btn {
+            width: 34px; height: 34px; border-radius: 50%; background: var(--paper);
+            border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: var(--transition); color: var(--slate);
+        }
+        .card-action-btn:hover { background: var(--copper); color: white; border-color: var(--copper); }
+        .card-action-btn svg { width: 16px; height: 16px; }
+
+        /* ===== BOOKING ===== */
+        .booking-section { background: var(--paper-warm); }
+        .booking-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 28px; }
+        .booking-card {
+            background: var(--card-bg); border-radius: 28px; padding: 44px;
+            border: 1px solid var(--border); transition: var(--transition); position: relative; overflow: hidden;
+        }
+        .booking-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(to right, var(--copper), var(--steel));
+        }
+        .booking-card:hover { box-shadow: var(--shadow-md); transform: translateY(-4px); }
+        .booking-icon { font-size: 2.2rem; margin-bottom: 20px; display: block; }
+        .booking-card h3 { font-family: var(--font-display); font-size: 1.6rem; margin-bottom: 14px; color: var(--ink); }
+        .booking-card p { font-size: 1rem; color: var(--slate); margin-bottom: 32px; line-height: 1.7; }
+
+        /* ===== REPAIR ===== */
+        .repair-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+        .repair-card {
+            background: var(--card-bg); border: 1px solid var(--border); border-radius: 24px;
+            padding: 36px; text-align: center; cursor: pointer; transition: var(--transition);
+            position: relative; overflow: hidden;
+        }
+        .repair-card::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, var(--copper-glow), transparent);
+            opacity: 0; transition: var(--transition);
+        }
+        .repair-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-md); border-color: var(--border-warm); }
+        .repair-card:hover::after { opacity: 1; }
+        .repair-icon { font-size: 2.8rem; margin-bottom: 16px; display: block; }
+        .repair-card h3 { font-size: 1.15rem; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
+        .repair-card p { font-size: 0.88rem; color: var(--slate); line-height: 1.6; }
+        .repair-tag { display: inline-block; margin-top: 16px; font-size: 0.72rem; color: var(--copper); font-weight: 600; }
+
+        /* ===== TRUST SECTION ===== */
+        .trust-section { background: var(--ink); color: var(--paper); }
+        [data-theme="dark"] .trust-section { background: var(--paper-warm); color: var(--ink); border: 1px solid var(--border); }
+        .trust-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 40px; }
+        .trust-item { text-align: center; }
+        .trust-icon { width: 56px; height: 56px; border-radius: 16px; background: rgba(184,115,51,0.15); display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; }
+        .trust-icon svg { width: 26px; height: 26px; color: var(--copper); }
+        .trust-item h4 { font-family: var(--font-display); font-size: 1.2rem; margin-bottom: 8px; }
+        .trust-item p { font-size: 0.88rem; opacity: 0.65; line-height: 1.6; }
+        [data-theme="dark"] .trust-item h4 { color: var(--ink); }
+        [data-theme="dark"] .trust-item p { color: var(--slate); opacity: 1; }
+
+        /* ===== TESTIMONIAL STRIP ===== */
+        .testimonial-strip { background: var(--paper-warm); padding: 72px 0; }
+        .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+        .testimonial-card {
+            background: var(--card-bg); border: 1px solid var(--border); border-radius: 24px;
+            padding: 30px; transition: var(--transition);
+        }
+        .testimonial-card:hover { box-shadow: var(--shadow-md); transform: translateY(-4px); }
+        .stars { color: var(--copper); font-size: 0.9rem; margin-bottom: 14px; letter-spacing: 2px; }
+        .testimonial-text { font-size: 0.95rem; color: var(--ink); line-height: 1.7; margin-bottom: 20px; font-style: italic; }
+        .testimonial-author { display: flex; align-items: center; gap: 12px; }
+        .author-avatar {
+            width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, var(--copper), var(--steel));
+            display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; color: white;
+        }
+        .author-info strong { display: block; font-size: 0.88rem; color: var(--ink); }
+        .author-info span { font-size: 0.78rem; color: var(--slate); }
+
+        /* ===== MAP ===== */
+        .map-section { padding: 96px 0; background: var(--paper-warm); }
+        .map-wrapper { display: grid; grid-template-columns: 1fr 360px; gap: 32px; align-items: start; }
+        .map-container { border-radius: 24px; overflow: hidden; border: 1px solid var(--border); height: 420px; }
+        .map-container iframe { width: 100%; height: 100%; border: none; filter: sepia(0.15) contrast(1.05); }
+        [data-theme="dark"] .map-container iframe { filter: grayscale(1) invert(0.9) contrast(1.1) sepia(0.1); }
+        .map-info { background: var(--card-bg); border-radius: 24px; padding: 36px; border: 1px solid var(--border); }
+        .map-info h3 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 24px; color: var(--ink); }
+        .map-detail { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px; }
+        .map-detail-icon { width: 38px; height: 38px; border-radius: 10px; background: var(--copper-glow); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .map-detail-icon svg { width: 18px; height: 18px; color: var(--copper); }
+        .map-detail strong { display: block; font-size: 0.88rem; color: var(--ink); margin-bottom: 2px; }
+        .map-detail span { font-size: 0.82rem; color: var(--slate); }
+
+        /* ===== CONTACT ===== */
+        .contact-section { padding: 96px 0; }
+        .contact-box {
+            background: linear-gradient(135deg, var(--steel) 0%, var(--ink-light) 100%);
+            border-radius: 40px; padding: 80px 60px; text-align: center; position: relative; overflow: hidden;
+        }
+        [data-theme="dark"] .contact-box { background: linear-gradient(135deg, #1A2535 0%, #0F1020 100%); border: 1px solid var(--border); }
+        .contact-box::before {
+            content: ''; position: absolute; top: -50%; right: -20%; width: 500px; height: 500px;
+            border-radius: 50%; background: rgba(184,115,51,0.10); pointer-events: none;
+        }
+        .contact-eyebrow { font-size: 0.75rem; font-weight: 600; color: var(--copper); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 16px; }
+        .contact-box h2 { font-family: var(--font-display); font-size: 2.6rem; color: white; margin-bottom: 14px; }
+        [data-theme="dark"] .contact-box h2 { color: var(--ink); }
+        .contact-box p { color: rgba(255,255,255,0.7); margin-bottom: 36px; font-size: 1.05rem; }
+        [data-theme="dark"] .contact-box p { color: var(--slate); }
+        .contact-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+        .response-tag { margin-top: 20px; font-size: 0.82rem; color: rgba(255,255,255,0.5); }
+        [data-theme="dark"] .response-tag { color: var(--slate); }
+
+        /* ===== FAQ ===== */
+        .faq-wrap { max-width: 740px; margin: 0 auto; }
+        .faq-item { border-bottom: 1px solid var(--border); }
+        .faq-question {
+            font-weight: 600; font-size: 1rem; padding: 22px 0; display: flex;
+            justify-content: space-between; align-items: center; cursor: pointer; color: var(--ink);
             transition: var(--transition);
         }
-        .chat-btn:hover { transform: scale(1.1); box-shadow: 0 6px 16px rgba(255, 148, 122, 0.3); }
-        .chat-btn:active { transform: scale(0.9); }
-        .chat-btn svg { width: 30px; height: 30px; fill: currentColor; }
+        .faq-question:hover { color: var(--copper); }
+        .faq-toggle { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: var(--transition); font-size: 1rem; color: var(--slate); }
+        .faq-item.active .faq-toggle { background: var(--copper); border-color: var(--copper); color: white; transform: rotate(45deg); }
+        .faq-item.active .faq-question { color: var(--copper); }
+        .faq-answer { display: none; padding-bottom: 22px; font-size: 0.93rem; color: var(--slate); line-height: 1.75; }
+        .faq-item.active .faq-answer { display: block; }
 
+        /* ===== FOOTER ===== */
+        footer { padding: 80px 0 40px; background: var(--ink); color: var(--paper); }
+        [data-theme="dark"] footer { background: var(--paper-warm); color: var(--ink); border-top: 1px solid var(--border); }
+        .footer-grid { display: grid; grid-template-columns: 2.2fr 1fr 1fr 1fr; gap: 60px; margin-bottom: 60px; }
+        .footer-brand .logo { color: var(--paper); font-size: 1.6rem; }
+        [data-theme="dark"] .footer-brand .logo { color: var(--ink); }
+        .footer-brand .logo::after { background: linear-gradient(to right, var(--copper), transparent); }
+        .footer-tagline { font-size: 0.9rem; color: rgba(245,242,237,0.5); margin-top: 14px; max-width: 280px; line-height: 1.7; }
+        [data-theme="dark"] .footer-tagline { color: var(--slate); }
+        .footer-col h4 { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--copper); margin-bottom: 20px; }
+        .footer-col ul li { margin-bottom: 12px; }
+        .footer-col ul li a, .footer-col ul li { font-size: 0.88rem; color: rgba(245,242,237,0.55); transition: var(--transition); cursor: pointer; }
+        [data-theme="dark"] .footer-col ul li a, [data-theme="dark"] .footer-col ul li { color: var(--slate); }
+        .footer-col ul li:hover, .footer-col ul li a:hover { color: var(--paper); }
+        [data-theme="dark"] .footer-col ul li:hover, [data-theme="dark"] .footer-col ul li a:hover { color: var(--ink); }
+        /* Footer collapsed by default */
+        .footer-col ul { display: block; }
+        .footer-col h4 { cursor: default; }
+        .footer-bottom {
+            padding-top: 40px; border-top: 1px solid rgba(245,242,237,0.08);
+            display: flex; justify-content: space-between; align-items: center; flex-wrap: gap;
+        }
+        [data-theme="dark"] .footer-bottom { border-top-color: var(--border); }
+        .footer-bottom p { font-size: 0.82rem; color: rgba(245,242,237,0.4); }
+        [data-theme="dark"] .footer-bottom p { color: var(--slate); }
+
+        /* Social Links */
+        .social-links { display: flex; gap: 14px; align-items: center; margin-top: 24px; }
+        .social-links a {
+            width: 40px; height: 40px; border-radius: 12px;
+            background: rgba(245,242,237,0.06); border: 1px solid rgba(245,242,237,0.1);
+            display: flex; align-items: center; justify-content: center;
+            color: rgba(245,242,237,0.55); transition: var(--transition);
+        }
+        [data-theme="dark"] .social-links a { background: var(--border); border-color: var(--border); color: var(--slate); }
+        .social-links a:hover { background: var(--copper); border-color: var(--copper); color: white; transform: translateY(-3px); }
+        .social-links a svg { width: 18px; height: 18px; fill: currentColor; }
+
+        /* ===== CHATBOT ===== */
+        .chat-btn {
+            position: fixed; bottom: 32px; right: 32px; width: 58px; height: 58px;
+            border-radius: 50%; background: linear-gradient(135deg, var(--copper), var(--copper-light));
+            color: white; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; box-shadow: var(--shadow-copper); z-index: 1500; transition: var(--transition);
+        }
+        .chat-btn:hover { transform: scale(1.1); box-shadow: 0 12px 40px rgba(184,115,51,0.4); }
+        .chat-btn:active { transform: scale(0.92); }
+        .chat-btn svg { width: 26px; height: 26px; fill: currentColor; }
         .chat-window {
-            position: fixed; bottom: 100px; right: 30px; width: 350px; height: 450px;
-            background-color: var(--card-bg); border: 1px solid var(--border);
-            border-radius: 20px; box-shadow: var(--shadow); display: none;
+            position: fixed; bottom: 104px; right: 32px; width: 360px; height: 460px;
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 24px; box-shadow: var(--shadow-lg); display: none;
             flex-direction: column; z-index: 1500; overflow: hidden;
         }
-        .chat-header { padding: 16px; background-color: var(--accent); color: var(--bg-primary); display: flex; justify-content: space-between; align-items: center; font-weight: 700; }
-        .chat-body { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; background-color: var(--bg-primary); }
-        .chat-msg { padding: 10px 14px; border-radius: 14px; max-width: 80%; font-size: 0.9rem; }
-        .msg-bot { background-color: var(--card-bg); color: var(--text-primary); align-self: flex-start; border: 1px solid var(--border); }
-        .msg-user { background-color: var(--secondary-accent); color: white; align-self: flex-end; }
-        .chat-footer { padding: 16px; border-top: 1px solid var(--border); display: flex; gap: 8px; background-color: var(--card-bg); }
-        .chat-input { flex: 1; padding: 8px 12px; border-radius: 20px; border: 1px solid var(--border); background-color: var(--bg-secondary); color: var(--text-primary); outline: none; }
+        .chat-header { padding: 18px 20px; background: linear-gradient(135deg, var(--copper), var(--copper-light)); color: white; display: flex; justify-content: space-between; align-items: center; }
+        .chat-header span { font-weight: 700; font-size: 1rem; }
+        .chat-body { flex: 1; padding: 18px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; background: var(--paper); }
+        .chat-msg { padding: 12px 16px; border-radius: 16px; max-width: 82%; font-size: 0.88rem; line-height: 1.55; }
+        .msg-bot { background: var(--card-bg); color: var(--ink); align-self: flex-start; border: 1px solid var(--border); border-radius: 16px 16px 16px 4px; }
+        .msg-user { background: linear-gradient(135deg, var(--copper), var(--copper-light)); color: white; align-self: flex-end; border-radius: 16px 16px 4px 16px; }
+        .chat-footer { padding: 16px; border-top: 1px solid var(--border); display: flex; gap: 10px; background: var(--card-bg); }
+        .chat-input { flex: 1; padding: 10px 16px; border-radius: 40px; border: 1.5px solid var(--border); background: var(--paper); color: var(--ink); outline: none; font-family: var(--font-body); font-size: 0.88rem; transition: var(--transition); }
+        .chat-input:focus { border-color: var(--copper); }
 
-        /* Modal */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,39,44,0.8); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 3000; }
-        .modal-content { background-color: var(--card-bg); padding: 40px; border-radius: 24px; max-width: 600px; width: 95%; position: relative; box-shadow: var(--shadow); max-height: 90vh; overflow-y: auto; border: 1px solid var(--secondary-accent); }
-        .modal-close { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 1.5rem; color: var(--text-secondary); }
-        .modal-title { font-size: 1.75rem; margin-bottom: 16px; color: var(--accent); }
-        .modal-desc { color: var(--text-primary); margin-bottom: 24px; }
-        .modal-section { margin-bottom: 24px; }
-        .modal-section h4 { font-size: 1rem; margin-bottom: 8px; color: var(--text-secondary); }
-        .modal-section p { font-size: 0.9rem; color: var(--text-primary); }
-        .modal-features { margin-bottom: 32px; }
-        .modal-features li { margin-bottom: 8px; display: flex; align-items: center; gap: 8px; font-size: 0.95rem; color: var(--text-primary); }
-        .modal-features li span { color: var(--accent); }
-        .purchase-options { display: flex; gap: 12px; margin-bottom: 32px; flex-wrap: wrap; }
-        .option-btn { padding: 8px 16px; border-radius: 12px; border: 1px solid var(--border); cursor: pointer; font-size: 0.85rem; transition: var(--transition); background: var(--bg-secondary); color: var(--text-secondary); }
-        .option-btn.active { background: var(--accent); color: var(--bg-primary); border-color: var(--accent); }
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(26,26,46,0.7); backdrop-filter: blur(8px);
+            display: none; justify-content: center; align-items: center; z-index: 3000; padding: 20px;
+        }
+        .modal-content {
+            background: var(--card-bg); padding: 44px; border-radius: 32px; max-width: 580px;
+            width: 100%; position: relative; box-shadow: var(--shadow-lg); max-height: 90vh;
+            overflow-y: auto; border: 1px solid var(--border-warm);
+        }
+        .modal-close {
+            position: absolute; top: 20px; right: 20px; cursor: pointer;
+            width: 36px; height: 36px; border-radius: 50%; background: var(--paper-warm);
+            border: 1px solid var(--border); display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; color: var(--slate); transition: var(--transition);
+        }
+        .modal-close:hover { background: var(--copper); color: white; border-color: var(--copper); }
+        .modal-title { font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 8px; color: var(--ink); }
+        .modal-badge { display: inline-block; background: var(--copper-glow); color: var(--copper); padding: 4px 12px; border-radius: 20px; font-size: 0.72rem; font-weight: 700; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.06em; }
+        .modal-desc { color: var(--slate); margin-bottom: 24px; font-size: 0.95rem; line-height: 1.7; }
+        .modal-section { margin-bottom: 22px; padding: 18px; background: var(--paper-warm); border-radius: 16px; }
+        .modal-section h4 { font-size: 0.72rem; font-weight: 700; color: var(--copper); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px; }
+        .modal-section p { font-size: 0.92rem; color: var(--ink); line-height: 1.65; }
+        .modal-features { margin-bottom: 24px; }
+        .modal-features li { margin-bottom: 10px; display: flex; align-items: center; gap: 10px; font-size: 0.93rem; color: var(--ink); }
+        .modal-features li span { color: var(--copper); font-size: 1.1rem; }
+        .purchase-options { display: flex; gap: 10px; margin-bottom: 24px; flex-wrap: wrap; }
+        .option-btn { padding: 9px 18px; border-radius: 12px; border: 1.5px solid var(--border); cursor: pointer; font-size: 0.84rem; transition: var(--transition); background: var(--paper-warm); color: var(--slate); font-family: var(--font-body); }
+        .option-btn:hover { border-color: var(--copper); color: var(--copper); }
+        .option-btn.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
         .modal-actions { display: flex; flex-direction: column; gap: 12px; }
 
-        /* Mobile Optimization (App-Like Experience) */
+        /* ===== MOBILE NAV ===== */
         @media (max-width: 768px) {
-            .container { padding: 0 16px; }
-            .hero { min-height: 80vh; display: flex; flex-direction: column; justify-content: center; padding: 40px 0; }
-            .hero h1 { font-size: 2.5rem; margin-bottom: 16px; }
-            .hero p { font-size: 1.1rem; margin-bottom: 32px; }
+            .container { padding: 0 18px; }
+            .hero { min-height: 88vh; padding: 60px 0 50px; }
+            .hero h1 { font-size: 2.4rem; }
+            .hero-sub { font-size: 1rem; }
             .hero-ctas { flex-direction: column; width: 100%; }
-            .btn { width: 100%; justify-content: center; padding: 16px; border-radius: 16px; }
-            
-            .stats-grid { grid-template-columns: 1fr; gap: 16px; }
-            .stat-item { padding: 20px; background: var(--bg-secondary); border-radius: 16px; }
-            
-            .section-header h2 { font-size: 2rem; }
-            .product-grid { grid-template-columns: 1fr; gap: 16px; }
-            .product-card { padding: 16px; border-radius: 16px; }
-            
+            .btn { width: 100%; justify-content: center; padding: 16px; border-radius: 14px; }
+            .hero-card { display: none; }
+            .hero-trust { gap: 20px; margin-top: 40px; }
+            .stats-grid { grid-template-columns: 1fr; gap: 0; }
+            .stat-item { padding: 24px 0; border-bottom: 1px solid var(--border); }
+            .stat-item:not(:last-child)::after { display: none; }
+            .section-header h2 { font-size: 1.9rem; }
+            .product-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+            .product-card { border-radius: 16px; }
+            .product-body { padding: 16px; }
+            .product-img { height: 160px; }
             .booking-grid { grid-template-columns: 1fr; gap: 16px; }
-            .booking-card { padding: 24px; border-radius: 20px; }
-            
-            .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+            .booking-card { padding: 28px; }
+            .footer-grid { grid-template-columns: 1fr; gap: 36px; }
             .nav-links { display: none; }
             .bulb-container { display: none; }
-            
-            /* Mobile Theme Toggle */
+            .contact-box { padding: 48px 28px; border-radius: 28px; }
+            .contact-box h2 { font-size: 2rem; }
+            .map-wrapper { grid-template-columns: 1fr; }
+            .trust-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+            body { padding-bottom: 96px; }
+            .chat-btn { bottom: 100px; right: 18px; width: 52px; height: 52px; }
+            .chat-window { width: calc(100% - 36px); right: 18px; bottom: 162px; height: 58vh; }
+            .testimonials-grid { grid-template-columns: 1fr; }
+            .repair-grid { grid-template-columns: 1fr; gap: 14px; }
+
             .mobile-theme-toggle {
                 display: flex; align-items: center; justify-content: center;
                 width: 40px; height: 40px; border-radius: 50%;
-                background: var(--bg-secondary); cursor: pointer;
-                transition: var(--transition);
+                background: var(--paper-warm); cursor: pointer; border: 1px solid var(--border);
             }
-            .mobile-theme-toggle svg { width: 20px; height: 20px; transition: transform 0.5s ease; color: var(--accent); }
-            [data-theme="dark"] .mobile-theme-toggle svg { transform: rotate(180deg); }
+            .mobile-theme-toggle svg { width: 18px; height: 18px; color: var(--copper); }
 
-            /* Mobile Floating Bottom Nav */
             .mobile-nav {
-                position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-                width: calc(100% - 40px); max-width: 400px;
-                background: rgba(var(--bg-primary-rgb), 0.8);
-                backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+                position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+                width: calc(100% - 32px); max-width: 420px;
+                background: rgba(245, 242, 237, 0.92);
+                backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
                 border: 1px solid var(--border); border-radius: 24px;
                 display: flex; justify-content: space-around; align-items: center;
-                height: 64px; z-index: 1000; box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+                height: 66px; z-index: 1000; box-shadow: 0 8px 40px rgba(26,26,46,0.15);
             }
+            [data-theme="dark"] .mobile-nav { background: rgba(26, 27, 53, 0.92); }
             .mobile-nav-item {
                 display: flex; flex-direction: column; align-items: center;
-                font-size: 0.7rem; color: var(--text-secondary); gap: 4px;
-                transition: var(--transition);
+                font-size: 0.65rem; color: var(--slate); gap: 4px; transition: var(--transition);
+                font-weight: 500;
             }
-            .mobile-nav-item.active { color: var(--accent); font-weight: 600; }
-            .mobile-nav-item:active { transform: scale(0.9); }
-            .mobile-nav-item svg { width: 24px; height: 24px; }
-            
-            body { padding-bottom: 100px; }
-            .chat-btn { bottom: 100px; right: 20px; width: 50px; height: 50px; }
-            .chat-window { width: calc(100% - 40px); right: 20px; bottom: 160px; height: 60vh; }
-            
-            .social-links { justify-content: center; width: 100%; }
+            .mobile-nav-item.active { color: var(--copper); }
+            .mobile-nav-item:active { transform: scale(0.88); }
+            .mobile-nav-item svg { width: 22px; height: 22px; }
         }
 
         @media (min-width: 769px) {
             .mobile-nav, .mobile-theme-toggle { display: none; }
         }
 
-        /* Fade-in on scroll */
-        .reveal { opacity: 0; transform: translateY(20px); transition: all 0.6s ease-out; }
+        /* ===== SCROLL REVEAL ===== */
+        .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1), transform 0.65s cubic-bezier(0.22, 1, 0.36, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* ===== WISHLIST BAR ===== */
+        .wishlist-bar {
+            position: fixed; bottom: 96px; left: 50%; transform: translateX(-50%) translateY(16px);
+            background: var(--ink); color: var(--paper); padding: 12px 24px; border-radius: 40px;
+            font-size: 0.88rem; font-weight: 600; z-index: 2000;
+            box-shadow: var(--shadow-lg); opacity: 0; pointer-events: none;
+            transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1); white-space: nowrap;
+        }
+        .wishlist-bar.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+        /* Extra e-commerce: Delivery Promise bar */
+        .delivery-strip {
+            background: var(--ink); color: var(--paper); padding: 10px 0; text-align: center;
+            font-size: 0.78rem; letter-spacing: 0.04em;
+        }
+        [data-theme="dark"] .delivery-strip { background: var(--paper-warm); color: var(--slate); }
+        .delivery-strip span { margin: 0 16px; }
+        .delivery-strip strong { color: var(--copper); }
+
+        /* Scroll to top */
+        .scroll-top {
+            position: fixed; bottom: 100px; right: 104px; width: 44px; height: 44px; border-radius: 50%;
+            background: var(--card-bg); border: 1.5px solid var(--border); display: flex;
+            align-items: center; justify-content: center; cursor: pointer; z-index: 1400;
+            transition: var(--transition); opacity: 0; pointer-events: none; color: var(--slate);
+            box-shadow: var(--shadow-sm);
+        }
+        .scroll-top.visible { opacity: 1; pointer-events: auto; }
+        .scroll-top:hover { background: var(--copper); color: white; border-color: var(--copper); transform: translateY(-3px); }
+        .scroll-top svg { width: 18px; height: 18px; }
+        @media (max-width: 768px) { .scroll-top { display: none; } }
     </style>
 </head>
 <body>
 
-    <!-- Hanging Bulb Theme Toggle (Desktop) -->
+    <!-- Delivery Promise Strip -->
+    <div class="delivery-strip">
+        <span>🚚 <strong>Same-day delivery</strong> in Coimbatore</span>
+        <span>·</span>
+        <span>✅ <strong>100% authentic</strong> products</span>
+        <span>·</span>
+        <span>🔁 <strong>7-day</strong> replacement</span>
+    </div>
+
+    <!-- Hanging Bulb Toggle -->
     <div class="bulb-container" id="theme-toggle">
         <div class="bulb-wire"></div>
         <div class="bulb"></div>
         <div class="pull-chain"><div class="pull-handle"></div></div>
     </div>
+
+    <!-- Scroll to top -->
+    <button class="scroll-top" id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+    </button>
 
     <header>
         <div class="container">
@@ -398,88 +712,211 @@
                     <a href="#" class="disabled">Account <span class="badge-soon">Soon</span></a>
                     <a href="#" class="disabled">Loyalty <span class="badge-soon">Soon</span></a>
                 </div>
-                <!-- Mobile Theme Toggle -->
                 <div class="mobile-theme-toggle" id="mobile-theme-toggle">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="5"></circle>
-                        <line x1="12" y1="1" x2="12" y2="3"></line>
-                        <line x1="12" y1="21" x2="12" y2="23"></line>
-                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                        <line x1="1" y1="12" x2="3" y2="12"></line>
-                        <line x1="21" y1="12" x2="23" y2="12"></line>
-                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                    </svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
                 </div>
             </nav>
         </div>
     </header>
 
     <main>
-        <!-- Hero Section -->
+        <!-- Hero -->
         <section class="hero">
-            <div class="container">
-                <span class="hero-tag">Kovin Electronics — Tamil Nadu</span>
-                <h1>Find the right device<br>for how you live</h1>
-                <p>Phones, audio, and essentials — chosen for real use, not spec sheets.</p>
-                <div class="hero-ctas">
-                    <a href="#explore" class="btn btn-primary">Explore Catalogue</a>
-                    <a href="#fix" class="btn btn-secondary">Fix a device</a>
+            <div class="hero-bg"></div>
+            <div class="hero-grid"></div>
+            <div class="container" style="position:relative;z-index:1;display:grid;grid-template-columns:1fr auto;align-items:center;gap:40px;">
+                <div class="hero-content">
+                    <span class="hero-tag">Kovin Electronics — Tamil Nadu</span>
+                    <h1>Find the right device<br>for <em>how you live</em></h1>
+                    <p class="hero-sub">Phones, audio, and essentials — chosen for real use, not spec sheets. Every recommendation starts with your day, not the data sheet.</p>
+                    <div class="hero-ctas">
+                        <a href="#explore" class="btn btn-primary">Explore Catalogue</a>
+                        <a href="#fix" class="btn btn-secondary">Fix a device</a>
+                    </div>
+                    <div class="hero-trust">
+                        <div class="hero-trust-item"><div class="trust-dot"></div><span><strong>4,200+</strong> happy customers</span></div>
+                        <div class="hero-trust-item"><div class="trust-dot"></div><span>Rated <strong>4.9 ★</strong></span></div>
+                        <div class="hero-trust-item"><div class="trust-dot"></div><span>Repairs <strong>same day</strong></span></div>
+                    </div>
+                </div>
+                <div class="hero-card">
+                    <div class="hero-card-label">Kovin at a glance</div>
+                    <div class="hero-card-stat">
+                        <span class="hero-card-num">4,200+</span>
+                        <span class="hero-card-desc">Devices found<br>a right home</span>
+                    </div>
+                    <div class="hero-card-stat">
+                        <span class="hero-card-num">4.9 ★</span>
+                        <span class="hero-card-desc">Average customer<br>satisfaction</span>
+                    </div>
+                    <div class="hero-card-stat">
+                        <span class="hero-card-num">Same</span>
+                        <span class="hero-card-desc">Day repairs,<br>most issues</span>
+                    </div>
+                    <div class="live-dot">Open now · 09:00–22:00</div>
                 </div>
             </div>
         </section>
 
-        <!-- Stats Bar -->
+        <!-- Trust Marquee -->
+        <div class="trust-bar">
+            <div class="marquee-track" id="marquee-track">
+                <span>Authentic Products</span>
+                <span>Same-Day Repair</span>
+                <span>4.9 Star Rating</span>
+                <span>7-Day Replacement</span>
+                <span>Free Video Consultation</span>
+                <span>No Pressure Buying</span>
+                <span>Coimbatore Delivery</span>
+                <span>Pan-India Shipping</span>
+                <span>Authentic Products</span>
+                <span>Same-Day Repair</span>
+                <span>4.9 Star Rating</span>
+                <span>7-Day Replacement</span>
+                <span>Free Video Consultation</span>
+                <span>No Pressure Buying</span>
+                <span>Coimbatore Delivery</span>
+                <span>Pan-India Shipping</span>
+            </div>
+        </div>
+
+        <!-- Stats -->
         <div class="stats-bar">
             <div class="container">
                 <div class="stats-grid">
-                    <div class="stat-item"><h3>4,200+</h3><p>Devices served</p></div>
-                    <div class="stat-item"><h3>4.9 ★</h3><p>Customer rating</p></div>
-                    <div class="stat-item"><h3>Same day</h3><p>Most repairs done</p></div>
+                    <div class="stat-item">
+                        <span class="stat-num">4,200+</span>
+                        <div class="stat-label">Devices served</div>
+                        <div class="stat-sub">And counting</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num">4.9 ★</span>
+                        <div class="stat-label">Customer rating</div>
+                        <div class="stat-sub">Consistently maintained</div>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-num">Same day</span>
+                        <div class="stat-label">Most repairs done</div>
+                        <div class="stat-sub">Walk in, walk out fixed</div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Product Catalogue Section -->
+        <!-- Catalogue Section -->
         <section id="explore" class="reveal">
             <div class="container">
                 <div class="section-header">
-                    <p>Product Catalogue</p>
+                    <div class="section-eyebrow">Product Catalogue</div>
                     <h2>Picked with purpose</h2>
+                    <p>Every product passes a real-use test. If it doesn't earn its place in daily life, it doesn't make the list.</p>
                 </div>
-
-                <!-- Filter System -->
                 <div class="filter-bar">
-                    <button class="filter-btn active" onclick="filterProducts('all')">All</button>
-                    <button class="filter-btn" onclick="filterProducts('phones')">Mobile Phones</button>
-                    <button class="filter-btn" onclick="filterProducts('tv')">TV</button>
-                    <button class="filter-btn" onclick="filterProducts('speakers')">Speakers</button>
-                    <button class="filter-btn" onclick="filterProducts('accessories')">Accessories</button>
+                    <button class="filter-btn active" onclick="filterProducts('all', this)">All</button>
+                    <button class="filter-btn" onclick="filterProducts('phones', this)">Mobile Phones</button>
+                    <button class="filter-btn" onclick="filterProducts('tv', this)">TV</button>
+                    <button class="filter-btn" onclick="filterProducts('speakers', this)">Speakers</button>
+                    <button class="filter-btn" onclick="filterProducts('accessories', this)">Accessories</button>
                 </div>
+                <div class="product-grid" id="product-grid"></div>
+            </div>
+        </section>
 
-                <div class="product-grid" id="product-grid">
-                    <!-- Products will be injected by JS -->
+        <!-- Trust Section -->
+        <section class="trust-section reveal">
+            <div class="container">
+                <div class="section-header" style="text-align:center;color:inherit;">
+                    <div class="section-eyebrow" style="color:var(--copper);justify-content:center;">Why Kovin</div>
+                    <h2 style="color:inherit;">Built on something<br>most stores forget</h2>
+                </div>
+                <div class="trust-grid">
+                    <div class="trust-item">
+                        <div class="trust-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        </div>
+                        <h4>100% Authentic</h4>
+                        <p>Every product is sourced directly from authorized distributors. No grey market. No guessing.</p>
+                    </div>
+                    <div class="trust-item">
+                        <div class="trust-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+                        </div>
+                        <h4>Same-Day Repair</h4>
+                        <p>Most repairs are completed the same day. Drop your device, get your life back quickly.</p>
+                    </div>
+                    <div class="trust-item">
+                        <div class="trust-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                        </div>
+                        <h4>Guided, Not Pushed</h4>
+                        <p>The right device depends on how you live. The focus is on clarity — not closing a sale.</p>
+                    </div>
+                    <div class="trust-item">
+                        <div class="trust-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+                        </div>
+                        <h4>7-Day Replacement</h4>
+                        <p>Manufacturing defect? A replacement is arranged within 7 days. No lengthy back-and-forth.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="testimonial-strip reveal">
+            <div class="container">
+                <div class="section-header">
+                    <div class="section-eyebrow">What customers say</div>
+                    <h2>Decisions made with clarity</h2>
+                </div>
+                <div class="testimonials-grid">
+                    <div class="testimonial-card">
+                        <div class="stars">★★★★★</div>
+                        <p class="testimonial-text">"The video call before buying was the best thing. No pressure, just clear answers. Ended up choosing a phone that actually fits how I use it."</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">R</div>
+                            <div class="author-info"><strong>Ravi S.</strong><span>Chennai</span></div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="stars">★★★★★</div>
+                        <p class="testimonial-text">"Screen repaired in under 2 hours. Thought I'd need a new phone. Turns out it was a fixable problem and they walked me through what was wrong."</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">P</div>
+                            <div class="author-info"><strong>Priya M.</strong><span>Coimbatore</span></div>
+                        </div>
+                    </div>
+                    <div class="testimonial-card">
+                        <div class="stars">★★★★★</div>
+                        <p class="testimonial-text">"Genuinely the most transparent buying experience. Every tag and description helped me understand what I was getting before spending a rupee."</p>
+                        <div class="testimonial-author">
+                            <div class="author-avatar">A</div>
+                            <div class="author-info"><strong>Arun K.</strong><span>Bangalore</span></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- Booking Section -->
-        <section class="reveal" style="background-color: var(--bg-secondary);">
+        <section class="booking-section reveal">
             <div class="container">
                 <div class="section-header">
-                    <p>Book a demo</p>
+                    <div class="section-eyebrow">Book a demo</div>
                     <h2>See it before deciding</h2>
+                    <p>Touch it, compare it, ask everything — before spending a single rupee.</p>
                 </div>
                 <div class="booking-grid">
                     <div class="booking-card">
-                        <h3>🎥 Video call</h3>
-                        <p>Available to all. A 15–20 minute call to walk through the device, compare options, and answer questions — from anywhere in India.</p>
+                        <span class="booking-icon">🎥</span>
+                        <h3>Video call</h3>
+                        <p>A 15–20 minute call to walk through the device, compare options, and answer every question — from anywhere in India. Available to all, completely free.</p>
                         <a href="https://wa.me/917200006006" class="btn btn-whatsapp">Confirm via WhatsApp</a>
                     </div>
                     <div class="booking-card">
-                        <h3>🏪 In-person</h3>
-                        <p>Coimbatore only. Come in, hold the device, compare it to others, and leave with complete clarity. No pressure to buy on the day.</p>
+                        <span class="booking-icon">🏪</span>
+                        <h3>In-person visit</h3>
+                        <p>Coimbatore only. Come in, hold the device, compare it with others, and leave with complete clarity. There's zero pressure to buy on the day.</p>
                         <a href="https://wa.me/917200006006" class="btn btn-secondary">Schedule visit</a>
                     </div>
                 </div>
@@ -490,18 +927,28 @@
         <section id="fix" class="reveal">
             <div class="container">
                 <div class="section-header">
-                    <p>Something not right?</p>
+                    <div class="section-eyebrow">Something not right?</div>
                     <h2>Tell it what's happening</h2>
+                    <p>Most problems are fixable. A transparent diagnostic happens first — no surprise charges, ever.</p>
                 </div>
-                <div class="repair-options">
-                    <div class="repair-item" onclick="openModal('Mobile Repair', 'Professional repair services for all mobile brands.', ['Screen Replacement', 'Battery Swap', 'Software Fix'], 'Expect a thorough diagnostic before any work begins.', 'Did you know? Most screen repairs can be completed in under 2 hours.')">
-                        <span class="repair-icon">📱</span><span>Mobile</span>
+                <div class="repair-grid">
+                    <div class="repair-card" onclick="openModal('Mobile Repair', 'Professional repair services for all mobile brands.', ['Screen Replacement', 'Battery Swap', 'Software Fix'], 'Expect a thorough diagnostic before any work begins.', 'Did you know? Most screen repairs can be completed in under 2 hours.')">
+                        <span class="repair-icon">📱</span>
+                        <h3>Mobile</h3>
+                        <p>Cracked screen, dead battery, software issues — any brand, most models.</p>
+                        <span class="repair-tag">Tap to enquire →</span>
                     </div>
-                    <div class="repair-item" onclick="openModal('TV Repair', 'Expert diagnostics and repair for LED/Smart TVs.', ['Panel Repair', 'Power Issues', 'Backlight Fix'], 'Repairs are handled by specialists with panel-level expertise.', 'Fact: Modern LED TVs are 40% more energy-efficient than models from 5 years ago.')">
-                        <span class="repair-icon">📺</span><span>TV</span>
+                    <div class="repair-card" onclick="openModal('TV Repair', 'Expert diagnostics and repair for LED/Smart TVs.', ['Panel Repair', 'Power Issues', 'Backlight Fix'], 'Repairs are handled by specialists with panel-level expertise.', 'Fact: Modern LED TVs are 40% more energy-efficient than models from 5 years ago.')">
+                        <span class="repair-icon">📺</span>
+                        <h3>TV</h3>
+                        <p>Panel issues, backlight failure, power problems — handled with panel-level precision.</p>
+                        <span class="repair-tag">Tap to enquire →</span>
                     </div>
-                    <div class="repair-item" onclick="openModal('Audio Repair', 'Fixing your favorite headphones and speakers.', ['Speaker Repair', 'Jack Replacement', 'Internal Wiring'], 'Restoring original sound quality using genuine components.', 'Interesting: High-end speakers can last over 20 years if maintained properly.')">
-                        <span class="repair-icon">🎧</span><span>Audio</span>
+                    <div class="repair-card" onclick="openModal('Audio Repair', 'Fixing your favorite headphones and speakers.', ['Speaker Repair', 'Jack Replacement', 'Internal Wiring'], 'Restoring original sound quality using genuine components.', 'Interesting: High-end speakers can last over 20 years if maintained properly.')">
+                        <span class="repair-icon">🎧</span>
+                        <h3>Audio</h3>
+                        <p>Headphones, speakers, jacks — restored to original sound quality with genuine parts.</p>
+                        <span class="repair-tag">Tap to enquire →</span>
                     </div>
                 </div>
             </div>
@@ -510,22 +957,84 @@
         <!-- Map Section -->
         <section class="map-section reveal">
             <div class="container">
-                <div class="section-header"><p>Visit Us</p><h2>Our Location</h2></div>
-                <div class="map-container">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3916.123456789!2d77.0638796!3d11.0542557!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTHCsDAzJzE1LjMiTiA3N8KwMDMnNTAuMCJF!5e0!3m2!1sen!2sin!4v1713200000000!5m2!1sen!2sin" allowfullscreen="" loading="lazy"></iframe>
+                <div class="section-header">
+                    <div class="section-eyebrow">Visit</div>
+                    <h2>Find the store</h2>
                 </div>
-                <div style="text-align: center;"><a href="https://www.google.com/maps/dir/?api=1&destination=11.054255656739931,77.06387961818233" target="_blank" class="btn btn-primary">Get Directions</a></div>
+                <div class="map-wrapper">
+                    <div class="map-container">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3916.123456789!2d77.0638796!3d11.0542557!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMTHCsDAzJzE1LjMiTiA3N8KwMDMnNTAuMCJF!5e0!3m2!1sen!2sin!4v1713200000000!5m2!1sen!2sin" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                    <div class="map-info">
+                        <h3>Come in anytime</h3>
+                        <div class="map-detail">
+                            <div class="map-detail-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            </div>
+                            <div><strong>Location</strong><span>Tamil Nadu, India</span></div>
+                        </div>
+                        <div class="map-detail">
+                            <div class="map-detail-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            </div>
+                            <div><strong>Open hours</strong><span>Mon – Sun: 09:00 – 22:00</span></div>
+                        </div>
+                        <div class="map-detail">
+                            <div class="map-detail-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.77a16 16 0 0 0 6.29 6.29l1.06-.94a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            </div>
+                            <div><strong>Phone</strong><span>+91 72000 06006</span></div>
+                        </div>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=11.054255656739931,77.06387961818233" target="_blank" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:8px;">Get Directions</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="reveal" style="padding: 96px 0; background: var(--paper-warm);">
+            <div class="container">
+                <div class="section-header" style="text-align:center;">
+                    <div class="section-eyebrow" style="justify-content:center;">Questions</div>
+                    <h2>Things people ask</h2>
+                </div>
+                <div class="faq-wrap">
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this.parentElement)">How do I know which device fits my usage? <div class="faq-toggle">+</div></div>
+                        <div class="faq-answer">A guided system built around daily needs — not just specs. The "What this feels like for you" descriptions and intelligent tags are designed to help choose with clarity. A free video call is also available to walk through the options together.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this.parentElement)">Are all products authentic? <div class="faq-toggle">+</div></div>
+                        <div class="faq-answer">Absolutely. Only 100% original products sourced directly from authorized distributors are listed. Every item undergoes a quality check before appearing on the catalogue.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this.parentElement)">When can I expect my delivery? <div class="faq-toggle">+</div></div>
+                        <div class="faq-answer">Same-day delivery is available in Coimbatore. For the rest of India, courier partners typically deliver within 3–5 business days. Tracking updates are shared via WhatsApp.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this.parentElement)">What is the return policy? <div class="faq-toggle">+</div></div>
+                        <div class="faq-answer">A 7-day replacement policy applies for any manufacturing defects. Just reach out via WhatsApp and every step of the process is guided clearly — no confusing forms.</div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-question" onclick="toggleFaq(this.parentElement)">What is the E-con platform? <div class="faq-toggle">+</div></div>
+                        <div class="faq-answer">E-con is a proprietary guided electronics system designed to bring transparency to tech commerce. It ensures the wrong device is never purchased — by starting with how you actually live, not what a spec sheet says.</div>
+                    </div>
+                </div>
             </div>
         </section>
 
         <!-- Contact CTA -->
-        <section id="help" class="reveal">
+        <section id="help" class="contact-section reveal">
             <div class="container">
                 <div class="contact-box">
-                    <p>Get in touch</p>
+                    <div class="contact-eyebrow">Get in touch</div>
                     <h2>Need a quick answer?</h2>
-                    <a href="https://wa.me/917200006006" class="btn btn-whatsapp">Talk on WhatsApp</a>
-                    <p style="margin-top: 20px; font-size: 0.9rem; opacity: 0.9;">Usually replied within a few minutes</p>
+                    <p>Most questions are answered within a few minutes. A real person responds — not a scripted bot.</p>
+                    <div class="contact-actions">
+                        <a href="https://wa.me/917200006006" class="btn btn-whatsapp">Talk on WhatsApp</a>
+                        <a href="tel:+917200006006" class="btn btn-primary">Call directly</a>
+                    </div>
+                    <div class="response-tag">Usually replied within a few minutes</div>
                 </div>
             </div>
         </section>
@@ -535,9 +1044,9 @@
         <div class="container">
             <div class="footer-grid">
                 <div class="footer-brand">
-                    <h2 class="logo">Kov·in</h2>
-                    <p>Tamil Nadu's guided electronics system. We believe in clarity, not just sales.</p>
-                    <div class="social-links" style="margin-top: 24px;">
+                    <div class="logo">Kov·in</div>
+                    <p class="footer-tagline">Tamil Nadu's guided electronics system. Clarity, not just sales — that's the difference.</p>
+                    <div class="social-links">
                         <a href="https://www.instagram.com/mr.kovaimobiles?igsh=c3N1M2ZlZWJucWlw" target="_blank" aria-label="Instagram">
                             <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c.796 0 1.441.645 1.441 1.44s-.645 1.44-1.441 1.44c-.795 0-1.439-.645-1.439-1.44s.644-1.44 1.439-1.44z"/></svg>
                         </a>
@@ -549,45 +1058,21 @@
                         </a>
                     </div>
                 </div>
-                <div class="footer-col" onclick="toggleFooterSection(this)">
-                    <h4>Our Philosophy <span>+</span></h4>
+                <div class="footer-col">
+                    <h4>Philosophy</h4>
                     <ul>
-                        <li><strong>Philosophy:</strong> Kovin Electronics operates on a customer-first principle. The focus remains on service quality and building long-term trust rather than short-term sales.</li>
-                        <li><strong>Ecosystem:</strong> A comprehensive support ecosystem is offered, combining high-quality products with expert repair services.</li>
-                        <li><strong>CX Specialist:</strong> Ensuring every visitor receives a seamless and transparent experience.</li>
-                        <li><strong>Device Care Expert:</strong> Dedicated to precision diagnostics and high-quality hardware restoration.</li>
+                        <li>Customer-first, always</li>
+                        <li>Clarity over sales</li>
+                        <li>Long-term trust</li>
+                        <li>Precision diagnostics</li>
                     </ul>
                 </div>
-                <div class="footer-col" onclick="toggleFooterSection(this)">
-                    <h4>FAQ <span>+</span></h4>
-                    <ul class="faq-container">
-                        <li class="faq-item" onclick="event.stopPropagation(); toggleFaq(this)">
-                            <div class="faq-question">How do I know which device fits my usage? <span>+</span></div>
-                            <div class="faq-answer">We use a guided system that focuses on your daily needs rather than just specs. Our "What this feels like for you" descriptions and intelligent tags are designed to help you choose with clarity.</div>
-                        </li>
-                        <li class="faq-item" onclick="event.stopPropagation(); toggleFaq(this)">
-                            <div class="faq-question">Are all products authentic? <span>+</span></div>
-                            <div class="faq-answer">Absolutely. We only deal in 100% original products sourced directly from authorized distributors. Every item undergoes a quality check before being listed.</div>
-                        </li>
-                        <li class="faq-item" onclick="event.stopPropagation(); toggleFaq(this)">
-                            <div class="faq-question">When can I expect my delivery? <span>+</span></div>
-                            <div class="faq-answer">For customers in Coimbatore, we offer same-day delivery. For the rest of India, our courier partners typically deliver within 3-5 business days.</div>
-                        </li>
-                        <li class="faq-item" onclick="event.stopPropagation(); toggleFaq(this)">
-                            <div class="faq-question">What is your return policy? <span>+</span></div>
-                            <div class="faq-answer">We offer a 7-day replacement policy for any manufacturing defects. Reach out via WhatsApp, and we will guide you through the process.</div>
-                        </li>
-                        <li class="faq-item" onclick="event.stopPropagation(); toggleFaq(this)">
-                            <div class="faq-question">What is the E-con platform? <span>+</span></div>
-                            <div class="faq-answer">E-con is our proprietary guided electronics system designed to bring transparency to tech commerce. It ensures you never buy the wrong device.</div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="footer-col" onclick="toggleFooterSection(this)">
-                    <h4>Join the Team <span>+</span></h4>
+                <div class="footer-col">
+                    <h4>Join the Team</h4>
                     <ul>
-                        <li><strong>Service Consultant:</strong> Help customers find clarity in their tech choices. Focus on empathy and technical knowledge. <a href="https://wa.me/917200006006" style="color: var(--accent);">Apply via WhatsApp</a></li>
-                        <li><strong>Repair Technician:</strong> Precision-focused role for hardware diagnostics and repair. Experience required. <a href="https://wa.me/917200006006" style="color: var(--accent);">Apply via WhatsApp</a></li>
+                        <li><a href="https://wa.me/917200006006">Service Consultant</a></li>
+                        <li><a href="https://wa.me/917200006006">Repair Technician</a></li>
+                        <li><a href="https://wa.me/917200006006">Apply via WhatsApp</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -596,18 +1081,18 @@
                         <li>+91 72000 06006</li>
                         <li>Tamil Nadu, India</li>
                         <li>Mon – Sun: 09:00 – 22:00</li>
-                        <li><a href="#" onclick="openTerms()" style="color: var(--accent);">Terms & Conditions</a></li>
+                        <li><a href="#" onclick="openTerms()">Terms & Conditions</a></li>
                     </ul>
                 </div>
             </div>
             <div class="footer-bottom">
                 <p>© 2025 Kovin Electronics. All rights reserved.</p>
-                <div class="social-links"><a href="#help">Stay in Touch</a></div>
+                <a href="#help" style="font-size:0.82rem;color:var(--copper);font-weight:600;">Stay in Touch →</a>
             </div>
         </div>
     </footer>
 
-    <!-- Mobile Floating Bottom Nav -->
+    <!-- Mobile Bottom Nav -->
     <div class="mobile-nav">
         <a href="#" class="mobile-nav-item active">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
@@ -627,277 +1112,114 @@
         </a>
     </div>
 
-    <!-- AI Chatbot -->
+    <!-- Chatbot -->
     <div class="chat-btn" id="chat-btn">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2a10 10 0 0 1 10 10c0 5.523-4.477 10-10 10S2 17.523 2 12A10 10 0 0 1 12 2z"></path>
-            <path d="M12 8v4"></path>
-            <path d="M12 16h.01"></path>
-            <path d="M7 12h.01"></path>
-            <path d="M17 12h.01"></path>
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
         </svg>
     </div>
     <div class="chat-window" id="chat-window">
-        <div class="chat-header"><span>Kovin Assistant</span><span style="cursor:pointer" id="chat-close">✕</span></div>
-        <div class="chat-body" id="chat-body"><div class="chat-msg msg-bot">Hello! I'm your Kovin Sales Assistant. How can I help you today?</div></div>
+        <div class="chat-header">
+            <span>Kovin Assistant</span>
+            <span style="cursor:pointer;font-size:1.2rem;opacity:0.8;" id="chat-close">✕</span>
+        </div>
+        <div class="chat-body" id="chat-body">
+            <div class="chat-msg msg-bot">Hello! I'm your Kovin Sales Assistant. How can I help you today?</div>
+        </div>
         <div class="chat-footer">
             <input type="text" class="chat-input" id="chat-input" placeholder="Type a message...">
-            <button class="btn btn-primary" style="padding: 8px 16px; border-radius: 20px;" id="chat-send">Send</button>
+            <button class="btn btn-primary" style="padding: 9px 18px; border-radius: 40px; font-size:0.85rem;" id="chat-send">Send</button>
         </div>
     </div>
+
+    <!-- Wishlist notification -->
+    <div class="wishlist-bar" id="wishlist-bar">❤️ Added to wishlist</div>
 
     <!-- Modal -->
     <div class="modal-overlay" id="modal-overlay">
         <div class="modal-content">
-            <span class="modal-close" onclick="closeModal()">✕</span>
+            <div class="modal-close" onclick="closeModal()">✕</div>
             <h2 class="modal-title" id="modal-title">Product Title</h2>
-            <div class="modal-section"><h4>Description</h4><p id="modal-desc"></p></div>
+            <div class="modal-badge" id="modal-badge">Authentic · Warranted</div>
+            <div class="modal-desc" id="modal-desc"></div>
             <div class="modal-section"><h4>What to Expect</h4><p id="modal-expect"></p></div>
             <div class="modal-section"><h4>Did You Know?</h4><p id="modal-fact"></p></div>
             <ul class="modal-features" id="modal-features"></ul>
-            
-            <div class="modal-section">
-                <h4>Purchase Option</h4>
+            <div style="margin-bottom:22px;">
+                <div style="font-size:0.72rem;font-weight:700;color:var(--copper);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px;">Purchase Option</div>
                 <div class="purchase-options" id="purchase-options">
                     <button class="option-btn active" onclick="setOption(this, 'Pickup')">Pickup (Store)</button>
                     <button class="option-btn" onclick="setOption(this, 'Delivery')">Delivery (Coimbatore)</button>
                     <button class="option-btn" onclick="setOption(this, 'Courier')">Courier (All India)</button>
                 </div>
             </div>
-
             <div class="modal-actions">
-                <button onclick="sendInquiry()" class="btn btn-whatsapp" style="justify-content: center;">WhatsApp Inquiry</button>
-                <a href="tel:+917200006006" class="btn btn-secondary" style="justify-content: center;">Call Us</a>
+                <button onclick="sendInquiry()" class="btn btn-whatsapp" style="justify-content:center;">WhatsApp Inquiry</button>
+                <a href="tel:+917200006006" class="btn btn-secondary" style="justify-content:center;">Call directly</a>
             </div>
         </div>
     </div>
 
     <script>
-        // Products Data
+        // ===== PRODUCTS DATA =====
         const products = [
-            { 
-                id: 1, 
-                category: 'phones', 
-                name: 'Samsung Galaxy S23 FE', 
-                specs: '6.4" AMOLED · 50MP · 4500mAh', 
-                price: '₹34,999', 
-                oldPrice: '₹44,999', 
-                badge: 'Built for more power', 
-                tags: ['Built for heavy use', 'Value that holds'],
-                image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/fWEumNteCudVVPuo.png', 
-                desc: 'Samsung Galaxy S23 FE. Features a 6.4" Dynamic AMOLED 2X display, Exynos 2200 processor, 50MP main camera, 4500mAh battery, and 128GB storage.', 
-                expect: 'This fits your usage if you need smooth performance for multitasking and a camera that captures clear details in any light. The battery experience is reliable for a full day of active use.', 
-                fact: 'The performance stability during long video calls is better-than-expected for this model.' 
-            },
-            { 
-                id: 2, 
-                category: 'phones', 
-                name: 'Google Pixel 7a', 
-                specs: '6.1" OLED · 64MP · Tensor G2', 
-                price: '₹39,999', 
-                oldPrice: '₹43,999', 
-                badge: 'Balanced for everything', 
-                tags: ['Camera focused', 'Clean experience'],
-                image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/AeIhJBFyYYuVXncG.png', 
-                desc: 'Google Pixel 7a. Features a 6.1" OLED display, Google Tensor G2 chip, 64MP dual camera system, 4385mAh battery, and 128GB storage.', 
-                expect: 'Chosen for you if you prefer a compact phone that takes incredible photos automatically. It provides a clean daily performance that feels fast and simple.', 
-                fact: 'The call clarity and noise cancellation features offer a unique usage advantage in busy environments.' 
-            },
-            { 
-                id: 3, 
-                category: 'tv', 
-                name: 'Sony Bravia 4K LED', 
-                specs: '55" 4K Ultra HD · Smart TV · HDR', 
-                price: '₹54,990', 
-                oldPrice: '₹69,990', 
-                badge: 'New', 
-                tags: ['Worth noticing', 'Balanced choice'],
-                image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/PNuLvudbHcTmKOpp.png', 
-                desc: 'Sony Bravia 55" 4K Ultra HD LED. Features a 55-inch screen, X1 4K Processor, 4K resolution, and 20W Dolby Audio sound.', 
-                expect: 'This fits your usage for a cinematic movie experience at home. The display type ensures vibrant colors that look real for you.', 
-                fact: 'The sound profile is surprisingly deep, often removing the need for an external speaker in medium-sized rooms.' 
-            },
-            { 
-                id: 4, 
-                category: 'speakers', 
-                name: 'Sony WH-1000XM5', 
-                specs: '30hr battery · 8 mics · LDAC', 
-                price: '₹26,990', 
-                oldPrice: '₹34,990', 
-                badge: 'Top Pick', 
-                tags: ['Quiet performer', 'Chosen for you'],
-                image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/XIJzeXSRHorEqzFw.png', 
-                desc: 'Sony WH-1000XM5 Wireless Headphones. Features 30-hour battery life, industry-leading noise cancellation, and Bluetooth 5.2 connectivity.', 
-                expect: 'Chosen for you to create a quiet space anywhere. The sound profile is balanced to make every instrument clear for you during long listening sessions.', 
-                fact: 'The quick-charge feature is a unique usage advantage, giving 3 hours of playback from just a 3-minute charge.' 
-            },
-            { 
-                id: 5, 
-                category: 'accessories', 
-                name: 'Apple 20W USB-C Power Adapter', 
-                specs: 'Fast charging · Compact design', 
-                price: '₹1,699', 
-                oldPrice: '₹1,900', 
-                badge: '', 
-                tags: ['Most picked', 'Battery focused'],
-                image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/uVoVbsruMHDNSVBu.png', 
-                desc: 'Apple 20W USB-C Power Adapter. Compatible with iPhone 8 or later and various iPad models for fast charging.', 
-                expect: 'This fits your usage if you need to power up your device quickly and safely. It is chosen for you to ensure battery health over long-term use.', 
-                fact: 'The compact design makes it easy to carry, and it maintains a cool temperature even during fast-charging sessions.' 
-            },
-            { 
-                id: 6, 
-                category: 'accessories', 
-                name: 'Premium Tempered Glass', 
-                specs: '9H Hardness · Edge-to-edge', 
-                price: '₹499', 
-                oldPrice: '₹999', 
-                badge: 'Essential', 
-                tags: ['Worth noticing', 'Value that holds'],
-                image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/KelCDGFlqZNnFnFD.png', 
-                desc: 'High-quality 9H tempered glass screen protector. Provides edge-to-edge protection against scratches and impacts.', 
-                expect: 'Fits your usage by keeping your screen pristine without affecting touch sensitivity. Chosen for you to prevent costly screen repairs.', 
-                fact: 'Our tempered glass features an oleophobic coating that significantly reduces fingerprint smudges.' 
-            },
-            { 
-                id: 7, 
-                category: 'accessories', 
-                name: 'Sleek Protective Case', 
-                specs: 'Shockproof · Slim profile', 
-                price: '₹799', 
-                oldPrice: '₹1,499', 
-                badge: 'Most Picked', 
-                tags: ['Balanced choice', 'Chosen for you'],
-                image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/jdVRAWbtGZtmRYSW.png', 
-                desc: 'Durable, shock-absorbing back case with a slim profile. Designed to protect your device while maintaining its original look.', 
-                expect: 'This fits your usage if you want protection without the bulk. It feels premium in hand and provides a secure grip.', 
-                fact: 'The raised edges around the camera provide better-than-expected protection for the lenses.' 
-            },
-            { 
-                id: 8, 
-                category: 'accessories', 
-                name: 'Braided Fast Charge Cable', 
-                specs: 'USB-C to USB-C · 60W PD', 
-                price: '₹599', 
-                oldPrice: '₹1,199', 
-                badge: '', 
-                tags: ['Built for heavy use', 'Battery focused'],
-                image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/skNTrQiJTgkIzyjx.png', 
-                desc: 'Tangle-free braided charging cable supporting up to 60W Power Delivery. Built for durability and high-speed data transfer.', 
-                expect: 'Chosen for you if you are tired of cables breaking. It fits your usage for fast charging at home or in the office.', 
-                fact: 'The reinforced stress points make this cable last 10x longer than standard plastic cables.' 
-            },
-            { 
-                id: 9, 
-                category: 'accessories', 
-                name: '10000mAh Slim Power Bank', 
-                specs: 'Dual output · Fast charging', 
-                price: '₹1,499', 
-                oldPrice: '₹2,499', 
-                badge: 'Travel Ready', 
-                tags: ['Battery focused', 'Value that holds'],
-                image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/ZRDoBVIhYurGwJms.png', 
-                desc: 'Ultra-slim 10000mAh portable charger with dual USB outputs. Perfect for keeping your devices powered on the go.', 
-                expect: 'Fits your usage for long travel days or busy schedules. It is chosen for you to ensure you never run out of power.', 
-                fact: 'Despite its high capacity, it is thin enough to fit comfortably in your pocket alongside your phone.' 
-            },
-            { 
-                id: 10, 
-                category: 'accessories', 
-                name: 'Aluminum Phone Stand', 
-                specs: 'Adjustable angle · Non-slip', 
-                price: '₹399', 
-                oldPrice: '₹899', 
-                badge: '', 
-                tags: ['Clean experience', 'Worth noticing'],
-                image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/QLzXktccBITzJoEo.png', 
-                desc: 'Sturdy aluminum desktop stand with adjustable viewing angles. Features non-slip silicone pads to keep your device secure.', 
-                expect: 'Chosen for you to improve your desk ergonomics. It fits your usage for video calls or watching content hands-free.', 
-                fact: 'The hollow design allows for easy charging while the phone is mounted on the stand.' 
-            },
-            { 
-                id: 11, 
-                category: 'accessories', 
-                name: 'Premium Wireless Earbuds', 
-                specs: '24hr playtime · Auto-pairing', 
-                price: '₹2,999', 
-                oldPrice: '₹5,999', 
-                badge: 'Best Seller', 
-                tags: ['Quiet performer', 'Chosen for you'],
-                image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/akufQOVWgjtpdbDf.png', 
-                desc: 'True wireless earbuds with crystal clear sound and a compact charging case. Features touch controls and voice assistant support.', 
-                expect: 'Fits your usage for daily commutes or workouts. The sound profile is tuned to provide a rich audio experience for you.', 
-                fact: 'The auto-pairing feature works instantly the moment you open the case, providing a seamless experience.' 
-            },
-            { 
-                id: 12, 
-                category: 'accessories', 
-                name: 'Magnetic Car Mount', 
-                specs: '360° Rotation · Strong grip', 
-                price: '₹449', 
-                oldPrice: '₹999', 
-                badge: '', 
-                tags: ['Balanced choice', 'Worth noticing'],
-                image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/LeYyaTtVUntOTfPh.png', 
-                desc: 'Universal magnetic car mount that fits into any air vent. Provides a secure, one-handed mounting solution for your smartphone.', 
-                expect: 'Chosen for you to ensure safe navigation while driving. It fits your usage with its easy-to-adjust 360-degree rotation.', 
-                fact: 'The ultra-strong magnets ensure your phone stays in place even on the bumpiest roads.' 
-            },
-            { 
-                id: 13, 
-                category: 'accessories', 
-                name: 'Device Cleaning Kit', 
-                specs: 'Alcohol-free · Microfiber cloth', 
-                price: '₹249', 
-                oldPrice: '₹499', 
-                badge: '', 
-                tags: ['Clean experience', 'Value that holds'],
-                image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/QdzcPYGrRoKDynVN.png', 
-                desc: 'Professional cleaning solution for screens and electronics. Includes a non-toxic spray and a premium microfiber cloth.', 
-                expect: 'Fits your usage by keeping your devices looking brand new. Chosen for you to maintain the clarity of your displays.', 
-                fact: 'The anti-static formula helps repel dust, keeping your screen cleaner for longer periods.' 
-            },
-            { 
-                id: 14, 
-                category: 'accessories', 
-                name: 'Camera Lens Protector', 
-                specs: 'Ultra-clear · Scratch resistant', 
-                price: '₹299', 
-                oldPrice: '₹599', 
-                badge: 'New', 
-                tags: ['Camera focused', 'Worth noticing'],
-                image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/gmvKvvXVYoSPYHjl.png', 
-                desc: 'Tempered glass protection for your smartphone camera lenses. Maintains original photo quality while preventing scratches.', 
-                expect: 'Chosen for you if you want to protect your camera without compromising on photo clarity. Fits your usage for worry-free photography.', 
-                fact: 'The ultra-thin design makes it almost invisible once applied to your device.' 
-            }
+            { id: 1, category: 'phones', name: 'Samsung Galaxy S23 FE', specs: '6.4" AMOLED · 50MP · 4500mAh', price: '₹34,999', oldPrice: '₹44,999', badge: 'Built for more power', tags: ['Built for heavy use', 'Value that holds'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/fWEumNteCudVVPuo.png', desc: 'Samsung Galaxy S23 FE. Features a 6.4" Dynamic AMOLED 2X display, Exynos 2200 processor, 50MP main camera, 4500mAh battery, and 128GB storage.', expect: 'This fits your usage if you need smooth performance for multitasking and a camera that captures clear details in any light. The battery experience is reliable for a full day of active use.', fact: 'The performance stability during long video calls is better-than-expected for this model.' },
+            { id: 2, category: 'phones', name: 'Google Pixel 7a', specs: '6.1" OLED · 64MP · Tensor G2', price: '₹39,999', oldPrice: '₹43,999', badge: 'Balanced for everything', tags: ['Camera focused', 'Clean experience'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/AeIhJBFyYYuVXncG.png', desc: 'Google Pixel 7a. Features a 6.1" OLED display, Google Tensor G2 chip, 64MP dual camera system, 4385mAh battery, and 128GB storage.', expect: 'Chosen for you if you prefer a compact phone that takes incredible photos automatically. It provides a clean daily performance that feels fast and simple.', fact: 'The call clarity and noise cancellation features offer a unique usage advantage in busy environments.' },
+            { id: 3, category: 'tv', name: 'Sony Bravia 4K LED', specs: '55" 4K Ultra HD · Smart TV · HDR', price: '₹54,990', oldPrice: '₹69,990', badge: 'New', tags: ['Worth noticing', 'Balanced choice'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/PNuLvudbHcTmKOpp.png', desc: 'Sony Bravia 55" 4K Ultra HD LED. Features a 55-inch screen, X1 4K Processor, 4K resolution, and 20W Dolby Audio sound.', expect: 'This fits your usage for a cinematic movie experience at home. The display type ensures vibrant colors that look real for you.', fact: 'The sound profile is surprisingly deep, often removing the need for an external speaker in medium-sized rooms.' },
+            { id: 4, category: 'speakers', name: 'Sony WH-1000XM5', specs: '30hr battery · 8 mics · LDAC', price: '₹26,990', oldPrice: '₹34,990', badge: 'Top Pick', tags: ['Quiet performer', 'Chosen for you'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/XIJzeXSRHorEqzFw.png', desc: 'Sony WH-1000XM5 Wireless Headphones. Features 30-hour battery life, industry-leading noise cancellation, and Bluetooth 5.2 connectivity.', expect: 'Chosen for you to create a quiet space anywhere. The sound profile is balanced to make every instrument clear for you during long listening sessions.', fact: 'The quick-charge feature gives 3 hours of playback from just a 3-minute charge.' },
+            { id: 5, category: 'accessories', name: 'Apple 20W USB-C Power Adapter', specs: 'Fast charging · Compact design', price: '₹1,699', oldPrice: '₹1,900', badge: '', tags: ['Most picked', 'Battery focused'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/uVoVbsruMHDNSVBu.png', desc: 'Apple 20W USB-C Power Adapter. Compatible with iPhone 8 or later and various iPad models for fast charging.', expect: 'This fits your usage if you need to power up your device quickly and safely. Chosen to ensure battery health over long-term use.', fact: 'The compact design makes it easy to carry, and it maintains a cool temperature even during fast-charging sessions.' },
+            { id: 6, category: 'accessories', name: 'Premium Tempered Glass', specs: '9H Hardness · Edge-to-edge', price: '₹499', oldPrice: '₹999', badge: 'Essential', tags: ['Worth noticing', 'Value that holds'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/KelCDGFlqZNnFnFD.png', desc: 'High-quality 9H tempered glass screen protector. Provides edge-to-edge protection against scratches and impacts.', expect: 'Fits your usage by keeping your screen pristine without affecting touch sensitivity. Chosen to prevent costly screen repairs.', fact: 'Features an oleophobic coating that significantly reduces fingerprint smudges.' },
+            { id: 7, category: 'accessories', name: 'Sleek Protective Case', specs: 'Shockproof · Slim profile', price: '₹799', oldPrice: '₹1,499', badge: 'Most Picked', tags: ['Balanced choice', 'Chosen for you'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/jdVRAWbtGZtmRYSW.png', desc: 'Durable, shock-absorbing back case with a slim profile. Designed to protect your device while maintaining its original look.', expect: 'This fits your usage if you want protection without the bulk. It feels premium in hand and provides a secure grip.', fact: 'The raised edges around the camera provide better-than-expected protection for the lenses.' },
+            { id: 8, category: 'accessories', name: 'Braided Fast Charge Cable', specs: 'USB-C to USB-C · 60W PD', price: '₹599', oldPrice: '₹1,199', badge: '', tags: ['Built for heavy use', 'Battery focused'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/skNTrQiJTgkIzyjx.png', desc: 'Tangle-free braided charging cable supporting up to 60W Power Delivery. Built for durability and high-speed data transfer.', expect: 'Chosen if you are tired of cables breaking. Fits your usage for fast charging at home or in the office.', fact: 'The reinforced stress points make this cable last 10x longer than standard plastic cables.' },
+            { id: 9, category: 'accessories', name: '10000mAh Slim Power Bank', specs: 'Dual output · Fast charging', price: '₹1,499', oldPrice: '₹2,499', badge: 'Travel Ready', tags: ['Battery focused', 'Value that holds'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/ZRDoBVIhYurGwJms.png', desc: 'Ultra-slim 10000mAh portable charger with dual USB outputs. Perfect for keeping your devices powered on the go.', expect: 'Fits your usage for long travel days or busy schedules. Chosen to ensure you never run out of power.', fact: 'Despite its high capacity, it is thin enough to fit comfortably in your pocket alongside your phone.' },
+            { id: 10, category: 'accessories', name: 'Aluminum Phone Stand', specs: 'Adjustable angle · Non-slip', price: '₹399', oldPrice: '₹899', badge: '', tags: ['Clean experience', 'Worth noticing'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/QLzXktccBITzJoEo.png', desc: 'Sturdy aluminum desktop stand with adjustable viewing angles. Features non-slip silicone pads to keep your device secure.', expect: 'Chosen to improve desk ergonomics. Fits your usage for video calls or watching content hands-free.', fact: 'The hollow design allows for easy charging while the phone is mounted on the stand.' },
+            { id: 11, category: 'accessories', name: 'Premium Wireless Earbuds', specs: '24hr playtime · Auto-pairing', price: '₹2,999', oldPrice: '₹5,999', badge: 'Best Seller', tags: ['Quiet performer', 'Chosen for you'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/akufQOVWgjtpdbDf.png', desc: 'True wireless earbuds with crystal clear sound and a compact charging case. Features touch controls and voice assistant support.', expect: 'Fits your usage for daily commutes or workouts. The sound profile is tuned to provide a rich audio experience for you.', fact: 'The auto-pairing feature works instantly the moment you open the case.' },
+            { id: 12, category: 'accessories', name: 'Magnetic Car Mount', specs: '360° Rotation · Strong grip', price: '₹449', oldPrice: '₹999', badge: '', tags: ['Balanced choice', 'Worth noticing'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/LeYyaTtVUntOTfPh.png', desc: 'Universal magnetic car mount that fits into any air vent. Provides a secure, one-handed mounting solution for your smartphone.', expect: 'Chosen to ensure safe navigation while driving. Fits your usage with its easy-to-adjust 360-degree rotation.', fact: 'The ultra-strong magnets ensure your phone stays in place even on the bumpiest roads.' },
+            { id: 13, category: 'accessories', name: 'Device Cleaning Kit', specs: 'Alcohol-free · Microfiber cloth', price: '₹249', oldPrice: '₹499', badge: '', tags: ['Clean experience', 'Value that holds'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/QdzcPYGrRoKDynVN.png', desc: 'Professional cleaning solution for screens and electronics. Includes a non-toxic spray and a premium microfiber cloth.', expect: 'Fits your usage by keeping your devices looking brand new. Chosen to maintain the clarity of your displays.', fact: 'The anti-static formula helps repel dust, keeping your screen cleaner for longer periods.' },
+            { id: 14, category: 'accessories', name: 'Camera Lens Protector', specs: 'Ultra-clear · Scratch resistant', price: '₹299', oldPrice: '₹599', badge: 'New', tags: ['Camera focused', 'Worth noticing'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/gmvKvvXVYoSPYHjl.png', desc: 'Tempered glass protection for your smartphone camera lenses. Maintains original photo quality while preventing scratches.', expect: 'Chosen if you want to protect your camera without compromising on photo clarity. Fits your usage for worry-free photography.', fact: 'The ultra-thin design makes it almost invisible once applied to your device.' }
         ];
 
         let selectedOption = 'Pickup';
         let currentProduct = null;
+        const wishlistSet = new Set();
+
+        // Compute saving %
+        function savingPct(price, old) {
+            const p = parseInt(price.replace(/[^0-9]/g,''));
+            const o = parseInt(old.replace(/[^0-9]/g,''));
+            if (!o || o <= p) return null;
+            return Math.round((o - p) / o * 100);
+        }
 
         function renderProducts(filter = 'all') {
             const grid = document.getElementById('product-grid');
             grid.innerHTML = '';
             const filtered = filter === 'all' ? products : products.filter(p => p.category === filter);
             filtered.forEach(p => {
+                const pct = savingPct(p.price, p.oldPrice);
+                const badgeClass = p.badge ? 'badge-' + p.badge.toLowerCase().replace(/[^a-z]/g, '') : '';
                 const card = document.createElement('div');
                 card.className = 'product-card';
                 card.onclick = () => openModal(p.name, p.desc, ['High Quality', 'Authentic', 'Warranty Included'], p.expect, p.fact);
+                const isWishlisted = wishlistSet.has(p.id);
                 card.innerHTML = `
-                    ${p.badge ? `<span class="badge badge-${p.badge.toLowerCase().replace(/ /g, '')}">${p.badge}</span>` : ''}
-                    <div class="product-img">
-                        <img src="${p.image}" alt="${p.name}" loading="lazy">
-                    </div>
-                    <div class="product-info">
-                        <div class="product-tags">
-                            ${p.tags ? p.tags.map(t => `<span class="tag">${t}</span>`).join('') : ''}
+                    <div class="card-actions">
+                        <div class="card-action-btn" onclick="event.stopPropagation();toggleWishlist(${p.id}, this)" title="Add to wishlist">
+                            <svg viewBox="0 0 24 24" fill="${isWishlisted ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
                         </div>
-                        <h3>${p.name}</h3>
-                        <p class="product-specs">${p.specs}</p>
-                        <div class="product-price">
-                            <span class="current-price">${p.price}</span>
-                            <span class="old-price">${p.oldPrice}</span>
+                    </div>
+                    <div class="product-img"><img src="${p.image}" alt="${p.name}" loading="lazy"></div>
+                    <div class="product-body">
+                        ${p.badge ? `<span class="badge ${badgeClass}">${p.badge}</span>` : ''}
+                        <div class="product-tags">${(p.tags||[]).map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+                        <div class="product-info">
+                            <h3>${p.name}</h3>
+                            <p class="product-specs">${p.specs}</p>
+                            <div class="product-price">
+                                <span class="current-price">${p.price}</span>
+                                <span class="old-price">${p.oldPrice}</span>
+                                ${pct ? `<span class="saving-label">${pct}% off</span>` : ''}
+                            </div>
                         </div>
                     </div>
                 `;
@@ -905,24 +1227,40 @@
             });
         }
 
-        function filterProducts(cat) {
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+        function toggleWishlist(id, btn) {
+            if (wishlistSet.has(id)) {
+                wishlistSet.delete(id);
+                btn.querySelector('svg').setAttribute('fill', 'none');
+            } else {
+                wishlistSet.add(id);
+                btn.querySelector('svg').setAttribute('fill', 'currentColor');
+                showWishlistToast();
+            }
+        }
+
+        function showWishlistToast() {
+            const bar = document.getElementById('wishlist-bar');
+            bar.classList.add('show');
+            setTimeout(() => bar.classList.remove('show'), 2500);
+        }
+
+        function filterProducts(cat, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
             renderProducts(cat);
         }
 
-        // Theme System
+        // Theme
         const themeToggle = document.getElementById('theme-toggle');
         const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
         const html = document.documentElement;
         function setTheme(theme) { html.setAttribute('data-theme', theme); localStorage.setItem('theme', theme); }
         setTheme(localStorage.getItem('theme') || 'light');
-        
         const toggleAction = () => setTheme(html.getAttribute('data-theme') === 'light' ? 'dark' : 'light');
         themeToggle.addEventListener('click', toggleAction);
         mobileThemeToggle.addEventListener('click', toggleAction);
 
-        // Modal System
+        // Modal
         const modalOverlay = document.getElementById('modal-overlay');
         function openModal(title, desc, features, expect, fact) {
             currentProduct = title;
@@ -935,6 +1273,8 @@
             document.body.style.overflow = 'hidden';
         }
         function closeModal() { modalOverlay.style.display = 'none'; document.body.style.overflow = 'auto'; }
+        modalOverlay.addEventListener('click', (e) => { if (e.target === modalOverlay) closeModal(); });
+
         function setOption(btn, opt) {
             selectedOption = opt;
             document.querySelectorAll('.option-btn').forEach(b => b.classList.remove('active'));
@@ -947,51 +1287,40 @@
 
         function openTerms() {
             const tcContent = `
-                <h3>Terms & Conditions for E-con Platform</h3>
-                <p><strong>1. Platform Usage Rules:</strong> By accessing the Kovin Electronics website and the E-con platform, you agree to use the services for lawful purposes only. Any attempt to disrupt the platform's integrity or scrape data without permission is strictly prohibited.</p>
-                <p><strong>2. User Responsibilities:</strong> Users are responsible for providing accurate information during inquiries and purchases. If you create an account (coming soon), you are responsible for maintaining the confidentiality of your credentials.</p>
-                <p><strong>3. Order and Payment Terms:</strong> All orders placed through the platform or via WhatsApp are subject to availability. We accept UPI, Credit/Debit Cards, Net Banking, and Cash on Pickup. Payments must be cleared before delivery or at the time of pickup.</p>
-                <p><strong>4. Shipping and Delivery Terms:</strong> We offer same-day delivery in Coimbatore and courier services across India. While we strive for timely delivery, Kovin Electronics is not liable for delays caused by third-party courier services or unforeseen circumstances.</p>
-                <p><strong>5. Return and Refund Policy:</strong> Replacements are provided for manufacturing defects reported within 7 days of delivery. Refunds are processed only if a replacement is unavailable. Items must be returned in their original packaging with all accessories.</p>
-                <p><strong>6. Warranty and Service Disclaimers:</strong> Products carry standard manufacturer warranties. For repairs, Kovin Electronics provides a 90-day service warranty on the specific issue addressed. We are not liable for pre-existing issues or data loss during the repair process.</p>
-                <p><strong>7. Privacy and Data Usage Policy:</strong> We value your privacy. Your contact details and inquiry history are used solely to provide personalized service and order updates. We do not sell your data to third parties.</p>
-                <p><strong>8. Limitation of Liability:</strong> Kovin Electronics shall not be liable for any indirect, incidental, or consequential damages arising from the use of our products or services. Our total liability is limited to the amount paid for the specific product or service.</p>
-                <p><strong>9. Account Suspension or Misuse Policy:</strong> We reserve the right to suspend access to the platform for any user found engaging in fraudulent activities, harassment of staff, or misuse of the guided system.</p>
+                <p><strong>1. Platform Usage:</strong> By accessing Kovin Electronics, you agree to use services for lawful purposes only.</p>
+                <p><strong>2. User Responsibilities:</strong> Providing accurate information during inquiries and purchases is expected. Credentials for any future accounts must remain confidential.</p>
+                <p><strong>3. Order & Payment:</strong> All orders are subject to availability. UPI, Credit/Debit Cards, Net Banking, and Cash on Pickup are accepted. Payments must be cleared before delivery or at pickup.</p>
+                <p><strong>4. Shipping & Delivery:</strong> Same-day delivery in Coimbatore; 3–5 business days via courier across India. Delays caused by third-party couriers fall outside Kovin's liability.</p>
+                <p><strong>5. Returns & Refunds:</strong> Replacements for manufacturing defects within 7 days of delivery. Refunds processed only if a replacement is unavailable. Items must return in original packaging with all accessories.</p>
+                <p><strong>6. Warranty & Repairs:</strong> Products carry standard manufacturer warranties. Repair services carry a 90-day warranty on the specific issue addressed. Pre-existing issues or data loss during repair are not covered.</p>
+                <p><strong>7. Privacy:</strong> Contact details and inquiry history are used solely for personalized service and order updates. Data is never sold to third parties.</p>
+                <p><strong>8. Limitation of Liability:</strong> Total liability is limited to the amount paid for the specific product or service.</p>
             `;
-            openModal('Terms & Conditions', 'Please read our comprehensive terms for the E-con platform.', [], 'Clear communication and fair pricing.', 'Fact: We have served over 4,200 happy customers.');
+            openModal('Terms & Conditions', 'Comprehensive terms for the E-con platform.', [], 'Clear communication and fair pricing, always.', 'Over 4,200 satisfied customers and counting.');
             document.getElementById('modal-features').innerHTML = tcContent;
         }
 
         function toggleFaq(item) { item.classList.toggle('active'); }
-        
-        function toggleFooterSection(header) {
-            const isActive = header.classList.contains('active');
-            document.querySelectorAll('.footer-col').forEach(col => col.classList.remove('active'));
-            if (!isActive) header.classList.add('active');
-        }
 
-        // Upgraded Sales Assistant AI Chatbot
+        // Chatbot
         const chatBtn = document.getElementById('chat-btn');
         const chatWindow = document.getElementById('chat-window');
         const chatInput = document.getElementById('chat-input');
         const chatBody = document.getElementById('chat-body');
-        
+
         chatBtn.addEventListener('click', () => chatWindow.style.display = chatWindow.style.display === 'flex' ? 'none' : 'flex');
         document.getElementById('chat-close').addEventListener('click', () => chatWindow.style.display = 'none');
-        
+
         function addBotMessage(text, showWA = false) {
             const botMsg = document.createElement('div');
             botMsg.className = 'chat-msg msg-bot';
             botMsg.innerHTML = text.replace(/\n/g, '<br>');
             chatBody.appendChild(botMsg);
-            
             if (showWA) {
                 const waLink = document.createElement('a');
                 waLink.href = 'https://wa.me/917200006006';
                 waLink.className = 'btn btn-whatsapp';
-                waLink.style.fontSize = '0.8rem';
-                waLink.style.padding = '8px 12px';
-                waLink.style.marginTop = '8px';
+                waLink.style.cssText = 'font-size:0.78rem;padding:8px 14px;margin-top:8px;display:inline-flex;';
                 waLink.textContent = 'Connect on WhatsApp';
                 chatBody.appendChild(waLink);
             }
@@ -1001,32 +1330,25 @@
         function handleChat() {
             const text = chatInput.value.trim().toLowerCase();
             if (!text) return;
-
             const userMsg = document.createElement('div');
             userMsg.className = 'chat-msg msg-user';
             userMsg.textContent = chatInput.value;
             chatBody.appendChild(userMsg);
             chatInput.value = '';
             chatBody.scrollTop = chatBody.scrollHeight;
-
             setTimeout(() => {
                 if (text.includes('charger') || text.includes('cable') || text.includes('earphone') || text.includes('case') || text.includes('cover') || text.includes('battery') || text.includes('accessory')) {
-                    addBotMessage("We have high-quality accessories available (Type-C / iPhone compatible).\n\n👉 Do you want budget or original quality?\n\nFor quick pricing and availability, connect on WhatsApp:", true);
-                } 
-                else if (text.includes('repair') || text.includes('fix') || text.includes('broken') || text.includes('screen') || text.includes('water') || text.includes('damage') || text.includes('software')) {
-                    addBotMessage("We provide professional repair services for most mobile brands.\n\n👉 Share your phone model for exact pricing.\n\nOr connect instantly on WhatsApp:", true);
-                }
-                else if (text.includes('price') || text.includes('cost') || text.includes('how much') || text.includes('rate') || text.includes('quotation')) {
-                    addBotMessage("Pricing depends on your specific phone model.\n\n👉 Please share your device model for accurate pricing.\n\nOr WhatsApp us for instant support:", true);
-                }
-                else if (text.includes('best') || text.includes('suggest') || text.includes('recommend') || text.includes('which one')) {
-                    addBotMessage("I can help you find the perfect device based on your needs.\n\n👉 What is your primary use (Gaming, Camera, or Battery)?\n\nFor personalized recommendations, chat with our expert on WhatsApp:", true);
-                }
-                else if (text.includes('where') || text.includes('location') || text.includes('address') || text.includes('time') || text.includes('hours') || text.includes('open')) {
-                    addBotMessage("We are located in Tamil Nadu, India. Our hours are Mon to Sun, 09:00 to 22:00 hrs.\n\nNeed directions or want to check if we're open now? WhatsApp us:", true);
-                }
-                else {
-                    addBotMessage("I can help you with that. For faster assistance and detailed information, please connect with our executive on WhatsApp:", true);
+                    addBotMessage("High-quality accessories are available (Type-C / iPhone compatible).\n\n👉 Budget or original quality?\n\nFor quick pricing and availability, connect on WhatsApp:", true);
+                } else if (text.includes('repair') || text.includes('fix') || text.includes('broken') || text.includes('screen') || text.includes('water') || text.includes('damage') || text.includes('software')) {
+                    addBotMessage("Professional repair services cover most mobile brands.\n\n👉 Share your phone model for exact pricing.\n\nOr connect instantly on WhatsApp:", true);
+                } else if (text.includes('price') || text.includes('cost') || text.includes('how much') || text.includes('rate') || text.includes('quotation')) {
+                    addBotMessage("Pricing depends on your specific phone model.\n\n👉 Please share your device model for accurate pricing.\n\nOr WhatsApp for instant support:", true);
+                } else if (text.includes('best') || text.includes('suggest') || text.includes('recommend') || text.includes('which one')) {
+                    addBotMessage("Finding the perfect device starts with how you use it.\n\n👉 What matters most — Gaming, Camera, or Battery?\n\nFor personalized guidance, chat on WhatsApp:", true);
+                } else if (text.includes('where') || text.includes('location') || text.includes('address') || text.includes('time') || text.includes('hours') || text.includes('open')) {
+                    addBotMessage("Located in Tamil Nadu, India. Open Mon to Sun, 09:00 to 22:00.\n\nNeed directions or want to check availability? WhatsApp:", true);
+                } else {
+                    addBotMessage("Happy to help with that. For faster, detailed assistance, connect with a real expert on WhatsApp:", true);
                 }
             }, 600);
         }
@@ -1034,27 +1356,25 @@
         document.getElementById('chat-send').addEventListener('click', handleChat);
         chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleChat(); });
 
-        // Reveal on scroll & Active Nav
+        // Scroll reveal + active nav + scroll-to-top
         function reveal() {
             const sections = document.querySelectorAll("section[id]");
             const navLinks = document.querySelectorAll(".nav-links a, .mobile-nav-item");
-            
             document.querySelectorAll(".reveal").forEach(r => {
-                if (r.getBoundingClientRect().top < window.innerHeight - 150) r.classList.add("active");
+                if (r.getBoundingClientRect().top < window.innerHeight - 100) r.classList.add("active");
             });
-
             let current = "";
-            sections.forEach(s => {
-                const top = s.offsetTop;
-                if (pageYOffset >= top - 100) current = s.getAttribute("id");
-            });
-
+            sections.forEach(s => { if (pageYOffset >= s.offsetTop - 120) current = s.getAttribute("id"); });
             navLinks.forEach(l => {
                 l.classList.remove("active");
                 if (l.getAttribute("href") === `#${current}`) l.classList.add("active");
             });
+            const scrollTop = document.getElementById('scroll-top');
+            if (window.scrollY > 400) scrollTop.classList.add('visible');
+            else scrollTop.classList.remove('visible');
         }
-        window.addEventListener("scroll", reveal);
+
+        window.addEventListener("scroll", reveal, { passive: true });
         renderProducts();
         reveal();
     </script>
