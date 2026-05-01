@@ -195,6 +195,7 @@
         .repair-card:hover { background: var(--ink); color: var(--paper); }
         .repair-icon { font-size: 3rem; margin-bottom: 24px; display: block; }
         .repair-card h4 { font-family: var(--font-display); font-size: 2rem; margin-bottom: 16px; }
+        .repair-tag { font-size: 0.85rem; color: var(--copper); font-weight: 600; margin-top: 16px; display: block; }
 
         /* ===== MODAL ===== */
         .modal-overlay {
@@ -223,6 +224,9 @@
         .modal-section { margin-bottom: 32px; padding: 24px; background: var(--paper-warm); border-radius: 24px; }
         .modal-section h4 { font-size: 0.8rem; text-transform: uppercase; color: var(--copper); margin-bottom: 12px; letter-spacing: 0.1em; }
         .modal-section p { font-size: 1rem; opacity: 0.8; }
+        .modal-features { list-style: none; margin-bottom: 32px; }
+        .modal-features li { margin-bottom: 12px; display: flex; align-items: center; gap: 12px; font-size: 1rem; opacity: 0.8; }
+        .modal-features li::before { content: '✓'; color: var(--copper); font-weight: 700; }
         .modal-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 40px; }
         .meta-item h5 { font-size: 0.75rem; text-transform: uppercase; color: var(--copper); margin-bottom: 8px; }
         .meta-item p { font-size: 1rem; font-weight: 500; }
@@ -231,7 +235,11 @@
         footer { background: var(--ink); color: var(--paper); padding: 120px 0 60px; }
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 80px; margin-bottom: 80px; }
         .footer-brand .logo { font-size: 2.5rem; margin-bottom: 24px; display: block; }
-        .footer-brand p { opacity: 0.5; max-width: 300px; }
+        .footer-brand p { opacity: 0.5; max-width: 300px; margin-bottom: 32px; }
+        .social-links { display: flex; gap: 16px; }
+        .social-links a { width: 48px; height: 48px; border-radius: 50%; background: rgba(245,242,237,0.05); display: flex; align-items: center; justify-content: center; transition: var(--transition-smooth); }
+        .social-links a:hover { background: var(--copper); transform: translateY(-5px); }
+        .social-links svg { width: 20px; height: 20px; fill: white; }
         .footer-col h4 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 32px; color: var(--copper); }
         .footer-col ul { list-style: none; }
         .footer-col li { margin-bottom: 16px; opacity: 0.6; transition: var(--transition-smooth); }
@@ -388,20 +396,23 @@
                     <p style="margin-top: 24px; opacity: 0.6; font-size: 1.2rem;">Most problems are fixable. A transparent diagnostic happens first — no surprise charges, ever.</p>
                 </div>
                 <div class="repair-grid">
-                    <div class="repair-card reveal" onclick="window.location.href='https://wa.me/917200006006'">
+                    <div class="repair-card reveal" onclick="openRepairModal('Mobile Repair', 'Professional repair services for all mobile brands.', ['Screen Replacement', 'Battery Swap', 'Software Fix'], 'Expect a thorough diagnostic before any work begins.', 'Did you know? Most screen repairs can be completed in under 2 hours.')">
                         <span class="repair-icon">📱</span>
                         <h4>Mobile</h4>
                         <p>Cracked screens, dead batteries, or software issues — handled for any brand and most models.</p>
+                        <span class="repair-tag">Tap to enquire →</span>
                     </div>
-                    <div class="repair-card reveal" onclick="window.location.href='https://wa.me/917200006006'">
+                    <div class="repair-card reveal" onclick="openRepairModal('TV Repair', 'Expert diagnostics and repair for LED/Smart TVs.', ['Panel Repair', 'Power Issues', 'Backlight Fix'], 'Repairs are handled by specialists with panel-level expertise.', 'Fact: Modern LED TVs are 40% more energy-efficient than models from 5 years ago.')">
                         <span class="repair-icon">📺</span>
                         <h4>Television</h4>
                         <p>Panel issues, backlight failure, or power problems — restored with technical precision.</p>
+                        <span class="repair-tag">Tap to enquire →</span>
                     </div>
-                    <div class="repair-card reveal" onclick="window.location.href='https://wa.me/917200006006'">
+                    <div class="repair-card reveal" onclick="openRepairModal('Audio Repair', 'Fixing your favorite headphones and speakers.', ['Speaker Repair', 'Jack Replacement', 'Internal Wiring'], 'Restoring original sound quality using genuine components.', 'Interesting: High-end speakers can last over 20 years if maintained properly.')">
                         <span class="repair-icon">🎧</span>
                         <h4>Audio</h4>
                         <p>Headphones, speakers, or jacks — returned to original sound quality with genuine parts.</p>
+                        <span class="repair-tag">Tap to enquire →</span>
                     </div>
                 </div>
             </div>
@@ -424,7 +435,7 @@
                         <p style="margin: 20px 0;">Tamil Nadu, India</p>
                         <h4>Hours</h4>
                         <p style="margin-top: 10px;">Mon – Sun: 09:00 – 22:00</p>
-                        <a href="#" class="btn btn-primary" style="margin-top: 40px; width: 100%;">Get Directions</a>
+                        <a href="https://www.google.com/maps/search/?api=1&query=11.0542557,77.0638796" target="_blank" class="btn btn-primary" style="margin-top: 40px; width: 100%;">Get Directions</a>
                     </div>
                 </div>
             </div>
@@ -437,30 +448,41 @@
                 <div class="footer-brand">
                     <a href="#" class="logo">Kov·in</a>
                     <p>Tamil Nadu's guided electronics system. Clarity, not just sales — that's the difference.</p>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/mr.kovaimobiles?igsh=c3N1M2ZlZWJucWlw" target="_blank" aria-label="Instagram">
+                            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c.796 0 1.441.645 1.441 1.44s-.645 1.44-1.441 1.44c-.795 0-1.439-.645-1.439-1.44s.644-1.44 1.439-1.44z"/></svg>
+                        </a>
+                        <a href="https://www.facebook.com/share/16XBGFRhQ3/" target="_blank" aria-label="Facebook">
+                            <svg viewBox="0 0 24 24"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.03 1.764-6.227 5.733-6.227 1.582 0 3.248.282 3.248.282v3.569h-1.829c-1.997 0-2.621 1.239-2.621 2.509v1.447h4.023l-.643 3.667h-3.38v7.981h-4.612z"/></svg>
+                        </a>
+                        <a href="https://wa.me/917200006006" target="_blank" aria-label="WhatsApp">
+                            <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                        </a>
+                    </div>
                 </div>
                 <div class="footer-col">
                     <h4>Philosophy</h4>
                     <ul>
-                        <li>Customer-first</li>
-                        <li>Clarity over sales</li>
-                        <li>Long-term trust</li>
-                        <li>Precision diagnostics</li>
+                        <li><a href="#philosophy">Customer-first</a></li>
+                        <li><a href="#philosophy">Clarity over sales</a></li>
+                        <li><a href="#philosophy">Long-term trust</a></li>
+                        <li><a href="#philosophy">Precision diagnostics</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
                     <h4>Careers</h4>
                     <ul>
-                        <li>Service Consultant</li>
-                        <li>Repair Technician</li>
-                        <li>Apply via WhatsApp</li>
+                        <li><a href="https://wa.me/917200006006">Service Consultant</a></li>
+                        <li><a href="https://wa.me/917200006006">Repair Technician</a></li>
+                        <li><a href="https://wa.me/917200006006">Apply via WhatsApp</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
                     <h4>Legal</h4>
                     <ul>
-                        <li>Terms & Conditions</li>
-                        <li>Privacy Policy</li>
-                        <li>Return Policy</li>
+                        <li><a href="javascript:void(0)">Terms & Conditions</a></li>
+                        <li><a href="javascript:void(0)">Privacy Policy</a></li>
+                        <li><a href="javascript:void(0)">Return Policy</a></li>
                     </ul>
                 </div>
             </div>
@@ -525,6 +547,8 @@
                     <h4>Did You Know?</h4>
                     <p id="modal-fact"></p>
                 </div>
+
+                <ul class="modal-features" id="modal-features"></ul>
 
                 <div class="modal-meta">
                     <div class="meta-item">
@@ -623,6 +647,38 @@
             document.getElementById('modal-img').src = p.image;
             document.getElementById('modal-expect').innerText = p.expect;
             document.getElementById('modal-fact').innerText = p.fact;
+            
+            const featuresList = document.getElementById('modal-features');
+            featuresList.innerHTML = '';
+            (p.tags || []).forEach(tag => {
+                const li = document.createElement('li');
+                li.innerText = tag;
+                featuresList.appendChild(li);
+            });
+
+            document.getElementById('modal-overlay').style.display = 'flex';
+            gsap.from(".modal-content", { scale: 0.9, opacity: 0, duration: 0.6, ease: "power4.out" });
+        }
+
+        function openRepairModal(title, desc, features, expect, fact) {
+            currentProduct = { name: title };
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-desc').innerText = desc;
+            document.getElementById('modal-specs').innerText = 'Professional Service';
+            document.getElementById('modal-price').innerText = 'Diagnostic First';
+            document.getElementById('modal-badge').innerText = 'Expert Repair';
+            document.getElementById('modal-img').src = ''; // Clear image for repair
+            document.getElementById('modal-expect').innerText = expect;
+            document.getElementById('modal-fact').innerText = fact;
+            
+            const featuresList = document.getElementById('modal-features');
+            featuresList.innerHTML = '';
+            features.forEach(f => {
+                const li = document.createElement('li');
+                li.innerText = f;
+                featuresList.appendChild(li);
+            });
+
             document.getElementById('modal-overlay').style.display = 'flex';
             gsap.from(".modal-content", { scale: 0.9, opacity: 0, duration: 0.6, ease: "power4.out" });
         }
