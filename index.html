@@ -245,6 +245,11 @@
         .cart-momentum { text-align: center; margin-top: 16px; font-size: 0.85rem; font-weight: 500; color: var(--copper); }
         .cart-hesitation { font-size: 0.75rem; opacity: 0.5; text-align: center; margin-top: 12px; }
 
+        /* TRUST SECTIONS */
+        .trust-list { list-style: none; margin-top: 24px; }
+        .trust-list li { margin-bottom: 16px; display: flex; align-items: center; gap: 16px; font-size: 1.1rem; opacity: 0.8; }
+        .trust-list li::before { content: '→'; color: var(--copper); font-weight: 700; }
+
         /* ===== FOOTER ===== */
         footer { background: var(--ink); color: var(--paper); padding: 120px 0 60px; }
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 80px; margin-bottom: 80px; }
@@ -427,6 +432,31 @@
                         <h4>Audio</h4>
                         <p>Headphones, speakers, or jacks — returned to original sound quality with genuine parts.</p>
                         <span class="repair-tag">Tap to enquire →</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="trust-process" class="section-padding">
+            <div class="container">
+                <div class="bento-grid">
+                    <div class="bento-item large reveal">
+                        <span class="hero-eyebrow">The Process</span>
+                        <h3>What happens after you choose</h3>
+                        <ul class="trust-list">
+                            <li>Device is checked before handover</li>
+                            <li>You see what you're getting clearly</li>
+                            <li>Help is available if anything feels off</li>
+                        </ul>
+                    </div>
+                    <div class="bento-item reveal" style="background: var(--copper); color: white; border: none;">
+                        <span class="hero-eyebrow" style="color: white; opacity: 0.8;">The Difference</span>
+                        <h3 style="font-size: 2.2rem;">Why people feel comfortable choosing here</h3>
+                        <ul class="trust-list" style="margin-top: 20px;">
+                            <li style="font-size: 1rem; opacity: 0.9;">Clear explanation before any step</li>
+                            <li style="font-size: 1rem; opacity: 0.9;">No hidden surprises</li>
+                            <li style="font-size: 1rem; opacity: 0.9;">Straightforward guidance</li>
+                        </ul>
                     </div>
                 </div>
             </div>
