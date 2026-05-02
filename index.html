@@ -50,25 +50,35 @@
         .container { max-width: 1400px; margin: 0 auto; padding: 0 40px; }
         a { text-decoration: none; color: inherit; transition: var(--transition-smooth); }
 
-        /* ===== LUXURY HEADER ===== */
+        /* ===== FLOATING SMART NAVBAR ===== */
         header {
-            position: fixed; top: 0; width: 100%; z-index: 1000;
-            padding: 24px 0; transition: var(--transition-smooth);
-        }
-        header.scrolled {
-            padding: 16px 0;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 40px);
+            max-width: 1320px;
+            z-index: 1000;
+            padding: 12px 0;
             background: var(--glass);
             backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            box-shadow: var(--shadow-lux);
+            transition: transform 0.3s ease, opacity 0.3s ease;
         }
-        nav { display: flex; justify-content: space-between; align-items: center; }
+        header.nav-hidden {
+            transform: translate(-50%, -120%);
+            opacity: 0;
+        }
+        nav { display: flex; justify-content: space-between; align-items: center; padding: 0 32px; }
         .logo {
-            font-family: var(--font-display); font-size: 2rem; font-weight: 600;
+            font-family: var(--font-display); font-size: 1.8rem; font-weight: 600;
             letter-spacing: -0.02em; position: relative;
         }
-        .nav-links { display: flex; gap: 40px; align-items: center; }
+        .nav-links { display: flex; gap: 32px; align-items: center; }
         .nav-links a {
-            font-size: 0.85rem; font-weight: 500; color: var(--ink); opacity: 0.6;
+            font-size: 0.8rem; font-weight: 500; color: var(--ink); opacity: 0.6;
             text-transform: uppercase; letter-spacing: 0.1em;
         }
         .nav-links a:hover, .nav-links a.active { opacity: 1; }
@@ -90,29 +100,47 @@
         /* ===== HERO SECTION ===== */
         .hero {
             min-height: 100vh; display: flex; align-items: center; position: relative;
-            padding-top: 100px; overflow: hidden;
+            padding-top: 140px;
+            overflow: hidden;
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: none !important;
+            z-index: 1;
         }
         .hero-visual {
-            position: absolute; right: -10%; top: 50%; transform: translateY(-50%);
-            width: 60%; height: 80%; z-index: 0; opacity: 0.15;
-            background: radial-gradient(circle at center, var(--copper) 0%, transparent 70%);
-            filter: blur(100px);
+            position: absolute; right: 5%; top: 50%; transform: translateY(-50%);
+            width: 45%; height: 70%; z-index: 0; display: flex; align-items: center; justify-content: center;
         }
-        .hero-content { position: relative; z-index: 1; max-width: 900px; }
+        .hero-visual img {
+            max-width: 100%; max-height: 100%; object-fit: contain;
+            filter: drop-shadow(0 30px 60px rgba(0,0,0,0.15));
+        }
+        .hero-content { position: relative; z-index: 1; max-width: 700px; }
         .hero-eyebrow {
             font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.3em;
             color: var(--copper); margin-bottom: 24px; display: block;
         }
         .hero h1 {
-            font-family: var(--font-display); font-size: clamp(3.5rem, 8vw, 7rem);
-            line-height: 0.95; font-weight: 400; margin-bottom: 40px;
+            font-family: var(--font-display); font-size: clamp(3.5rem, 8vw, 6rem);
+            line-height: 1.05; font-weight: 400; margin-bottom: 32px;
         }
-        .hero h1 em { font-style: italic; color: var(--copper); }
         .hero-desc {
-            font-size: 1.25rem; max-width: 540px; opacity: 0.7; margin-bottom: 56px;
+            font-size: 1.25rem; max-width: 540px; opacity: 0.7; margin-bottom: 48px;
             font-weight: 300;
         }
-        .hero-actions { display: flex; gap: 24px; }
+        .hero-actions { display: flex; gap: 24px; align-items: center; margin-bottom: 40px; }
+        
+        .hero-trust-indicators {
+            display: flex; gap: 24px; opacity: 0.5; font-size: 0.8rem; font-weight: 500;
+        }
+        .hero-trust-indicators span { display: flex; align-items: center; gap: 8px; }
+        .hero-trust-indicators span::before { content: '✓'; color: var(--copper); font-weight: 700; }
+
+        .scroll-hint {
+            position: absolute; bottom: 40px; left: 40px; display: flex; align-items: center; gap: 16px;
+            font-size: 0.85rem; opacity: 0.4; font-weight: 500;
+        }
+        .scroll-line { width: 40px; height: 1px; background: var(--ink); }
 
         /* ===== BUTTONS ===== */
         .btn {
@@ -203,23 +231,25 @@
         .repair-card h4 { font-family: var(--font-display); font-size: 2rem; margin-bottom: 16px; }
         .repair-tag { font-size: 0.85rem; color: var(--copper); font-weight: 600; margin-top: 16px; display: block; }
 
-        /* ===== MODAL ===== */
+        /* ===== MODAL & GUIDED FLOW ===== */
         .modal-overlay {
             position: fixed; inset: 0; background: rgba(15, 16, 32, 0.8);
             backdrop-filter: blur(15px); z-index: 3000; display: none;
             align-items: center; justify-content: center; padding: 40px;
+            opacity: 0; transition: opacity 0.4s ease;
         }
+        .modal-overlay.active { display: flex; opacity: 1; }
         .modal-content {
             background: var(--paper); width: 100%; max-width: 1100px;
             border-radius: 56px; display: grid; grid-template-columns: 1fr 1.2fr;
             overflow: hidden; position: relative; box-shadow: var(--shadow-lux);
-            max-height: 90vh;
+            max-height: 90vh; z-index: 3001;
         }
         .modal-close {
             position: absolute; top: 32px; right: 32px; width: 48px; height: 48px;
             border-radius: 50%; background: var(--paper-warm); border: 1px solid var(--border);
             display: flex; align-items: center; justify-content: center; cursor: pointer;
-            z-index: 10; transition: var(--transition-smooth);
+            z-index: 3010; transition: var(--transition-smooth);
         }
         .modal-close:hover { background: var(--copper); color: white; }
         .modal-left { background: var(--paper-warm); display: flex; align-items: center; justify-content: center; padding: 60px; }
@@ -228,15 +258,31 @@
         .modal-title { font-family: var(--font-display); font-size: 3rem; margin-bottom: 8px; line-height: 1.1; }
         .modal-desc { opacity: 0.7; margin-bottom: 24px; font-size: 1.1rem; }
         
-        .modal-section { margin-bottom: 24px; padding: 24px; background: var(--paper-warm); border-radius: 24px; }
-        .modal-section h4 { font-size: 0.8rem; text-transform: uppercase; color: var(--copper); margin-bottom: 12px; letter-spacing: 0.1em; }
-        .modal-section p { font-size: 1rem; opacity: 0.8; }
-        .modal-features { list-style: none; margin-bottom: 24px; }
-        .modal-features li { margin-bottom: 12px; display: flex; align-items: center; gap: 12px; font-size: 1rem; opacity: 0.8; }
-        .modal-features li::before { content: '✓'; color: var(--copper); font-weight: 700; }
-        .modal-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 32px; }
-        .meta-item h5 { font-size: 0.75rem; text-transform: uppercase; color: var(--copper); margin-bottom: 8px; }
-        .meta-item p { font-size: 1rem; font-weight: 500; }
+        /* GUIDED FLOW STYLES */
+        .guided-panel {
+            background: var(--paper); width: 100%; max-width: 800px;
+            border-radius: 56px; padding: 80px; position: relative;
+            box-shadow: var(--shadow-lux); z-index: 3001; text-align: center;
+        }
+        .guided-step { display: none; }
+        .guided-step.active { display: block; }
+        .guided-question { font-family: var(--font-display); font-size: 3rem; margin-bottom: 48px; line-height: 1.1; }
+        .guided-options { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .guided-option {
+            padding: 24px; border-radius: 24px; border: 1px solid var(--border);
+            background: var(--paper-warm); cursor: pointer; transition: var(--transition-smooth);
+            font-weight: 600; font-size: 1.1rem;
+        }
+        .guided-option:hover { border-color: var(--copper); background: var(--paper); transform: translateY(-4px); }
+        .guided-nav { display: flex; justify-content: center; gap: 24px; margin-top: 48px; }
+        .guided-back { font-size: 0.9rem; opacity: 0.5; cursor: pointer; text-decoration: underline; }
+        
+        .guided-results { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 40px; text-align: left; }
+        .result-card { background: var(--paper-warm); padding: 24px; border-radius: 32px; border: 1px solid var(--border); }
+        .result-card img { width: 100%; height: 150px; object-fit: contain; margin-bottom: 16px; }
+        .result-card h4 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 8px; }
+        .result-card .tag { font-size: 0.7rem; color: var(--copper); font-weight: 700; text-transform: uppercase; margin-bottom: 8px; display: block; }
+        .result-card .decision { font-size: 0.85rem; opacity: 0.7; margin-bottom: 16px; }
 
         /* CART ENHANCEMENTS */
         .cart-confidence { margin-top: 24px; padding: 20px; background: var(--paper-warm); border-radius: 20px; border: 1px dashed var(--copper); }
@@ -271,12 +317,23 @@
         @media (max-width: 1024px) {
             .modal-content { grid-template-columns: 1fr; }
             .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+            .hero-visual { position: relative; width: 100%; height: 400px; right: 0; top: 0; transform: none; margin-top: 40px; }
+            .hero { flex-direction: column; text-align: center; padding-top: 120px; }
+            .hero-content { max-width: 100%; }
+            .hero-actions { justify-content: center; }
+            .hero-trust-indicators { justify-content: center; }
+            .scroll-hint { left: 50%; transform: translateX(-50%); }
+            .guided-panel { padding: 40px; width: calc(100% - 40px); }
+            .guided-options { grid-template-columns: 1fr; }
+            .guided-results { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 768px) {
             .container { padding: 0 24px; }
             .nav-links, .bulb-wrap { display: none; }
-            .hero h1 { font-size: 4rem; }
+            header { width: calc(100% - 32px); top: 16px; }
+            nav { padding: 0 20px; }
+            .hero h1 { font-size: 3.5rem; }
             .bento-item { grid-column: span 12 !important; padding: 40px; }
             .repair-grid { grid-template-columns: 1fr; }
             .footer-grid { grid-template-columns: 1fr; }
@@ -295,6 +352,7 @@
 
         /* Reveal Animation */
         .reveal { opacity: 0; transform: translateY(50px); }
+        .hero-reveal { opacity: 0; }
     </style>
 </head>
 <body>
@@ -314,24 +372,35 @@
                     <a href="#philosophy">Philosophy</a>
                     <a href="#contact">Contact</a>
                 </div>
-                <a href="https://wa.me/917200006006" class="btn btn-primary" style="padding: 14px 32px; font-size: 0.85rem;">Enquire Now</a>
+                <a href="https://wa.me/917200006006" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.75rem;">Enquire Now</a>
             </nav>
         </div>
     </header>
 
     <main>
-        <section class="hero">
-            <div class="hero-visual"></div>
+        <section class="hero" id="hero">
             <div class="container">
                 <div class="hero-content">
-                    <span class="hero-eyebrow">Tamil Nadu's Premier Tech Concierge</span>
-                    <h1>Technology that <em>aligns</em> with life.</h1>
-                    <p class="hero-desc">Discover a curated selection of electronics chosen for daily performance, not just technical specifications. Experience clarity in every choice.</p>
-                    <div class="hero-actions">
-                        <a href="#catalogue" class="btn btn-primary">Explore Collection</a>
-                        <a href="#repair" class="btn btn-secondary">Repair Service</a>
+                    <span class="hero-eyebrow hero-reveal">Tamil Nadu's Premier Tech Concierge</span>
+                    <h1 class="hero-reveal">This might be the one that fits you</h1>
+                    <p class="hero-desc hero-reveal">Phones, audio and essentials chosen based on how you actually use them</p>
+                    <div class="hero-actions hero-reveal">
+                        <button onclick="openGuidedFlow()" class="btn btn-primary">Show what fits you</button>
+                        <a href="#philosophy" class="btn btn-secondary">Just exploring</a>
+                    </div>
+                    <div class="hero-trust-indicators hero-reveal">
+                        <span>Picked often this week</span>
+                        <span>Available for pickup today</span>
+                        <span>Checked before it reaches you</span>
                     </div>
                 </div>
+            </div>
+            <div class="hero-visual hero-reveal">
+                <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/fWEumNteCudVVPuo.png" alt="Flagship Android Phone">
+            </div>
+            <div class="scroll-hint hero-reveal">
+                <div class="scroll-line"></div>
+                <span>See what feels right for you</span>
             </div>
         </section>
 
@@ -571,8 +640,65 @@
         </div>
     </div>
 
-    <div class="modal-overlay" id="modal-overlay">
-        <div class="modal-content">
+    <!-- GUIDED FLOW OVERLAY -->
+    <div class="modal-overlay" id="guided-overlay" onclick="handleGuidedOverlayClick(event)">
+        <div class="guided-panel" onclick="event.stopPropagation()">
+            <div class="modal-close" onclick="closeGuidedFlow()">✕</div>
+            
+            <!-- Step 1 -->
+            <div class="guided-step active" id="step-1">
+                <h2 class="guided-question">What are you looking for right now?</h2>
+                <div class="guided-options">
+                    <div class="guided-option" onclick="nextStep(2, 'phones')">A phone</div>
+                    <div class="guided-option" onclick="nextStep(2, 'speakers')">Something for sound</div>
+                    <div class="guided-option" onclick="nextStep(2, 'tv')">A screen for home</div>
+                    <div class="guided-option" onclick="closeGuidedFlow()">Just exploring</div>
+                </div>
+            </div>
+
+            <!-- Step 2 (Phones) -->
+            <div class="guided-step" id="step-2">
+                <h2 class="guided-question">What matters more in daily use?</h2>
+                <div class="guided-options">
+                    <div class="guided-option" onclick="nextStep(3, 'battery')">Battery that lasts</div>
+                    <div class="guided-option" onclick="nextStep(3, 'camera')">Camera that feels right</div>
+                    <div class="guided-option" onclick="nextStep(3, 'smooth')">Smooth everyday use</div>
+                    <div class="guided-option" onclick="nextStep(3, 'everything')">Bit of everything</div>
+                </div>
+                <div class="guided-nav">
+                    <span class="guided-back" onclick="prevStep(1)">Back</span>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="guided-step" id="step-3">
+                <h2 class="guided-question">What feels comfortable?</h2>
+                <div class="guided-options">
+                    <div class="guided-option" onclick="showResults('simple')">Keep it simple</div>
+                    <div class="guided-option" onclick="showResults('balanced')">Balanced choice</div>
+                    <div class="guided-option" onclick="showResults('power')">More power</div>
+                    <div class="guided-option" onclick="showResults('best')">Best available</div>
+                </div>
+                <div class="guided-nav">
+                    <span class="guided-back" onclick="prevStep(2)">Back</span>
+                </div>
+            </div>
+
+            <!-- Step 4 (Results) -->
+            <div class="guided-step" id="step-4">
+                <h2 class="guided-question">Here is what fits you</h2>
+                <div class="guided-results" id="guided-results-grid">
+                    <!-- Results injected by JS -->
+                </div>
+                <div class="guided-nav">
+                    <span class="guided-back" onclick="prevStep(1)">Start Over</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
             <div class="modal-close" onclick="closeModal()">✕</div>
             <div class="modal-left">
                 <img id="modal-img" src="" alt="">
@@ -654,6 +780,7 @@
         ];
 
         let currentProduct = null;
+        let guidedData = { category: '', priority: '', preference: '' };
 
         function savingPct(price, old) {
             const p = parseInt(price.replace(/[^0-9]/g,''));
@@ -708,18 +835,77 @@
             renderProducts(cat);
         }
 
+        /* GUIDED FLOW LOGIC */
+        function openGuidedFlow() {
+            document.getElementById('guided-overlay').classList.add('active');
+            prevStep(1);
+        }
+
+        function closeGuidedFlow() {
+            document.getElementById('guided-overlay').classList.remove('active');
+        }
+
+        function nextStep(step, value) {
+            if (step === 2) guidedData.category = value;
+            if (step === 3) guidedData.priority = value;
+            
+            document.querySelectorAll('.guided-step').forEach(s => s.classList.remove('active'));
+            document.getElementById(`step-${step}`).classList.add('active');
+        }
+
+        function prevStep(step) {
+            document.querySelectorAll('.guided-step').forEach(s => s.classList.remove('active'));
+            document.getElementById(`step-${step}`).classList.add('active');
+        }
+
+        function showResults(preference) {
+            guidedData.preference = preference;
+            const grid = document.getElementById('guided-results-grid');
+            grid.innerHTML = '';
+            
+            let results = products.filter(p => p.category === guidedData.category || guidedData.category === 'all');
+            if (results.length === 0) results = products.slice(0, 2);
+            results = results.slice(0, 4);
+
+            results.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'result-card';
+                card.innerHTML = `
+                    <img src="${p.image}" alt="${p.name}">
+                    <span class="tag">${p.badge || 'Top Choice'}</span>
+                    <h4>${p.name}</h4>
+                    <p class="decision">${p.decision}</p>
+                    <button onclick="openModalFromGuided(${p.id})" class="btn btn-primary" style="width: 100%; padding: 12px;">Get this for you</button>
+                `;
+                grid.appendChild(card);
+            });
+
+            document.querySelectorAll('.guided-step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step-4').classList.add('active');
+        }
+
+        function openModalFromGuided(id) {
+            const p = products.find(prod => prod.id === id);
+            closeGuidedFlow();
+            openModal(p);
+        }
+
+        function handleGuidedOverlayClick(e) {
+            if (e.target.id === 'guided-overlay') closeGuidedFlow();
+        }
+
         function openModal(p) {
             currentProduct = p;
-            document.getElementById('modal-title').innerText = p.name;
-            document.getElementById('modal-decision').innerText = p.decision;
-            document.getElementById('modal-urgency').innerText = p.urgency;
-            document.getElementById('modal-desc').innerText = p.desc;
-            document.getElementById('modal-specs').innerText = p.specs;
-            document.getElementById('modal-price').innerText = p.price;
+            document.getElementById('modal-title').innerText = p.name || 'Tell what’s happening';
+            document.getElementById('modal-decision').innerText = p.decision || '';
+            document.getElementById('modal-urgency').innerText = p.urgency || '';
+            document.getElementById('modal-desc').innerText = p.desc || 'Select your device and issue to see what can be done clearly';
+            document.getElementById('modal-specs').innerText = p.specs || '';
+            document.getElementById('modal-price').innerText = p.price || '';
             document.getElementById('modal-badge').innerText = p.badge || 'Authentic';
-            document.getElementById('modal-img').src = p.image;
-            document.getElementById('modal-expect').innerText = p.expect;
-            document.getElementById('modal-fact').innerText = p.fact;
+            document.getElementById('modal-img').src = p.image || '';
+            document.getElementById('modal-expect').innerText = p.expect || '';
+            document.getElementById('modal-fact').innerText = p.fact || '';
             
             const featuresList = document.getElementById('modal-features');
             featuresList.innerHTML = '';
@@ -729,39 +915,48 @@
                 featuresList.appendChild(li);
             });
 
-            document.getElementById('modal-overlay').style.display = 'flex';
-            gsap.from(".modal-content", { scale: 0.9, opacity: 0, duration: 0.6, ease: "power4.out" });
+            const overlay = document.getElementById('modal-overlay');
+            overlay.classList.add('active');
+            gsap.fromTo(".modal-content", { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: "power4.out" });
         }
 
         function openRepairModal(title, desc, features, expect, fact) {
             currentProduct = { name: title };
-            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-title').innerText = title || 'Tell what’s happening';
             document.getElementById('modal-decision').innerText = '';
             document.getElementById('modal-urgency').innerText = '';
-            document.getElementById('modal-desc').innerText = desc;
+            document.getElementById('modal-desc').innerText = desc || 'Select your device and issue to see what can be done clearly';
             document.getElementById('modal-specs').innerText = 'Professional Service';
             document.getElementById('modal-price').innerText = 'Diagnostic First';
             document.getElementById('modal-badge').innerText = 'Expert Repair';
-            document.getElementById('modal-img').src = ''; // Clear image for repair
-            document.getElementById('modal-expect').innerText = expect;
-            document.getElementById('modal-fact').innerText = fact;
+            document.getElementById('modal-img').src = ''; 
+            document.getElementById('modal-expect').innerText = expect || '';
+            document.getElementById('modal-fact').innerText = fact || '';
             
             const featuresList = document.getElementById('modal-features');
             featuresList.innerHTML = '';
-            features.forEach(f => {
+            (features || []).forEach(f => {
                 const li = document.createElement('li');
                 li.innerText = f;
                 featuresList.appendChild(li);
             });
 
-            document.getElementById('modal-overlay').style.display = 'flex';
-            gsap.from(".modal-content", { scale: 0.9, opacity: 0, duration: 0.6, ease: "power4.out" });
+            const overlay = document.getElementById('modal-overlay');
+            overlay.classList.add('active');
+            gsap.fromTo(".modal-content", { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: "power4.out" });
         }
 
         function closeModal() {
+            const overlay = document.getElementById('modal-overlay');
             gsap.to(".modal-content", { scale: 0.9, opacity: 0, duration: 0.4, ease: "power4.in", onComplete: () => {
-                document.getElementById('modal-overlay').style.display = 'none';
+                overlay.classList.remove('active');
             }});
+        }
+
+        function handleOverlayClick(e) {
+            if (e.target.id === 'modal-overlay') {
+                closeModal();
+            }
         }
 
         function sendInquiry() {
@@ -815,17 +1010,37 @@
             });
         }
 
+        /* SMART NAVBAR LOGIC */
+        let lastScroll = 0;
+        let scrollTimer = null;
+        const header = document.getElementById('header');
+        const threshold = 8;
+
         window.addEventListener('scroll', () => {
-            const header = document.getElementById('header');
-            if (window.scrollY > 50) header.classList.add('scrolled');
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 50) header.classList.add('scrolled');
             else header.classList.remove('scrolled');
+
+            if (Math.abs(currentScroll - lastScroll) > threshold) {
+                if (currentScroll > lastScroll && currentScroll > 100) {
+                    header.classList.add('nav-hidden');
+                } else {
+                    header.classList.remove('nav-hidden');
+                }
+                lastScroll = currentScroll;
+            }
+
+            clearTimeout(scrollTimer);
+            scrollTimer = setTimeout(() => {
+                header.classList.remove('nav-hidden');
+            }, 150);
         });
 
         window.onload = () => {
             renderProducts();
-            gsap.from(".hero h1", { y: 100, opacity: 0, duration: 1.5, ease: "power4.out" });
-            gsap.from(".hero-desc", { y: 50, opacity: 0, duration: 1.5, delay: 0.3, ease: "power4.out" });
-            gsap.from(".hero-actions", { y: 50, opacity: 0, duration: 1.5, delay: 0.5, ease: "power4.out" });
+            // Immediate Hero Animation
+            gsap.to(".hero-reveal", { opacity: 1, duration: 1, stagger: 0.2, ease: "power2.out" });
             if (localStorage.getItem('theme') === 'dark') document.body.setAttribute('data-theme', 'dark');
         };
     </script>
