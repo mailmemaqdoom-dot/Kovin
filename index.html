@@ -212,12 +212,17 @@
         .decision-line { font-size: 0.9rem; font-weight: 600; color: var(--copper); margin-bottom: 12px; line-height: 1.3; }
         .urgency-signal { font-size: 0.75rem; font-weight: 700; color: #D9534F; margin-bottom: 16px; display: flex; align-items: center; gap: 6px; }
         .urgency-signal::before { content: '●'; font-size: 0.6rem; }
+        .social-proof-line { font-size: 0.75rem; opacity: 0.5; font-weight: 600; margin-bottom: 12px; display: block; }
         .micro-trust { font-size: 0.75rem; opacity: 0.4; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 4px; }
 
-        .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+        .product-footer { display: flex; flex-direction: column; gap: 8px; margin-top: auto; }
+        .price-main-row { display: flex; justify-content: space-between; align-items: center; }
         .product-price { font-size: 1.4rem; font-weight: 700; color: var(--copper); }
         .product-old-price { font-size: 1rem; opacity: 0.3; text-decoration: line-through; margin-left: 8px; }
         .saving-label { font-size: 0.8rem; color: #25D366; font-weight: 700; margin-left: 8px; }
+        
+        .price-context { font-size: 0.75rem; opacity: 0.5; font-weight: 500; line-height: 1.4; }
+        .price-anchor { font-size: 0.7rem; opacity: 0.35; font-style: italic; margin-top: 2px; }
 
         /* ===== REPAIR SECTION ===== */
         .repair-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 64px; }
@@ -229,6 +234,7 @@
         .repair-card:hover { background: var(--ink); color: var(--paper); }
         .repair-icon { font-size: 3rem; margin-bottom: 24px; display: block; }
         .repair-card h4 { font-family: var(--font-display); font-size: 2rem; margin-bottom: 16px; }
+        .repair-social-proof { font-size: 0.75rem; opacity: 0.5; font-weight: 500; margin-bottom: 12px; display: block; }
         .repair-tag { font-size: 0.85rem; color: var(--copper); font-weight: 600; margin-top: 16px; display: block; }
 
         /* ===== MODAL & GUIDED FLOW ===== */
@@ -487,18 +493,21 @@
                     <div class="repair-card reveal" onclick="openRepairModal('Mobile Repair', 'Professional repair services for all mobile brands.', ['Screen Replacement', 'Battery Swap', 'Software Fix'], 'Expect a thorough diagnostic before any work begins.', 'Did you know? Most screen repairs can be completed in under 2 hours.')">
                         <span class="repair-icon">📱</span>
                         <h4>Mobile</h4>
+                        <span class="repair-social-proof">Common issue we see</span>
                         <p>Cracked screens, dead batteries, or software issues — handled for any brand and most models.</p>
                         <span class="repair-tag">Tap to enquire →</span>
                     </div>
                     <div class="repair-card reveal" onclick="openRepairModal('TV Repair', 'Expert diagnostics and repair for LED/Smart TVs.', ['Panel Repair', 'Power Issues', 'Backlight Fix'], 'Repairs are handled by specialists with panel-level expertise.', 'Fact: Modern LED TVs are 40% more energy-efficient than models from 5 years ago.')">
                         <span class="repair-icon">📺</span>
                         <h4>Television</h4>
+                        <span class="repair-social-proof">Happens often with daily use</span>
                         <p>Panel issues, backlight failure, or power problems — restored with technical precision.</p>
                         <span class="repair-tag">Tap to enquire →</span>
                     </div>
                     <div class="repair-card reveal" onclick="openRepairModal('Audio Repair', 'Fixing your favorite headphones and speakers.', ['Speaker Repair', 'Jack Replacement', 'Internal Wiring'], 'Restoring original sound quality using genuine components.', 'Interesting: High-end speakers can last over 20 years if maintained properly.')">
                         <span class="repair-icon">🎧</span>
                         <h4>Audio</h4>
+                        <span class="repair-social-proof">Usually fixed quickly</span>
                         <p>Headphones, speakers, or jacks — returned to original sound quality with genuine parts.</p>
                         <span class="repair-tag">Tap to enquire →</span>
                     </div>
@@ -706,6 +715,7 @@
             <div class="modal-right">
                 <span class="hero-eyebrow" id="modal-badge">Authentic</span>
                 <h2 class="modal-title" id="modal-title">Product Name</h2>
+                <div id="modal-social-proof" class="social-proof-line"></div>
                 <div id="modal-decision" class="decision-line"></div>
                 <div id="modal-urgency" class="urgency-signal"></div>
                 <p class="modal-desc" id="modal-desc">Description goes here.</p>
@@ -730,6 +740,8 @@
                     <div class="meta-item">
                         <h5>Investment</h5>
                         <p id="modal-price" class="product-price">Price</p>
+                        <div id="modal-price-context" class="price-context"></div>
+                        <div id="modal-price-anchor" class="price-anchor"></div>
                     </div>
                 </div>
 
@@ -763,20 +775,20 @@
         gsap.registerPlugin(ScrollTrigger);
 
         const products = [
-            { id: 1, category: 'phones', name: 'Samsung Galaxy S23 FE', specs: '6.4" AMOLED · 50MP · 4500mAh', price: '₹34,999', oldPrice: '₹44,999', badge: 'Built for more power', tags: ['Built for heavy use', 'Value that holds'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/fWEumNteCudVVPuo.png', desc: 'Samsung Galaxy S23 FE. Features a 6.4" Dynamic AMOLED 2X display, Exynos 2200 processor, 50MP main camera, 4500mAh battery, and 128GB storage.', expect: 'This fits your usage if you need smooth performance for multitasking and a camera that captures clear details in any light. The battery experience is reliable for a full day of active use.', fact: 'The performance stability during long video calls is better-than-expected for this model.', decision: 'Fits well if you need long battery without thinking', urgency: 'Picked often this week' },
-            { id: 2, category: 'phones', name: 'Google Pixel 7a', specs: '6.1" OLED · 64MP · Tensor G2', price: '₹39,999', oldPrice: '₹43,999', badge: 'Balanced for everything', tags: ['Camera focused', 'Clean experience'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/AeIhJBFyYYuVXncG.png', desc: 'Google Pixel 7a. Features a 6.1" OLED display, Google Tensor G2 chip, 64MP dual camera system, 4385mAh battery, and 128GB storage.', expect: 'Chosen for you if you prefer a compact phone that takes incredible photos automatically. It provides a clean daily performance that feels fast and simple.', fact: 'The call clarity and noise cancellation features offer a unique usage advantage in busy environments.', decision: 'Works best if camera matters more than gaming', urgency: 'Limited pieces available' },
-            { id: 3, category: 'tv', name: 'Sony Bravia 4K LED', specs: '55" 4K Ultra HD · Smart TV · HDR', price: '₹54,990', oldPrice: '₹69,990', badge: 'New', tags: ['Worth noticing', 'Balanced choice'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/PNuLvudbHcTmKOpp.png', desc: 'Sony Bravia 55" 4K Ultra HD LED. Features a 55-inch screen, X1 4K Processor, 4K resolution, and 20W Dolby Audio sound.', expect: 'This fits your usage for a cinematic movie experience at home. The display type ensures vibrant colors that look real for you.', fact: 'The sound profile is surprisingly deep, often removing the need for an external speaker in medium-sized rooms.', decision: 'Good for daily use with smooth performance', urgency: 'Available for pickup today' },
-            { id: 4, category: 'speakers', name: 'Sony WH-1000XM5', specs: '30hr battery · 8 mics · LDAC', price: '₹26,990', oldPrice: '₹34,990', badge: 'Top Pick', tags: ['Quiet performer', 'Chosen for you'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/XIJzeXSRHorEqzFw.png', desc: 'Sony WH-1000XM5 Wireless Headphones. Features 30-hour battery life, industry-leading noise cancellation, and Bluetooth 5.2 connectivity.', expect: 'Chosen for you to create a quiet space anywhere. The sound profile is balanced to make every instrument clear for you during long listening sessions.', fact: 'The quick-charge feature gives 3 hours of playback from just a 3-minute charge.', decision: 'Fits well if you need silence without compromise', urgency: 'Picked often this week' },
-            { id: 5, category: 'accessories', name: 'Apple 20W USB-C Power Adapter', specs: 'Fast charging · Compact design', price: '₹1,699', oldPrice: '₹1,900', badge: '', tags: ['Most picked', 'Battery focused'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/uVoVbsruMHDNSVBu.png', desc: 'Apple 20W USB-C Power Adapter. Compatible with iPhone 8 or later and various iPad models for fast charging.', expect: 'This fits your usage if you need to power up your device quickly and safely. Chosen to ensure battery health over long-term use.', fact: 'The compact design makes it easy to carry, and it maintains a cool temperature even during fast-charging sessions.', decision: 'Good for daily use with safe charging', urgency: 'Available for pickup today' },
-            { id: 6, category: 'accessories', name: 'Premium Tempered Glass', specs: '9H Hardness · Edge-to-edge', price: '₹499', oldPrice: '₹999', badge: 'Essential', tags: ['Worth noticing', 'Value that holds'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/KelCDGFlqZNnFnFD.png', desc: 'High-quality 9H tempered glass screen protector. Provides edge-to-edge protection against scratches and impacts.', expect: 'Fits your usage by keeping your screen pristine without affecting touch sensitivity. Chosen to prevent costly screen repairs.', fact: 'Features an oleophobic coating that significantly reduces fingerprint smudges.', decision: 'Works best if screen clarity matters most', urgency: 'Limited pieces available' },
-            { id: 7, category: 'accessories', name: 'Sleek Protective Case', specs: 'Shockproof · Slim profile', price: '₹799', oldPrice: '₹1,499', badge: 'Most Picked', tags: ['Balanced choice', 'Chosen for you'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/jdVRAWbtGZtmRYSW.png', desc: 'Durable, shock-absorbing back case with a slim profile. Designed to protect your device while maintaining its original look.', expect: 'This fits your usage if you want protection without the bulk. It feels premium in hand and provides a secure grip.', fact: 'The raised edges around the camera provide better-than-expected protection for the lenses.', decision: 'Fits well if you need protection without bulk', urgency: 'Picked often this week' },
-            { id: 8, category: 'accessories', name: 'Braided Fast Charge Cable', specs: 'USB-C to USB-C · 60W PD', price: '₹599', oldPrice: '₹1,199', badge: '', tags: ['Built for heavy use', 'Battery focused'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/skNTrQiJTgkIzyjx.png', desc: 'Tangle-free braided charging cable supporting up to 60W Power Delivery. Built for durability and high-speed data transfer.', expect: 'Chosen if you are tired of cables breaking. Fits your usage for fast charging at home or in the office.', fact: 'The reinforced stress points make this cable last 10x longer than standard plastic cables.', decision: 'Works best if durability is your priority', urgency: 'Available for pickup today' },
-            { id: 9, category: 'accessories', name: '10000mAh Slim Power Bank', specs: 'Dual output · Fast charging', price: '₹1,499', oldPrice: '₹2,499', badge: 'Travel Ready', tags: ['Battery focused', 'Value that holds'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/ZRDoBVIhYurGwJms.png', desc: 'Ultra-slim 10000mAh portable charger with dual USB outputs. Perfect for keeping your devices powered on the go.', expect: 'Fits your usage for long travel days or busy schedules. Chosen to ensure you never run out of power.', fact: 'Despite its high capacity, it is thin enough to fit comfortably in your pocket alongside your phone.', decision: 'Fits well if you travel without a charger', urgency: 'Limited pieces available' },
-            { id: 10, category: 'accessories', name: 'Aluminum Phone Stand', specs: 'Adjustable angle · Non-slip', price: '₹399', oldPrice: '₹899', badge: '', tags: ['Clean experience', 'Worth noticing'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/QLzXktccBITzJoEo.png', desc: 'Sturdy aluminum desktop stand with adjustable viewing angles. Features non-slip silicone pads to keep your device secure.', expect: 'Chosen to improve desk ergonomics. Fits your usage for video calls or watching content hands-free.', fact: 'The hollow design allows for easy charging while the phone is mounted on the stand.', decision: 'Good for daily use with hands-free comfort', urgency: 'Picked often this week' },
-            { id: 11, category: 'accessories', name: 'Premium Wireless Earbuds', specs: '24hr playtime · Auto-pairing', price: '₹2,999', oldPrice: '₹5,999', badge: 'Best Seller', tags: ['Quiet performer', 'Chosen for you'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/akufQOVWgjtpdbDf.png', desc: 'True wireless earbuds with crystal clear sound and a compact charging case. Features touch controls and voice assistant support.', expect: 'Fits your usage for daily commutes or workouts. The sound profile is tuned to provide a rich audio experience for you.', fact: 'The auto-pairing feature works instantly the moment you open the case.', decision: 'Works best if you need music on the move', urgency: 'Available for pickup today' },
-            { id: 12, category: 'accessories', name: 'Magnetic Car Mount', specs: '360° Rotation · Strong grip', price: '₹449', oldPrice: '₹999', badge: '', tags: ['Balanced choice', 'Worth noticing'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/LeYyaTtVUntOTfPh.png', desc: 'Universal magnetic car mount that fits into any air vent. Provides a secure, one-handed mounting solution for your smartphone.', expect: 'Chosen to ensure safe navigation while driving. Fits your usage with its easy-to-adjust 360-degree rotation.', fact: 'The ultra-strong magnets ensure your phone stays in place even on the bumpiest roads.', decision: 'Fits well if you navigate while driving', urgency: 'Limited pieces available' },
-            { id: 13, category: 'accessories', name: 'Device Cleaning Kit', specs: 'Alcohol-free · Microfiber cloth', price: '₹249', oldPrice: '₹499', badge: '', tags: ['Clean experience', 'Value that holds'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/QdzcPYGrRoKDynVN.png', desc: 'Professional cleaning solution for screens and electronics. Includes a non-toxic spray and a premium microfiber cloth.', expect: 'Fits your usage by keeping your devices looking brand new. Chosen to maintain the clarity of your displays.', fact: 'The anti-static formula helps repel dust, keeping your screen cleaner for longer periods.', decision: 'Good for daily use with clear displays', urgency: 'Picked often this week' },
-            { id: 14, category: 'accessories', name: 'Camera Lens Protector', specs: 'Ultra-clear · Scratch resistant', price: '₹299', oldPrice: '₹599', badge: 'New', tags: ['Camera focused', 'Worth noticing'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/gmvKvvXVYoSPYHjl.png', desc: 'Tempered glass protection for your smartphone camera lenses. Maintains original photo quality while preventing scratches.', expect: 'Chosen if you want to protect your camera without compromising on photo clarity. Fits your usage for worry-free photography.', fact: 'The ultra-thin design makes it almost invisible once applied to your device.', decision: 'Works best if camera safety is a priority', urgency: 'Available for pickup today' }
+            { id: 1, category: 'phones', name: 'Samsung Galaxy S23 FE', specs: '6.4" AMOLED · 50MP · 4500mAh', price: '₹34,999', oldPrice: '₹44,999', badge: 'Built for more power', tags: ['Built for heavy use', 'Value that holds'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/fWEumNteCudVVPuo.png', desc: 'Samsung Galaxy S23 FE. Features a 6.4" Dynamic AMOLED 2X display, Exynos 2200 processor, 50MP main camera, 4500mAh battery, and 128GB storage.', expect: 'This fits your usage if you need smooth performance for multitasking and a camera that captures clear details in any light. The battery experience is reliable for a full day of active use.', fact: 'The performance stability during long video calls is better-than-expected for this model.', decision: 'Fits well if you need long battery without thinking', urgency: 'Picked often this week', socialProof: 'Picked often this week', brand: 'Samsung', tier: 'flagship', priceContext: 'Holds value well over time', priceAnchor: 'Stays consistent for what it offers' },
+            { id: 2, category: 'phones', name: 'Google Pixel 7a', specs: '6.1" OLED · 64MP · Tensor G2', price: '₹39,999', oldPrice: '₹43,999', badge: 'Balanced for everything', tags: ['Camera focused', 'Clean experience'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/AeIhJBFyYYuVXncG.png', desc: 'Google Pixel 7a. Features a 6.1" OLED display, Google Tensor G2 chip, 64MP dual camera system, 4385mAh battery, and 128GB storage.', expect: 'Chosen for you if you prefer a compact phone that takes incredible photos automatically. It provides a clean daily performance that feels fast and simple.', fact: 'The call clarity and noise cancellation features offer a unique usage advantage in busy environments.', decision: 'Works best if camera matters more than gaming', urgency: 'Limited pieces available', socialProof: 'Chosen by many for daily use', brand: 'Google', tier: 'balanced', priceContext: 'Chosen when you want a balanced device', priceAnchor: 'Seen across similar range devices' },
+            { id: 3, category: 'tv', name: 'Sony Bravia 4K LED', specs: '55" 4K Ultra HD · Smart TV · HDR', price: '₹54,990', oldPrice: '₹69,990', badge: 'New', tags: ['Worth noticing', 'Balanced choice'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/PNuLvudbHcTmKOpp.png', desc: 'Sony Bravia 55" 4K Ultra HD LED. Features a 55-inch screen, X1 4K Processor, 4K resolution, and 20W Dolby Audio sound.', expect: 'This fits your usage for a cinematic movie experience at home. The display type ensures vibrant colors that look real for you.', fact: 'The sound profile is surprisingly deep, often removing the need for an external speaker in medium-sized rooms.', decision: 'Good for daily use with smooth performance', urgency: 'Available for pickup today', socialProof: 'Common upgrade choice', brand: 'Sony', tier: 'balanced', priceContext: 'Comfortable for daily use at this range', priceAnchor: 'Stays consistent for what it offers' },
+            { id: 4, category: 'speakers', name: 'Sony WH-1000XM5', specs: '30hr battery · 8 mics · LDAC', price: '₹26,990', oldPrice: '₹34,990', badge: 'Top Pick', tags: ['Quiet performer', 'Chosen for you'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/XIJzeXSRHorEqzFw.png', desc: 'Sony WH-1000XM5 Wireless Headphones. Features 30-hour battery life, industry-leading noise cancellation, and Bluetooth 5.2 connectivity.', expect: 'Chosen for you to create a quiet space anywhere. The sound profile is balanced to make every instrument clear for you during long listening sessions.', fact: 'The quick-charge feature gives 3 hours of playback from just a 3-minute charge.', decision: 'Fits well if you need silence without compromise', urgency: 'Picked often this week', socialProof: 'Picked often this week', brand: 'Sony', tier: 'flagship', priceContext: 'Holds value well over time', priceAnchor: 'Seen across similar range devices' },
+            { id: 5, category: 'accessories', name: 'Apple 20W USB-C Power Adapter', specs: 'Fast charging · Compact design', price: '₹1,699', oldPrice: '₹1,900', badge: '', tags: ['Most picked', 'Battery focused'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/uVoVbsruMHDNSVBu.png', desc: 'Apple 20W USB-C Power Adapter. Compatible with iPhone 8 or later and various iPad models for fast charging.', expect: 'This fits your usage if you need to power up your device quickly and safely. Chosen to ensure battery health over long-term use.', fact: 'The compact design makes it easy to carry, and it maintains a cool temperature even during fast-charging sessions.', decision: 'Good for daily use with safe charging', urgency: 'Available for pickup today', socialProof: 'Chosen by many for daily use', brand: 'Apple', tier: 'simple', priceContext: 'Comfortable for daily use at this range', priceAnchor: 'Stays consistent for what it offers' },
+            { id: 6, category: 'accessories', name: 'Premium Tempered Glass', specs: '9H Hardness · Edge-to-edge', price: '₹499', oldPrice: '₹999', badge: 'Essential', tags: ['Worth noticing', 'Value that holds'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/KelCDGFlqZNnFnFD.png', desc: 'High-quality 9H tempered glass screen protector. Provides edge-to-edge protection against scratches and impacts.', expect: 'Fits your usage by keeping your screen pristine without affecting touch sensitivity. Chosen to prevent costly screen repairs.', fact: 'Features an oleophobic coating that significantly reduces fingerprint smudges.', decision: 'Works best if screen clarity matters most', urgency: 'Limited pieces available', socialProof: 'Common upgrade choice', brand: 'Generic', tier: 'simple', priceContext: 'Fits well if upgrading from older phone', priceAnchor: 'Seen across similar range devices' },
+            { id: 7, category: 'accessories', name: 'Sleek Protective Case', specs: 'Shockproof · Slim profile', price: '₹799', oldPrice: '₹1,499', badge: 'Most Picked', tags: ['Balanced choice', 'Chosen for you'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/jdVRAWbtGZtmRYSW.png', desc: 'Durable, shock-absorbing back case with a slim profile. Designed to protect your device while maintaining its original look.', expect: 'This fits your usage if you want protection without the bulk. It feels premium in hand and provides a secure grip.', fact: 'The raised edges around the camera provide better-than-expected protection for the lenses.', decision: 'Fits well if you need protection without bulk', urgency: 'Picked often this week', socialProof: 'Picked often this week', brand: 'Generic', tier: 'simple', priceContext: 'Comfortable for daily use at this range', priceAnchor: 'Stays consistent for what it offers' },
+            { id: 8, category: 'accessories', name: 'Braided Fast Charge Cable', specs: 'USB-C to USB-C · 60W PD', price: '₹599', oldPrice: '₹1,199', badge: '', tags: ['Built for heavy use', 'Battery focused'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/skNTrQiJTgkIzyjx.png', desc: 'Tangle-free braided charging cable supporting up to 60W Power Delivery. Built for durability and high-speed data transfer.', expect: 'Chosen if you are tired of cables breaking. Fits your usage for fast charging at home or in the office.', fact: 'The reinforced stress points make this cable last 10x longer than standard plastic cables.', decision: 'Works best if durability is your priority', urgency: 'Available for pickup today', socialProof: 'Chosen by many for daily use', brand: 'Generic', tier: 'simple', priceContext: 'Holds value well over time', priceAnchor: 'Seen across similar range devices' },
+            { id: 9, category: 'accessories', name: '10000mAh Slim Power Bank', specs: 'Dual output · Fast charging', price: '₹1,499', oldPrice: '₹2,499', badge: 'Travel Ready', tags: ['Battery focused', 'Value that holds'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/ZRDoBVIhYurGwJms.png', desc: 'Ultra-slim 10000mAh portable charger with dual USB outputs. Perfect for keeping your devices powered on the go.', expect: 'Fits your usage for long travel days or busy schedules. Chosen to ensure you never run out of power.', fact: 'Despite its high capacity, it is thin enough to fit comfortably in your pocket alongside your phone.', decision: 'Fits well if you travel without a charger', urgency: 'Limited pieces available', socialProof: 'Common upgrade choice', brand: 'Generic', tier: 'balanced', priceContext: 'Chosen when you want a balanced device', priceAnchor: 'Stays consistent for what it offers' },
+            { id: 10, category: 'accessories', name: 'Aluminum Phone Stand', specs: 'Adjustable angle · Non-slip', price: '₹399', oldPrice: '₹899', badge: '', tags: ['Clean experience', 'Worth noticing'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/QLzXktccBITzJoEo.png', desc: 'Sturdy aluminum desktop stand with adjustable viewing angles. Features non-slip silicone pads to keep your device secure.', expect: 'Chosen to improve desk ergonomics. Fits your usage for video calls or watching content hands-free.', fact: 'The hollow design allows for easy charging while the phone is mounted on the stand.', decision: 'Good for daily use with hands-free comfort', urgency: 'Picked often this week', socialProof: 'Picked often this week', brand: 'Generic', tier: 'simple', priceContext: 'Comfortable for daily use at this range', priceAnchor: 'Seen across similar range devices' },
+            { id: 11, category: 'accessories', name: 'Premium Wireless Earbuds', specs: '24hr playtime · Auto-pairing', price: '₹2,999', oldPrice: '₹5,999', badge: 'Best Seller', tags: ['Quiet performer', 'Chosen for you'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/akufQOVWgjtpdbDf.png', desc: 'True wireless earbuds with crystal clear sound and a compact charging case. Features touch controls and voice assistant support.', expect: 'Fits your usage for daily commutes or workouts. The sound profile is tuned to provide a rich audio experience for you.', fact: 'The auto-pairing feature works instantly the moment you open the case.', decision: 'Works best if you need music on the move', urgency: 'Available for pickup today', socialProof: 'Chosen by many for daily use', brand: 'Generic', tier: 'balanced', priceContext: 'Chosen when you want a balanced device', priceAnchor: 'Stays consistent for what it offers' },
+            { id: 12, category: 'accessories', name: 'Magnetic Car Mount', specs: '360° Rotation · Strong grip', price: '₹449', oldPrice: '₹999', badge: '', tags: ['Balanced choice', 'Worth noticing'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/LeYyaTtVUntOTfPh.png', desc: 'Universal magnetic car mount that fits into any air vent. Provides a secure, one-handed mounting solution for your smartphone.', expect: 'Chosen to ensure safe navigation while driving. Fits your usage with its easy-to-adjust 360-degree rotation.', fact: 'The ultra-strong magnets ensure your phone stays in place even on the bumpiest roads.', decision: 'Fits well if you navigate while driving', urgency: 'Limited pieces available', socialProof: 'Common upgrade choice', brand: 'Generic', tier: 'simple', priceContext: 'Fits well if upgrading from older phone', priceAnchor: 'Seen across similar range devices' },
+            { id: 13, category: 'accessories', name: 'Device Cleaning Kit', specs: 'Alcohol-free · Microfiber cloth', price: '₹249', oldPrice: '₹499', badge: '', tags: ['Clean experience', 'Value that holds'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/QdzcPYGrRoKDynVN.png', desc: 'Professional cleaning solution for screens and electronics. Includes a non-toxic spray and a premium microfiber cloth.', expect: 'Fits your usage by keeping your devices looking brand new. Chosen to maintain the clarity of your displays.', fact: 'The anti-static formula helps repel dust, keeping your screen cleaner for longer periods.', decision: 'Good for daily use with clear displays', urgency: 'Picked often this week', socialProof: 'Picked often this week', brand: 'Generic', tier: 'simple', priceContext: 'Comfortable for daily use at this range', priceAnchor: 'Stays consistent for what it offers' },
+            { id: 14, category: 'accessories', name: 'Camera Lens Protector', specs: 'Ultra-clear · Scratch resistant', price: '₹299', oldPrice: '₹599', badge: 'New', tags: ['Camera focused', 'Worth noticing'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/gmvKvvXVYoSPYHjl.png', desc: 'Tempered glass protection for your smartphone camera lenses. Maintains original photo quality while preventing scratches.', expect: 'Chosen if you want to protect your camera without compromising on photo clarity. Fits your usage for worry-free photography.', fact: 'The ultra-thin design makes it almost invisible once applied to your device.', decision: 'Works best if camera safety is a priority', urgency: 'Available for pickup today', socialProof: 'Chosen by many for daily use', brand: 'Generic', tier: 'simple', priceContext: 'Fits well if upgrading from older phone', priceAnchor: 'Seen across similar range devices' }
         ];
 
         let currentProduct = null;
@@ -807,16 +819,21 @@
                     <div class="product-tags">${(p.tags||[]).map(t=>`<span class="product-tag">${t}</span>`).join('')}</div>
                     <div class="product-info">
                         <h3>${p.name}</h3>
+                        <span class="social-proof-line">${p.socialProof}</span>
                         <div class="decision-line">${p.decision}</div>
                         <div class="urgency-signal">${p.urgency}</div>
                         <p class="product-specs">${p.specs}</p>
                         <div class="product-footer">
-                            <div class="product-price">
-                                ${p.price}
-                                <span class="product-old-price">${p.oldPrice}</span>
-                                ${pct ? `<span class="saving-label">${pct}% off</span>` : ''}
+                            <div class="price-main-row">
+                                <div class="product-price">
+                                    ${p.price}
+                                    <span class="product-old-price">${p.oldPrice}</span>
+                                    ${pct ? `<span class="saving-label">${pct}% off</span>` : ''}
+                                </div>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                             </div>
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            <div class="price-context">${p.priceContext}</div>
+                            <div class="price-anchor">${p.priceAnchor}</div>
                         </div>
                         <div class="micro-trust">
                             <span>• Checked before it reaches you</span>
@@ -863,8 +880,27 @@
             const grid = document.getElementById('guided-results-grid');
             grid.innerHTML = '';
             
-            let results = products.filter(p => p.category === guidedData.category || guidedData.category === 'all');
-            if (results.length === 0) results = products.slice(0, 2);
+            let results = [];
+
+            // ENHANCED MAPPING LOGIC
+            if (guidedData.category === 'phones') {
+                if (guidedData.preference === 'best') {
+                    results = products.filter(p => p.category === 'phones' && p.tier === 'flagship');
+                } else if (guidedData.priority === 'battery' && guidedData.preference === 'simple') {
+                    results = products.filter(p => p.category === 'phones' && p.tier === 'balanced');
+                } else if (guidedData.priority === 'camera' && guidedData.preference === 'balanced') {
+                    results = products.filter(p => p.category === 'phones' && p.brand === 'Google');
+                } else if (guidedData.priority === 'smooth' && guidedData.preference === 'power') {
+                    results = products.filter(p => p.category === 'phones' && p.tier === 'flagship');
+                }
+            }
+
+            if (results.length === 0) {
+                results = products.filter(p => p.category === guidedData.category && p.tier === 'balanced');
+                if (results.length === 0) results = products.filter(p => p.category === guidedData.category);
+                if (results.length === 0) results = products.slice(0, 2);
+            }
+
             results = results.slice(0, 4);
 
             results.forEach(p => {
@@ -897,11 +933,14 @@
         function openModal(p) {
             currentProduct = p;
             document.getElementById('modal-title').innerText = p.name || 'Tell what’s happening';
+            document.getElementById('modal-social-proof').innerText = p.socialProof || '';
             document.getElementById('modal-decision').innerText = p.decision || '';
             document.getElementById('modal-urgency').innerText = p.urgency || '';
             document.getElementById('modal-desc').innerText = p.desc || 'Select your device and issue to see what can be done clearly';
             document.getElementById('modal-specs').innerText = p.specs || '';
             document.getElementById('modal-price').innerText = p.price || '';
+            document.getElementById('modal-price-context').innerText = p.priceContext || '';
+            document.getElementById('modal-price-anchor').innerText = p.priceAnchor || '';
             document.getElementById('modal-badge').innerText = p.badge || 'Authentic';
             document.getElementById('modal-img').src = p.image || '';
             document.getElementById('modal-expect').innerText = p.expect || '';
@@ -923,11 +962,14 @@
         function openRepairModal(title, desc, features, expect, fact) {
             currentProduct = { name: title };
             document.getElementById('modal-title').innerText = title || 'Tell what’s happening';
+            document.getElementById('modal-social-proof').innerText = '';
             document.getElementById('modal-decision').innerText = '';
             document.getElementById('modal-urgency').innerText = '';
             document.getElementById('modal-desc').innerText = desc || 'Select your device and issue to see what can be done clearly';
             document.getElementById('modal-specs').innerText = 'Professional Service';
             document.getElementById('modal-price').innerText = 'Diagnostic First';
+            document.getElementById('modal-price-context').innerText = '';
+            document.getElementById('modal-price-anchor').innerText = '';
             document.getElementById('modal-badge').innerText = 'Expert Repair';
             document.getElementById('modal-img').src = ''; 
             document.getElementById('modal-expect').innerText = expect || '';
@@ -1039,7 +1081,6 @@
 
         window.onload = () => {
             renderProducts();
-            // Immediate Hero Animation
             gsap.to(".hero-reveal", { opacity: 1, duration: 1, stagger: 0.2, ease: "power2.out" });
             if (localStorage.getItem('theme') === 'dark') document.body.setAttribute('data-theme', 'dark');
         };
