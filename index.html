@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Kovin — The Guided Electronics System</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -24,6 +24,7 @@
             --font-display: 'Cormorant Garamond', serif;
             --font-body: 'Inter', sans-serif;
             --transition-smooth: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            --pill-transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
 
         [data-theme="dark"] {
@@ -37,7 +38,7 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        html { scroll-behavior: smooth; }
+        html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
         body {
             background-color: var(--paper);
             color: var(--ink);
@@ -45,43 +46,70 @@
             line-height: 1.6;
             overflow-x: hidden;
             transition: background-color 0.8s ease;
+            touch-action: manipulation;
         }
 
         .container { max-width: 1400px; margin: 0 auto; padding: 0 40px; }
         a { text-decoration: none; color: inherit; transition: var(--transition-smooth); }
 
-        /* ===== FLOATING SMART NAVBAR ===== */
+        /* ===== PILL MORPH NAVIGATION SYSTEM ===== */
         header {
             position: fixed;
-            top: 20px;
+            top: 24px;
             left: 50%;
             transform: translateX(-50%);
-            width: calc(100% - 40px);
-            max-width: 1320px;
+            width: auto;
             z-index: 1000;
-            padding: 12px 0;
             background: var(--glass);
-            backdrop-filter: blur(20px);
+            backdrop-filter: blur(24px);
             border: 1px solid var(--border);
             border-radius: 100px;
             box-shadow: var(--shadow-lux);
-            transition: transform 0.3s ease, opacity 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+            padding: 8px;
         }
-        header.nav-hidden {
-            transform: translate(-50%, -120%);
-            opacity: 0;
+        header.nav-hidden { transform: translate(-50%, -150%); opacity: 0; }
+        
+        nav { display: flex; align-items: center; gap: 8px; }
+        
+        .nav-pill {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            padding: 10px;
+            border-radius: 100px;
+            background: transparent;
+            color: var(--ink);
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: var(--pill-transition);
+            overflow: hidden;
+            white-space: nowrap;
+            cursor: pointer;
+            border: 1px solid transparent;
         }
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 0 32px; }
-        .logo {
-            font-family: var(--font-display); font-size: 1.8rem; font-weight: 600;
-            letter-spacing: -0.02em; position: relative;
+        
+        .nav-pill svg { width: 20px; height: 20px; flex-shrink: 0; }
+        .nav-pill span { 
+            width: 0; 
+            opacity: 0; 
+            transition: var(--pill-transition);
+            margin-left: 0;
         }
-        .nav-links { display: flex; gap: 32px; align-items: center; }
-        .nav-links a {
-            font-size: 0.8rem; font-weight: 500; color: var(--ink); opacity: 0.6;
-            text-transform: uppercase; letter-spacing: 0.1em;
+        
+        .nav-pill:hover, .nav-pill.active {
+            background: var(--ink);
+            color: var(--paper);
+            padding: 10px 20px;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
-        .nav-links a:hover, .nav-links a.active { opacity: 1; }
+        .nav-pill:hover span, .nav-pill.active span {
+            width: auto;
+            opacity: 1;
+        }
+        
+        .nav-pill.active { background: var(--copper); color: white; }
 
         /* ===== BULB TOGGLE ===== */
         .bulb-wrap {
@@ -290,6 +318,43 @@
         .result-card .tag { font-size: 0.7rem; color: var(--copper); font-weight: 700; text-transform: uppercase; margin-bottom: 8px; display: block; }
         .result-card .decision { font-size: 0.85rem; opacity: 0.7; margin-bottom: 16px; }
 
+        /* ===== CHECKOUT FLOW ===== */
+        .checkout-panel {
+            background: var(--paper); width: 100%; max-width: 600px;
+            border-radius: 56px; padding: 60px; position: relative;
+            box-shadow: var(--shadow-lux); z-index: 3001;
+        }
+        .checkout-step { display: none; }
+        .checkout-step.active { display: block; }
+        .checkout-header { text-align: center; margin-bottom: 40px; }
+        .checkout-header h2 { font-family: var(--font-display); font-size: 2.5rem; margin-bottom: 8px; }
+        .checkout-header p { opacity: 0.6; font-weight: 500; }
+        
+        .checkout-item-review {
+            display: flex; align-items: center; gap: 24px; background: var(--paper-warm);
+            padding: 24px; border-radius: 32px; margin-bottom: 32px; border: 1px solid var(--border);
+        }
+        .checkout-item-review img { width: 80px; height: 80px; object-fit: contain; }
+        .checkout-item-info h4 { font-size: 1.1rem; margin-bottom: 4px; }
+        .checkout-item-info p { font-weight: 700; color: var(--copper); }
+        
+        .checkout-options { display: flex; flex-direction: column; gap: 16px; }
+        .checkout-option {
+            padding: 20px 24px; border-radius: 24px; border: 1px solid var(--border);
+            background: var(--paper-warm); cursor: pointer; transition: var(--transition-smooth);
+            display: flex; align-items: center; gap: 16px; font-weight: 600;
+        }
+        .checkout-option:hover, .checkout-option.selected { border-color: var(--copper); background: var(--paper); }
+        .checkout-option.selected { box-shadow: 0 0 0 2px var(--copper); }
+        .checkout-option-icon { width: 40px; height: 40px; background: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+
+        .checkout-trust-mini { margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 12px; }
+        .checkout-trust-mini span { font-size: 0.85rem; opacity: 0.6; display: flex; align-items: center; gap: 10px; font-weight: 500; }
+        .checkout-trust-mini span::before { content: '✓'; color: var(--copper); font-weight: 700; }
+
+        .checkout-momentum { text-align: center; margin-top: 24px; font-size: 0.85rem; font-weight: 600; color: var(--copper); }
+        .checkout-reassurance { text-align: center; margin-top: 8px; font-size: 0.75rem; opacity: 0.5; font-weight: 500; }
+
         /* CART ENHANCEMENTS */
         .cart-confidence { margin-top: 24px; padding: 20px; background: var(--paper-warm); border-radius: 20px; border: 1px dashed var(--copper); }
         .cart-confidence p { font-size: 0.9rem; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
@@ -317,8 +382,48 @@
         .footer-col li:hover { opacity: 1; color: var(--copper); }
         .footer-bottom { border-top: 1px solid rgba(245, 242, 237, 0.1); padding-top: 40px; display: flex; justify-content: space-between; opacity: 0.4; font-size: 0.9rem; }
 
-        /* ===== MOBILE DOCK ===== */
-        .mobile-dock { display: none; }
+        /* ===== MOBILE PILL DOCK ===== */
+        .mobile-dock {
+            display: none; position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+            width: calc(100% - 48px); max-width: 400px; height: 72px; background: var(--glass);
+            backdrop-filter: blur(24px); border-radius: 100px; z-index: 2000;
+            justify-content: space-around; align-items: center;
+            border: 1px solid var(--border); box-shadow: var(--shadow-lux);
+            padding: 0 12px;
+        }
+        .dock-pill {
+            display: flex; align-items: center; gap: 0; padding: 12px;
+            border-radius: 100px; color: var(--ink); opacity: 0.6;
+            transition: var(--pill-transition); overflow: hidden;
+            white-space: nowrap;
+        }
+        .dock-pill svg { width: 24px; height: 24px; flex-shrink: 0; }
+        .dock-pill span { width: 0; opacity: 0; transition: var(--pill-transition); margin-left: 0; font-size: 0.8rem; font-weight: 700; }
+        
+        .dock-pill.active {
+            opacity: 1; background: var(--ink); color: var(--paper);
+            padding: 12px 20px; gap: 8px;
+        }
+        .dock-pill.active span { width: auto; opacity: 1; }
+
+        /* ===== PWA PROMPT ===== */
+        #pwa-prompt {
+            position: fixed; bottom: 110px; left: 50%; transform: translateX(-50%) translateY(100px);
+            width: calc(100% - 48px); max-width: 400px; background: var(--paper);
+            border-radius: 32px; padding: 24px; z-index: 2100;
+            box-shadow: var(--shadow-lux); border: 1px solid var(--border);
+            opacity: 0; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex; flex-direction: column; gap: 16px;
+        }
+        #pwa-prompt.active { transform: translateX(-50%) translateY(0); opacity: 1; }
+        .pwa-header { display: flex; align-items: center; gap: 16px; }
+        .pwa-icon { width: 48px; height: 48px; background: var(--copper); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.2rem; }
+        .pwa-text h4 { font-size: 1rem; margin-bottom: 4px; }
+        .pwa-text p { font-size: 0.85rem; opacity: 0.6; }
+        .pwa-actions { display: flex; gap: 12px; }
+        .pwa-btn { flex: 1; padding: 12px; border-radius: 100px; font-weight: 600; font-size: 0.85rem; border: none; cursor: pointer; transition: var(--transition-smooth); }
+        .pwa-install { background: var(--ink); color: var(--paper); }
+        .pwa-dismiss { background: var(--paper-warm); color: var(--ink); }
 
         @media (max-width: 1024px) {
             .modal-content { grid-template-columns: 1fr; }
@@ -329,35 +434,28 @@
             .hero-actions { justify-content: center; }
             .hero-trust-indicators { justify-content: center; }
             .scroll-hint { left: 50%; transform: translateX(-50%); }
-            .guided-panel { padding: 40px; width: calc(100% - 40px); }
+            .guided-panel, .checkout-panel { padding: 40px; width: calc(100% - 40px); }
             .guided-options { grid-template-columns: 1fr; }
             .guided-results { grid-template-columns: 1fr; }
         }
 
         @media (max-width: 768px) {
             .container { padding: 0 24px; }
-            .nav-links, .bulb-wrap { display: none; }
-            header { width: calc(100% - 32px); top: 16px; }
-            nav { padding: 0 20px; }
+            header, .bulb-wrap { display: none; }
             .hero h1 { font-size: 3.5rem; }
             .bento-item { grid-column: span 12 !important; padding: 40px; }
             .repair-grid { grid-template-columns: 1fr; }
             .footer-grid { grid-template-columns: 1fr; }
-            .mobile-dock {
-                display: flex; position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-                width: calc(100% - 48px); height: 80px; background: var(--glass);
-                backdrop-filter: blur(20px); border-radius: 100px; z-index: 2000;
-                justify-content: space-around; align-items: center;
-                border: 1px solid var(--border); box-shadow: var(--shadow-lux);
-            }
-            .dock-item { color: var(--ink); opacity: 0.5; display: flex; flex-direction: column; align-items: center; font-size: 0.7rem; font-weight: 600; }
-            .dock-item.active { opacity: 1; color: var(--copper); }
-            .dock-item svg { width: 24px; height: 24px; margin-bottom: 6px; }
-            body { padding-bottom: 100px; }
+            .mobile-dock { display: flex; }
+            body { padding-bottom: 120px; }
+            
+            /* App-like feel */
+            .product-card, .bento-item, .repair-card { border-radius: 32px; }
+            .btn { padding: 18px 32px; }
         }
 
         /* Reveal Animation */
-        .reveal { opacity: 0; transform: translateY(50px); }
+        .reveal { opacity: 0; transform: translateY(30px); }
         .hero-reveal { opacity: 0; }
     </style>
 </head>
@@ -369,18 +467,24 @@
     </div>
 
     <header id="header">
-        <div class="container">
-            <nav>
-                <a href="#" class="logo">Kov·in</a>
-                <div class="nav-links">
-                    <a href="#catalogue">Catalogue</a>
-                    <a href="#repair">Repair</a>
-                    <a href="#philosophy">Philosophy</a>
-                    <a href="#contact">Contact</a>
-                </div>
-                <a href="https://wa.me/917200006006" class="btn btn-primary" style="padding: 10px 24px; font-size: 0.75rem;">Enquire Now</a>
-            </nav>
-        </div>
+        <nav>
+            <a href="#" class="nav-pill active">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                <span>Home</span>
+            </a>
+            <a href="#catalogue" class="nav-pill">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                <span>Catalogue</span>
+            </a>
+            <a href="#repair" class="nav-pill">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+                <span>Repair</span>
+            </a>
+            <a href="#contact" class="nav-pill">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                <span>Contact</span>
+            </a>
+        </nav>
     </header>
 
     <main>
@@ -615,23 +719,39 @@
         </div>
     </footer>
 
+    <!-- MOBILE PILL DOCK -->
     <div class="mobile-dock">
-        <a href="#" class="dock-item active">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        <a href="#" class="dock-pill active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
             <span>Home</span>
         </a>
-        <a href="#catalogue" class="dock-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+        <a href="#catalogue" class="dock-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
             <span>Catalogue</span>
         </a>
-        <a href="#repair" class="dock-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+        <a href="#repair" class="dock-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
             <span>Repair</span>
         </a>
-        <a href="javascript:void(0)" onclick="toggleChat()" class="dock-item">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+        <a href="javascript:void(0)" onclick="toggleChat()" class="dock-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
             <span>Chat</span>
         </a>
+    </div>
+
+    <!-- PWA PROMPT -->
+    <div id="pwa-prompt">
+        <div class="pwa-header">
+            <div class="pwa-icon">K</div>
+            <div class="pwa-text">
+                <h4>Install Kovin App</h4>
+                <p>Install this app for better experience</p>
+            </div>
+        </div>
+        <div class="pwa-actions">
+            <button class="pwa-btn pwa-dismiss" onclick="dismissPWA()">Not Now</button>
+            <button class="pwa-btn pwa-install" onclick="installPWA()">Install Now</button>
+        </div>
     </div>
 
     <!-- Chat Window -->
@@ -706,6 +826,98 @@
         </div>
     </div>
 
+    <!-- CHECKOUT OVERLAY -->
+    <div class="modal-overlay" id="checkout-overlay" onclick="handleCheckoutOverlayClick(event)">
+        <div class="checkout-panel" onclick="event.stopPropagation()">
+            <div class="modal-close" onclick="closeCheckout()">✕</div>
+            
+            <!-- Step 1: Review -->
+            <div class="checkout-step active" id="checkout-step-1">
+                <div class="checkout-header">
+                    <h2>Review Selection</h2>
+                    <p>You are almost there</p>
+                </div>
+                <div class="checkout-item-review">
+                    <img id="checkout-img" src="" alt="">
+                    <div class="checkout-item-info">
+                        <h4 id="checkout-name">Product Name</h4>
+                        <p id="checkout-price">Price</p>
+                        <span style="font-size: 0.8rem; opacity: 0.6;">Quantity: 1</span>
+                    </div>
+                </div>
+                <div class="checkout-trust-mini">
+                    <span>Checked before it reaches you</span>
+                    <span>Clear explanation before handover</span>
+                    <span>Help available if something feels off</span>
+                </div>
+                <div class="checkout-momentum">Ready for you · Chosen by many for daily use</div>
+                <div class="checkout-reassurance">Takes less than a minute</div>
+                <button onclick="nextCheckoutStep(2)" class="btn btn-primary" style="width: 100%; margin-top: 16px;">Take this forward</button>
+            </div>
+
+            <!-- Step 2: Delivery -->
+            <div class="checkout-step" id="checkout-step-2">
+                <div class="checkout-header">
+                    <h2>How you want it</h2>
+                    <p>Choose your preferred method</p>
+                </div>
+                <div class="checkout-options">
+                    <div class="checkout-option" onclick="selectDelivery('pickup', this)">
+                        <div class="checkout-option-icon">🏪</div>
+                        <div>
+                            <div>Pick up today</div>
+                            <div style="font-size: 0.75rem; opacity: 0.6; font-weight: 400;">Available at Coimbatore store</div>
+                        </div>
+                    </div>
+                    <div class="checkout-option" onclick="selectDelivery('nearby', this)">
+                        <div class="checkout-option-icon">🛵</div>
+                        <div>
+                            <div>Get it delivered nearby</div>
+                            <div style="font-size: 0.75rem; opacity: 0.6; font-weight: 400;">Same-day delivery in Coimbatore</div>
+                        </div>
+                    </div>
+                    <div class="checkout-option" onclick="selectDelivery('india', this)">
+                        <div class="checkout-option-icon">📦</div>
+                        <div>
+                            <div>Ship across India</div>
+                            <div style="font-size: 0.75rem; opacity: 0.6; font-weight: 400;">Delivery within 2-4 business days</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="checkout-trust-mini">
+                    <span>No confusion in next steps</span>
+                    <span>You will know what happens next</span>
+                </div>
+                <div class="guided-nav">
+                    <span class="guided-back" onclick="prevCheckoutStep(1)">Back</span>
+                </div>
+                <div class="checkout-reassurance" style="margin-top: 24px;">Takes less than a minute</div>
+                <button onclick="nextCheckoutStep(3)" class="btn btn-primary" style="width: 100%; margin-top: 16px;">Take this forward</button>
+            </div>
+
+            <!-- Step 3: Final Action -->
+            <div class="checkout-step" id="checkout-step-3">
+                <div class="checkout-header">
+                    <h2>Final Step</h2>
+                    <p>Confirm and connect with us</p>
+                </div>
+                <div style="background: var(--paper-warm); padding: 24px; border-radius: 24px; margin-bottom: 32px; text-align: center;">
+                    <p style="font-weight: 600; margin-bottom: 8px;">Ready to finalize?</p>
+                    <p style="font-size: 0.9rem; opacity: 0.7;">We'll confirm availability and guide you through the final steps on WhatsApp.</p>
+                </div>
+                <div class="checkout-momentum">Ready for you · Chosen by many for daily use</div>
+                <div class="checkout-reassurance">Takes less than a minute</div>
+                <div class="hero-actions" style="flex-direction: column; gap: 16px; margin-top: 16px;">
+                    <button onclick="sendInquiry()" class="btn btn-primary" style="width: 100%;">Get this for you</button>
+                    <button onclick="closeCheckout()" class="btn btn-secondary" style="width: 100%;">Confirm selection</button>
+                </div>
+                <div class="guided-nav">
+                    <span class="guided-back" onclick="prevCheckoutStep(2)">Back</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal-overlay" id="modal-overlay" onclick="handleOverlayClick(event)">
         <div class="modal-content" onclick="event.stopPropagation()">
             <div class="modal-close" onclick="closeModal()">✕</div>
@@ -755,7 +967,7 @@
                 </div>
 
                 <div class="hero-actions" style="margin-top: 24px;">
-                    <button onclick="sendInquiry()" class="btn btn-primary" style="flex: 1;">Get this for you</button>
+                    <button onclick="openCheckout()" class="btn btn-primary" style="flex: 1;">Get this for you</button>
                     <a href="tel:+917200006006" class="btn btn-secondary">Take it home</a>
                 </div>
 
@@ -787,12 +999,14 @@
             { id: 10, category: 'accessories', name: 'Aluminum Phone Stand', specs: 'Adjustable angle · Non-slip', price: '₹399', oldPrice: '₹899', badge: '', tags: ['Clean experience', 'Worth noticing'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/QLzXktccBITzJoEo.png', desc: 'Sturdy aluminum desktop stand with adjustable viewing angles. Features non-slip silicone pads to keep your device secure.', expect: 'Chosen to improve desk ergonomics. Fits your usage for video calls or watching content hands-free.', fact: 'The hollow design allows for easy charging while the phone is mounted on the stand.', decision: 'Good for daily use with hands-free comfort', urgency: 'Picked often this week', socialProof: 'Picked often this week', brand: 'Generic', tier: 'simple', priceContext: 'Comfortable for daily use at this range', priceAnchor: 'Seen across similar range devices' },
             { id: 11, category: 'accessories', name: 'Premium Wireless Earbuds', specs: '24hr playtime · Auto-pairing', price: '₹2,999', oldPrice: '₹5,999', badge: 'Best Seller', tags: ['Quiet performer', 'Chosen for you'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/akufQOVWgjtpdbDf.png', desc: 'True wireless earbuds with crystal clear sound and a compact charging case. Features touch controls and voice assistant support.', expect: 'Fits your usage for daily commutes or workouts. The sound profile is tuned to provide a rich audio experience for you.', fact: 'The auto-pairing feature works instantly the moment you open the case.', decision: 'Works best if you need music on the move', urgency: 'Available for pickup today', socialProof: 'Chosen by many for daily use', brand: 'Generic', tier: 'balanced', priceContext: 'Chosen when you want a balanced device', priceAnchor: 'Stays consistent for what it offers' },
             { id: 12, category: 'accessories', name: 'Magnetic Car Mount', specs: '360° Rotation · Strong grip', price: '₹449', oldPrice: '₹999', badge: '', tags: ['Balanced choice', 'Worth noticing'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/LeYyaTtVUntOTfPh.png', desc: 'Universal magnetic car mount that fits into any air vent. Provides a secure, one-handed mounting solution for your smartphone.', expect: 'Chosen to ensure safe navigation while driving. Fits your usage with its easy-to-adjust 360-degree rotation.', fact: 'The ultra-strong magnets ensure your phone stays in place even on the bumpiest roads.', decision: 'Fits well if you navigate while driving', urgency: 'Limited pieces available', socialProof: 'Common upgrade choice', brand: 'Generic', tier: 'simple', priceContext: 'Fits well if upgrading from older phone', priceAnchor: 'Seen across similar range devices' },
-            { id: 13, category: 'accessories', name: 'Device Cleaning Kit', specs: 'Alcohol-free · Microfiber cloth', price: '₹249', oldPrice: '₹499', badge: '', tags: ['Clean experience', 'Value that holds'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/QdzcPYGrRoKDynVN.png', desc: 'Professional cleaning solution for screens and electronics. Includes a non-toxic spray and a premium microfiber cloth.', expect: 'Fits your usage by keeping your devices looking brand new. Chosen to maintain the clarity of your displays.', fact: 'The anti-static formula helps repel dust, keeping your screen cleaner for longer periods.', decision: 'Good for daily use with clear displays', urgency: 'Picked often this week', socialProof: 'Picked often this week', brand: 'Generic', tier: 'simple', priceContext: 'Comfortable for daily use at this range', priceAnchor: 'Stays consistent for what it offers' },
+            { id: 13, category: 'accessories', name: 'Device Cleaning Kit', specs: 'Alcohol-free · Microfiber cloth', price: '₹249', oldPrice: '₹499', badge: '', tags: ['Clean experience', 'Value that holds'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/QdzcPYGrRoKDynVN.png', desc: 'Professional cleaning solution for screens and electronics. Includes a non-toxic spray and a premium microfiber cloth.', expect: 'Fits your usage by keeping your devices looking brand new. Chosen to maintain the clarity of your displays.', fact: 'The anti-static formula helps repel dust, keeping your screen cleaner for longer periods.', decision: 'Good for daily use with clear displays', urgency: 'Picked often this week', socialProof: 'Picked often this week', brand: 'Generic', tier: 'simple', priceContext: 'Comfortable for daily use at this range', priceAnchor: 'Seen across similar range devices' },
             { id: 14, category: 'accessories', name: 'Camera Lens Protector', specs: 'Ultra-clear · Scratch resistant', price: '₹299', oldPrice: '₹599', badge: 'New', tags: ['Camera focused', 'Worth noticing'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/gmvKvvXVYoSPYHjl.png', desc: 'Tempered glass protection for your smartphone camera lenses. Maintains original photo quality while preventing scratches.', expect: 'Chosen if you want to protect your camera without compromising on photo clarity. Fits your usage for worry-free photography.', fact: 'The ultra-thin design makes it almost invisible once applied to your device.', decision: 'Works best if camera safety is a priority', urgency: 'Available for pickup today', socialProof: 'Chosen by many for daily use', brand: 'Generic', tier: 'simple', priceContext: 'Fits well if upgrading from older phone', priceAnchor: 'Seen across similar range devices' }
         ];
 
         let currentProduct = null;
         let guidedData = { category: '', priority: '', preference: '' };
+        let deferredPrompt;
+        let selectedDeliveryMethod = '';
 
         function savingPct(price, old) {
             const p = parseInt(price.replace(/[^0-9]/g,''));
@@ -882,7 +1096,6 @@
             
             let results = [];
 
-            // ENHANCED MAPPING LOGIC
             if (guidedData.category === 'phones') {
                 if (guidedData.preference === 'best') {
                     results = products.filter(p => p.category === 'phones' && p.tier === 'flagship');
@@ -928,6 +1141,42 @@
 
         function handleGuidedOverlayClick(e) {
             if (e.target.id === 'guided-overlay') closeGuidedFlow();
+        }
+
+        /* CHECKOUT FLOW LOGIC */
+        function openCheckout() {
+            if (!currentProduct) return;
+            
+            document.getElementById('checkout-img').src = currentProduct.image;
+            document.getElementById('checkout-name').innerText = currentProduct.name;
+            document.getElementById('checkout-price').innerText = currentProduct.price;
+            
+            document.getElementById('checkout-overlay').classList.add('active');
+            nextCheckoutStep(1);
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkout-overlay').classList.remove('active');
+        }
+
+        function nextCheckoutStep(step) {
+            document.querySelectorAll('.checkout-step').forEach(s => s.classList.remove('active'));
+            document.getElementById(`checkout-step-${step}`).classList.add('active');
+        }
+
+        function prevCheckoutStep(step) {
+            document.querySelectorAll('.checkout-step').forEach(s => s.classList.remove('active'));
+            document.getElementById(`checkout-step-${step}`).classList.add('active');
+        }
+
+        function selectDelivery(method, el) {
+            selectedDeliveryMethod = method;
+            document.querySelectorAll('.checkout-option').forEach(opt => opt.classList.remove('selected'));
+            el.classList.add('selected');
+        }
+
+        function handleCheckoutOverlayClick(e) {
+            if (e.target.id === 'checkout-overlay') closeCheckout();
         }
 
         function openModal(p) {
@@ -1002,7 +1251,8 @@
         }
 
         function sendInquiry() {
-            const text = `Hello Kovin, I am interested in the ${currentProduct.name}. Could you provide more details?`;
+            const deliveryText = selectedDeliveryMethod ? ` I prefer ${selectedDeliveryMethod} delivery.` : '';
+            const text = `Hello Kovin, I am interested in the ${currentProduct.name}.${deliveryText} Could you provide more details?`;
             window.open(`https://wa.me/917200006006?text=${encodeURIComponent(text)}`, '_blank');
         }
 
@@ -1061,9 +1311,6 @@
         window.addEventListener('scroll', () => {
             const currentScroll = window.pageYOffset;
             
-            if (currentScroll > 50) header.classList.add('scrolled');
-            else header.classList.remove('scrolled');
-
             if (Math.abs(currentScroll - lastScroll) > threshold) {
                 if (currentScroll > lastScroll && currentScroll > 100) {
                     header.classList.add('nav-hidden');
@@ -1077,7 +1324,52 @@
             scrollTimer = setTimeout(() => {
                 header.classList.remove('nav-hidden');
             }, 150);
+
+            const sections = ['hero', 'catalogue', 'repair', 'contact'];
+            sections.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top <= 150 && rect.bottom >= 150) {
+                        document.querySelectorAll('.nav-pill, .dock-pill').forEach(p => {
+                            p.classList.remove('active');
+                            if (p.getAttribute('href') === `#${id}` || (id === 'hero' && p.getAttribute('href') === '#')) {
+                                p.classList.add('active');
+                            }
+                        });
+                    }
+                }
+            });
         });
+
+        /* PWA LOGIC */
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            if (!sessionStorage.getItem('pwa-dismissed')) {
+                setTimeout(() => {
+                    document.getElementById('pwa-prompt').classList.add('active');
+                }, 3000);
+            }
+        });
+
+        function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                    }
+                    deferredPrompt = null;
+                    document.getElementById('pwa-prompt').classList.remove('active');
+                });
+            }
+        }
+
+        function dismissPWA() {
+            sessionStorage.setItem('pwa-dismissed', 'true');
+            document.getElementById('pwa-prompt').classList.remove('active');
+        }
 
         window.onload = () => {
             renderProducts();
