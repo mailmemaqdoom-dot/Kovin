@@ -1,0 +1,1849 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Kovin — The Guided Electronics System</title>
+    <meta name="description" content="Tamil Nadu's guided electronics system. Phones, audio, and essentials chosen based on how life is actually lived. Clarity before selling — that's the Kovin difference.">
+    <meta name="keywords" content="electronics Coimbatore, mobile phones Tamil Nadu, guided electronics, Sony, Samsung, Google Pixel, repair service">
+    <meta property="og:title" content="Kovin — The Guided Electronics System">
+    <meta property="og:description" content="Tamil Nadu's guided electronics system. Clarity before selling — that's the Kovin difference.">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/fWEumNteCudVVPuo.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Kovin — The Guided Electronics System">
+    <meta name="twitter:description" content="Tamil Nadu's guided electronics system. Clarity before selling.">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Kovin Electronics",
+      "description": "Tamil Nadu's guided electronics system. Clarity, not just sales.",
+      "address": { "@type": "PostalAddress", "addressRegion": "Tamil Nadu", "addressCountry": "IN" },
+      "geo": { "@type": "GeoCoordinates", "latitude": "11.0542557", "longitude": "77.0638796" },
+      "telephone": "+917200006006",
+      "openingHours": "Mo-Su 09:00-22:00",
+      "priceRange": "₹₹"
+    }
+    </script>
+    <script>
+        try {
+            var _t = localStorage.getItem('kovin-theme');
+            if (_t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+        } catch(e) {}
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <style>
+        :root {
+            --ink: #0F1020;
+            --ink-rgb: 15, 16, 32;
+            --paper: #F5F2ED;
+            --paper-warm: #EDE9E1;
+            --copper: #B87333;
+            --copper-light: #D4913A;
+            --copper-glow: rgba(184, 115, 51, 0.15);
+            --glass: rgba(245, 242, 237, 0.7);
+            --border: rgba(15, 16, 32, 0.08);
+            --border-strong: rgba(15, 16, 32, 0.2);
+            --shadow-lux: 0 30px 60px -12px rgba(15, 16, 32, 0.12), 0 18px 36px -18px rgba(15, 16, 32, 0.15);
+            --font-display: 'Cormorant Garamond', serif;
+            --font-body: 'Inter', sans-serif;
+            --transition-smooth: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            --pill-transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        [data-theme="dark"] {
+            --ink: #F5F2ED;
+            --ink-rgb: 245, 242, 237;
+            --paper: #0A0B14;
+            --paper-warm: #12131F;
+            --glass: rgba(10, 11, 20, 0.7);
+            --border: rgba(245, 242, 237, 0.1);
+            --border-strong: rgba(245, 242, 237, 0.25);
+            --shadow-lux: 0 30px 60px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+        body {
+            background-color: var(--paper);
+            color: var(--ink);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background-color 0.8s ease;
+            touch-action: manipulation;
+        }
+
+        /* ===== SKIP NAV ===== */
+        .skip-nav {
+            position: absolute; top: -100%; left: 16px;
+            background: var(--copper); color: white;
+            padding: 12px 24px; border-radius: 100px;
+            font-weight: 600; font-size: 0.9rem; z-index: 9999;
+            transition: top 0.2s ease;
+        }
+        .skip-nav:focus { top: 16px; }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 40px; }
+        a { text-decoration: none; color: inherit; transition: var(--transition-smooth); }
+
+        /* ===== PILL MORPH NAVIGATION SYSTEM ===== */
+        header {
+            position: fixed;
+            top: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: auto;
+            z-index: 1000;
+            background: var(--glass);
+            backdrop-filter: blur(24px);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            box-shadow: var(--shadow-lux);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
+            padding: 8px;
+        }
+        header.nav-hidden { transform: translate(-50%, -150%); opacity: 0; }
+
+        nav { display: flex; align-items: center; gap: 8px; }
+
+        .nav-pill {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            padding: 10px;
+            border-radius: 100px;
+            background: transparent;
+            color: var(--ink);
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: var(--pill-transition);
+            overflow: hidden;
+            white-space: nowrap;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .nav-pill svg { width: 20px; height: 20px; flex-shrink: 0; }
+        .nav-pill span {
+            width: 0;
+            opacity: 0;
+            transition: var(--pill-transition);
+            margin-left: 0;
+        }
+
+        .nav-pill:hover, .nav-pill.active {
+            background: var(--ink);
+            color: var(--paper);
+            padding: 10px 20px;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .nav-pill:hover span, .nav-pill.active span {
+            width: auto;
+            opacity: 1;
+        }
+
+        .nav-pill.active { background: var(--copper); color: white; }
+
+        /* ===== BULB TOGGLE ===== */
+        .bulb-wrap {
+            position: fixed; top: 0; right: 60px; z-index: 2000;
+            height: 120px; cursor: pointer; display: flex; flex-direction: column; align-items: center;
+        }
+        .bulb-wire { width: 1px; height: 60px; background: var(--copper); transition: height 0.3s; }
+        .bulb-head {
+            width: 32px; height: 32px; border-radius: 50%;
+            background: var(--copper); border: 2px solid var(--copper);
+            box-shadow: 0 0 30px var(--copper-glow); transition: var(--transition-smooth);
+        }
+        [data-theme="dark"] .bulb-head { background: transparent; box-shadow: none; }
+        .bulb-wrap:active .bulb-wire { height: 80px; }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center; position: relative;
+            padding-top: 140px;
+            overflow: hidden;
+            opacity: 1 !important;
+            visibility: visible !important;
+            transform: none !important;
+            z-index: 1;
+        }
+        .hero-visual {
+            position: absolute; right: 5%; top: 50%; transform: translateY(-50%);
+            width: 45%; height: 70%; z-index: 0; display: flex; align-items: center; justify-content: center;
+        }
+        .hero-visual img {
+            max-width: 100%; max-height: 100%; object-fit: contain;
+            filter: drop-shadow(0 30px 60px rgba(0,0,0,0.15));
+        }
+        .hero-content { position: relative; z-index: 1; max-width: 700px; }
+        .hero-eyebrow {
+            font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.3em;
+            color: var(--copper); margin-bottom: 24px; display: block;
+        }
+        .hero h1 {
+            font-family: var(--font-display); font-size: clamp(3.5rem, 8vw, 6rem);
+            line-height: 1.05; font-weight: 400; margin-bottom: 32px;
+        }
+        .hero-desc {
+            font-size: 1.25rem; max-width: 540px; opacity: 0.7; margin-bottom: 48px;
+            font-weight: 300;
+        }
+        .hero-actions { display: flex; gap: 24px; align-items: center; margin-bottom: 40px; }
+
+        .hero-trust-indicators {
+            display: flex; gap: 24px; opacity: 0.5; font-size: 0.8rem; font-weight: 500;
+        }
+        .hero-trust-indicators span { display: flex; align-items: center; gap: 8px; }
+        .hero-trust-indicators span::before { content: '✓'; color: var(--copper); font-weight: 700; }
+
+        .scroll-hint {
+            position: absolute; bottom: 40px; left: 40px; display: flex; align-items: center; gap: 16px;
+            font-size: 0.85rem; opacity: 0.4; font-weight: 500;
+        }
+        .scroll-line { width: 40px; height: 1px; background: var(--ink); }
+
+        /* ===== BUTTONS ===== */
+        .btn {
+            padding: 20px 44px; border-radius: 100px; font-weight: 600; font-size: 0.95rem;
+            display: inline-flex; align-items: center; gap: 12px; border: none;
+            cursor: pointer; transition: var(--transition-smooth); position: relative;
+            overflow: hidden; text-align: center; justify-content: center;
+        }
+        .btn:focus-visible { outline: 3px solid var(--copper); outline-offset: 3px; }
+        .btn-primary { background: var(--ink); color: var(--paper); }
+        .btn-primary:hover { transform: translateY(-5px); box-shadow: var(--shadow-lux); }
+        .btn-secondary { background: transparent; color: var(--ink); border: 1px solid var(--border); }
+        .btn-secondary:hover { background: var(--ink); color: var(--paper); }
+
+        /* ===== BENTO GRID ===== */
+        .section-padding { padding: 160px 0; }
+        .section-header { text-align: center; max-width: 800px; margin: 0 auto 80px; }
+        .section-header h2 { font-family: var(--font-display); font-size: clamp(3rem, 5vw, 4.5rem); line-height: 1.1; }
+
+        .bento-grid {
+            display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px;
+        }
+        .bento-item {
+            grid-column: span 4; background: var(--paper-warm); border-radius: 40px;
+            padding: 56px; border: 1px solid var(--border); transition: var(--transition-smooth);
+            position: relative; overflow: hidden;
+        }
+        .bento-item:hover { transform: translateY(-10px); border-color: var(--copper); }
+        .bento-item.large { grid-column: span 8; }
+        .bento-item h3 { font-family: var(--font-display); font-size: 2.8rem; margin-bottom: 20px; line-height: 1.1; }
+        .bento-item p { opacity: 0.6; font-size: 1.15rem; font-weight: 300; }
+
+        /* ===== RETENTION SECTION: STILL THINKING ===== */
+        #retention-section { display: none; background: var(--paper-warm); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        .retention-card {
+            display: flex; align-items: center; gap: 48px; background: var(--paper);
+            padding: 48px; border-radius: 48px; border: 1px solid var(--border);
+            box-shadow: var(--shadow-lux);
+        }
+        .retention-img { width: 200px; height: 200px; object-fit: contain; flex-shrink: 0; }
+        .retention-info { flex: 1; }
+        .retention-info h3 { font-family: var(--font-display); font-size: 2.5rem; margin-bottom: 12px; }
+        .retention-info p { opacity: 0.6; margin-bottom: 24px; font-size: 1.1rem; }
+
+        /* ===== PRODUCT CATALOGUE ===== */
+        .filter-wrap { display: flex; justify-content: center; gap: 12px; margin-bottom: 64px; flex-wrap: wrap; }
+        .filter-btn {
+            padding: 12px 28px; border-radius: 100px; border: 1px solid var(--border);
+            background: transparent; color: var(--ink); cursor: pointer; font-weight: 500;
+            transition: var(--transition-smooth); font-family: var(--font-body);
+        }
+        .filter-btn:focus-visible { outline: 3px solid var(--copper); outline-offset: 3px; }
+        .filter-btn.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+        .product-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 32px;
+        }
+        .product-card {
+            background: var(--paper-warm); border-radius: 48px; padding: 32px;
+            border: 1px solid var(--border); transition: var(--transition-smooth);
+            cursor: pointer; position: relative; display: flex; flex-direction: column;
+        }
+        .product-card:hover { transform: translateY(-12px); box-shadow: var(--shadow-lux); border-color: var(--copper); }
+        .product-card:focus-visible { outline: 3px solid var(--copper); outline-offset: 3px; transform: translateY(-4px); }
+        .product-img-wrap {
+            height: 320px; background: var(--paper); border-radius: 36px;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 32px; overflow: hidden; position: relative;
+        }
+        .product-img-wrap img { max-width: 80%; max-height: 80%; object-fit: contain; transition: var(--transition-smooth); }
+        .product-card:hover img { transform: scale(1.1) rotate(3deg); }
+
+        .product-badge {
+            position: absolute; top: 20px; left: 20px; background: var(--copper);
+            color: white; padding: 6px 16px; border-radius: 100px; font-size: 0.75rem;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+        }
+        .product-tags { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+        .product-tag { font-size: 0.7rem; background: var(--paper); padding: 4px 10px; border-radius: 100px; opacity: 0.6; }
+        .product-info h3 { font-family: var(--font-display); font-size: 2rem; margin-bottom: 8px; line-height: 1.1; }
+        .product-specs { font-size: 0.9rem; opacity: 0.5; margin-bottom: 12px; }
+
+        .decision-line { font-size: 0.9rem; font-weight: 600; color: var(--copper); margin-bottom: 12px; line-height: 1.3; }
+        .urgency-signal { font-size: 0.75rem; font-weight: 700; color: #D9534F; margin-bottom: 16px; display: flex; align-items: center; gap: 6px; }
+        .urgency-signal::before { content: '●'; font-size: 0.6rem; }
+        .social-proof-line { font-size: 0.75rem; opacity: 0.5; font-weight: 600; margin-bottom: 12px; display: block; }
+        .micro-trust { font-size: 0.75rem; opacity: 0.4; margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 4px; }
+
+        .product-footer { display: flex; flex-direction: column; gap: 8px; margin-top: auto; }
+        .price-main-row { display: flex; justify-content: space-between; align-items: center; }
+        .product-price { font-size: 1.4rem; font-weight: 700; color: var(--copper); }
+        .product-old-price { font-size: 1rem; opacity: 0.3; text-decoration: line-through; margin-left: 8px; }
+        .saving-label { font-size: 0.8rem; color: #25D366; font-weight: 700; margin-left: 8px; }
+
+        .price-context { font-size: 0.75rem; opacity: 0.5; font-weight: 500; line-height: 1.4; }
+        .price-anchor { font-size: 0.7rem; opacity: 0.35; font-style: italic; margin-top: 2px; }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            grid-column: 1 / -1; text-align: center; padding: 80px 40px;
+            opacity: 0.5;
+        }
+        .empty-state p { font-family: var(--font-display); font-size: 2rem; margin-bottom: 8px; }
+        .empty-state span { font-size: 0.95rem; }
+
+        /* ===== REPAIR SECTION ===== */
+        .repair-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 64px; }
+        .repair-card {
+            background: var(--paper-warm); border-radius: 40px; padding: 48px;
+            border: 1px solid var(--border); transition: var(--transition-smooth);
+            text-align: center; cursor: pointer;
+        }
+        .repair-card:hover { background: var(--ink); color: var(--paper); }
+        .repair-card:focus-visible { outline: 3px solid var(--copper); outline-offset: 3px; }
+        .repair-icon { font-size: 3rem; margin-bottom: 24px; display: block; }
+        .repair-card h4 { font-family: var(--font-display); font-size: 2rem; margin-bottom: 16px; }
+        .repair-social-proof { font-size: 0.75rem; opacity: 0.5; font-weight: 500; margin-bottom: 12px; display: block; }
+        .repair-tag { font-size: 0.85rem; color: var(--copper); font-weight: 600; margin-top: 16px; display: block; }
+
+        /* ===== STEP PROGRESS DOTS ===== */
+        .step-progress {
+            display: flex; justify-content: center;
+            gap: 8px; margin-bottom: 36px;
+        }
+        .step-dot {
+            width: 8px; height: 8px; border-radius: 50%;
+            background: var(--border-strong);
+            transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .step-dot.active {
+            width: 28px; border-radius: 4px;
+            background: var(--copper);
+        }
+
+        /* ===== MODAL & GUIDED FLOW ===== */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(15, 16, 32, 0.8);
+            backdrop-filter: blur(15px); z-index: 3000; display: none;
+            align-items: center; justify-content: center; padding: 40px;
+            opacity: 0; transition: opacity 0.4s ease;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-content {
+            background: var(--paper); width: 100%; max-width: 1100px;
+            border-radius: 56px; display: grid; grid-template-columns: 1fr 1.2fr;
+            overflow: hidden; position: relative; box-shadow: var(--shadow-lux);
+            max-height: 90vh; z-index: 3001;
+        }
+        .modal-close {
+            position: absolute; top: 32px; right: 32px; width: 48px; height: 48px;
+            border-radius: 50%; background: var(--paper-warm); border: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            z-index: 3010; transition: var(--transition-smooth);
+            font-family: var(--font-body);
+        }
+        .modal-close:hover { background: var(--copper); color: white; }
+        .modal-close:focus-visible { outline: 3px solid var(--copper); outline-offset: 3px; }
+        .modal-left { background: var(--paper-warm); display: flex; align-items: center; justify-content: center; padding: 60px; }
+        .modal-left img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .modal-right { padding: 60px; display: flex; flex-direction: column; overflow-y: auto; }
+        .modal-title { font-family: var(--font-display); font-size: 3rem; margin-bottom: 8px; line-height: 1.1; }
+        .modal-desc { opacity: 0.7; margin-bottom: 24px; font-size: 1.1rem; }
+
+        /* ===== MISSING MODAL SECTION CSS ===== */
+        .modal-section { margin-bottom: 20px; }
+        .modal-section h4 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em; opacity: 0.5; margin-bottom: 8px; }
+        .modal-section p { font-size: 0.95rem; opacity: 0.8; line-height: 1.5; }
+
+        .modal-features {
+            list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px;
+        }
+        .modal-features li {
+            font-size: 0.75rem; background: var(--paper-warm); padding: 6px 14px;
+            border-radius: 100px; border: 1px solid var(--border); opacity: 0.7;
+        }
+
+        .modal-meta {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;
+        }
+        .meta-item {
+            background: var(--paper-warm); padding: 20px; border-radius: 20px;
+            border: 1px solid var(--border);
+        }
+        .meta-item h5 { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; opacity: 0.5; margin-bottom: 8px; }
+        .meta-item p { font-size: 0.95rem; line-height: 1.4; }
+
+        /* GUIDED FLOW STYLES */
+        .guided-panel {
+            background: var(--paper); width: 100%; max-width: 800px;
+            border-radius: 56px; padding: 80px; position: relative;
+            box-shadow: var(--shadow-lux); z-index: 3001; text-align: center;
+            max-height: 90vh; overflow-y: auto;
+        }
+        .guided-step { display: none; }
+        .guided-step.active { display: block; }
+        .guided-question { font-family: var(--font-display); font-size: 3rem; margin-bottom: 48px; line-height: 1.1; }
+        .guided-options { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .guided-option {
+            padding: 24px; border-radius: 24px; border: 1px solid var(--border);
+            background: var(--paper-warm); cursor: pointer; transition: var(--transition-smooth);
+            font-weight: 600; font-size: 1.1rem; font-family: var(--font-body);
+            text-align: center;
+        }
+        .guided-option:hover { border-color: var(--copper); background: var(--paper); transform: translateY(-4px); }
+        .guided-option:focus-visible { outline: 3px solid var(--copper); outline-offset: 3px; }
+        .guided-nav { display: flex; justify-content: center; gap: 24px; margin-top: 48px; }
+        .guided-back { font-size: 0.9rem; opacity: 0.5; cursor: pointer; text-decoration: underline; background: none; border: none; font-family: var(--font-body); color: var(--ink); }
+        .guided-back:focus-visible { outline: 3px solid var(--copper); outline-offset: 3px; opacity: 1; }
+
+        .guided-results { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 40px; text-align: left; }
+        .result-card { background: var(--paper-warm); padding: 24px; border-radius: 32px; border: 1px solid var(--border); }
+        .result-card img { width: 100%; height: 150px; object-fit: contain; margin-bottom: 16px; }
+        .result-card h4 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 8px; }
+        .result-card .tag { font-size: 0.7rem; color: var(--copper); font-weight: 700; text-transform: uppercase; margin-bottom: 8px; display: block; }
+        .result-card .decision { font-size: 0.85rem; opacity: 0.7; margin-bottom: 16px; }
+
+        /* ===== CHECKOUT FLOW ===== */
+        .checkout-panel {
+            background: var(--paper); width: 100%; max-width: 600px;
+            border-radius: 56px; padding: 60px; position: relative;
+            box-shadow: var(--shadow-lux); z-index: 3001;
+            max-height: 90vh; overflow-y: auto;
+        }
+        .checkout-step { display: none; }
+        .checkout-step.active { display: block; }
+        .checkout-header { text-align: center; margin-bottom: 40px; }
+        .checkout-header h2 { font-family: var(--font-display); font-size: 2.5rem; margin-bottom: 8px; }
+        .checkout-header p { opacity: 0.6; font-weight: 500; }
+
+        .checkout-item-review {
+            display: flex; align-items: center; gap: 24px; background: var(--paper-warm);
+            padding: 24px; border-radius: 32px; margin-bottom: 32px; border: 1px solid var(--border);
+        }
+        .checkout-item-review img { width: 80px; height: 80px; object-fit: contain; }
+        .checkout-item-info h4 { font-size: 1.1rem; margin-bottom: 4px; }
+        .checkout-item-info p { font-weight: 700; color: var(--copper); }
+
+        .checkout-options { display: flex; flex-direction: column; gap: 16px; }
+        .checkout-option {
+            padding: 20px 24px; border-radius: 24px; border: 1px solid var(--border);
+            background: var(--paper-warm); cursor: pointer; transition: var(--transition-smooth);
+            display: flex; align-items: center; gap: 16px; font-weight: 600;
+        }
+        .checkout-option:hover, .checkout-option.selected { border-color: var(--copper); background: var(--paper); }
+        .checkout-option.selected { box-shadow: 0 0 0 2px var(--copper); }
+        .checkout-option:focus-visible { outline: 3px solid var(--copper); outline-offset: 3px; }
+        .checkout-option-icon { width: 40px; height: 40px; background: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
+
+        .checkout-trust-mini { margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 12px; }
+        .checkout-trust-mini span { font-size: 0.85rem; opacity: 0.6; display: flex; align-items: center; gap: 10px; font-weight: 500; }
+        .checkout-trust-mini span::before { content: '✓'; color: var(--copper); font-weight: 700; }
+
+        .checkout-momentum { text-align: center; margin-top: 24px; font-size: 0.85rem; font-weight: 600; color: var(--copper); }
+        .checkout-reassurance { text-align: center; margin-top: 8px; font-size: 0.75rem; opacity: 0.5; font-weight: 500; }
+
+        /* CONFIRMATION SCREEN */
+        .confirmation-visual { width: 80px; height: 80px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 32px; color: white; font-size: 2.5rem; box-shadow: 0 10px 20px rgba(37, 211, 102, 0.2); }
+        .confirmation-text { text-align: center; margin-bottom: 40px; }
+        .confirmation-text h2 { font-family: var(--font-display); font-size: 3rem; margin-bottom: 12px; }
+        .confirmation-text p { font-size: 1.1rem; opacity: 0.7; margin-bottom: 24px; }
+        .confirmation-details { background: var(--paper-warm); padding: 24px; border-radius: 24px; text-align: left; display: flex; flex-direction: column; gap: 12px; }
+        .confirmation-details span { font-size: 0.9rem; opacity: 0.8; display: flex; align-items: center; gap: 12px; font-weight: 500; }
+        .confirmation-details span::before { content: '•'; color: var(--copper); font-weight: 900; }
+
+        .next-steps-clarity { margin-top: 32px; text-align: left; }
+        .next-steps-clarity h4 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 16px; opacity: 0.9; }
+        .next-steps-list { display: flex; flex-direction: column; gap: 12px; }
+        .next-step-item { display: flex; align-items: flex-start; gap: 12px; font-size: 0.95rem; opacity: 0.7; line-height: 1.4; }
+        .next-step-num { width: 24px; height: 24px; background: var(--ink); color: var(--paper); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; flex-shrink: 0; }
+
+        .if-something-changes { margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--border); text-align: left; }
+        .if-something-changes h4 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 16px; opacity: 0.9; }
+        .change-options { display: grid; grid-template-columns: 1fr; gap: 12px; }
+        .change-option { display: flex; align-items: center; gap: 12px; font-size: 0.9rem; opacity: 0.8; font-weight: 500; cursor: pointer; transition: var(--transition-smooth); background: none; border: none; color: var(--ink); font-family: var(--font-body); text-align: left; }
+        .change-option:hover { color: var(--copper); opacity: 1; }
+        .change-option:focus-visible { outline: 3px solid var(--copper); outline-offset: 3px; }
+        .change-option svg { width: 18px; height: 18px; }
+        .change-reassurance { margin-top: 20px; font-size: 0.8rem; opacity: 0.5; font-style: italic; }
+
+        .while-you-are-here { margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--border); text-align: left; }
+        .while-you-are-here h4 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 16px; opacity: 0.9; }
+        .suggestion-list { display: flex; flex-direction: column; gap: 12px; }
+        .suggestion-item { display: flex; align-items: center; gap: 12px; font-size: 0.95rem; opacity: 0.7; cursor: pointer; transition: var(--transition-smooth); background: none; border: none; color: var(--ink); font-family: var(--font-body); text-align: left; }
+        .suggestion-item:hover { color: var(--copper); opacity: 1; }
+        .suggestion-item::before { content: '✦'; color: var(--copper); font-size: 0.8rem; }
+
+        .this-stays-with-you { margin-top: 40px; padding: 32px; background: var(--paper-warm); border-radius: 32px; text-align: left; border: 1px solid var(--border); }
+        .this-stays-with-you h4 { font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 16px; opacity: 0.9; }
+        .retention-list { display: flex; flex-direction: column; gap: 12px; }
+        .retention-item { display: flex; align-items: center; gap: 12px; font-size: 0.95rem; opacity: 0.7; font-weight: 500; }
+        .retention-item::before { content: '∞'; color: var(--copper); font-size: 1.2rem; }
+        .retention-note { margin-top: 20px; font-size: 0.8rem; opacity: 0.4; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; }
+
+        /* WORTH COMING BACK FOR SECTION */
+        .worth-coming-back { margin-top: 40px; padding: 32px; background: var(--paper); border-radius: 32px; text-align: left; border: 1px solid var(--border); }
+        .worth-coming-back h4 { font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 16px; opacity: 0.9; }
+        .worth-list { display: flex; flex-direction: column; gap: 12px; }
+        .worth-item { display: flex; align-items: center; gap: 12px; font-size: 0.95rem; opacity: 0.7; font-weight: 500; }
+        .worth-item::before { content: '✦'; color: var(--copper); font-size: 0.8rem; }
+
+        /* CART ENHANCEMENTS */
+        .cart-confidence { margin-top: 24px; padding: 20px; background: var(--paper-warm); border-radius: 20px; border: 1px dashed var(--copper); }
+        .cart-confidence p { font-size: 0.9rem; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
+        .cart-confidence span { font-size: 0.8rem; opacity: 0.6; display: block; }
+        .cart-momentum { text-align: center; margin-top: 16px; font-size: 0.85rem; font-weight: 500; color: var(--copper); }
+        .cart-hesitation { font-size: 0.75rem; opacity: 0.5; text-align: center; margin-top: 12px; }
+
+        /* TRUST SECTIONS */
+        .trust-list { list-style: none; margin-top: 24px; }
+        .trust-list li { margin-bottom: 16px; display: flex; align-items: center; gap: 16px; font-size: 1.1rem; opacity: 0.8; }
+        .trust-list li::before { content: '→'; color: var(--copper); font-weight: 700; }
+
+        /* ===== FOOTER ===== */
+        footer { background: var(--ink); color: var(--paper); padding: 120px 0 60px; }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 80px; margin-bottom: 80px; }
+        .footer-brand .logo { font-size: 2.5rem; margin-bottom: 24px; display: block; }
+        .footer-brand p { opacity: 0.5; max-width: 300px; margin-bottom: 32px; }
+        .social-links { display: flex; gap: 16px; }
+        .social-links a { width: 48px; height: 48px; border-radius: 50%; background: rgba(245,242,237,0.05); display: flex; align-items: center; justify-content: center; transition: var(--transition-smooth); }
+        .social-links a:hover { background: var(--copper); transform: translateY(-5px); }
+        .social-links a:focus-visible { outline: 3px solid var(--copper); outline-offset: 3px; }
+        .social-links svg { width: 20px; height: 20px; fill: white; }
+        .footer-col h4 { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 32px; color: var(--copper); }
+        .footer-col ul { list-style: none; }
+        .footer-col li { margin-bottom: 16px; opacity: 0.6; transition: var(--transition-smooth); }
+        .footer-col li:hover { opacity: 1; color: var(--copper); }
+        .footer-bottom { border-top: 1px solid rgba(245, 242, 237, 0.1); padding-top: 40px; display: flex; justify-content: space-between; opacity: 0.4; font-size: 0.9rem; }
+
+        /* ===== MOBILE PILL DOCK ===== */
+        .mobile-dock {
+            display: none; position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+            width: calc(100% - 48px); max-width: 400px; height: 72px; background: var(--glass);
+            backdrop-filter: blur(24px); border-radius: 100px; z-index: 2000;
+            justify-content: space-around; align-items: center;
+            border: 1px solid var(--border); box-shadow: var(--shadow-lux);
+            padding: 0 12px;
+            padding-bottom: env(safe-area-inset-bottom, 0);
+        }
+        .dock-pill {
+            display: flex; align-items: center; gap: 0; padding: 12px;
+            border-radius: 100px; color: var(--ink); opacity: 0.6;
+            transition: var(--pill-transition); overflow: hidden;
+            white-space: nowrap;
+        }
+        .dock-pill svg { width: 24px; height: 24px; flex-shrink: 0; }
+        .dock-pill span { width: 0; opacity: 0; transition: var(--pill-transition); margin-left: 0; font-size: 0.8rem; font-weight: 700; }
+
+        .dock-pill.active {
+            opacity: 1; background: var(--ink); color: var(--paper);
+            padding: 12px 20px; gap: 8px;
+        }
+        .dock-pill.active span { width: auto; opacity: 1; }
+        .dock-pill:focus-visible { outline: 3px solid var(--copper); outline-offset: 3px; }
+
+        /* ===== PWA PROMPT ===== */
+        #pwa-prompt {
+            position: fixed; bottom: 110px; left: 50%; transform: translateX(-50%) translateY(100px);
+            width: calc(100% - 48px); max-width: 400px; background: var(--paper);
+            border-radius: 32px; padding: 24px; z-index: 2100;
+            box-shadow: var(--shadow-lux); border: 1px solid var(--border);
+            opacity: 0; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex; flex-direction: column; gap: 16px;
+        }
+        #pwa-prompt.active { transform: translateX(-50%) translateY(0); opacity: 1; }
+        .pwa-header { display: flex; align-items: center; gap: 16px; }
+        .pwa-icon { width: 48px; height: 48px; background: var(--copper); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.2rem; }
+        .pwa-text h4 { font-size: 1rem; margin-bottom: 4px; }
+        .pwa-text p { font-size: 0.85rem; opacity: 0.6; }
+        .pwa-actions { display: flex; gap: 12px; }
+        .pwa-btn { flex: 1; padding: 12px; border-radius: 100px; font-weight: 600; font-size: 0.85rem; border: none; cursor: pointer; transition: var(--transition-smooth); font-family: var(--font-body); }
+        .pwa-install { background: var(--ink); color: var(--paper); }
+        .pwa-dismiss { background: var(--paper-warm); color: var(--ink); }
+
+        /* ===== CHAT WINDOW ===== */
+        .chat-window {
+            position: fixed; bottom: 120px; right: 24px; width: 360px; height: 500px;
+            background: var(--paper); border-radius: 32px; border: 1px solid var(--border);
+            box-shadow: var(--shadow-lux); z-index: 2500; display: none;
+            flex-direction: column; overflow: hidden;
+        }
+        .chat-window.open { display: flex; }
+        .chat-header {
+            padding: 24px; background: var(--ink); color: var(--paper);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .chat-header span { font-weight: 600; }
+        .chat-close {
+            cursor: pointer; background: none; border: none; color: var(--paper);
+            font-size: 1rem; padding: 4px; border-radius: 4px; line-height: 1;
+        }
+        .chat-close:focus-visible { outline: 2px solid var(--copper); }
+        .chat-body {
+            flex: 1; padding: 24px; overflow-y: auto;
+            display: flex; flex-direction: column; gap: 16px;
+        }
+        .chat-msg-bot {
+            background: var(--paper-warm); padding: 12px 16px;
+            border-radius: 16px 16px 16px 4px; align-self: flex-start; font-size: 0.9rem;
+        }
+        .chat-msg-user {
+            background: var(--copper); color: white; padding: 12px 16px;
+            border-radius: 16px 16px 4px 16px; align-self: flex-end; font-size: 0.9rem;
+        }
+        .chat-footer {
+            padding: 16px; border-top: 1px solid var(--border); display: flex; gap: 12px;
+        }
+        .chat-input {
+            flex: 1; padding: 12px 20px; border-radius: 100px;
+            border: 1px solid var(--border); background: var(--paper-warm);
+            outline: none; font-family: var(--font-body); color: var(--ink);
+        }
+        .chat-input:focus { border-color: var(--copper); }
+
+        /* ===== ACCESSIBILITY: REDUCED MOTION ===== */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            html { scroll-behavior: auto; }
+        }
+
+        @media (max-width: 1024px) {
+            .modal-content { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+            .hero-visual { position: relative; width: 100%; height: 400px; right: 0; top: 0; transform: none; margin-top: 40px; }
+            .hero { flex-direction: column; text-align: center; padding-top: 120px; }
+            .hero-content { max-width: 100%; }
+            .hero-actions { justify-content: center; }
+            .hero-trust-indicators { justify-content: center; }
+            .scroll-hint { left: 50%; transform: translateX(-50%); }
+            .guided-panel, .checkout-panel { padding: 40px; width: calc(100% - 40px); }
+            .guided-options { grid-template-columns: 1fr; }
+            .guided-results { grid-template-columns: 1fr; }
+            .retention-card { flex-direction: column; text-align: center; padding: 40px; }
+            .retention-img { width: 150px; height: 150px; }
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 0 24px; }
+            header, .bulb-wrap { display: none; }
+            .hero h1 { font-size: 3.5rem; }
+            .bento-item { grid-column: span 12 !important; padding: 40px; }
+            .repair-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .mobile-dock { display: flex; }
+            body { padding-bottom: 120px; }
+            .product-card, .bento-item, .repair-card { border-radius: 32px; }
+            .btn { padding: 18px 32px; }
+            .modal-overlay { padding: 16px; }
+            .modal-content { border-radius: 32px; max-height: 95vh; }
+            .guided-panel { padding: 32px 24px; border-radius: 32px; }
+            .checkout-panel { padding: 32px 24px; border-radius: 32px; }
+            .chat-window { width: calc(100vw - 32px); right: 16px; }
+        }
+
+        /* Reveal Animation */
+        .reveal { opacity: 0; transform: translateY(30px); }
+        .hero-reveal { opacity: 0; }
+    </style>
+</head>
+<body>
+
+    <a href="#catalogue" class="skip-nav">Skip to catalogue</a>
+
+    <div id="aria-live" aria-live="polite" aria-atomic="true" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;"></div>
+
+    <div class="bulb-wrap" onclick="toggleTheme()" role="button" aria-label="Toggle dark mode" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleTheme();}">
+        <div class="bulb-wire"></div>
+        <div class="bulb-head"></div>
+    </div>
+
+    <header id="header">
+        <nav aria-label="Main navigation">
+            <a href="#" class="nav-pill active" aria-current="page">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+                <span>Home</span>
+            </a>
+            <a href="#catalogue" class="nav-pill">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                <span>Catalogue</span>
+            </a>
+            <a href="#repair" class="nav-pill">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+                <span>Repair</span>
+            </a>
+            <a href="#contact" class="nav-pill">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                <span>Contact</span>
+            </a>
+        </nav>
+    </header>
+
+    <main id="main-content">
+        <section class="hero" id="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <span class="hero-eyebrow hero-reveal">Tamil Nadu's Premier Tech Concierge</span>
+                    <h1 class="hero-reveal">This might be the one that fits you</h1>
+                    <p class="hero-desc hero-reveal">Phones, audio and essentials chosen based on how life is actually lived</p>
+                    <div class="hero-actions hero-reveal">
+                        <button onclick="openGuidedFlow()" class="btn btn-primary">Show what fits you</button>
+                        <a href="#philosophy" class="btn btn-secondary">Just exploring</a>
+                    </div>
+                    <div class="hero-trust-indicators hero-reveal">
+                        <span>Picked often this week</span>
+                        <span>Available for pickup today</span>
+                        <span>Checked before it reaches you</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual hero-reveal">
+                <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/fWEumNteCudVVPuo.png" alt="Samsung Galaxy S23 FE — Flagship Android Phone">
+            </div>
+            <div class="scroll-hint hero-reveal" aria-hidden="true">
+                <div class="scroll-line"></div>
+                <span>See what feels right for you</span>
+            </div>
+        </section>
+
+        <!-- RETENTION SECTION: STILL THINKING -->
+        <section id="retention-section" class="section-padding" aria-label="Recently viewed product">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="hero-eyebrow">Welcome Back</span>
+                    <h2>Still thinking about this?</h2>
+                </div>
+                <div class="retention-card reveal">
+                    <img id="retention-img" src="" alt="" class="retention-img">
+                    <div class="retention-info">
+                        <h3 id="retention-name">Product Name</h3>
+                        <p id="retention-decision">Decision line goes here.</p>
+                        <div class="hero-actions">
+                            <button id="retention-continue" class="btn btn-primary">Continue with this</button>
+                            <button onclick="window.location.hash='#catalogue'" class="btn btn-secondary">See similar options</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="philosophy" class="section-padding">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="hero-eyebrow">The Philosophy</span>
+                    <h2>Built on something most stores forget.</h2>
+                </div>
+                <div class="bento-grid">
+                    <div class="bento-item large reveal">
+                        <h3>Guided, Not Pushed.</h3>
+                        <p>The right device depends on how life is lived. The focus here is on providing absolute clarity — ensuring the technology chosen serves its purpose perfectly without any sales pressure.</p>
+                    </div>
+                    <div class="bento-item reveal">
+                        <h3>100% Authentic.</h3>
+                        <p>Every item is sourced directly from authorized distributors. No grey market, no uncertainty. Only genuine quality for the long term.</p>
+                    </div>
+                    <div class="bento-item reveal">
+                        <h3>Same-Day Fix.</h3>
+                        <p>Most repairs reach completion within hours. Devices return to peak performance without the wait, handled with panel-level precision.</p>
+                    </div>
+                    <div class="bento-item large reveal">
+                        <h3>7-Day Promise.</h3>
+                        <p>Should a manufacturing defect arise, a replacement is arranged within 7 days. The process is guided, transparent, and entirely seamless.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="catalogue" class="section-padding" style="background: var(--paper-warm);">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="hero-eyebrow">The Collection</span>
+                    <h2>Picked with Purpose.</h2>
+                </div>
+
+                <div class="filter-wrap reveal" role="group" aria-label="Filter products by category">
+                    <button class="filter-btn active" onclick="filterProducts('all', this)" aria-pressed="true">All Collections</button>
+                    <button class="filter-btn" onclick="filterProducts('phones', this)" aria-pressed="false">Mobile Phones</button>
+                    <button class="filter-btn" onclick="filterProducts('tv', this)" aria-pressed="false">Television</button>
+                    <button class="filter-btn" onclick="filterProducts('speakers', this)" aria-pressed="false">Audio</button>
+                    <button class="filter-btn" onclick="filterProducts('accessories', this)" aria-pressed="false">Essentials</button>
+                </div>
+
+                <div class="product-grid" id="product-grid" role="list" aria-label="Product catalogue">
+                    <!-- Products injected by JS -->
+                </div>
+            </div>
+        </section>
+
+        <section id="demo" class="section-padding">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="hero-eyebrow">Experience</span>
+                    <h2>See it before deciding.</h2>
+                    <p style="margin-top: 24px; opacity: 0.6; font-size: 1.2rem;">Touch it, compare it, ask everything — before spending a single rupee.</p>
+                </div>
+                <div class="bento-grid">
+                    <div class="bento-item large reveal">
+                        <span class="repair-icon" aria-hidden="true">🎥</span>
+                        <h3>Video Call</h3>
+                        <p>A 15–20 minute call to walk through the device, compare options, and answer every question — from anywhere in India. Available to all, completely free.</p>
+                        <a href="https://wa.me/917200006006" class="btn btn-primary" style="margin-top: 32px;" target="_blank" rel="noopener noreferrer">Confirm via WhatsApp</a>
+                    </div>
+                    <div class="bento-item reveal">
+                        <span class="repair-icon" aria-hidden="true">🏪</span>
+                        <h3>In-person Visit</h3>
+                        <p>Coimbatore only. Come in, hold the device, compare it with others, and leave with complete clarity. There's zero pressure to buy on the day.</p>
+                        <a href="https://wa.me/917200006006" class="btn btn-secondary" style="margin-top: 32px;" target="_blank" rel="noopener noreferrer">Schedule Visit</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="repair" class="section-padding" style="background: var(--paper-warm);">
+            <div class="container">
+                <div class="section-header reveal">
+                    <span class="hero-eyebrow">Restoration</span>
+                    <h2>Something not right?</h2>
+                    <p style="margin-top: 24px; opacity: 0.6; font-size: 1.2rem;">Most problems are fixable. A transparent diagnostic happens first — no surprise charges, ever.</p>
+                </div>
+                <div class="repair-grid">
+                    <div class="repair-card reveal" role="button" tabindex="0" onclick="openRepairModal('Mobile Repair', 'Professional repair services for all mobile brands.', ['Screen Replacement', 'Battery Swap', 'Software Fix'], 'Expect a thorough diagnostic before any work begins.', 'Fact: Most screen repairs can be completed in under 2 hours.')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
+                        <span class="repair-icon" aria-hidden="true">📱</span>
+                        <h4>Mobile</h4>
+                        <span class="repair-social-proof">Common issue seen often</span>
+                        <p>Cracked screens, dead batteries, or software issues — handled for any brand and most models.</p>
+                        <span class="repair-tag" aria-hidden="true">Tap to enquire →</span>
+                    </div>
+                    <div class="repair-card reveal" role="button" tabindex="0" onclick="openRepairModal('TV Repair', 'Expert diagnostics and repair for LED/Smart TVs.', ['Panel Repair', 'Power Issues', 'Backlight Fix'], 'Repairs are handled by specialists with panel-level expertise.', 'Fact: Modern LED TVs are 40% more energy-efficient than models from 5 years ago.')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
+                        <span class="repair-icon" aria-hidden="true">📺</span>
+                        <h4>Television</h4>
+                        <span class="repair-social-proof">Happens often with daily use</span>
+                        <p>Panel issues, backlight failure, or power problems — restored with technical precision.</p>
+                        <span class="repair-tag" aria-hidden="true">Tap to enquire →</span>
+                    </div>
+                    <div class="repair-card reveal" role="button" tabindex="0" onclick="openRepairModal('Audio Repair', 'Fixing favorite headphones and speakers.', ['Speaker Repair', 'Jack Replacement', 'Internal Wiring'], 'Restoring original sound quality using genuine components.', 'Interesting: High-end speakers can last over 20 years if maintained properly.')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
+                        <span class="repair-icon" aria-hidden="true">🎧</span>
+                        <h4>Audio</h4>
+                        <span class="repair-social-proof">Usually fixed quickly</span>
+                        <p>Headphones, speakers, or jacks — returned to original sound quality with genuine parts.</p>
+                        <span class="repair-tag" aria-hidden="true">Tap to enquire →</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="trust-process" class="section-padding">
+            <div class="container">
+                <div class="bento-grid">
+                    <div class="bento-item large reveal">
+                        <span class="hero-eyebrow">The Process</span>
+                        <h3>What happens after choosing</h3>
+                        <ul class="trust-list">
+                            <li>Device is checked before handover</li>
+                            <li>Clarity on what is being received</li>
+                            <li>Help is available if anything feels off</li>
+                        </ul>
+                    </div>
+                    <div class="bento-item reveal" style="background: var(--copper); color: white; border: none;">
+                        <span class="hero-eyebrow" style="color: white; opacity: 0.8;">The Difference</span>
+                        <h3 style="font-size: 2.2rem;">Why people feel comfortable choosing here</h3>
+                        <ul class="trust-list" style="margin-top: 20px;">
+                            <li style="font-size: 1rem; opacity: 0.9;">Clear explanation before any step</li>
+                            <li style="font-size: 1rem; opacity: 0.9;">No hidden surprises</li>
+                            <li style="font-size: 1rem; opacity: 0.9;">Straightforward guidance</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section-padding" style="background: var(--ink); color: var(--paper);">
+            <div class="container">
+                <div class="bento-grid">
+                    <div class="bento-item large reveal" style="background: var(--copper); color: white; border: none;">
+                        <span class="hero-eyebrow" style="color: white; opacity: 0.8;">Get in Touch</span>
+                        <h3 style="font-size: 4rem;">Need a quick answer?</h3>
+                        <p style="opacity: 0.9; margin-bottom: 40px;">Most questions receive a response within minutes. A real person provides guidance — not a scripted bot.</p>
+                        <div class="hero-actions">
+                            <a href="https://wa.me/917200006006" class="btn" style="background: white; color: var(--copper);" target="_blank" rel="noopener noreferrer">WhatsApp Inquiry</a>
+                            <a href="tel:+917200006006" class="btn" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.3);">Call Directly</a>
+                        </div>
+                    </div>
+                    <div class="bento-item reveal" style="background: var(--paper-warm); color: var(--ink);">
+                        <h4>Store Location</h4>
+                        <p style="margin: 20px 0;">Tamil Nadu, India</p>
+                        <h4>Hours</h4>
+                        <p style="margin-top: 10px;">Mon – Sun: 09:00 – 22:00</p>
+                        <a href="https://www.google.com/maps/search/?api=1&query=11.0542557,77.0638796" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="margin-top: 40px; width: 100%;">Get Directions</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <a href="#" class="logo">Kov·in</a>
+                    <p>Tamil Nadu's guided electronics system. Clarity, not just sales — that's the difference.</p>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/mr.kovaimobiles?igsh=c3N1M2ZlZWJucWlw" target="_blank" rel="noopener noreferrer" aria-label="Follow Kovin on Instagram">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c.796 0 1.441.645 1.441 1.44s-.645 1.44-1.441 1.44c-.795 0-1.439-.645-1.439-1.44s.644-1.44 1.439-1.44z"/></svg>
+                        </a>
+                        <a href="https://www.facebook.com/share/16XBGFRhQ3/" target="_blank" rel="noopener noreferrer" aria-label="Follow Kovin on Facebook">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.101 23.691v-7.98H6.627v-3.667h2.474v-1.58c0-4.03 1.764-6.227 5.733-6.227 1.582 0 3.248.282 3.248.282v3.569h-1.829c-1.997 0-2.621 1.239-2.621 2.509v1.447h4.023l-.643 3.667h-3.38v7.981h-4.612z"/></svg>
+                        </a>
+                        <a href="https://wa.me/917200006006" target="_blank" rel="noopener noreferrer" aria-label="Contact Kovin on WhatsApp">
+                            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                        </a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Philosophy</h4>
+                    <ul>
+                        <li><a href="#philosophy">Customer-first</a></li>
+                        <li><a href="#philosophy">Clarity over sales</a></li>
+                        <li><a href="#philosophy">Long-term trust</a></li>
+                        <li><a href="#philosophy">Precision diagnostics</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Careers</h4>
+                    <ul>
+                        <li><a href="https://wa.me/917200006006" target="_blank" rel="noopener noreferrer">Service Consultant</a></li>
+                        <li><a href="https://wa.me/917200006006" target="_blank" rel="noopener noreferrer">Repair Technician</a></li>
+                        <li><a href="https://wa.me/917200006006" target="_blank" rel="noopener noreferrer">Apply via WhatsApp</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="javascript:void(0)">Terms &amp; Conditions</a></li>
+                        <li><a href="javascript:void(0)">Privacy Policy</a></li>
+                        <li><a href="javascript:void(0)">Return Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 Kovin Electronics. All rights reserved.</p>
+                <p>Designed for Excellence.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MOBILE PILL DOCK -->
+    <nav class="mobile-dock" aria-label="Mobile navigation">
+        <a href="#" class="dock-pill active" aria-current="page">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+            <span>Home</span>
+        </a>
+        <a href="#catalogue" class="dock-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+            <span>Catalogue</span>
+        </a>
+        <a href="#repair" class="dock-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
+            <span>Repair</span>
+        </a>
+        <button class="dock-pill" onclick="toggleChat()" aria-label="Open chat">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+            <span>Chat</span>
+        </button>
+    </nav>
+
+    <!-- PWA PROMPT -->
+    <div id="pwa-prompt" role="dialog" aria-label="Install Kovin app">
+        <div class="pwa-header">
+            <div class="pwa-icon" aria-hidden="true">K</div>
+            <div class="pwa-text">
+                <h4>Install Kovin App</h4>
+                <p>Install this app for better experience</p>
+            </div>
+        </div>
+        <div class="pwa-actions">
+            <button class="pwa-btn pwa-dismiss" onclick="dismissPWA()">Not Now</button>
+            <button class="pwa-btn pwa-install" onclick="installPWA()">Install Now</button>
+        </div>
+    </div>
+
+    <!-- Chat Window -->
+    <div id="chat-window" class="chat-window" role="dialog" aria-label="Kovin Concierge chat" aria-modal="true">
+        <div class="chat-header">
+            <span>Kovin Concierge</span>
+            <button class="chat-close" onclick="toggleChat()" aria-label="Close chat">✕</button>
+        </div>
+        <div id="chat-body" class="chat-body" aria-live="polite">
+            <div class="chat-msg-bot">Hello! How can guidance be provided today?</div>
+        </div>
+        <div class="chat-footer">
+            <input type="text" id="chat-input" class="chat-input" placeholder="Type a message..." aria-label="Chat message" onkeydown="if(event.key==='Enter')sendMessage()">
+            <button onclick="sendMessage()" class="btn btn-primary" style="padding: 12px 24px; border-radius: 100px;">Send</button>
+        </div>
+    </div>
+
+    <!-- GUIDED FLOW OVERLAY -->
+    <div class="modal-overlay" id="guided-overlay" role="dialog" aria-modal="true" aria-labelledby="guided-title" onclick="handleGuidedOverlayClick(event)">
+        <div class="guided-panel" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeGuidedFlow()" aria-label="Close guided flow">✕</button>
+
+            <div class="step-progress" aria-hidden="true">
+                <div class="step-dot active" id="gdot-1"></div>
+                <div class="step-dot" id="gdot-2"></div>
+                <div class="step-dot" id="gdot-3"></div>
+                <div class="step-dot" id="gdot-4"></div>
+            </div>
+
+            <!-- Step 1 -->
+            <div class="guided-step active" id="step-1">
+                <h2 class="guided-question" id="guided-title">What is being looked for right now?</h2>
+                <div class="guided-options" role="group" aria-label="Choose a category">
+                    <button class="guided-option" onclick="nextStep(2, 'phones')">A phone</button>
+                    <button class="guided-option" onclick="nextStep(2, 'speakers')">Something for sound</button>
+                    <button class="guided-option" onclick="nextStep(2, 'tv')">A screen for home</button>
+                    <button class="guided-option" onclick="closeGuidedFlow()">Just exploring</button>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="guided-step" id="step-2">
+                <h2 class="guided-question">What matters more in daily use?</h2>
+                <div class="guided-options" role="group" aria-label="Choose what matters most">
+                    <button class="guided-option" onclick="nextStep(3, 'battery')">Battery that lasts</button>
+                    <button class="guided-option" onclick="nextStep(3, 'camera')">Camera that feels right</button>
+                    <button class="guided-option" onclick="nextStep(3, 'smooth')">Smooth everyday use</button>
+                    <button class="guided-option" onclick="nextStep(3, 'everything')">Bit of everything</button>
+                </div>
+                <div class="guided-nav">
+                    <button class="guided-back" onclick="prevStep(1)">Back</button>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="guided-step" id="step-3">
+                <h2 class="guided-question">What feels comfortable?</h2>
+                <div class="guided-options" role="group" aria-label="Choose your preference">
+                    <button class="guided-option" onclick="showResults('simple')">Keep it simple</button>
+                    <button class="guided-option" onclick="showResults('balanced')">Balanced choice</button>
+                    <button class="guided-option" onclick="showResults('power')">More power</button>
+                    <button class="guided-option" onclick="showResults('best')">Best available</button>
+                </div>
+                <div class="guided-nav">
+                    <button class="guided-back" onclick="prevStep(2)">Back</button>
+                </div>
+            </div>
+
+            <!-- Step 4 (Results) -->
+            <div class="guided-step" id="step-4">
+                <h2 class="guided-question">Here is what fits best</h2>
+                <div class="guided-results" id="guided-results-grid">
+                    <!-- Results injected by JS -->
+                </div>
+                <div class="guided-nav">
+                    <button class="guided-back" onclick="prevStep(1)">Start Over</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CHECKOUT OVERLAY -->
+    <div class="modal-overlay" id="checkout-overlay" role="dialog" aria-modal="true" aria-labelledby="checkout-title" onclick="handleCheckoutOverlayClick(event)">
+        <div class="checkout-panel" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeCheckout()" aria-label="Close checkout">✕</button>
+
+            <div class="step-progress" aria-hidden="true">
+                <div class="step-dot active" id="cdot-1"></div>
+                <div class="step-dot" id="cdot-2"></div>
+                <div class="step-dot" id="cdot-3"></div>
+                <div class="step-dot" id="cdot-4"></div>
+            </div>
+
+            <!-- Step 1: Review -->
+            <div class="checkout-step active" id="checkout-step-1">
+                <div class="checkout-header">
+                    <h2 id="checkout-title">Review Selection</h2>
+                    <p>Almost there</p>
+                </div>
+                <div class="checkout-item-review">
+                    <img id="checkout-img" src="" alt="">
+                    <div class="checkout-item-info">
+                        <h4 id="checkout-name">Product Name</h4>
+                        <p id="checkout-price">Price</p>
+                        <span style="font-size: 0.8rem; opacity: 0.6;">Quantity: 1</span>
+                    </div>
+                </div>
+                <div class="checkout-trust-mini">
+                    <span>Checked before handover</span>
+                    <span>Clear explanation provided</span>
+                    <span>Help available if something feels off</span>
+                </div>
+                <div class="checkout-momentum">Ready for selection · Chosen by many for daily use</div>
+                <div class="checkout-reassurance">Takes less than a minute</div>
+                <button onclick="nextCheckoutStep(2)" class="btn btn-primary" style="width: 100%; margin-top: 16px;">Take this forward</button>
+            </div>
+
+            <!-- Step 2: Delivery -->
+            <div class="checkout-step" id="checkout-step-2">
+                <div class="checkout-header">
+                    <h2>Preferred Method</h2>
+                    <p>Choose how to receive the device</p>
+                </div>
+                <div class="checkout-options" role="group" aria-label="Delivery options">
+                    <div class="checkout-option" role="radio" aria-checked="false" tabindex="0" onclick="selectDelivery('pickup', this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectDelivery('pickup',this);}">
+                        <div class="checkout-option-icon" aria-hidden="true">🏪</div>
+                        <div>
+                            <div>Pick up today</div>
+                            <div style="font-size: 0.75rem; opacity: 0.6; font-weight: 400;">Available at Coimbatore store</div>
+                        </div>
+                    </div>
+                    <div class="checkout-option" role="radio" aria-checked="false" tabindex="0" onclick="selectDelivery('nearby', this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectDelivery('nearby',this);}">
+                        <div class="checkout-option-icon" aria-hidden="true">🛵</div>
+                        <div>
+                            <div>Get it delivered nearby</div>
+                            <div style="font-size: 0.75rem; opacity: 0.6; font-weight: 400;">Same-day delivery in Coimbatore</div>
+                        </div>
+                    </div>
+                    <div class="checkout-option" role="radio" aria-checked="false" tabindex="0" onclick="selectDelivery('india', this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectDelivery('india',this);}">
+                        <div class="checkout-option-icon" aria-hidden="true">📦</div>
+                        <div>
+                            <div>Ship across India</div>
+                            <div style="font-size: 0.75rem; opacity: 0.6; font-weight: 400;">Delivery within 2-4 business days</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="checkout-trust-mini">
+                    <span>No confusion in next steps</span>
+                    <span>Everything will be explained clearly</span>
+                </div>
+                <div class="guided-nav">
+                    <button class="guided-back" onclick="prevCheckoutStep(1)">Back</button>
+                </div>
+                <div class="checkout-reassurance" style="margin-top: 24px;">Takes less than a minute</div>
+                <button onclick="nextCheckoutStep(3)" class="btn btn-primary" style="width: 100%; margin-top: 16px;">Take this forward</button>
+            </div>
+
+            <!-- Step 3: Final Action -->
+            <div class="checkout-step" id="checkout-step-3">
+                <div class="checkout-header">
+                    <h2>Final Step</h2>
+                    <p>Confirm and connect</p>
+                </div>
+                <div style="background: var(--paper-warm); padding: 24px; border-radius: 24px; margin-bottom: 32px; text-align: center;">
+                    <p style="font-weight: 600; margin-bottom: 8px;">Ready to finalize?</p>
+                    <p style="font-size: 0.9rem; opacity: 0.7;">Availability will be confirmed and guidance provided through the final steps on WhatsApp.</p>
+                </div>
+                <div class="checkout-momentum">Ready for selection · Chosen by many for daily use</div>
+                <div class="checkout-reassurance">Takes less than a minute</div>
+                <div class="hero-actions" style="flex-direction: column; gap: 16px; margin-top: 16px;">
+                    <button onclick="sendInquiry()" class="btn btn-primary" style="width: 100%;">Get this for you</button>
+                    <button onclick="closeCheckout()" class="btn btn-secondary" style="width: 100%;">Confirm selection</button>
+                </div>
+                <div class="guided-nav">
+                    <button class="guided-back" onclick="prevCheckoutStep(2)">Back</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Confirmation -->
+            <div class="checkout-step" id="checkout-step-4">
+                <div class="confirmation-visual" aria-hidden="true">✓</div>
+                <div class="confirmation-text">
+                    <h2>Selection Noted</h2>
+                    <p>Everything is set</p>
+                </div>
+                <div class="confirmation-details">
+                    <span>Contact will be made shortly</span>
+                    <span>Everything will be explained before next step</span>
+                </div>
+
+                <div class="next-steps-clarity">
+                    <h4>What happens next</h4>
+                    <div class="next-steps-list">
+                        <div class="next-step-item">
+                            <div class="next-step-num" aria-hidden="true">1</div>
+                            <div>Selection is confirmed</div>
+                        </div>
+                        <div class="next-step-item">
+                            <div class="next-step-num" aria-hidden="true">2</div>
+                            <div>Device is checked before handover</div>
+                        </div>
+                        <div class="next-step-item">
+                            <div class="next-step-num" aria-hidden="true">3</div>
+                            <div>Pickup or delivery details provided clearly</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="if-something-changes">
+                    <h4>If something changes</h4>
+                    <div class="change-options">
+                        <button class="change-option" onclick="talkOnWhatsApp()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                            <span>Modify the choice</span>
+                        </button>
+                        <button class="change-option" onclick="talkOnWhatsApp()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                            <span>Ask a question</span>
+                        </button>
+                        <button class="change-option" onclick="talkOnWhatsApp()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+                            <span>Talk directly on WhatsApp</span>
+                        </button>
+                    </div>
+                    <div class="change-reassurance">Nothing moves without clarity · Information is shared at every step</div>
+                </div>
+
+                <div class="while-you-are-here">
+                    <h4>While here</h4>
+                    <div class="suggestion-list">
+                        <button class="suggestion-item" onclick="closeCheckout(); window.location.hash='#catalogue';">
+                            <span>Add essentials for the device</span>
+                        </button>
+                        <button class="suggestion-item" onclick="closeCheckout(); window.location.hash='#catalogue';">
+                            <span>See what others picked with this</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="this-stays-with-you">
+                    <h4>This stays for the long term</h4>
+                    <div class="retention-list">
+                        <div class="retention-item">Small benefits return over time</div>
+                        <div class="retention-item">Choices made are remembered</div>
+                        <div class="retention-item">Easier support whenever returning</div>
+                    </div>
+                    <div class="retention-note">Opens fully soon</div>
+                </div>
+
+                <div class="worth-coming-back">
+                    <h4>Worth coming back for</h4>
+                    <div class="worth-list">
+                        <div class="worth-item">New devices added regularly</div>
+                        <div class="worth-item">Better choices appear over time</div>
+                        <div class="worth-item">What fits you keeps improving</div>
+                    </div>
+                </div>
+
+                <div class="if-something-changes" style="background: var(--paper-warm); padding: 32px; border-radius: 32px; margin-top: 40px; border: 1px solid var(--border);">
+                    <h4 style="font-family: var(--font-display); font-size: 2rem; margin-bottom: 8px;">Need clarity again?</h4>
+                    <p style="font-size: 1rem; opacity: 0.7; margin-bottom: 24px;">Guidance is always available whenever questions arise.</p>
+                    <button onclick="talkOnWhatsApp()" class="btn btn-secondary" style="width: 100%; background: var(--paper); border-color: var(--border);">Talk on WhatsApp</button>
+                    <p style="text-align: center; margin-top: 16px; font-size: 0.85rem; opacity: 0.5; font-weight: 600;">No pressure · Just clarity</p>
+                </div>
+
+                <button onclick="talkOnWhatsApp()" class="btn btn-primary" style="width: 100%; margin-top: 32px; background: #25D366; border: none;">Talk now on WhatsApp</button>
+                <div class="guided-nav">
+                    <button class="guided-back" onclick="closeCheckout()">Return to Home</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PRODUCT MODAL -->
+    <div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title" onclick="handleOverlayClick(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" id="modal-close-btn" onclick="closeModal()" aria-label="Close product details">✕</button>
+            <div class="modal-left">
+                <img id="modal-img" src="" alt="">
+            </div>
+            <div class="modal-right">
+                <span class="hero-eyebrow" id="modal-badge">Authentic</span>
+                <h2 class="modal-title" id="modal-title">Product Name</h2>
+                <div id="modal-social-proof" class="social-proof-line"></div>
+                <div id="modal-decision" class="decision-line"></div>
+                <div id="modal-urgency" class="urgency-signal"></div>
+                <p class="modal-desc" id="modal-desc">Description goes here.</p>
+
+                <div class="modal-section">
+                    <h4>What to Expect</h4>
+                    <p id="modal-expect"></p>
+                </div>
+
+                <div class="modal-section">
+                    <h4>Did You Know?</h4>
+                    <p id="modal-fact"></p>
+                </div>
+
+                <ul class="modal-features" id="modal-features" aria-label="Product features"></ul>
+
+                <div class="modal-meta">
+                    <div class="meta-item">
+                        <h5>Specifications</h5>
+                        <p id="modal-specs">Specs</p>
+                    </div>
+                    <div class="meta-item">
+                        <h5>Investment</h5>
+                        <p id="modal-price" class="product-price">Price</p>
+                        <div id="modal-price-context" class="price-context"></div>
+                        <div id="modal-price-anchor" class="price-anchor"></div>
+                    </div>
+                </div>
+
+                <div class="cart-confidence">
+                    <p>One step away from getting this</p>
+                    <span>Pickup today or delivery within 24-48 hours</span>
+                </div>
+
+                <div class="cart-momentum">
+                    Selected by many for daily use · Ready for selection
+                </div>
+
+                <div class="hero-actions" style="margin-top: 24px;">
+                    <button onclick="openCheckout()" class="btn btn-primary" style="flex: 1;">Get this for you</button>
+                    <a href="tel:+917200006006" class="btn btn-secondary">Take it home</a>
+                </div>
+
+                <div class="cart-hesitation">
+                    No confusion, clear process · Help available if needed
+                </div>
+
+                <div class="micro-trust" id="modal-trust" style="margin-top: 24px;">
+                    <span>• Checked before handover</span>
+                    <span>• Support available if something feels off</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        function safeGet(key) { try { return localStorage.getItem(key); } catch(e) { return null; } }
+        function safeSet(key, val) { try { localStorage.setItem(key, val); } catch(e) {} }
+
+        function announce(msg) {
+            const el = document.getElementById('aria-live');
+            if (el) { el.textContent = ''; requestAnimationFrame(() => { el.textContent = msg; }); }
+        }
+
+        const products = [
+            { id: 1, category: 'phones', name: 'Samsung Galaxy S23 FE', specs: '6.4" AMOLED · 50MP · 4500mAh', price: '₹34,999', oldPrice: '₹44,999', badge: 'Built for more power', tags: ['Built for heavy use', 'Value that holds'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/fWEumNteCudVVPuo.png', desc: 'Samsung Galaxy S23 FE. Features a 6.4" Dynamic AMOLED 2X display, Exynos 2200 processor, 50MP main camera, 4500mAh battery, and 128GB storage.', expect: 'This fits usage if smooth performance for multitasking and a camera that captures clear details in any light are needed. The battery experience is reliable for a full day of active use.', fact: 'The performance stability during long video calls is better-than-expected for this model.', decision: 'Fits well if long battery is needed without thinking', urgency: 'Picked often this week', socialProof: 'Picked often this week', brand: 'Samsung', tier: 'flagship', priceContext: 'Holds value well over time', priceAnchor: 'Stays consistent for what is offered' },
+            { id: 2, category: 'phones', name: 'Google Pixel 7a', specs: '6.1" OLED · 64MP · Tensor G2', price: '₹39,999', oldPrice: '₹43,999', badge: 'Balanced for everything', tags: ['Camera focused', 'Clean experience'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/AeIhJBFyYYuVXncG.png', desc: 'Google Pixel 7a. Features a 6.1" OLED display, Google Tensor G2 chip, 64MP dual camera system, 4385mAh battery, and 128GB storage.', expect: 'Chosen if a compact phone that takes incredible photos automatically is preferred. It provides a clean daily performance that feels fast and simple.', fact: 'The call clarity and noise cancellation features offer a unique usage advantage in busy environments.', decision: 'Works best if camera matters more than gaming', urgency: 'Limited pieces available', socialProof: 'Chosen by many for daily use', brand: 'Google', tier: 'balanced', priceContext: 'Chosen when a balanced device is wanted', priceAnchor: 'Seen across similar range devices' },
+            { id: 3, category: 'tv', name: 'Sony Bravia 4K LED', specs: '55" 4K Ultra HD · Smart TV · HDR', price: '₹54,990', oldPrice: '₹69,990', badge: 'New', tags: ['Worth noticing', 'Balanced choice'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/PNuLvudbHcTmKOpp.png', desc: 'Sony Bravia 55" 4K Ultra HD LED. Features a 55-inch screen, X1 4K Processor, 4K resolution, and 20W Dolby Audio sound.', expect: 'This fits usage for a cinematic movie experience at home. The display type ensures vibrant colors that look real.', fact: 'The sound profile is surprisingly deep, often removing the need for an external speaker in medium-sized rooms.', decision: 'Good for daily use with smooth performance', urgency: 'Available for pickup today', socialProof: 'Common upgrade choice', brand: 'Sony', tier: 'balanced', priceContext: 'Comfortable for daily use at this range', priceAnchor: 'Stays consistent for what is offered' },
+            { id: 4, category: 'speakers', name: 'Sony WH-1000XM5', specs: '30hr battery · 8 mics · LDAC', price: '₹26,990', oldPrice: '₹34,990', badge: 'Top Pick', tags: ['Quiet performer', 'Chosen for you'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/XIJzeXSRHorEqzFw.png', desc: 'Sony WH-1000XM5 Wireless Headphones. Features 30-hour battery life, industry-leading noise cancellation, and Bluetooth 5.2 connectivity.', expect: 'Chosen to create a quiet space anywhere. The sound profile is balanced to make every instrument clear during long listening sessions.', fact: 'The quick-charge feature gives 3 hours of playback from just a 3-minute charge.', decision: 'Fits well if silence is needed without compromise', urgency: 'Picked often this week', socialProof: 'Picked often this week', brand: 'Sony', tier: 'flagship', priceContext: 'Holds value well over time', priceAnchor: 'Seen across similar range devices' },
+            { id: 5, category: 'accessories', name: 'Apple 20W USB-C Power Adapter', specs: 'Fast charging · Compact design', price: '₹1,699', oldPrice: '₹1,900', badge: '', tags: ['Most picked', 'Battery focused'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/uVoVbsruMHDNSVBu.png', desc: 'Apple 20W USB-C Power Adapter. Compatible with iPhone 8 or later and various iPad models for fast charging.', expect: 'This fits usage if powering up a device quickly and safely is needed. Chosen to ensure battery health over long-term use.', fact: 'The compact design makes it easy to carry, and it maintains a cool temperature even during fast-charging sessions.', decision: 'Good for daily use with safe charging', urgency: 'Available for pickup today', socialProof: 'Chosen by many for daily use', brand: 'Apple', tier: 'simple', priceContext: 'Comfortable for daily use at this range', priceAnchor: 'Stays consistent for what is offered' },
+            { id: 6, category: 'accessories', name: 'Premium Tempered Glass', specs: '9H Hardness · Edge-to-edge', price: '₹499', oldPrice: '₹999', badge: 'Essential', tags: ['Worth noticing', 'Value that holds'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/KelCDGFlqZNnFnFD.png', desc: 'High-quality 9H tempered glass screen protector. Provides edge-to-edge protection against scratches and impacts.', expect: 'Fits usage by keeping the screen pristine without affecting touch sensitivity. Chosen to prevent costly screen repairs.', fact: 'Features an oleophobic coating that significantly reduces fingerprint smudges.', decision: 'Works best if screen clarity matters most', urgency: 'Limited pieces available', socialProof: 'Common upgrade choice', brand: 'Generic', tier: 'simple', priceContext: 'Fits well if upgrading from older phone', priceAnchor: 'Seen across similar range devices' },
+            { id: 7, category: 'accessories', name: 'Sleek Protective Case', specs: 'Shockproof · Slim profile', price: '₹799', oldPrice: '₹1,499', badge: 'Most Picked', tags: ['Balanced choice', 'Chosen for you'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/jdVRAWbtGZtmRYSW.png', desc: 'Durable, shock-absorbing back case with a slim profile. Designed to protect the device while maintaining its original look.', expect: 'This fits usage if protection without the bulk is wanted. It feels premium in hand and provides a secure grip.', fact: 'The raised edges around the camera provide better-than-expected protection for the lenses.', decision: 'Fits well if protection is needed without bulk', urgency: 'Picked often this week', socialProof: 'Picked often this week', brand: 'Generic', tier: 'simple', priceContext: 'Comfortable for daily use at this range', priceAnchor: 'Stays consistent for what is offered' },
+            { id: 8, category: 'accessories', name: 'Braided Fast Charge Cable', specs: 'USB-C to USB-C · 60W PD', price: '₹599', oldPrice: '₹1,199', badge: '', tags: ['Built for heavy use', 'Battery focused'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/skNTrQiJTgkIzyjx.png', desc: 'Tangle-free braided charging cable supporting up to 60W Power Delivery. Built for durability and high-speed data transfer.', expect: 'Chosen if standard cables breaking is an issue. Fits usage for fast charging at home or in the office.', fact: 'The reinforced stress points make this cable last 10x longer than standard plastic cables.', decision: 'Works best if durability is the priority', urgency: 'Available for pickup today', socialProof: 'Chosen by many for daily use', brand: 'Generic', tier: 'simple', priceContext: 'Holds value well over time', priceAnchor: 'Seen across similar range devices' },
+            { id: 10, category: 'accessories', name: 'Aluminum Phone Stand', specs: 'Adjustable angle · Non-slip', price: '₹399', oldPrice: '₹899', badge: '', tags: ['Clean experience', 'Worth noticing'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/QLzXktccBITzJoEo.png', desc: 'Sturdy aluminum desktop stand with adjustable viewing angles. Features non-slip silicone pads to keep the device secure.', expect: 'Chosen to improve desk ergonomics. Fits usage for video calls or watching content hands-free.', fact: 'The hollow design allows for easy charging while the phone is mounted on the stand.', decision: 'Good for daily use with hands-free comfort', urgency: 'Picked often this week', socialProof: 'Picked often this week', brand: 'Generic', tier: 'simple', priceContext: 'Comfortable for daily use at this range', priceAnchor: 'Seen across similar range devices' },
+            { id: 11, category: 'accessories', name: 'Premium Wireless Earbuds', specs: '24hr playtime · Auto-pairing', price: '₹2,999', oldPrice: '₹5,999', badge: 'Best Seller', tags: ['Quiet performer', 'Chosen for you'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/akufQOVWgjtpdbDf.png', desc: 'True wireless earbuds with crystal clear sound and a compact charging case. Features touch controls and voice assistant support.', expect: 'Fits usage for daily commutes or workouts. The sound profile is tuned to provide a rich audio experience.', fact: 'The auto-pairing feature works instantly the moment the case is opened.', decision: 'Works best if music on the move is needed', urgency: 'Available for pickup today', socialProof: 'Chosen by many for daily use', brand: 'Generic', tier: 'balanced', priceContext: 'Chosen when a balanced device is wanted', priceAnchor: 'Stays consistent for what is offered' },
+            { id: 12, category: 'accessories', name: 'Magnetic Car Mount', specs: '360° Rotation · Strong grip', price: '₹449', oldPrice: '₹999', badge: '', tags: ['Balanced choice', 'Worth noticing'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/LeYyaTtVUntOTfPh.png', desc: 'Universal magnetic car mount that fits into any air vent. Provides a secure, one-handed mounting solution for a smartphone.', expect: 'Chosen to ensure safe navigation while driving. Fits usage with its easy-to-adjust 360-degree rotation.', fact: 'The ultra-strong magnets ensure the phone stays in place even on the bumpiest roads.', decision: 'Fits well if navigating while driving', urgency: 'Limited pieces available', socialProof: 'Common upgrade choice', brand: 'Generic', tier: 'simple', priceContext: 'Fits well if upgrading from older phone', priceAnchor: 'Seen across similar range devices' },
+            { id: 13, category: 'accessories', name: 'Device Cleaning Kit', specs: 'Alcohol-free · Microfiber cloth', price: '₹249', oldPrice: '₹499', badge: '', tags: ['Clean experience', 'Value that holds'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/QdzcPYGrRoKDynVN.png', desc: 'Professional cleaning solution for screens and electronics. Includes a non-toxic spray and a premium microfiber cloth.', expect: 'Fits usage by keeping devices looking brand new. Chosen to maintain the clarity of displays.', fact: 'The anti-static formula helps repel dust, keeping the screen cleaner for longer periods.', decision: 'Good for daily use with clear displays', urgency: 'Picked often this week', socialProof: 'Picked often this week', brand: 'Generic', tier: 'simple', priceContext: 'Comfortable for daily use at this range', priceAnchor: 'Stays consistent for what is offered' },
+            { id: 14, category: 'accessories', name: 'Camera Lens Protector', specs: 'Ultra-clear · Scratch resistant', price: '₹299', oldPrice: '₹599', badge: 'New', tags: ['Camera focused', 'Worth noticing'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/gmvKvvXVYoSPYHjl.png', desc: 'Tempered glass protection for smartphone camera lenses. Maintains original photo quality while preventing scratches.', expect: 'Chosen if protecting the camera without compromising on photo clarity is wanted. Fits usage for worry-free photography.', fact: 'The ultra-thin design makes it almost invisible once applied to the device.', decision: 'Works best if camera safety is a priority', urgency: 'Available for pickup today', socialProof: 'Chosen by many for daily use', brand: 'Generic', tier: 'simple', priceContext: 'Fits well if upgrading from older phone', priceAnchor: 'Seen across similar range devices' }
+        ];
+
+        let currentProduct = null;
+        let guidedData = { category: '', priority: '', preference: '' };
+        let deferredPrompt;
+        let selectedDeliveryMethod = '';
+
+        function savingPct(price, old) {
+            const p = parseInt(price.replace(/[^0-9]/g,''));
+            const o = parseInt(old.replace(/[^0-9]/g,''));
+            if (!o || o <= p) return null;
+            return Math.round((o - p) / o * 100);
+        }
+
+        function renderProducts(filter = 'all') {
+            const grid = document.getElementById('product-grid');
+            grid.innerHTML = '';
+            const filtered = filter === 'all' ? products : products.filter(p => p.category === filter);
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div class="empty-state"><p>Nothing here just yet</p><span>Try a different category or browse all collections</span></div>';
+                return;
+            }
+
+            filtered.forEach(p => {
+                const pct = savingPct(p.price, p.oldPrice);
+                const card = document.createElement('div');
+                card.className = 'product-card reveal';
+                card.setAttribute('role', 'listitem');
+                card.setAttribute('tabindex', '0');
+                card.setAttribute('aria-label', `${p.name} — ${p.price}`);
+                card.onclick = () => openModal(p);
+                card.onkeydown = (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(p); }
+                };
+                card.innerHTML = `
+                    <div class="product-img-wrap">
+                        ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
+                        <img src="${p.image}" alt="${p.name}" loading="lazy">
+                    </div>
+                    <div class="product-tags">${(p.tags||[]).map(t=>`<span class="product-tag">${t}</span>`).join('')}</div>
+                    <div class="product-info">
+                        <h3>${p.name}</h3>
+                        <span class="social-proof-line">${p.socialProof}</span>
+                        <div class="decision-line">${p.decision}</div>
+                        <div class="urgency-signal">${p.urgency}</div>
+                        <p class="product-specs">${p.specs}</p>
+                        <div class="product-footer">
+                            <div class="price-main-row">
+                                <div class="product-price">
+                                    ${p.price}
+                                    <span class="product-old-price">${p.oldPrice}</span>
+                                    ${pct ? `<span class="saving-label">${pct}% off</span>` : ''}
+                                </div>
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </div>
+                            <div class="price-context">${p.priceContext}</div>
+                            <div class="price-anchor">${p.priceAnchor}</div>
+                        </div>
+                        <div class="micro-trust">
+                            <span>• Checked before handover</span>
+                            <span>• Support available if something feels off</span>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            initScrollAnimations();
+        }
+
+        function filterProducts(cat, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => {
+                b.classList.remove('active');
+                b.setAttribute('aria-pressed', 'false');
+            });
+            btn.classList.add('active');
+            btn.setAttribute('aria-pressed', 'true');
+            renderProducts(cat);
+            announce(`Showing ${cat === 'all' ? 'all products' : cat}`);
+        }
+
+        /* RETENTION LOGIC */
+        function initRetention() {
+            try {
+                const lastViewed = JSON.parse(safeGet('lastViewedProduct'));
+                if (lastViewed) {
+                    const section = document.getElementById('retention-section');
+                    const img = document.getElementById('retention-img');
+                    img.src = lastViewed.image;
+                    img.alt = lastViewed.name;
+                    document.getElementById('retention-name').innerText = lastViewed.name;
+                    document.getElementById('retention-decision').innerText = lastViewed.decision;
+                    document.getElementById('retention-continue').onclick = () => openModal(lastViewed);
+                    section.style.display = 'block';
+                }
+            } catch(e) {}
+        }
+
+        function saveLastViewed(p) {
+            safeSet('lastViewedProduct', JSON.stringify(p));
+        }
+
+        /* GUIDED FLOW LOGIC */
+        function setGuidedDots(step) {
+            for (let i = 1; i <= 4; i++) {
+                const dot = document.getElementById(`gdot-${i}`);
+                if (dot) dot.classList.toggle('active', i === step);
+            }
+        }
+
+        function openGuidedFlow() {
+            document.getElementById('guided-overlay').classList.add('active');
+            prevStep(1);
+            setTimeout(() => {
+                const close = document.querySelector('#guided-overlay .modal-close');
+                if (close) close.focus();
+            }, 100);
+            announce('Guided flow opened. Step 1 of 4.');
+        }
+
+        function closeGuidedFlow() {
+            document.getElementById('guided-overlay').classList.remove('active');
+            announce('Guided flow closed.');
+        }
+
+        function nextStep(step, value) {
+            if (step === 2) guidedData.category = value;
+            if (step === 3) guidedData.priority = value;
+            document.querySelectorAll('.guided-step').forEach(s => s.classList.remove('active'));
+            document.getElementById(`step-${step}`).classList.add('active');
+            setGuidedDots(step);
+        }
+
+        function prevStep(step) {
+            document.querySelectorAll('.guided-step').forEach(s => s.classList.remove('active'));
+            document.getElementById(`step-${step}`).classList.add('active');
+            setGuidedDots(step);
+        }
+
+        function showResults(preference) {
+            guidedData.preference = preference;
+            const grid = document.getElementById('guided-results-grid');
+            grid.innerHTML = '';
+
+            let results = [];
+
+            if (guidedData.category === 'phones') {
+                if (guidedData.preference === 'best') {
+                    results = products.filter(p => p.category === 'phones' && p.tier === 'flagship');
+                } else if (guidedData.priority === 'battery' && guidedData.preference === 'simple') {
+                    results = products.filter(p => p.category === 'phones' && p.tier === 'balanced');
+                } else if (guidedData.priority === 'camera' && guidedData.preference === 'balanced') {
+                    results = products.filter(p => p.category === 'phones' && p.brand === 'Google');
+                } else if (guidedData.priority === 'smooth' && guidedData.preference === 'power') {
+                    results = products.filter(p => p.category === 'phones' && p.tier === 'flagship');
+                }
+            }
+
+            if (results.length === 0) {
+                results = products.filter(p => p.category === guidedData.category && p.tier === 'balanced');
+                if (results.length === 0) results = products.filter(p => p.category === guidedData.category);
+                if (results.length === 0) results = products.slice(0, 2);
+            }
+
+            results = results.slice(0, 4);
+
+            results.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'result-card';
+                card.innerHTML = `
+                    <img src="${p.image}" alt="${p.name}">
+                    <span class="tag">${p.badge || 'Top Choice'}</span>
+                    <h4>${p.name}</h4>
+                    <p class="decision">${p.decision}</p>
+                    <button onclick="openModalFromGuided(${p.id})" class="btn btn-primary" style="width: 100%; padding: 12px;">Get this for you</button>
+                `;
+                grid.appendChild(card);
+            });
+
+            document.querySelectorAll('.guided-step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step-4').classList.add('active');
+            setGuidedDots(4);
+            announce(`${results.length} recommendations ready.`);
+        }
+
+        function openModalFromGuided(id) {
+            const p = products.find(prod => prod.id === id);
+            closeGuidedFlow();
+            openModal(p);
+        }
+
+        function handleGuidedOverlayClick(e) {
+            if (e.target.id === 'guided-overlay') closeGuidedFlow();
+        }
+
+        /* CHECKOUT FLOW LOGIC */
+        function setCheckoutDots(step) {
+            for (let i = 1; i <= 4; i++) {
+                const dot = document.getElementById(`cdot-${i}`);
+                if (dot) dot.classList.toggle('active', i === step);
+            }
+        }
+
+        function openCheckout() {
+            if (!currentProduct) return;
+            const img = document.getElementById('checkout-img');
+            img.src = currentProduct.image;
+            img.alt = currentProduct.name;
+            document.getElementById('checkout-name').innerText = currentProduct.name;
+            document.getElementById('checkout-price').innerText = currentProduct.price;
+            document.getElementById('checkout-overlay').classList.add('active');
+            nextCheckoutStep(1);
+            setTimeout(() => {
+                const close = document.querySelector('#checkout-overlay .modal-close');
+                if (close) close.focus();
+            }, 100);
+        }
+
+        function closeCheckout() {
+            document.getElementById('checkout-overlay').classList.remove('active');
+        }
+
+        function nextCheckoutStep(step) {
+            document.querySelectorAll('.checkout-step').forEach(s => s.classList.remove('active'));
+            document.getElementById(`checkout-step-${step}`).classList.add('active');
+            setCheckoutDots(step);
+        }
+
+        function prevCheckoutStep(step) {
+            document.querySelectorAll('.checkout-step').forEach(s => s.classList.remove('active'));
+            document.getElementById(`checkout-step-${step}`).classList.add('active');
+            setCheckoutDots(step);
+        }
+
+        function selectDelivery(method, el) {
+            selectedDeliveryMethod = method;
+            document.querySelectorAll('.checkout-option').forEach(opt => {
+                opt.classList.remove('selected');
+                opt.setAttribute('aria-checked', 'false');
+            });
+            el.classList.add('selected');
+            el.setAttribute('aria-checked', 'true');
+        }
+
+        function handleCheckoutOverlayClick(e) {
+            if (e.target.id === 'checkout-overlay') closeCheckout();
+        }
+
+        function sendInquiry() {
+            nextCheckoutStep(4);
+        }
+
+        function talkOnWhatsApp() {
+            const deliveryText = selectedDeliveryMethod ? ` Preferred delivery method is ${selectedDeliveryMethod}.` : '';
+            const productName = currentProduct ? currentProduct.name : 'a product';
+            const text = `Hello Kovin, interest is shown in the ${productName}.${deliveryText} Could more details be provided?`;
+            window.open(`https://wa.me/917200006006?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
+        }
+
+        function openModal(p) {
+            currentProduct = p;
+            saveLastViewed(p);
+            const img = document.getElementById('modal-img');
+            img.src = p.image || '';
+            img.alt = p.name || '';
+            document.getElementById('modal-title').innerText = p.name || '';
+            document.getElementById('modal-social-proof').innerText = p.socialProof || '';
+            document.getElementById('modal-decision').innerText = p.decision || '';
+            document.getElementById('modal-urgency').innerText = p.urgency || '';
+            document.getElementById('modal-desc').innerText = p.desc || '';
+            document.getElementById('modal-specs').innerText = p.specs || '';
+            document.getElementById('modal-price').innerText = p.price || '';
+            document.getElementById('modal-price-context').innerText = p.priceContext || '';
+            document.getElementById('modal-price-anchor').innerText = p.priceAnchor || '';
+            document.getElementById('modal-badge').innerText = p.badge || 'Authentic';
+            document.getElementById('modal-expect').innerText = p.expect || '';
+            document.getElementById('modal-fact').innerText = p.fact || '';
+
+            const featuresList = document.getElementById('modal-features');
+            featuresList.innerHTML = '';
+            (p.tags || []).forEach(tag => {
+                const li = document.createElement('li');
+                li.innerText = tag;
+                featuresList.appendChild(li);
+            });
+
+            const overlay = document.getElementById('modal-overlay');
+            overlay.classList.add('active');
+            gsap.fromTo('.modal-content', { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: 'power4.out' });
+
+            setTimeout(() => {
+                const closeBtn = document.getElementById('modal-close-btn');
+                if (closeBtn) closeBtn.focus();
+            }, 100);
+            announce(`${p.name} details opened.`);
+        }
+
+        function openRepairModal(title, desc, features, expect, fact) {
+            currentProduct = { name: title };
+            const img = document.getElementById('modal-img');
+            img.src = '';
+            img.alt = '';
+            document.getElementById('modal-title').innerText = title || '';
+            document.getElementById('modal-social-proof').innerText = '';
+            document.getElementById('modal-decision').innerText = '';
+            document.getElementById('modal-urgency').innerText = '';
+            document.getElementById('modal-desc').innerText = desc || '';
+            document.getElementById('modal-specs').innerText = 'Professional Service';
+            document.getElementById('modal-price').innerText = 'Diagnostic First';
+            document.getElementById('modal-price-context').innerText = '';
+            document.getElementById('modal-price-anchor').innerText = '';
+            document.getElementById('modal-badge').innerText = 'Expert Repair';
+            document.getElementById('modal-expect').innerText = expect || '';
+            document.getElementById('modal-fact').innerText = fact || '';
+
+            const featuresList = document.getElementById('modal-features');
+            featuresList.innerHTML = '';
+            (features || []).forEach(f => {
+                const li = document.createElement('li');
+                li.innerText = f;
+                featuresList.appendChild(li);
+            });
+
+            const overlay = document.getElementById('modal-overlay');
+            overlay.classList.add('active');
+            gsap.fromTo('.modal-content', { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: 'power4.out' });
+
+            setTimeout(() => {
+                const closeBtn = document.getElementById('modal-close-btn');
+                if (closeBtn) closeBtn.focus();
+            }, 100);
+            announce(`${title} details opened.`);
+        }
+
+        function closeModal() {
+            const overlay = document.getElementById('modal-overlay');
+            gsap.to('.modal-content', { scale: 0.9, opacity: 0, duration: 0.4, ease: 'power4.in', onComplete: () => {
+                overlay.classList.remove('active');
+                announce('Product details closed.');
+            }});
+        }
+
+        function handleOverlayClick(e) {
+            if (e.target.id === 'modal-overlay') closeModal();
+        }
+
+        function toggleTheme() {
+            const el = document.documentElement;
+            const next = el.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+            el.setAttribute('data-theme', next);
+            safeSet('kovin-theme', next);
+            announce(`${next === 'dark' ? 'Dark' : 'Light'} mode enabled`);
+        }
+
+        function toggleChat() {
+            const chat = document.getElementById('chat-window');
+            const isOpen = chat.classList.contains('open');
+            chat.classList.toggle('open');
+            if (!isOpen) {
+                gsap.from(chat, { y: 50, opacity: 0, duration: 0.5, ease: 'power4.out' });
+                setTimeout(() => {
+                    const input = document.getElementById('chat-input');
+                    if (input) input.focus();
+                }, 200);
+                announce('Chat opened.');
+            } else {
+                announce('Chat closed.');
+            }
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chat-input');
+            const body = document.getElementById('chat-body');
+            if (!input.value.trim()) return;
+
+            const userMsg = document.createElement('div');
+            userMsg.className = 'chat-msg-user';
+            userMsg.innerText = input.value;
+            body.appendChild(userMsg);
+
+            const msgText = input.value;
+            input.value = '';
+            body.scrollTop = body.scrollHeight;
+
+            setTimeout(() => {
+                const botMsg = document.createElement('div');
+                botMsg.className = 'chat-msg-bot';
+                botMsg.innerText = 'A specialist will be available shortly. For immediate assistance, the WhatsApp link can be used.';
+                body.appendChild(botMsg);
+                body.scrollTop = body.scrollHeight;
+            }, 1000);
+        }
+
+        function initScrollAnimations() {
+            gsap.utils.toArray('.reveal').forEach(el => {
+                gsap.to(el, {
+                    scrollTrigger: { trigger: el, start: 'top 90%', toggleActions: 'play none none none' },
+                    y: 0, opacity: 1, duration: 1, ease: 'power3.out'
+                });
+            });
+        }
+
+        /* GLOBAL ESCAPE KEY HANDLER */
+        document.addEventListener('keydown', (e) => {
+            if (e.key !== 'Escape') return;
+            if (document.getElementById('modal-overlay').classList.contains('active')) { closeModal(); return; }
+            if (document.getElementById('guided-overlay').classList.contains('active')) { closeGuidedFlow(); return; }
+            if (document.getElementById('checkout-overlay').classList.contains('active')) { closeCheckout(); return; }
+            if (document.getElementById('chat-window').classList.contains('open')) { toggleChat(); return; }
+        });
+
+        /* SMART NAVBAR LOGIC */
+        let lastScroll = 0;
+        let scrollTimer = null;
+        const headerEl = document.getElementById('header');
+        const threshold = 8;
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+
+            if (Math.abs(currentScroll - lastScroll) > threshold) {
+                if (currentScroll > lastScroll && currentScroll > 100) {
+                    headerEl.classList.add('nav-hidden');
+                } else {
+                    headerEl.classList.remove('nav-hidden');
+                }
+                lastScroll = currentScroll;
+            }
+
+            clearTimeout(scrollTimer);
+            scrollTimer = setTimeout(() => {
+                headerEl.classList.remove('nav-hidden');
+            }, 150);
+
+            const sections = ['hero', 'catalogue', 'repair', 'contact'];
+            sections.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top <= 150 && rect.bottom >= 150) {
+                        document.querySelectorAll('.nav-pill, .dock-pill').forEach(pill => {
+                            pill.classList.remove('active');
+                            pill.removeAttribute('aria-current');
+                            const href = pill.getAttribute('href');
+                            if (href === `#${id}` || (id === 'hero' && href === '#')) {
+                                pill.classList.add('active');
+                                pill.setAttribute('aria-current', 'page');
+                            }
+                        });
+                    }
+                }
+            });
+        }, { passive: true });
+
+        /* PWA LOGIC */
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            if (!sessionStorage.getItem('pwa-dismissed')) {
+                setTimeout(() => {
+                    document.getElementById('pwa-prompt').classList.add('active');
+                }, 3000);
+            }
+        });
+
+        function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    deferredPrompt = null;
+                    document.getElementById('pwa-prompt').classList.remove('active');
+                });
+            }
+        }
+
+        function dismissPWA() {
+            sessionStorage.setItem('pwa-dismissed', 'true');
+            document.getElementById('pwa-prompt').classList.remove('active');
+        }
+
+        window.addEventListener('load', () => {
+            renderProducts();
+            initRetention();
+            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (!prefersReducedMotion) {
+                gsap.to('.hero-reveal', { opacity: 1, duration: 1, stagger: 0.2, ease: 'power2.out' });
+            } else {
+                document.querySelectorAll('.hero-reveal').forEach(el => { el.style.opacity = 1; });
+            }
+        });
+    </script>
+</body>
+</html>
