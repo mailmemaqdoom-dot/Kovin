@@ -104,6 +104,14 @@
             /* ── Motion ── */
             --transition-smooth: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
             --pill-transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            /* Easing presets */
+            --ease-expo:   cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+            /* Duration steps */
+            --dur-fast:   0.28s;
+            --dur-base:   0.42s;
+            --dur-reveal: 0.82s;
         }
 
         [data-theme="dark"] {
@@ -160,7 +168,7 @@
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
             padding: 8px;
         }
-        header.nav-hidden { transform: translate(-50%, -150%); opacity: 0; }
+        /* Navbar hide/show controlled entirely by GSAP — no CSS class toggle needed */
 
         nav { display: flex; align-items: center; gap: 8px; }
 
@@ -341,6 +349,7 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            perspective: 1200px; /* enables 3D parallax on device stage */
         }
 
         .hero-device-stage {
@@ -434,14 +443,25 @@
             padding: 18px 40px; border-radius: 100px; font-weight: 600;
             font-size: var(--fs-small); letter-spacing: 0.02em;
             display: inline-flex; align-items: center; gap: 10px; border: none;
-            cursor: pointer; transition: var(--transition-smooth); position: relative;
-            overflow: hidden; text-align: center; justify-content: center;
+            cursor: pointer; position: relative; overflow: hidden;
+            text-align: center; justify-content: center;
+            will-change: transform;
+            /* Per-property timing — transform owned by GSAP (magnetic + press) */
+            transition:
+                box-shadow var(--dur-fast) ease,
+                background-color 0.22s ease,
+                color 0.22s ease,
+                border-color 0.22s ease;
         }
         .btn:focus-visible { outline: 3px solid var(--copper); outline-offset: 3px; }
-        .btn-primary { background: var(--ink); color: var(--paper); }
-        .btn-primary:hover { transform: translateY(-5px); box-shadow: var(--shadow-lux); }
+        /* CSS press feedback (touch / reduced-motion fallback) */
+        .btn:active { transform: scale(0.96) !important; transition: transform 0.1s ease !important; }
+        .btn-primary  { background: var(--ink); color: var(--paper); }
         .btn-secondary { background: transparent; color: var(--ink); border: 1px solid var(--border); }
-        .btn-secondary:hover { background: var(--ink); color: var(--paper); }
+        @media (hover: hover) {
+            .btn-primary:hover  { box-shadow: 0 14px 36px -8px rgba(15,16,32,0.22); }
+            .btn-secondary:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+        }
 
         /* ===== BENTO GRID ===== */
         .section-padding { padding: var(--sp-section) 0; }
@@ -475,8 +495,9 @@
             grid-column: span 4; background: var(--paper-warm); border-radius: 40px;
             padding: 48px; border: 1px solid var(--border); transition: var(--transition-smooth);
             position: relative; overflow: hidden;
+            will-change: transform;
         }
-        .bento-item:hover { transform: translateY(-8px); border-color: var(--copper); }
+        .bento-item:hover { transform: translateY(-8px); border-color: var(--copper); box-shadow: 0 20px 48px -12px rgba(15,16,32,0.1); }
         .bento-item.large { grid-column: span 8; }
         .bento-item h3 {
             font-family: var(--font-display);
@@ -613,17 +634,18 @@
             border: 1px solid var(--border);
             overflow: hidden;
             cursor: pointer;
-            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-                        box-shadow 0.4s ease,
-                        border-color 0.3s ease;
+            will-change: transform;
+            /* shadow + border transition — transform owned by GSAP on hover */
+            transition:
+                box-shadow 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+                border-color 0.28s ease;
             display: flex; flex-direction: column;
             position: relative;
         }
         .product-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 24px 56px -12px rgba(15,16,32,0.13),
-                        0 10px 24px -8px rgba(15,16,32,0.07);
-            border-color: rgba(184,115,51,0.25);
+            box-shadow: 0 20px 52px -12px rgba(15,16,32,0.13),
+                        0 8px 20px -8px rgba(15,16,32,0.07);
+            border-color: rgba(184,115,51,0.22);
         }
         .product-card:focus-visible { outline: 3px solid var(--copper); outline-offset: 3px; }
 
@@ -734,8 +756,9 @@
             background: var(--paper-warm); border-radius: 36px; padding: 44px 40px;
             border: 1px solid var(--border); transition: var(--transition-smooth);
             text-align: center; cursor: pointer;
+            will-change: transform;
         }
-        .repair-card:hover { background: var(--ink); color: var(--paper); }
+        .repair-card:hover { background: var(--ink); color: var(--paper); transform: translateY(-6px); box-shadow: 0 20px 48px -12px rgba(15,16,32,0.18); }
         .repair-card:focus-visible { outline: 3px solid var(--copper); outline-offset: 3px; }
         .repair-icon { font-size: 2.5rem; margin-bottom: var(--sp-5); display: block; }
         .repair-card h4 {
@@ -775,12 +798,12 @@
 
         /* ===== MODAL & GUIDED FLOW ===== */
         .modal-overlay {
-            position: fixed; inset: 0; background: rgba(15, 16, 32, 0.8);
-            backdrop-filter: blur(15px); z-index: 3000; display: none;
+            position: fixed; inset: 0; background: rgba(15, 16, 32, 0.82);
+            backdrop-filter: blur(18px); z-index: 3000; display: none;
             align-items: center; justify-content: center; padding: 40px;
-            opacity: 0; transition: opacity 0.4s ease;
+            /* opacity managed entirely by GSAP — no CSS transition here */
         }
-        .modal-overlay.active { display: flex; opacity: 1; }
+        .modal-overlay.active { display: flex; }
         .modal-content {
             background: var(--paper); width: 100%; max-width: 1060px;
             border-radius: 48px; display: grid; grid-template-columns: 1fr 1.2fr;
@@ -1429,9 +1452,27 @@
             .footer-inner { padding: 56px 0 0; }
         }
 
-        /* Reveal Animation */
-        .reveal { opacity: 0; transform: translateY(30px); }
-        .hero-reveal { opacity: 0; }
+        /* ===== MOTION SYSTEM — INITIAL STATES =====
+           GSAP animates all of these in. CSS only sets the invisible start.
+        ============================================ */
+
+        /* Section-level reveals (section headers, bento items, etc.) */
+        .reveal {
+            opacity: 0;
+            transform: translateY(18px);
+            will-change: opacity, transform;
+        }
+        /* Hero sequence items */
+        .hero-reveal {
+            opacity: 0;
+            will-change: opacity, transform;
+        }
+        /* Product cards — revealed on scroll by GSAP via slider init */
+        .product-card {
+            opacity: 0;
+            transform: translateY(16px);
+            will-change: opacity, transform;
+        }
     </style>
 </head>
 <body>
@@ -2346,8 +2387,14 @@
         }
 
         function openGuidedFlow() {
-            document.getElementById('guided-overlay').classList.add('active');
+            const overlay = document.getElementById('guided-overlay');
+            overlay.classList.add('active');
             prevStep(1);
+            gsap.fromTo(overlay,  { opacity: 0 }, { opacity: 1, duration: 0.36, ease: 'power2.out' });
+            gsap.fromTo('.guided-panel',
+                { scale: 0.94, opacity: 0, y: 24 },
+                { scale: 1, opacity: 1, y: 0, duration: 0.58, ease: 'power4.out', delay: 0.05 }
+            );
             setTimeout(() => {
                 const close = document.querySelector('#guided-overlay .modal-close');
                 if (close) close.focus();
@@ -2356,8 +2403,12 @@
         }
 
         function closeGuidedFlow() {
-            document.getElementById('guided-overlay').classList.remove('active');
-            announce('Guided flow closed.');
+            const overlay = document.getElementById('guided-overlay');
+            gsap.to('.guided-panel', { scale: 0.95, opacity: 0, y: 14, duration: 0.28, ease: 'power3.in' });
+            gsap.to(overlay, {
+                opacity: 0, duration: 0.34, ease: 'power2.in', delay: 0.06,
+                onComplete: () => { overlay.classList.remove('active'); announce('Guided flow closed.'); },
+            });
         }
 
         function nextStep(step, value) {
@@ -2445,8 +2496,14 @@
             img.alt = currentProduct.name;
             document.getElementById('checkout-name').innerText = currentProduct.name;
             document.getElementById('checkout-price').innerText = currentProduct.price;
-            document.getElementById('checkout-overlay').classList.add('active');
+            const overlay = document.getElementById('checkout-overlay');
+            overlay.classList.add('active');
             nextCheckoutStep(1);
+            gsap.fromTo(overlay,  { opacity: 0 }, { opacity: 1, duration: 0.36, ease: 'power2.out' });
+            gsap.fromTo('.checkout-panel',
+                { scale: 0.94, opacity: 0, y: 24 },
+                { scale: 1, opacity: 1, y: 0, duration: 0.58, ease: 'power4.out', delay: 0.05 }
+            );
             setTimeout(() => {
                 const close = document.querySelector('#checkout-overlay .modal-close');
                 if (close) close.focus();
@@ -2454,7 +2511,12 @@
         }
 
         function closeCheckout() {
-            document.getElementById('checkout-overlay').classList.remove('active');
+            const overlay = document.getElementById('checkout-overlay');
+            gsap.to('.checkout-panel', { scale: 0.95, opacity: 0, y: 14, duration: 0.28, ease: 'power3.in' });
+            gsap.to(overlay, {
+                opacity: 0, duration: 0.34, ease: 'power2.in', delay: 0.06,
+                onComplete: () => { overlay.classList.remove('active'); },
+            });
         }
 
         function nextCheckoutStep(step) {
@@ -2523,7 +2585,13 @@
 
             const overlay = document.getElementById('modal-overlay');
             overlay.classList.add('active');
-            gsap.fromTo('.modal-content', { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: 'power4.out' });
+            /* Backdrop fade */
+            gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.38, ease: 'power2.out' });
+            /* Content: scale up + drift up */
+            gsap.fromTo('.modal-content',
+                { scale: 0.93, opacity: 0, y: 28 },
+                { scale: 1, opacity: 1, y: 0, duration: 0.6, ease: 'power4.out', delay: 0.06 }
+            );
 
             setTimeout(() => {
                 const closeBtn = document.getElementById('modal-close-btn');
@@ -2560,7 +2628,11 @@
 
             const overlay = document.getElementById('modal-overlay');
             overlay.classList.add('active');
-            gsap.fromTo('.modal-content', { scale: 0.9, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.6, ease: 'power4.out' });
+            gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.38, ease: 'power2.out' });
+            gsap.fromTo('.modal-content',
+                { scale: 0.93, opacity: 0, y: 28 },
+                { scale: 1, opacity: 1, y: 0, duration: 0.6, ease: 'power4.out', delay: 0.06 }
+            );
 
             setTimeout(() => {
                 const closeBtn = document.getElementById('modal-close-btn');
@@ -2571,10 +2643,19 @@
 
         function closeModal() {
             const overlay = document.getElementById('modal-overlay');
-            gsap.to('.modal-content', { scale: 0.9, opacity: 0, duration: 0.4, ease: 'power4.in', onComplete: () => {
-                overlay.classList.remove('active');
-                announce('Product details closed.');
-            }});
+            /* Content exits: scale down + drift down */
+            gsap.to('.modal-content', {
+                scale: 0.94, opacity: 0, y: 16,
+                duration: 0.3, ease: 'power3.in',
+            });
+            /* Backdrop fades — slightly slower, removes class when done */
+            gsap.to(overlay, {
+                opacity: 0, duration: 0.38, ease: 'power2.in', delay: 0.06,
+                onComplete: () => {
+                    overlay.classList.remove('active');
+                    announce('Product details closed.');
+                },
+            });
         }
 
         function handleOverlayClick(e) {
@@ -2592,15 +2673,23 @@
         function toggleChat() {
             const chat = document.getElementById('chat-window');
             const isOpen = chat.classList.contains('open');
-            chat.classList.toggle('open');
             if (!isOpen) {
-                gsap.from(chat, { y: 50, opacity: 0, duration: 0.5, ease: 'power4.out' });
+                chat.classList.add('open');
+                gsap.fromTo(chat,
+                    { y: 40, opacity: 0, scale: 0.96 },
+                    { y: 0, opacity: 1, scale: 1, duration: 0.52, ease: 'power4.out' }
+                );
                 setTimeout(() => {
                     const input = document.getElementById('chat-input');
                     if (input) input.focus();
-                }, 200);
+                }, 220);
                 announce('Chat opened.');
             } else {
+                gsap.to(chat, {
+                    y: 32, opacity: 0, scale: 0.96,
+                    duration: 0.3, ease: 'power3.in',
+                    onComplete: () => { chat.classList.remove('open'); },
+                });
                 announce('Chat closed.');
             }
         }
@@ -2628,13 +2717,203 @@
             }, 1000);
         }
 
+        /* ── SCROLL ANIMATIONS ──────────────────────────────────────────────
+           Stagger-aware: sibling .reveal elements animate together as a group.
+           Slider cards animate as a staggered cascade per row.
+           Reduced-motion: instant reveal, no animation.
+        ────────────────────────────────────────────────────────────────── */
         function initScrollAnimations() {
-            gsap.utils.toArray('.reveal').forEach(el => {
-                gsap.to(el, {
-                    scrollTrigger: { trigger: el, start: 'top 90%', toggleActions: 'play none none none' },
-                    y: 0, opacity: 1, duration: 1, ease: 'power3.out'
+            const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            /* Instant reveal fallback */
+            if (prefersReduced) {
+                gsap.utils.toArray('.reveal, .product-card').forEach(el => {
+                    el.style.opacity = '1';
+                    el.style.transform = 'none';
                 });
+                return;
+            }
+
+            /* ── Section .reveal elements with sibling stagger ── */
+            const processed = new Set();
+            gsap.utils.toArray('.reveal').forEach(el => {
+                if (processed.has(el)) return;
+
+                const parent = el.parentElement;
+                const siblings = parent
+                    ? [...parent.querySelectorAll(':scope > .reveal')]
+                    : [el];
+
+                if (siblings.length > 1) {
+                    /* Stagger the whole sibling group on the first trigger */
+                    gsap.to(siblings, {
+                        scrollTrigger: {
+                            trigger: siblings[0],
+                            start: 'top 87%',
+                            toggleActions: 'play none none none',
+                        },
+                        y: 0, opacity: 1,
+                        duration: 0.82,
+                        stagger: 0.09,
+                        ease: 'power3.out',
+                    });
+                    siblings.forEach(s => processed.add(s));
+                } else {
+                    gsap.to(el, {
+                        scrollTrigger: {
+                            trigger: el,
+                            start: 'top 87%',
+                            toggleActions: 'play none none none',
+                        },
+                        y: 0, opacity: 1,
+                        duration: 0.82,
+                        ease: 'power3.out',
+                    });
+                    processed.add(el);
+                }
             });
+
+            /* ── Slider sections — header + staggered card cascade ── */
+            gsap.utils.toArray('.slider-section').forEach(section => {
+                const header = section.querySelector('.slider-header');
+                const cards  = [...section.querySelectorAll('.product-card')];
+
+                /* Header reveal */
+                if (header) {
+                    gsap.to(header, {
+                        scrollTrigger: {
+                            trigger: section,
+                            start: 'top 84%',
+                            toggleActions: 'play none none none',
+                        },
+                        opacity: 1, y: 0,
+                        duration: 0.7,
+                        ease: 'power3.out',
+                    });
+                    /* Ensure header has initial state */
+                    gsap.set(header, { opacity: 0, y: 14 });
+                }
+
+                /* Card cascade — stagger capped at 0.45s total */
+                if (cards.length) {
+                    gsap.to(cards, {
+                        scrollTrigger: {
+                            trigger: section,
+                            start: 'top 82%',
+                            toggleActions: 'play none none none',
+                        },
+                        opacity: 1, y: 0,
+                        duration: 0.65,
+                        stagger: { amount: Math.min(cards.length * 0.06, 0.45), ease: 'power1.inOut' },
+                        ease: 'power3.out',
+                        delay: 0.1,
+                    });
+                }
+            });
+        }
+
+        /* ── MOTION SYSTEM ────────────────────────────────────────────────────
+           initMotion() — called once on load.
+           Skipped entirely when prefers-reduced-motion is set.
+           Skipped for touch-primary devices (magnetic makes no sense there).
+        ────────────────────────────────────────────────────────────────── */
+        function initMotion() {
+            const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const isTouch = window.matchMedia('(hover: none)').matches;
+
+            /* ── 1. Magnetic buttons (desktop pointer only) ── */
+            if (!prefersReduced && !isTouch) {
+                document.querySelectorAll('.btn').forEach(btn => {
+                    btn.addEventListener('mousemove', e => {
+                        const r = btn.getBoundingClientRect();
+                        const x = ((e.clientX - r.left) / r.width  - 0.5) * 20;
+                        const y = ((e.clientY - r.top)  / r.height - 0.5) * 14;
+                        gsap.to(btn, { x, y, duration: 0.45, ease: 'power2.out', overwrite: 'auto' });
+                    });
+                    btn.addEventListener('mouseleave', () => {
+                        gsap.to(btn, { x: 0, y: 0, duration: 0.7, ease: 'elastic.out(1, 0.45)', overwrite: 'auto' });
+                    });
+                    /* Press feedback */
+                    btn.addEventListener('mousedown', () => {
+                        gsap.to(btn, { scale: 0.95, duration: 0.12, ease: 'power2.out', overwrite: 'auto' });
+                    });
+                    btn.addEventListener('mouseup', () => {
+                        gsap.to(btn, { scale: 1, duration: 0.55, ease: 'elastic.out(1, 0.5)', overwrite: 'auto' });
+                    });
+                });
+            }
+
+            /* ── 2. Hero device 3-D parallax on mouse move ── */
+            if (!prefersReduced && !isTouch) {
+                const heroEl  = document.querySelector('.hero');
+                const device  = document.querySelector('.hero-device-stage');
+                if (heroEl && device) {
+                    heroEl.addEventListener('mousemove', e => {
+                        const r = heroEl.getBoundingClientRect();
+                        const x = (e.clientX - r.left) / r.width  - 0.5;  // -0.5 → 0.5
+                        const y = (e.clientY - r.top)  / r.height - 0.5;
+                        gsap.to(device, {
+                            x: x * 22,
+                            y: y * 12,
+                            rotateY: x * 10,
+                            rotateX: -y * 5,
+                            duration: 0.9,
+                            ease: 'power2.out',
+                            overwrite: 'auto',
+                        });
+                    });
+                    heroEl.addEventListener('mouseleave', () => {
+                        gsap.to(device, {
+                            x: 0, y: 0, rotateY: 0, rotateX: 0,
+                            duration: 1.4, ease: 'elastic.out(1, 0.5)', overwrite: 'auto',
+                        });
+                    });
+                }
+            }
+
+            /* ── 3. Product card elevation on hover (GSAP, not CSS transform) ── */
+            if (!prefersReduced) {
+                document.querySelectorAll('.slider-track').forEach(track => {
+                    track.addEventListener('mouseover', e => {
+                        const card = e.target.closest('.product-card');
+                        if (!card || track.classList.contains('is-dragging')) return;
+                        gsap.to(card, {
+                            y: -10, duration: 0.38,
+                            ease: 'power3.out', overwrite: 'auto',
+                        });
+                    });
+                    track.addEventListener('mouseout', e => {
+                        const card = e.target.closest('.product-card');
+                        if (!card) return;
+                        gsap.to(card, {
+                            y: 0, duration: 0.55,
+                            ease: 'power3.out', overwrite: 'auto',
+                        });
+                    });
+                });
+
+                /* Bento + repair card elevation */
+                document.querySelectorAll('.bento-item, .repair-card').forEach(card => {
+                    card.addEventListener('mouseenter', () => {
+                        gsap.to(card, { y: -8, duration: 0.38, ease: 'power3.out', overwrite: 'auto' });
+                    });
+                    card.addEventListener('mouseleave', () => {
+                        gsap.to(card, { y: 0, duration: 0.55, ease: 'power3.out', overwrite: 'auto' });
+                    });
+                });
+            }
+
+            /* ── 4. Slider arrow button pop on hover ── */
+            if (!prefersReduced && !isTouch) {
+                document.querySelectorAll('.slider-btn').forEach(btn => {
+                    btn.addEventListener('mouseenter', () => {
+                        gsap.to(btn, { scale: 1.08, duration: 0.25, ease: 'power2.out' });
+                    });
+                    btn.addEventListener('mouseleave', () => {
+                        gsap.to(btn, { scale: 1, duration: 0.4, ease: 'elastic.out(1, 0.5)' });
+                    });
+                });
+            }
         }
 
         /* GLOBAL ESCAPE KEY HANDLER */
@@ -2646,35 +2925,53 @@
             if (document.getElementById('chat-window').classList.contains('open')) { toggleChat(); return; }
         });
 
-        /* SMART NAVBAR LOGIC */
-        let lastScroll = 0;
-        let scrollTimer = null;
-        const headerEl = document.getElementById('header');
-        const threshold = 8;
+        /* ── SMART NAVBAR — GSAP controlled, no flicker ────────────────────
+           Strategy: hide when scrolling down with intent (>60px scrolled,
+           delta > threshold). Reveal immediately on any upward movement.
+           Section active-state tracking runs independently.
+        ────────────────────────────────────────────────────────────────── */
+        (function initNavbar() {
+            const headerEl  = document.getElementById('header');
+            let lastY       = 0;
+            let navVisible  = true;
+            const THRESHOLD = 10;   /* px delta before registering direction */
+            const HIDE_AFTER = 64;  /* minimum scroll depth before hiding   */
 
-        window.addEventListener('scroll', () => {
-            const currentScroll = window.pageYOffset;
-
-            if (Math.abs(currentScroll - lastScroll) > threshold) {
-                if (currentScroll > lastScroll && currentScroll > 100) {
-                    headerEl.classList.add('nav-hidden');
-                } else {
-                    headerEl.classList.remove('nav-hidden');
-                }
-                lastScroll = currentScroll;
+            function showNav() {
+                if (navVisible) return;
+                navVisible = true;
+                gsap.to(headerEl, { y: 0, opacity: 1, duration: 0.48, ease: 'power3.out', overwrite: true });
+            }
+            function hideNav() {
+                if (!navVisible) return;
+                navVisible = false;
+                gsap.to(headerEl, { y: -100, opacity: 0, duration: 0.36, ease: 'power3.in', overwrite: true });
             }
 
-            clearTimeout(scrollTimer);
-            scrollTimer = setTimeout(() => {
-                headerEl.classList.remove('nav-hidden');
-            }, 150);
+            window.addEventListener('scroll', () => {
+                const y     = window.pageYOffset;
+                const delta = y - lastY;
 
-            const sections = ['hero', 'catalogue', 'repair', 'contact'];
-            sections.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) {
+                /* Direction logic */
+                if (Math.abs(delta) >= THRESHOLD) {
+                    if (delta > 0 && y > HIDE_AFTER) {
+                        hideNav();
+                    } else {
+                        showNav();
+                    }
+                    lastY = y;
+                }
+
+                /* Always show at top of page */
+                if (y < HIDE_AFTER) showNav();
+
+                /* Section active-state tracking */
+                const sections = ['hero', 'catalogue', 'repair', 'contact'];
+                sections.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (!el) return;
                     const rect = el.getBoundingClientRect();
-                    if (rect.top <= 150 && rect.bottom >= 150) {
+                    if (rect.top <= 140 && rect.bottom >= 140) {
                         document.querySelectorAll('.nav-pill, .dock-pill').forEach(pill => {
                             pill.classList.remove('active');
                             pill.removeAttribute('aria-current');
@@ -2685,9 +2982,9 @@
                             }
                         });
                     }
-                }
-            });
-        }, { passive: true });
+                });
+            }, { passive: true });
+        }());
 
         /* PWA LOGIC */
         window.addEventListener('beforeinstallprompt', (e) => {
@@ -2716,32 +3013,47 @@
         }
 
         window.addEventListener('load', () => {
+            /* ── 1. Render dynamic content ── */
             renderCatalogue();
             initRetention();
 
-            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            const heroReveals = document.querySelectorAll('.hero-reveal');
+            const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-            if (!prefersReducedMotion) {
-                // Staggered fade-up for hero content, gentle fade-in for device stage
-                heroReveals.forEach((el, i) => {
-                    const isDevice = el.classList.contains('hero-device-stage');
-                    gsap.fromTo(el,
-                        { opacity: 0, y: isDevice ? 30 : 24 },
-                        {
-                            opacity: 1, y: 0,
-                            duration: isDevice ? 1.2 : 0.9,
-                            delay: isDevice ? 0.3 : i * 0.15,
-                            ease: 'power3.out'
-                        }
+            /* ── 2. Hero entrance sequence ── */
+            const heroReveals = [...document.querySelectorAll('.hero-reveal')];
+
+            if (!prefersReduced) {
+                /* Left column: staggered fade-up — eyebrow → h1 → desc → actions → trust */
+                const leftItems   = heroReveals.filter(el => !el.classList.contains('hero-device-stage'));
+                const deviceStage = heroReveals.find(el => el.classList.contains('hero-device-stage'));
+
+                gsap.fromTo(leftItems,
+                    { opacity: 0, y: 22 },
+                    {
+                        opacity: 1, y: 0,
+                        duration: 0.82,
+                        stagger: 0.13,
+                        ease: 'power3.out',
+                        delay: 0.15,
+                    }
+                );
+
+                if (deviceStage) {
+                    gsap.fromTo(deviceStage,
+                        { opacity: 0, y: 32, scale: 0.96 },
+                        { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: 'power4.out', delay: 0.2 }
                     );
-                });
+                }
             } else {
-                heroReveals.forEach(el => {
-                    el.style.opacity = '1';
-                    el.style.transform = 'none';
-                });
+                /* Instant reveal — no animation */
+                heroReveals.forEach(el => { el.style.opacity = '1'; el.style.transform = 'none'; });
             }
+
+            /* ── 3. Scroll-driven reveals for all sections ── */
+            initScrollAnimations();
+
+            /* ── 4. Pointer/hover motion system ── */
+            initMotion();
         });
     </script>
 </body>
