@@ -681,10 +681,15 @@
             display: flex; flex-direction: column;
             position: relative;
         }
-        .product-card:hover {
-            box-shadow: 0 20px 52px -12px rgba(15,16,32,0.13),
-                        0 8px 20px -8px rgba(15,16,32,0.07);
-            border-color: rgba(227,83,54,0.22);
+        @media (hover: hover) {
+            .product-card:hover {
+                box-shadow: 0 20px 52px -12px rgba(15,16,32,0.13),
+                            0 8px 20px -8px rgba(15,16,32,0.07);
+                border-color: rgba(227,83,54,0.22);
+            }
+            .product-card:hover .product-img-wrap img {
+                transform: scale(1.08) translateY(-4px);
+            }
         }
         .product-card:focus-visible { outline: 3px solid var(--copper); outline-offset: 3px; }
 
@@ -708,9 +713,6 @@
             transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
             position: relative; z-index: 1;
             filter: drop-shadow(0 12px 24px rgba(26,22,18,0.12));
-        }
-        .product-card:hover .product-img-wrap img {
-            transform: scale(1.08) translateY(-4px);
         }
 
         /* Badge */
@@ -776,10 +778,12 @@
             transition: all 0.32s var(--ease-smooth); flex-shrink: 0;
             box-shadow: 0 4px 12px rgba(26,22,18,0.14);
         }
-        .product-card:hover .product-cta {
-            background: var(--copper);
-            transform: scale(1.12) translateX(2px);
-            box-shadow: 0 6px 18px rgba(227,83,54,0.32);
+        @media (hover: hover) {
+            .product-card:hover .product-cta {
+                background: var(--copper);
+                transform: scale(1.12) translateX(2px);
+                box-shadow: 0 6px 18px rgba(227,83,54,0.32);
+            }
         }
         .product-cta svg { width: 15px; height: 15px; }
 
@@ -815,7 +819,9 @@
             text-align: center; cursor: pointer;
             will-change: transform;
         }
-        .repair-card:hover { background: var(--ink); color: var(--paper); transform: translateY(-6px); box-shadow: 0 20px 48px -12px rgba(15,16,32,0.18); }
+        @media (hover: hover) {
+            .repair-card:hover { background: var(--ink); color: var(--paper); transform: translateY(-6px); box-shadow: 0 20px 48px -12px rgba(15,16,32,0.18); }
+        }
         .repair-card:focus-visible { outline: 3px solid var(--copper); outline-offset: 3px; }
         .repair-icon { font-size: 2.5rem; margin-bottom: var(--sp-5); display: block; }
         .repair-card h4 {
@@ -975,7 +981,9 @@
             font-weight: 600; font-size: var(--fs-body); font-family: var(--font-body);
             text-align: center; line-height: var(--lh-snug);
         }
-        .guided-option:hover { border-color: var(--copper); background: var(--paper); transform: translateY(-3px); }
+        @media (hover: hover) {
+            .guided-option:hover { border-color: var(--copper); background: var(--paper); transform: translateY(-3px); }
+        }
         .guided-option:focus-visible { outline: 3px solid var(--copper); outline-offset: 3px; }
         .guided-nav { display: flex; justify-content: center; gap: var(--sp-6); margin-top: var(--sp-10); }
         .guided-back {
@@ -1636,10 +1644,6 @@
 
             /* ── Mobile dock ── */
             .mobile-dock { display: flex; }
-            /* Disable desktop hover lifts on touch */
-            .bento-item:hover { transform: none; box-shadow: none; }
-            .repair-card:hover { transform: none; }
-
             /* ── Safe area body padding ── */
             body {
                 padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 92px);
@@ -1651,10 +1655,11 @@
                 padding: 0;
             }
             .modal-content {
+                display: flex;
+                flex-direction: column;
                 border-radius: 28px 28px 0 0;
                 max-height: 92dvh;
                 width: 100%;
-                flex-direction: column;
             }
             .modal-left { display: none; }
             .modal-right {
@@ -1743,25 +1748,37 @@
         }
 
         /* ===== MOTION SYSTEM — INITIAL STATES =====
-           GSAP animates all of these in. CSS only sets the invisible start.
+           GSAP sets opacity/transform via JS — NOT in CSS.
+           This ensures all content is always accessible.
+           Elements marked .gsap-ready get initial states set in JS.
         ============================================ */
 
-        /* Section-level reveals (section headers, bento items, etc.) */
-        .reveal {
+        /* Ready state — applied by JS before GSAP animates */
+        .gsap-will-reveal {
             opacity: 0;
             transform: translateY(18px);
-            will-change: opacity, transform;
         }
-        /* Hero sequence items */
-        .hero-reveal {
+        .gsap-will-reveal-hero {
             opacity: 0;
-            will-change: opacity, transform;
         }
-        /* Product cards — revealed on scroll by GSAP via slider init */
-        .product-card {
+        .gsap-will-reveal-card {
             opacity: 0;
-            transform: translateY(16px);
-            will-change: opacity, transform;
+            transform: translateY(14px);
+        }
+
+        /* Touch tap feedback */
+        @media (hover: none) {
+            .product-card:active { transform: scale(0.97); opacity: 0.85; }
+            .btn:active { transform: scale(0.95) !important; }
+            .guided-option:active { transform: scale(0.97); }
+            .cat-nav-btn:active { transform: scale(0.95); }
+            .repair-card:active { transform: scale(0.97); }
+        }
+
+        /* Ensure focus states are always visible */
+        *:focus-visible {
+            outline: 2px solid var(--copper);
+            outline-offset: 2px;
         }
     </style>
 </head>
@@ -2471,7 +2488,7 @@
                 </div>
 
                 <div class="hero-actions" style="margin-top: 24px;">
-                    <button onclick="openCheckout()" class="btn btn-primary" style="flex: 1;">Get this for you</button>
+                    <button onclick="openCheckout()" class="btn btn-primary" style="flex: 1;">Keep this ready</button>
                     <a href="tel:+917200006006" class="btn btn-secondary">Take it home</a>
                 </div>
 
@@ -2651,60 +2668,102 @@
         function initSlider(track, catId) {
             if (!track) return;
 
-            // Arrow nav
+            // ── Arrow nav ──
             const prev = document.querySelector(`.slider-prev[data-track="${catId}"]`);
             const next = document.querySelector(`.slider-next[data-track="${catId}"]`);
             function getCardWidth() {
                 const first = track.querySelector('.product-card');
                 return first ? first.offsetWidth + 20 : 320;
             }
-            if (prev) prev.addEventListener('click', () => track.scrollBy({ left: -getCardWidth() * 2, behavior: 'smooth' }));
-            if (next) next.addEventListener('click', () => track.scrollBy({ left: getCardWidth() * 2, behavior: 'smooth' }));
+            if (prev) prev.addEventListener('click', (e) => { e.stopPropagation(); track.scrollBy({ left: -getCardWidth() * 2, behavior: 'smooth' }); });
+            if (next) next.addEventListener('click', (e) => { e.stopPropagation(); track.scrollBy({ left: getCardWidth() * 2, behavior: 'smooth' }); });
 
-            // Mouse drag
-            let isDragging = false, startX = 0, scrollStart = 0;
+            // ── Mouse drag with proper click/drag discrimination ──
+            let isDragging = false;
+            let hasDragged = false;  // true only after actual mouse movement
+            let startX = 0, scrollStart = 0;
+            const DRAG_THRESHOLD = 6; // px movement before it's considered a drag
+
             track.addEventListener('mousedown', e => {
-                isDragging = true; startX = e.pageX; scrollStart = track.scrollLeft;
-                track.classList.add('is-dragging');
+                if (e.button !== 0) return; // left button only
+                isDragging = true;
+                hasDragged = false;
+                startX = e.pageX;
+                scrollStart = track.scrollLeft;
+                track.style.cursor = 'grabbing';
             });
+
             window.addEventListener('mousemove', e => {
                 if (!isDragging) return;
-                track.scrollLeft = scrollStart + (startX - e.pageX);
+                const dx = e.pageX - startX;
+                if (!hasDragged && Math.abs(dx) >= DRAG_THRESHOLD) {
+                    hasDragged = true;
+                    track.classList.add('is-dragging');
+                }
+                if (hasDragged) {
+                    track.scrollLeft = scrollStart - dx;
+                    track.style.scrollBehavior = 'auto';
+                }
             });
+
             window.addEventListener('mouseup', () => {
                 if (!isDragging) return;
                 isDragging = false;
-                track.classList.remove('is-dragging');
+                track.style.cursor = '';
+                track.style.scrollBehavior = '';
+                // Delay class removal so click event can check it
+                setTimeout(() => {
+                    track.classList.remove('is-dragging');
+                    hasDragged = false;
+                }, 50);
             });
 
-            // Wheel → horizontal scroll
+            // ── Wheel → horizontal scroll ──
             track.addEventListener('wheel', e => {
                 if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
                 e.preventDefault();
                 track.scrollBy({ left: e.deltaY * 2, behavior: 'auto' });
             }, { passive: false });
 
-            // Keyboard navigation
+            // ── Keyboard navigation ──
             track.addEventListener('keydown', e => {
-                if (e.key === 'ArrowRight') track.scrollBy({ left: getCardWidth(), behavior: 'smooth' });
-                if (e.key === 'ArrowLeft')  track.scrollBy({ left: -getCardWidth(), behavior: 'smooth' });
+                if (e.key === 'ArrowRight') { e.preventDefault(); track.scrollBy({ left: getCardWidth(), behavior: 'smooth' }); }
+                if (e.key === 'ArrowLeft')  { e.preventDefault(); track.scrollBy({ left: -getCardWidth(), behavior: 'smooth' }); }
+                // Enter/Space → open modal on focused card
+                if (e.key === 'Enter' || e.key === ' ') {
+                    const card = e.target.closest('.product-card');
+                    if (!card) return;
+                    e.preventDefault();
+                    const p = products.find(pr => pr.id === parseInt(card.dataset.id));
+                    if (p) openModal(p);
+                }
             });
 
-            // Click → modal (guard against drag)
+            // ── Click → modal (properly guards against post-drag clicks) ──
             track.addEventListener('click', e => {
-                if (track.classList.contains('is-dragging')) return;
+                if (hasDragged || track.classList.contains('is-dragging')) return;
                 const card = e.target.closest('.product-card');
                 if (!card) return;
                 const p = products.find(pr => pr.id === parseInt(card.dataset.id));
                 if (p) openModal(p);
             });
 
-            // Enter/Space → modal on focused card
-            track.addEventListener('keydown', e => {
-                if (e.key !== 'Enter' && e.key !== ' ') return;
+            // ── Touch tap → modal (mobile: no drag class interference) ──
+            let touchStartX = 0, touchStartY = 0, touchMoved = false;
+            track.addEventListener('touchstart', e => {
+                touchStartX = e.touches[0].clientX;
+                touchStartY = e.touches[0].clientY;
+                touchMoved = false;
+            }, { passive: true });
+            track.addEventListener('touchmove', e => {
+                const dx = Math.abs(e.touches[0].clientX - touchStartX);
+                const dy = Math.abs(e.touches[0].clientY - touchStartY);
+                if (dx > 8 || dy > 8) touchMoved = true;
+            }, { passive: true });
+            track.addEventListener('touchend', e => {
+                if (touchMoved) return;
                 const card = e.target.closest('.product-card');
                 if (!card) return;
-                e.preventDefault();
                 const p = products.find(pr => pr.id === parseInt(card.dataset.id));
                 if (p) openModal(p);
             });
@@ -3131,12 +3190,15 @@
 
             /* Instant reveal fallback */
             if (prefersReduced) {
-                gsap.utils.toArray('.reveal, .product-card').forEach(el => {
-                    el.style.opacity = '1';
-                    el.style.transform = 'none';
+                gsap.utils.toArray('.reveal, .hero-reveal, .product-card').forEach(el => {
+                    gsap.set(el, { opacity: 1, y: 0, scale: 1 });
                 });
                 return;
             }
+
+            /* ── Set initial hidden states via GSAP (CSS no longer does this) ── */
+            gsap.set('.reveal', { opacity: 0, y: 18 });
+            gsap.set('.product-card', { opacity: 0, y: 14 });
 
             /* ── Section .reveal elements with sibling stagger ── */
             const processed = new Set();
@@ -3184,6 +3246,7 @@
 
                 /* Header reveal */
                 if (header) {
+                    gsap.set(header, { opacity: 0, y: 14 });
                     gsap.to(header, {
                         scrollTrigger: {
                             trigger: section,
@@ -3194,8 +3257,6 @@
                         duration: 0.7,
                         ease: 'power3.out',
                     });
-                    /* Ensure header has initial state */
-                    gsap.set(header, { opacity: 0, y: 14 });
                 }
 
                 /* Card cascade — stagger capped at 0.45s total */
@@ -3504,6 +3565,16 @@
 
             /* ── 3. Scroll-driven reveals for all sections ── */
             initScrollAnimations();
+            ScrollTrigger.refresh();
+
+            /* ── 3b. Fallback: force-reveal anything still hidden after 4s ── */
+            setTimeout(() => {
+                document.querySelectorAll('.reveal, .product-card').forEach(el => {
+                    if (parseFloat(getComputedStyle(el).opacity) < 0.1) {
+                        gsap.set(el, { opacity: 1, y: 0, clearProps: 'transform' });
+                    }
+                });
+            }, 4000);
 
             /* ── 4. Pointer/hover motion system ── */
             initMotion();
