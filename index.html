@@ -698,6 +698,38 @@
         .slider-track.is-dragging { cursor: grabbing; scroll-behavior: auto; }
         .slider-track.is-dragging * { pointer-events: none; user-select: none; }
 
+        /* ═══════════════════════════════════════════════════
+           COLLECTION ARCHITECTURE  —  editorial catalogue
+        ═══════════════════════════════════════════════════ */
+        /* Stack title + character vertically for breathing space */
+        .slider-title-group { flex-direction: column; align-items: flex-start; gap: 6px; }
+        /* Collection character — italic editorial line */
+        .collection-character {
+            font-size: var(--fs-small); opacity: 0.4; font-style: italic;
+            font-weight: 400; max-width: 520px; line-height: var(--lh-snug);
+        }
+        /* Remove discount percentage noise from cards */
+        .price-save { display: none !important; }
+        /* Product tagline — single most important truth, calm */
+        .product-tagline {
+            font-size: var(--fs-caption); opacity: 0.45;
+            line-height: 1.5; margin-bottom: 0; font-weight: 400;
+        }
+        /* Fit-line: emotional hook above name — calmer italic */
+        .product-fit-line {
+            font-size: var(--fs-caption); color: var(--copper);
+            font-weight: 500; font-style: italic;
+            margin-bottom: var(--sp-2); line-height: var(--lh-snug);
+            opacity: 0.9;
+        }
+        /* Catalogue master header refinement */
+        .catalogue-intro-text {
+            max-width: 560px; margin: 16px auto 0;
+            font-size: var(--fs-small); opacity: 0.52;
+            font-weight: 400; line-height: var(--lh-body);
+            text-align: center;
+        }
+
         /* ===== PRODUCT CARD — Premium redesign ===== */
         .product-card {
             flex: 0 0 clamp(272px, 28vw, 340px);
@@ -2512,15 +2544,17 @@
         <section id="catalogue" class="section-padding" style="background: var(--paper-warm);">
             <div class="container">
                 <div class="section-header reveal">
-                    <span class="hero-eyebrow">The Collection</span>
-                    <h2>Picked with Purpose.</h2>
+                    <span class="hero-eyebrow">Five Collections · Thirteen Products</span>
+                    <h2>Picked with<br>intention.</h2>
+                    <p class="catalogue-intro-text">Not the most options — the right ones. Every product here earned its place. Nothing added for the sake of appearing complete.</p>
                 </div>
-                <nav class="cat-nav reveal" aria-label="Jump to category">
-                    <button class="cat-nav-btn active" onclick="scrollToCat('all', event)">All</button>
-                    <button class="cat-nav-btn" onclick="scrollToCat('phones', event)">Phones</button>
-                    <button class="cat-nav-btn" onclick="scrollToCat('speakers', event)">Sound</button>
-                    <button class="cat-nav-btn" onclick="scrollToCat('tv', event)">Screens</button>
-                    <button class="cat-nav-btn" onclick="scrollToCat('accessories', event)">Add-ons</button>
+                <nav class="cat-nav reveal" aria-label="Jump to collection">
+                    <button class="cat-nav-btn active" onclick="scrollToCat('all', event)">Overview</button>
+                    <button class="cat-nav-btn" onclick="scrollToCat('phones', event)">The Phone</button>
+                    <button class="cat-nav-btn" onclick="scrollToCat('audio', event)">Sound</button>
+                    <button class="cat-nav-btn" onclick="scrollToCat('screens', event)">Screen</button>
+                    <button class="cat-nav-btn" onclick="scrollToCat('daily', event)">Daily</button>
+                    <button class="cat-nav-btn" onclick="scrollToCat('protection', event)">Protect</button>
                 </nav>
             </div>
             <div id="catalogue-sliders"></div>
@@ -2699,10 +2733,11 @@
                     <div class="footer-col">
                         <h4 class="footer-col-label">Explore</h4>
                         <ul>
-                            <li><a href="#catalogue" onclick="scrollToCat('phones', event)">Everyday Phones</a></li>
-                            <li><a href="#catalogue" onclick="scrollToCat('speakers', event)">Sound &amp; Silence</a></li>
-                            <li><a href="#catalogue" onclick="scrollToCat('tv', event)">Home Screens</a></li>
-                            <li><a href="#catalogue" onclick="scrollToCat('accessories', event)">Everyday Additions</a></li>
+                            <li><a href="#catalogue" onclick="scrollToCat('phones', event)">The Right Phone</a></li>
+                            <li><a href="#catalogue" onclick="scrollToCat('audio', event)">Silence &amp; Sound</a></li>
+                            <li><a href="#catalogue" onclick="scrollToCat('screens', event)">The Living Room Screen</a></li>
+                            <li><a href="#catalogue" onclick="scrollToCat('daily', event)">Daily Companions</a></li>
+                            <li><a href="#catalogue" onclick="scrollToCat('protection', event)">Protect It from Day One</a></li>
                         </ul>
                     </div>
 
@@ -3195,19 +3230,19 @@
         }
 
         const products = [
-            { id: 1, category: 'phones', name: 'Samsung Galaxy S23 FE', specs: 'Screen stays vivid through the day · Camera ready in any light · Battery that outlasts the day', price: '₹34,999', oldPrice: '₹44,999', badge: 'Built to Last', tags: ['Handles the full day', 'Camera in any light'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/fWEumNteCudVVPuo.png', desc: 'A Samsung flagship brought to a considered price. The 6.4" Dynamic AMOLED screen is vivid without being harsh. The Exynos 2200 processor keeps things moving through a heavy day — calls, reels, photos, messages — without slowing down. Battery holds through the full day without needing a midday charge.', expect: 'Good fit for heavy daily use — multitasking, camera, social apps, calls. A single charge tends to hold through 14 to 16 hours of normal use. Not the top choice if gaming performance is the main priority.', fact: 'The display maintains colour accuracy at reduced brightness — easier on the eyes for late-night reading or early-morning checks.', decision: 'Handles heavy daily use without the full flagship cost', urgency: '', socialProof: '', brand: 'Samsung', tier: 'flagship', priceContext: 'Priced below original retail — performance unchanged', priceAnchor: 'Full flagship experience at a more considered price' },
-            { id: 2, category: 'phones', name: 'Google Pixel 7a', specs: 'Compact and comfortable to hold · Camera that processes photos automatically · Google chip for seamless daily use', price: '₹39,999', oldPrice: '₹43,999', badge: 'Camera First', tags: ['Photos that look natural', 'Clean daily experience'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/AeIhJBFyYYuVXncG.png', desc: 'Google built the hardware and software together — it shows in how the device performs. The 64MP camera processes shots automatically so photos look natural without any editing. The Tensor G2 chip handles voice commands, transcription, and daily tasks quietly in the background. Compact enough for comfortable one-handed use.', expect: 'Best fit if camera quality is the main reason for upgrading. Photos look accurate across different lighting without post-editing. The compact size suits those who prefer something that fits easily in a pocket.', fact: 'The Tensor chip enables live call transcription — useful during long meetings or in busy environments where catching every word matters.', decision: 'The right choice when camera quality and a clean experience matter most', urgency: '', socialProof: '', brand: 'Google', tier: 'balanced', priceContext: 'Delivers above its price in camera and software performance', priceAnchor: 'More camera quality per rupee than most phones at this level' },
+            { id: 1, category: 'phones', name: 'Samsung Galaxy S23 FE', specs: 'Screen stays vivid through the day · Camera ready in any light · Battery that outlasts the day', price: '₹34,999', oldPrice: '₹44,999', badge: 'Chosen for Reliability', tags: ['Handles the full day', 'Camera in any light'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/fWEumNteCudVVPuo.png', desc: 'A Samsung flagship brought to a considered price. The 6.4" Dynamic AMOLED screen is vivid without being harsh. The Exynos 2200 processor keeps things moving through a heavy day — calls, reels, photos, messages — without slowing down. Battery holds through the full day without needing a midday charge.', expect: 'Good fit for heavy daily use — multitasking, camera, social apps, calls. A single charge tends to hold through 14 to 16 hours of normal use. Not the top choice if gaming performance is the main priority.', fact: 'The display maintains colour accuracy at reduced brightness — easier on the eyes for late-night reading or early-morning checks.', decision: 'Handles heavy daily use without the full flagship cost', urgency: '', socialProof: '', brand: 'Samsung', tier: 'flagship', priceContext: 'Priced below original retail — performance unchanged', priceAnchor: 'Full flagship experience at a more considered price' },
+            { id: 2, category: 'phones', name: 'Google Pixel 7a', specs: 'Compact and comfortable to hold · Camera that processes photos automatically · Google chip for seamless daily use', price: '₹39,999', oldPrice: '₹43,999', badge: 'Camera Clarity', tags: ['Photos that look natural', 'Clean daily experience'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/AeIhJBFyYYuVXncG.png', desc: 'Google built the hardware and software together — it shows in how the device performs. The 64MP camera processes shots automatically so photos look natural without any editing. The Tensor G2 chip handles voice commands, transcription, and daily tasks quietly in the background. Compact enough for comfortable one-handed use.', expect: 'Best fit if camera quality is the main reason for upgrading. Photos look accurate across different lighting without post-editing. The compact size suits those who prefer something that fits easily in a pocket.', fact: 'The Tensor chip enables live call transcription — useful during long meetings or in busy environments where catching every word matters.', decision: 'The right choice when camera quality and a clean experience matter most', urgency: '', socialProof: '', brand: 'Google', tier: 'balanced', priceContext: 'Delivers above its price in camera and software performance', priceAnchor: 'More camera quality per rupee than most phones at this level' },
             { id: 3, category: 'tv', name: 'Sony Bravia 4K LED', specs: '55" screen with true 4K clarity · Sound deep enough for most rooms · Connects to all streaming services', price: '₹54,990', oldPrice: '₹69,990', badge: 'Home Cinema', tags: ['Cinema quality at home', 'Sound that fills the room'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/PNuLvudbHcTmKOpp.png', desc: 'A 55-inch Sony Bravia calibrated to show 4K content as it was meant to be seen. The X1 processor keeps motion smooth and colours accurate. Built-in Dolby Audio is tuned to fill a medium room without a separate speaker setup. Smart TV platform connects to all major streaming services.', expect: 'A genuine upgrade over any HD television. Picture quality is visible from the first day. Works well for movies, cricket, and everyday content. A viewing distance of at least 2 metres gets the best from the 55-inch screen.', fact: 'The Dolby Audio is tuned for medium-sized rooms — many find a separate soundbar becomes unnecessary after this television.', decision: 'Right for those who want home cinema quality without excessive complexity', urgency: '', socialProof: '', brand: 'Sony', tier: 'balanced', priceContext: 'Reduced from original — same Sony quality, better value', priceAnchor: 'Premium brand at a price that makes sense for the home' },
-            { id: 4, category: 'speakers', name: 'Sony WH-1000XM5', specs: '30 hours before a charge · Silence on command · Clear calls in any environment', price: '₹26,990', oldPrice: '₹34,990', badge: 'Industry Standard', tags: ['Silence when needed', 'Calls that stay clear'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/XIJzeXSRHorEqzFw.png', desc: 'The benchmark for noise cancellation. Eight microphones read the environment and cancel what should not be heard — traffic, office noise, background conversations. The 30-hour battery handles full travel days. LDAC delivers hi-res audio over Bluetooth for those who care what music actually sounds like.', expect: 'Works well for focus, commuting, travel, and long calls. Call clarity holds even on busy roads. Music sounds noticeably fuller than earbuds at this price. Slightly larger than earbuds — not ideal for running or intense physical activity.', fact: 'Three minutes of charging gives three hours of playback — useful when leaving the house in a rush.', decision: 'The right choice for those who need to focus, travel, or listen without interruption', urgency: '', socialProof: '', brand: 'Sony', tier: 'flagship', priceContext: 'Reduced from original — the benchmark remains the same', priceAnchor: 'Industry-leading noise cancellation at a fairer price' },
+            { id: 4, category: 'speakers', name: 'Sony WH-1000XM5', specs: '30 hours before a charge · Silence on command · Clear calls in any environment', price: '₹26,990', oldPrice: '₹34,990', badge: 'The Benchmark', tags: ['Silence when needed', 'Calls that stay clear'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/XIJzeXSRHorEqzFw.png', desc: 'The benchmark for noise cancellation. Eight microphones read the environment and cancel what should not be heard — traffic, office noise, background conversations. The 30-hour battery handles full travel days. LDAC delivers hi-res audio over Bluetooth for those who care what music actually sounds like.', expect: 'Works well for focus, commuting, travel, and long calls. Call clarity holds even on busy roads. Music sounds noticeably fuller than earbuds at this price. Slightly larger than earbuds — not ideal for running or intense physical activity.', fact: 'Three minutes of charging gives three hours of playback — useful when leaving the house in a rush.', decision: 'The right choice for those who need to focus, travel, or listen without interruption', urgency: '', socialProof: '', brand: 'Sony', tier: 'flagship', priceContext: 'Reduced from original — the benchmark remains the same', priceAnchor: 'Industry-leading noise cancellation at a fairer price' },
             { id: 5, category: 'accessories', name: 'Apple 20W USB-C Power Adapter', specs: 'Fast charges iPhone to 50% in 30 minutes · Stays cool during use · Small enough for any bag', price: '₹1,699', oldPrice: '₹1,900', badge: 'Genuine Apple', tags: ['Charges fast and safely', 'Built for iPhone'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/uVoVbsruMHDNSVBu.png', desc: 'Apple own charger, designed for Apple devices. Fast-charges iPhone 8 and above to 50% in around 30 minutes. Compact enough for a pocket or small bag. Runs at a safe temperature — no heat concerns during extended charging sessions.', expect: 'Works best with iPhone 8 and above, and recent iPad models. Noticeably faster than the older 5W charger. Non-Apple chargers at the wrong wattage can gradually reduce battery health — this one is designed to preserve it.', fact: 'Apple devices are calibrated to accept fast charging at the correct voltage. Third-party chargers at the wrong wattage can silently affect long-term battery health.', decision: 'The right choice for anyone using an iPhone who wants proper fast charging', urgency: '', socialProof: '', brand: 'Apple', tier: 'simple', priceContext: 'Genuine Apple hardware at a reasonable everyday price', priceAnchor: 'An investment that protects the device it charges' },
-            { id: 6, category: 'accessories', name: 'Premium Tempered Glass', specs: 'Feels like bare glass to the touch · Protects without visible thickness · Fingerprints stay minimal', price: '₹499', oldPrice: '₹999', badge: 'Screen Protection', tags: ['Invisible once applied', 'Keeps the screen new'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/KelCDGFlqZNnFnFD.png', desc: '9H hardness glass that protects the screen without changing how it looks or feels. Edge-to-edge coverage means the corners — where most drops hit first — are also covered. The oleophobic coating keeps fingerprint smudges minimal throughout the day.', expect: 'Applied to a clean, dust-free screen it is nearly invisible. Touch sensitivity stays the same. The glass is designed to absorb impact — if it cracks from a drop, it took what the screen did not have to.', fact: 'The anti-smudge coating actively reduces fingerprint transfer — the screen stays noticeably cleaner between wipes.', decision: 'The simplest way to protect a screen investment', urgency: '', socialProof: '', brand: 'Generic', tier: 'simple', priceContext: 'A small cost that prevents a much larger one', priceAnchor: 'Fractional insurance for a screen that costs significantly more' },
-            { id: 7, category: 'accessories', name: 'Sleek Protective Case', specs: 'Absorbs impact without adding bulk · Raised edges protect camera and screen · Stays slim in the pocket', price: '₹799', oldPrice: '₹1,499', badge: 'Daily Protection', tags: ['Protection without bulk', 'Raised camera edges'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/jdVRAWbtGZtmRYSW.png', desc: 'Shock-absorbing protection that does not add visible weight or thickness. The slim profile keeps the phone feeling natural in hand. Raised edges around the camera module and screen perimeter mean the device can sit face-down without glass contacting the surface.', expect: 'Works well for everyday carry. Not designed for heavy outdoor environments — a rugged case suits those needs better. Raised camera edges reduce surface contact every time the phone is set down.', fact: 'Camera glass is the most expensive component to replace. The raised lens edges here protect it with every placement.', decision: 'Protection that does not compromise how the phone feels in hand', urgency: '', socialProof: '', brand: 'Generic', tier: 'simple', priceContext: 'Strong protection at a straightforward price', priceAnchor: 'Less than the cost of one screen repair' },
-            { id: 8, category: 'accessories', name: 'Braided Fast Charge Cable', specs: '60W charging that holds speed · Tangle-free from day one · Built to outlast standard cables', price: '₹599', oldPrice: '₹1,199', badge: 'Built to Survive', tags: ['Charges fast and reliably', 'Built for daily use'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/skNTrQiJTgkIzyjx.png', desc: 'A braided USB-C cable supporting up to 60W Power Delivery. Tangle-free by design — wraps and unwraps cleanly without the coiling that splits standard plastic cables over time. Reinforced connector ends resist the bending stress that causes most cable failures.', expect: 'Noticeably faster than 5W or 10W standard cables. The braided sleeve resists the fraying that typically starts near connector ends within a few months of daily use.', fact: 'The reinforced connector joints are rated to handle 10 times more bending cycles than standard plastic-sheathed cables.', decision: 'A cable built to last rather than replace', urgency: '', socialProof: '', brand: 'Generic', tier: 'simple', priceContext: 'More durable than the standard cable — saves the replacement cost', priceAnchor: 'Built to outlast two or three standard cables' },
+            { id: 6, category: 'accessories', name: 'Premium Tempered Glass', specs: 'Feels like bare glass to the touch · Protects without visible thickness · Fingerprints stay minimal', price: '₹499', oldPrice: '₹999', badge: 'Invisible Guard', tags: ['Invisible once applied', 'Keeps the screen new'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/KelCDGFlqZNnFnFD.png', desc: '9H hardness glass that protects the screen without changing how it looks or feels. Edge-to-edge coverage means the corners — where most drops hit first — are also covered. The oleophobic coating keeps fingerprint smudges minimal throughout the day.', expect: 'Applied to a clean, dust-free screen it is nearly invisible. Touch sensitivity stays the same. The glass is designed to absorb impact — if it cracks from a drop, it took what the screen did not have to.', fact: 'The anti-smudge coating actively reduces fingerprint transfer — the screen stays noticeably cleaner between wipes.', decision: 'The simplest way to protect a screen investment', urgency: '', socialProof: '', brand: 'Generic', tier: 'simple', priceContext: 'A small cost that prevents a much larger one', priceAnchor: 'Fractional insurance for a screen that costs significantly more' },
+            { id: 7, category: 'accessories', name: 'Sleek Protective Case', specs: 'Absorbs impact without adding bulk · Raised edges protect camera and screen · Stays slim in the pocket', price: '₹799', oldPrice: '₹1,499', badge: 'Protection Without Bulk', tags: ['Protection without bulk', 'Raised camera edges'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/jdVRAWbtGZtmRYSW.png', desc: 'Shock-absorbing protection that does not add visible weight or thickness. The slim profile keeps the phone feeling natural in hand. Raised edges around the camera module and screen perimeter mean the device can sit face-down without glass contacting the surface.', expect: 'Works well for everyday carry. Not designed for heavy outdoor environments — a rugged case suits those needs better. Raised camera edges reduce surface contact every time the phone is set down.', fact: 'Camera glass is the most expensive component to replace. The raised lens edges here protect it with every placement.', decision: 'Protection that does not compromise how the phone feels in hand', urgency: '', socialProof: '', brand: 'Generic', tier: 'simple', priceContext: 'Strong protection at a straightforward price', priceAnchor: 'Less than the cost of one screen repair' },
+            { id: 8, category: 'accessories', name: 'Braided Fast Charge Cable', specs: '60W charging that holds speed · Tangle-free from day one · Built to outlast standard cables', price: '₹599', oldPrice: '₹1,199', badge: 'Built to Last', tags: ['Charges fast and reliably', 'Built for daily use'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/skNTrQiJTgkIzyjx.png', desc: 'A braided USB-C cable supporting up to 60W Power Delivery. Tangle-free by design — wraps and unwraps cleanly without the coiling that splits standard plastic cables over time. Reinforced connector ends resist the bending stress that causes most cable failures.', expect: 'Noticeably faster than 5W or 10W standard cables. The braided sleeve resists the fraying that typically starts near connector ends within a few months of daily use.', fact: 'The reinforced connector joints are rated to handle 10 times more bending cycles than standard plastic-sheathed cables.', decision: 'A cable built to last rather than replace', urgency: '', socialProof: '', brand: 'Generic', tier: 'simple', priceContext: 'More durable than the standard cable — saves the replacement cost', priceAnchor: 'Built to outlast two or three standard cables' },
             { id: 10, category: 'accessories', name: 'Aluminum Phone Stand', specs: 'Holds the phone at a comfortable eye level · Stable on any surface · Charges while mounted', price: '₹399', oldPrice: '₹899', badge: 'Desk Essential', tags: ['Hands-free at the desk', 'Comfortable viewing angle'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/QLzXktccBITzJoEo.png', desc: 'Aluminium stand with an adjustable viewing angle that brings the phone to eye level. Non-slip silicone pads keep it stable on any desk surface. The hollow design allows a cable to pass through so the phone charges while sitting on the stand.', expect: 'Works well for video calls, cooking with a recipe open, or desk content viewing. Lightweight but solid — does not shift when tapping the screen. Fits most phone sizes with or without a case.', fact: 'Keeping the phone at eye level during video calls reduces neck strain over long meetings — a small adjustment with a noticeable daily effect.', decision: 'Makes hands-free use at a desk genuinely comfortable', urgency: '', socialProof: '', brand: 'Generic', tier: 'simple', priceContext: 'A simple addition that changes how the desk feels', priceAnchor: 'Less than a coffee out — earns its place within a week' },
-            { id: 11, category: 'accessories', name: 'Premium Wireless Earbuds', specs: 'Up to 24 hours total listening · Opens and connects automatically · Touch controls for music and calls', price: '₹2,999', oldPrice: '₹5,999', badge: 'Daily Earbuds', tags: ['Auto-connects on open', 'Full day battery'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/akufQOVWgjtpdbDf.png', desc: 'True wireless earbuds with a charging case that extends total listening to 24 hours. Opens and connects automatically the moment the case is opened — no manual pairing needed after the first setup. Touch controls handle playback and calls without reaching for the phone.', expect: 'Works well for commutes, walks, and focused work. Sound is balanced — clear across most genres. Not designed for intense workouts or water exposure. Auto-pairing makes them simple to use without thought.', fact: 'Automatic pairing activates in under two seconds from opening the case — useful when there is no time to navigate settings.', decision: 'Good for daily commutes, walks, or focused work', urgency: '', socialProof: '', brand: 'Generic', tier: 'balanced', priceContext: 'Significant reduction from original price', priceAnchor: 'Daily-use earbuds without the premium brand cost' },
-            { id: 12, category: 'accessories', name: 'Magnetic Car Mount', specs: 'Attaches in one move · Rotates 360° for any orientation · Holds securely through rough roads', price: '₹449', oldPrice: '₹999', badge: 'Drive Safely', tags: ['One-hand mounting', 'Navigation stays visible'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/LeYyaTtVUntOTfPh.png', desc: 'A universal magnetic mount that fits into any air vent. One-handed attachment — the magnet grabs the phone and holds it securely. 360-degree rotation means portrait or landscape, whichever makes navigation clearer. Works with most Android and iPhone models.', expect: 'Strong enough to hold through rough roads. Works with most phone cases — thicker cases may reduce magnetic strength slightly. Keeps navigation visible without taking a hand off the wheel.', fact: 'A properly mounted phone removes the temptation of looking down while driving — one of the most common causes of road accidents.', decision: 'Keeps hands on the wheel and navigation clearly in view', urgency: '', socialProof: '', brand: 'Generic', tier: 'simple', priceContext: 'Simple addition to a safer drive', priceAnchor: 'Less than the cost of a single distracted driving fine' },
-            { id: 13, category: 'accessories', name: 'Device Cleaning Kit', specs: 'Safe on all screens and surfaces · Anti-static formula slows dust return · Microfiber cloth included', price: '₹249', oldPrice: '₹499', badge: 'Keep It Clean', tags: ['Safe on all surfaces', 'Reduces visible smudging'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/QdzcPYGrRoKDynVN.png', desc: 'Alcohol-free cleaning solution for screens and electronics. The anti-static formula removes fingerprints and smudges without leaving residue. Includes a microfiber cloth that will not scratch glass or coated surfaces. Safe for phones, tablets, laptops, and television panels.', expect: 'Spray lightly onto the cloth rather than directly onto the screen for best results. Safe for oleophobic coatings — unlike some household cleaners that strip them over time.', fact: 'The anti-static formula repels dust rather than just removing it — the screen stays cleaner for longer between wipes.', decision: 'Keeps displays looking new without risk of surface damage', urgency: '', socialProof: '', brand: 'Generic', tier: 'simple', priceContext: 'Everyday maintenance at a straightforward price', priceAnchor: 'Less than the cost of damage from using the wrong cleaner once' },
-            { id: 14, category: 'accessories', name: 'Camera Lens Protector', specs: 'Ultra-thin — photos look unchanged · Scratch-resistant tempered glass · Nearly invisible once applied', price: '₹299', oldPrice: '₹599', badge: 'Lens Protection', tags: ['Photo quality unchanged', 'Protects resale value'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/gmvKvvXVYoSPYHjl.png', desc: 'Tempered glass protection sized for smartphone camera lenses. Ultra-thin profile means photos are taken through the protector with no visible quality difference. Scratch-resistant surface protects the original lens glass from keys, surfaces, and daily pocket wear.', expect: 'Applied to a clean, dust-free lens it is nearly invisible and photo quality stays unchanged. Particularly useful for phones with protruding lenses — those make contact with surfaces every time the phone is placed down.', fact: 'Camera lens scratches are one of the most common reasons phones lose resale value — and among the easiest things to prevent from day one.', decision: 'Protects the most-used component without affecting how photos look', urgency: '', socialProof: '', brand: 'Generic', tier: 'simple', priceContext: 'Small cost, significant protection from the first day', priceAnchor: 'A fraction of the cost of a lens repair or resale value loss' }
+            { id: 11, category: 'accessories', name: 'Premium Wireless Earbuds', specs: 'Up to 24 hours total listening · Opens and connects automatically · Touch controls for music and calls', price: '₹2,999', oldPrice: '₹5,999', badge: 'Daily Companion', tags: ['Auto-connects on open', 'Full day battery'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/akufQOVWgjtpdbDf.png', desc: 'True wireless earbuds with a charging case that extends total listening to 24 hours. Opens and connects automatically the moment the case is opened — no manual pairing needed after the first setup. Touch controls handle playback and calls without reaching for the phone.', expect: 'Works well for commutes, walks, and focused work. Sound is balanced — clear across most genres. Not designed for intense workouts or water exposure. Auto-pairing makes them simple to use without thought.', fact: 'Automatic pairing activates in under two seconds from opening the case — useful when there is no time to navigate settings.', decision: 'Good for daily commutes, walks, or focused work', urgency: '', socialProof: '', brand: 'Generic', tier: 'balanced', priceContext: 'Significant reduction from original price', priceAnchor: 'Daily-use earbuds without the premium brand cost' },
+            { id: 12, category: 'accessories', name: 'Magnetic Car Mount', specs: 'Attaches in one move · Rotates 360° for any orientation · Holds securely through rough roads', price: '₹449', oldPrice: '₹999', badge: 'Hands Free', tags: ['One-hand mounting', 'Navigation stays visible'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/LeYyaTtVUntOTfPh.png', desc: 'A universal magnetic mount that fits into any air vent. One-handed attachment — the magnet grabs the phone and holds it securely. 360-degree rotation means portrait or landscape, whichever makes navigation clearer. Works with most Android and iPhone models.', expect: 'Strong enough to hold through rough roads. Works with most phone cases — thicker cases may reduce magnetic strength slightly. Keeps navigation visible without taking a hand off the wheel.', fact: 'A properly mounted phone removes the temptation of looking down while driving — one of the most common causes of road accidents.', decision: 'Keeps hands on the wheel and navigation clearly in view', urgency: '', socialProof: '', brand: 'Generic', tier: 'simple', priceContext: 'Simple addition to a safer drive', priceAnchor: 'Less than the cost of a single distracted driving fine' },
+            { id: 13, category: 'accessories', name: 'Device Cleaning Kit', specs: 'Safe on all screens and surfaces · Anti-static formula slows dust return · Microfiber cloth included', price: '₹249', oldPrice: '₹499', badge: 'Screen Care', tags: ['Safe on all surfaces', 'Reduces visible smudging'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/QdzcPYGrRoKDynVN.png', desc: 'Alcohol-free cleaning solution for screens and electronics. The anti-static formula removes fingerprints and smudges without leaving residue. Includes a microfiber cloth that will not scratch glass or coated surfaces. Safe for phones, tablets, laptops, and television panels.', expect: 'Spray lightly onto the cloth rather than directly onto the screen for best results. Safe for oleophobic coatings — unlike some household cleaners that strip them over time.', fact: 'The anti-static formula repels dust rather than just removing it — the screen stays cleaner for longer between wipes.', decision: 'Keeps displays looking new without risk of surface damage', urgency: '', socialProof: '', brand: 'Generic', tier: 'simple', priceContext: 'Everyday maintenance at a straightforward price', priceAnchor: 'Less than the cost of damage from using the wrong cleaner once' },
+            { id: 14, category: 'accessories', name: 'Camera Lens Protector', specs: 'Ultra-thin — photos look unchanged · Scratch-resistant tempered glass · Nearly invisible once applied', price: '₹299', oldPrice: '₹599', badge: 'Preserve Quality', tags: ['Photo quality unchanged', 'Protects resale value'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/gmvKvvXVYoSPYHjl.png', desc: 'Tempered glass protection sized for smartphone camera lenses. Ultra-thin profile means photos are taken through the protector with no visible quality difference. Scratch-resistant surface protects the original lens glass from keys, surfaces, and daily pocket wear.', expect: 'Applied to a clean, dust-free lens it is nearly invisible and photo quality stays unchanged. Particularly useful for phones with protruding lenses — those make contact with surfaces every time the phone is placed down.', fact: 'Camera lens scratches are one of the most common reasons phones lose resale value — and among the easiest things to prevent from day one.', decision: 'Protects the most-used component without affecting how photos look', urgency: '', socialProof: '', brand: 'Generic', tier: 'simple', priceContext: 'Small cost, significant protection from the first day', priceAnchor: 'A fraction of the cost of a lens repair or resale value loss' }
         ];
 
         let currentProduct = null;
@@ -3479,61 +3514,78 @@
         }
 
         /* ── CATALOGUE SLIDERS ── */
-        const CATEGORIES = [
-            { id: 'phones',      label: 'Everyday Phones' },
-            { id: 'speakers',    label: 'Sound & Silence' },
-            { id: 'tv',          label: 'Home Screens' },
-            { id: 'accessories', label: 'Everyday Additions' },
+        /* ══════════════════════════════════════════════════════
+           COLLECTION ARCHITECTURE — editorial curated catalogue
+           Five intentional collections, not generic categories.
+        ══════════════════════════════════════════════════════ */
+        const COLLECTIONS = [
+            {
+                id:         'phones',
+                title:      'The Right Phone for Most People',
+                character:  'Two phones. Two honest choices. Nothing more.',
+                eyebrow:    'Everyday Carriers · Two Options, Honestly Presented',
+                sub:        'We carry two phones. Each chosen because it handles daily life honestly — not because of the brand on the back.',
+                img:        'Photos/07_kovin_mobile_first_digital_experience.png',
+                imgPos:     'center 45%',
+                productIds: [1, 2],
+            },
+            {
+                id:         'audio',
+                title:      'Silence & Sound',
+                character:  'One for complete quiet. One for every commute.',
+                eyebrow:    'Audio · Focus & Presence',
+                sub:        'Chosen for how music actually sounds — and how noise actually disappears when it should.',
+                img:        'Photos/03_kovin_immersive_audio_experience.png',
+                imgPos:     'center 55%',
+                productIds: [4, 11],
+            },
+            {
+                id:         'screens',
+                title:      'The Living Room Screen',
+                character:  'One television. The right one.',
+                eyebrow:    'Home Cinema · One Considered Choice',
+                sub:        'We carry one television. It is here because it genuinely earns its place in the room — not because a catalogue needs to look complete.',
+                img:        'Photos/04_kovin_premium_entertainment_space.png',
+                imgPos:     'center 50%',
+                productIds: [3],
+            },
+            {
+                id:         'daily',
+                title:      'Daily Companions',
+                character:  'The small decisions that reveal their value a year in.',
+                eyebrow:    'Everyday Essentials · Chosen With Care',
+                sub:        'The pieces that live quietly alongside a device. Their quality only becomes obvious the day the wrong version was bought instead.',
+                img:        'Photos/02_kovin_daily_life_technology.png',
+                imgPos:     'center 40%',
+                productIds: [5, 8, 10, 12],
+            },
+            {
+                id:         'protection',
+                title:      'Protect It from Day One',
+                character:  'Protection designed to be forgotten — until it matters.',
+                eyebrow:    'Care · Preservation · Long-Term Value',
+                sub:        'Each piece chosen to protect what was spent on a device — quietly, without adding bulk or changing how it feels in hand.',
+                img:        'Photos/05_kovin_smart_accessories_flatlay.png',
+                imgPos:     'center 45%',
+                productIds: [6, 7, 14, 13],
+            },
         ];
 
-        /* Scene strip visuals — cinematic category dividers */
-        const SCENE_STRIPS = {
-            phones:      {
-                img:     'Photos/07_kovin_mobile_first_digital_experience.png',
-                eyebrow: 'Phones · Everyday Carriers',
-                title:   'Everyday Phones',
-                sub:     'Each one chosen because it handles the day — not the most advertised option available.',
-                pos:     'center 45%',
-            },
-            speakers:    {
-                img:     'Photos/immersive_audio_experience.png',
-                eyebrow: 'Sound · Silence on Demand',
-                title:   'Sound & Silence',
-                sub:     'Chosen for how music actually sounds, and how noise actually disappears.',
-                pos:     'center 55%',
-            },
-            tv:          {
-                img:     'Photos/premium_entertainment_space.png',
-                eyebrow: 'Screens · Home Cinema',
-                title:   'Home Screens',
-                sub:     'Television that shows what the director intended — not what a cheap panel allows.',
-                pos:     'center 50%',
-            },
-            accessories: {
-                img:     'Photos/smart_accessories_flatlay.png',
-                eyebrow: 'Add-ons · Everyday Essentials',
-                title:   'Everyday Additions',
-                sub:     'Small decisions that change how a device feels after a year of daily use.',
-                pos:     'center 45%',
-            },
-        };
-
-        function buildSceneStrip(catId) {
-            const s = SCENE_STRIPS[catId];
-            if (!s) return null;
+        /* Build scene strip from collection data */
+        function buildCollectionStrip(col) {
             const el = document.createElement('div');
             el.className = 'scene-strip';
-            el.dataset.scene = catId;
+            el.dataset.scene = col.id;
             el.innerHTML = `
                 <div class="scene-strip-bg">
-                    <img src="${s.img}" alt="" loading="lazy" width="1920" height="650"
-                         style="object-position:${s.pos}" aria-hidden="true">
+                    <img src="${col.img}" alt="" loading="lazy" width="1920" height="650"
+                         style="object-position:${col.imgPos}" aria-hidden="true">
                 </div>
                 <div class="scene-strip-overlay"></div>
                 <div class="scene-strip-content">
-                    <span class="scene-strip-eyebrow">${s.eyebrow}</span>
-                    <h2 class="scene-strip-title">${s.title}</h2>
-                    <p class="scene-strip-sub">${s.sub}</p>
+                    <span class="scene-strip-eyebrow">${col.eyebrow}</span>
+                    <h2 class="scene-strip-title">${col.title}</h2>
+                    <p class="scene-strip-sub">${col.sub}</p>
                 </div>`;
             return el;
         }
@@ -3542,59 +3594,66 @@
             const root = document.getElementById('catalogue-sliders');
             if (!root) return;
             root.innerHTML = '';
-            CATEGORIES.forEach(cat => {
-                const items = products.filter(p => p.category === cat.id);
+
+            COLLECTIONS.forEach(col => {
+                /* Resolve product objects in collection order */
+                const items = col.productIds
+                    .map(id => products.find(p => p.id === id))
+                    .filter(Boolean);
                 if (!items.length) return;
 
-                /* ── Scene strip before each category ── */
-                const strip = buildSceneStrip(cat.id);
-                if (strip) root.appendChild(strip);
+                /* Cinematic collection scene strip */
+                root.appendChild(buildCollectionStrip(col));
 
+                /* Product rail */
                 const section = document.createElement('div');
                 section.className = 'slider-section';
-                section.id = `cat-${cat.id}`;
+                section.id = `cat-${col.id}`;
                 section.innerHTML = `
                     <div class="slider-header">
                         <div class="slider-title-group">
-                            <h3 class="slider-category-name">${cat.label}</h3>
-                            <span class="slider-count">${items.length} item${items.length !== 1 ? 's' : ''}</span>
+                            <h3 class="slider-category-name">${col.title}</h3>
+                            <span class="collection-character">${col.character}</span>
                         </div>
-                        <div class="slider-nav" aria-label="${cat.label} navigation">
-                            <button class="slider-btn slider-prev" data-track="${cat.id}" aria-label="Scroll ${cat.label} left">
+                        <div class="slider-nav" aria-label="${col.title} navigation">
+                            <button class="slider-btn slider-prev" data-track="${col.id}" aria-label="Scroll left">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
                             </button>
-                            <button class="slider-btn slider-next" data-track="${cat.id}" aria-label="Scroll ${cat.label} right">
+                            <button class="slider-btn slider-next" data-track="${col.id}" aria-label="Scroll right">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                             </button>
                         </div>
                     </div>
                     <div class="slider-viewport">
-                        <div class="slider-track" id="track-${cat.id}" role="list" aria-label="${cat.label} products">
+                        <div class="slider-track" id="track-${col.id}" role="list" aria-label="${col.title} products">
                             ${items.map(p => buildCard(p)).join('')}
                         </div>
                     </div>`;
                 root.appendChild(section);
-                initSlider(document.getElementById(`track-${cat.id}`), cat.id);
+                initSlider(document.getElementById(`track-${col.id}`), col.id);
             });
         }
 
+        /* ── Premium editorial product card ──
+           No badge clutter, no % off noise.
+           Emotional hook first, product name second,
+           one honest tagline, clean price row.
+        ── */
         function buildCard(p) {
-            const pct = savingPct(p.price, p.oldPrice);
-            return `<div class="product-card" role="listitem" tabindex="0" aria-label="${p.name} — ${p.price}" data-id="${p.id}">
+            /* First spec bullet — the most truthful single line */
+            const topSpec = (p.specs || '').split(' · ')[0];
+            return `<div class="product-card" role="listitem" tabindex="0" aria-label="${p.name}, ${p.price}" data-id="${p.id}">
                 <div class="product-img-wrap">
-                    ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
                     <img src="${p.image}" alt="${p.name}" loading="lazy">
                 </div>
                 <div class="product-body">
+                    <p class="product-fit-line">${p.decision}</p>
                     <h3 class="product-name">${p.name}</h3>
-                    <div class="product-fit-line">${p.decision}</div>
-                    ${p.urgency ? `<div class="product-urgency">${p.urgency}</div>` : ''}
-                    <p class="product-specs">${p.specs}</p>
+                    <p class="product-tagline">${topSpec}</p>
                     <div class="product-pricing">
                         <div>
                             <span class="price-now">${p.price}</span>
-                            <span class="price-was">${p.oldPrice}</span>
-                            ${pct ? `<span class="price-save">${pct}% off</span>` : ''}
+                            ${p.oldPrice ? `<span class="price-was">${p.oldPrice}</span>` : ''}
                         </div>
                         <div class="product-cta" aria-hidden="true">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -3715,7 +3774,8 @@
                 ? document.getElementById('catalogue')
                 : document.getElementById(`cat-${cat}`);
             if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            announce(`Jumped to ${cat === 'all' ? 'all categories' : cat}`);
+            const colName = cat === 'all' ? 'overview' : (COLLECTIONS.find(c => c.id === cat)?.title || cat);
+            announce(`Jumped to ${colName}`);
         }
 
         /* RETENTION LOGIC */
