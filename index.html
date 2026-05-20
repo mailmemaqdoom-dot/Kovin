@@ -1521,6 +1521,143 @@
         .cart-momentum { text-align: center; margin-top: var(--sp-4); font-size: var(--fs-small); font-weight: 500; color: var(--copper); letter-spacing: 0.01em; }
         .cart-hesitation { font-size: var(--fs-caption); opacity: 0.45; text-align: center; margin-top: var(--sp-3); }
 
+        /* ══════════════════════════════════════════════════════
+           CART DRAWER — Phase 2-4
+        ══════════════════════════════════════════════════════ */
+        .cart-drawer {
+            background: var(--paper); width: 100%; max-width: 580px;
+            border-radius: 48px; padding: 52px; position: relative;
+            box-shadow: var(--shadow-lux); z-index: 3001;
+            max-height: 90vh; overflow-y: auto; scrollbar-width: none;
+        }
+        .cart-drawer::-webkit-scrollbar { display: none; }
+        .cart-drawer-header { text-align: center; margin-bottom: var(--sp-7); }
+        .cart-drawer-header h2 {
+            font-family: var(--font-display);
+            font-size: clamp(1.75rem, 2.5vw, 2.25rem);
+            font-weight: 400; letter-spacing: var(--ls-snug); margin-bottom: var(--sp-2);
+        }
+        .cart-drawer-sub { opacity: 0.5; font-size: var(--fs-small); }
+        .cart-items-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+        .cart-item-row {
+            display: flex; align-items: center; gap: 16px;
+            background: var(--paper-warm); padding: 16px; border-radius: 24px;
+            border: 1px solid var(--border); transition: var(--transition-smooth);
+            animation: cartItemIn 0.28s var(--ease-expo) both;
+        }
+        @keyframes cartItemIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .cart-item-img { width: 64px; height: 64px; object-fit: contain; border-radius: 12px; flex-shrink: 0; background: var(--paper); }
+        .cart-item-info { flex: 1; min-width: 0; }
+        .cart-item-name { font-size: var(--fs-small); font-weight: 600; line-height: var(--lh-snug); margin-bottom: 4px; }
+        .cart-item-price { font-size: var(--fs-small); color: var(--copper); font-weight: 700; }
+        .cart-item-controls { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+        .cart-qty-btn {
+            width: 28px; height: 28px; border-radius: 50%;
+            background: var(--paper); border: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; font-weight: 600; cursor: pointer;
+            touch-action: manipulation; color: var(--ink); flex-shrink: 0;
+            transition: background 0.15s, border-color 0.15s;
+        }
+        .cart-qty-btn:active { background: var(--copper-glow); border-color: var(--copper); }
+        .cart-qty-value { font-size: var(--fs-small); font-weight: 700; min-width: 20px; text-align: center; }
+        .cart-item-remove {
+            width: 32px; height: 32px; border-radius: 50%; border: none;
+            background: transparent; color: var(--ink); opacity: 0.28;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            touch-action: manipulation; flex-shrink: 0; transition: opacity 0.18s;
+        }
+        .cart-item-remove:hover, .cart-item-remove:active { opacity: 0.72; }
+        .cart-empty-state {
+            text-align: center; padding: 48px 24px;
+            display: none; flex-direction: column; align-items: center; gap: 8px;
+        }
+        .cart-empty-state.visible { display: flex; }
+        .cart-empty-icon { font-size: 2.8rem; margin-bottom: 8px; opacity: 0.45; }
+        .cart-empty-state p { font-size: var(--fs-body); font-weight: 600; opacity: 0.55; }
+        .cart-empty-state span { font-size: var(--fs-small); opacity: 0.38; }
+        .cart-summary {
+            background: var(--paper-warm); border-radius: 24px;
+            padding: 20px 24px; margin-bottom: 16px; border: 1px solid var(--border);
+        }
+        .cart-summary-row {
+            display: flex; justify-content: space-between; align-items: center;
+            font-weight: 700; font-size: 1.05rem; margin-bottom: 5px;
+        }
+        .cart-total-value { color: var(--copper); }
+        .cart-summary-note { font-size: var(--fs-caption); opacity: 0.45; }
+        .cart-actions { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+        .cart-reassurance { text-align: center; font-size: var(--fs-caption); opacity: 0.38; font-weight: 500; }
+        /* Cart badge on dock tab */
+        .dock-cart-wrap { position: relative; flex: 1; display: flex; flex-direction: row; align-items: stretch; }
+        .dock-cart-wrap > .dock-tab { flex: 1; }
+        .cart-badge {
+            position: absolute; top: -3px; right: calc(50% - 22px);
+            min-width: 17px; height: 17px; border-radius: 9px;
+            background: var(--copper); color: white;
+            font-size: 0.62rem; font-weight: 700;
+            display: none; align-items: center; justify-content: center;
+            padding: 0 4px; pointer-events: none;
+            border: 2px solid var(--paper); z-index: 2001;
+            transition: transform 0.2s var(--ease-expo);
+        }
+        .cart-badge.pop { animation: badgePop 0.32s var(--ease-expo); }
+        @keyframes badgePop { 0%{transform:scale(0.6)} 60%{transform:scale(1.25)} 100%{transform:scale(1)} }
+        /* Checkout cart review (step 1) */
+        .checkout-cart-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+        .checkout-cart-item {
+            display: flex; align-items: center; gap: 14px;
+            background: var(--paper-warm); padding: 14px 16px;
+            border-radius: 20px; border: 1px solid var(--border);
+        }
+        .checkout-cart-item img { width: 52px; height: 52px; object-fit: contain; border-radius: 10px; flex-shrink: 0; }
+        .checkout-cart-item-info { flex: 1; min-width: 0; }
+        .checkout-cart-item-name { font-size: var(--fs-small); font-weight: 600; line-height: 1.3; margin-bottom: 2px; }
+        .checkout-cart-item-meta { font-size: var(--fs-caption); opacity: 0.55; }
+        .checkout-cart-item-price { font-size: var(--fs-small); color: var(--copper); font-weight: 700; flex-shrink: 0; }
+        .checkout-cart-total {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 14px 16px; background: var(--paper-warm); border-radius: 20px;
+            border: 1px solid var(--border); margin-bottom: 28px;
+            font-weight: 700;
+        }
+        .checkout-cart-total span:last-child { color: var(--copper); }
+        /* Toast notification */
+        .cart-toast {
+            position: fixed; top: 90px; left: 50%; transform: translateX(-50%) translateY(-20px);
+            background: var(--ink); color: var(--paper); padding: 12px 20px;
+            border-radius: 50px; font-size: var(--fs-caption); font-weight: 600;
+            white-space: nowrap; z-index: 9999; opacity: 0; pointer-events: none;
+            transition: all 0.3s var(--ease-expo);
+        }
+        .cart-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+        /* Order confirmation enhanced */
+        .order-success-anim {
+            width: 72px; height: 72px; border-radius: 50%;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            display: flex; align-items: center; justify-content: center;
+            margin: 0 auto var(--sp-5); font-size: 2rem; color: white;
+            animation: successPop 0.6s var(--ease-expo);
+        }
+        @keyframes successPop {
+            0%   { transform: scale(0.4); opacity: 0; }
+            60%  { transform: scale(1.15); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .order-items-summary { margin: 20px 0; }
+        .order-item-line {
+            display: flex; justify-content: space-between; padding: 8px 0;
+            border-bottom: 1px solid var(--border); font-size: var(--fs-small);
+        }
+        .order-item-line:last-child { border-bottom: none; }
+        .order-total-line {
+            display: flex; justify-content: space-between; padding: 12px 0;
+            font-weight: 700; color: var(--copper); font-size: var(--fs-body);
+        }
+
         /* TRUST SECTIONS — see token-based definition above footer */
 
         /* TRUST LIST */
@@ -2090,9 +2227,10 @@
             }
             .modal-title { font-size: clamp(1.55rem, 5.5vw, 2rem); }
 
-            /* ── Bottom-sheet guided / checkout ── */
+            /* ── Bottom-sheet guided / checkout / cart ── */
             .guided-panel,
-            .checkout-panel {
+            .checkout-panel,
+            .cart-drawer {
                 border-radius: 28px 28px 0 0;
                 width: 100%;
                 max-height: 92dvh;
@@ -2100,6 +2238,9 @@
                 padding: 28px 20px calc(env(safe-area-inset-bottom, 0px) + 32px);
                 overscroll-behavior: contain;
             }
+            .cart-drawer-header h2 { font-size: clamp(1.4rem, 4.5vw, 1.65rem); }
+            .cart-item-img { width: 52px; height: 52px; }
+            .cart-qty-btn { width: 26px; height: 26px; }
             .guided-question { font-size: clamp(1.45rem, 5vw, 1.75rem); margin-bottom: var(--sp-8); }
             .checkout-header h2 { font-size: clamp(1.4rem, 4.5vw, 1.65rem); }
             .guided-option { min-height: 52px; padding: 14px 20px; }
@@ -2638,12 +2779,60 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
             <span class="dock-tab-label">Guidance</span>
         </button>
-        <!-- Profile (coming soon) -->
-        <button class="dock-tab soon" aria-label="Profile — coming soon" id="dock-profile" disabled>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            <span class="dock-tab-label">Profile</span>
-        </button>
+        <!-- Cart -->
+        <div class="dock-cart-wrap">
+            <button class="dock-tab" aria-label="View cart" id="dock-cart" onclick="openCartDrawer()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                <span class="dock-tab-label">Cart</span>
+            </button>
+            <span class="cart-badge" id="cart-badge" aria-label="Cart items" aria-live="polite"></span>
+        </div>
     </nav>
+
+    <!-- ════════════════════════════════
+         CART DRAWER
+    ════════════════════════════════ -->
+    <div class="modal-overlay" id="cart-overlay" role="dialog" aria-modal="true" aria-labelledby="cart-drawer-title" onclick="handleCartOverlayClick(event)">
+        <div class="cart-drawer" id="cart-drawer" onclick="event.stopPropagation()">
+            <div class="sheet-handle" id="cart-handle" aria-hidden="true"></div>
+            <button class="modal-close" onclick="closeCartDrawer()" aria-label="Close cart">✕</button>
+
+            <div class="cart-drawer-header">
+                <h2 id="cart-drawer-title">Your Selection</h2>
+                <p class="cart-drawer-sub">Ready to secure these</p>
+            </div>
+
+            <!-- Empty state -->
+            <div class="cart-empty-state" id="cart-empty-state">
+                <div class="cart-empty-icon">🛒</div>
+                <p>Nothing added yet</p>
+                <span>Browse the catalogue and add what calls to you</span>
+            </div>
+
+            <!-- Items -->
+            <div class="cart-items-list" id="cart-items-list"></div>
+
+            <!-- Summary -->
+            <div class="cart-summary" id="cart-summary" style="display:none;">
+                <div class="cart-summary-row">
+                    <span>Total</span>
+                    <span class="cart-total-value" id="cart-drawer-total"></span>
+                </div>
+                <div class="cart-summary-note">Inclusive of all taxes · Confirmed before handover</div>
+            </div>
+
+            <!-- Actions -->
+            <div class="cart-actions" id="cart-actions" style="display:none;">
+                <button class="btn btn-primary" style="width:100%;" onclick="proceedToCheckout()">Secure this selection</button>
+                <button class="btn btn-secondary" style="width:100%;justify-content:center;" onclick="closeCartDrawer()">Continue browsing</button>
+            </div>
+
+            <p class="cart-reassurance">Payment happens on the next screen · No commitment until you confirm</p>
+        </div>
+    </div>
+
+    <!-- Cart toast -->
+    <div class="cart-toast" id="cart-toast" aria-live="polite" aria-atomic="true"></div>
 
     <!-- PWA PROMPT -->
     <div id="pwa-prompt" role="dialog" aria-label="Install Kovin app">
@@ -2753,19 +2942,17 @@
                 <div class="step-dot" id="cdot-4"></div>
             </div>
 
-            <!-- Step 1: Review -->
+            <!-- Step 1: Cart Review -->
             <div class="checkout-step active" id="checkout-step-1">
                 <div class="checkout-header">
                     <h2 id="checkout-title">Looking good</h2>
                     <p>Take a moment — no rush</p>
                 </div>
-                <div class="checkout-item-review">
-                    <img id="checkout-img" src="" alt="">
-                    <div class="checkout-item-info">
-                        <h4 id="checkout-name">Product Name</h4>
-                        <p id="checkout-price">Price</p>
-                        <span style="font-size: 0.8rem; opacity: 0.6;">Quantity: 1</span>
-                    </div>
+                <!-- Dynamic cart items rendered by renderCheckoutItems() -->
+                <div class="checkout-cart-list" id="checkout-cart-list"></div>
+                <div class="checkout-cart-total" id="checkout-cart-total" style="display:none;">
+                    <span>Total</span>
+                    <span id="checkout-total-value"></span>
                 </div>
                 <div class="checkout-trust-mini">
                     <span>Verified before handover</span>
@@ -2825,96 +3012,50 @@
                 </div>
             </div>
 
-            <!-- Step 4: Confirmation -->
+            <!-- Step 4: Order Confirmed -->
             <div class="checkout-step" id="checkout-step-4">
-                <div class="confirmation-visual" aria-hidden="true">✓</div>
-                <div class="confirmation-text">
-                    <h2>Selection Noted</h2>
-                    <p>Everything is set</p>
-                </div>
-                <div class="confirmation-details">
-                    <span>Contact will be made shortly</span>
-                    <span>Everything will be explained before next step</span>
+                <!-- Success animation -->
+                <div style="text-align:center; padding: 8px 0 24px;">
+                    <div class="order-success-anim" aria-hidden="true">✓</div>
+                    <h2 style="font-family:var(--font-display);font-size:clamp(1.75rem,2.5vw,2.25rem);font-weight:400;letter-spacing:var(--ls-snug);margin-bottom:8px;">Payment Sent</h2>
+                    <p style="opacity:0.55;font-size:var(--fs-small);">Your selection is noted — we'll confirm shortly</p>
                 </div>
 
-                <div class="next-steps-clarity">
+                <!-- Order summary -->
+                <div class="checkout-cart-list" id="confirmation-items" style="margin-bottom:0;"></div>
+                <div class="order-total-line" id="confirmation-total" style="display:none;"></div>
+
+                <!-- What happens next -->
+                <div class="next-steps-clarity" style="margin-top:28px;">
                     <h4>What happens next</h4>
                     <div class="next-steps-list">
                         <div class="next-step-item">
                             <div class="next-step-num" aria-hidden="true">1</div>
-                            <div>Selection is confirmed</div>
+                            <div>Payment is verified · Takes a few minutes</div>
                         </div>
                         <div class="next-step-item">
                             <div class="next-step-num" aria-hidden="true">2</div>
-                            <div>Device is checked before handover</div>
+                            <div>Item is checked and set aside for you</div>
                         </div>
                         <div class="next-step-item">
                             <div class="next-step-num" aria-hidden="true">3</div>
-                            <div>Pickup or delivery details provided clearly</div>
+                            <div>Pickup or delivery details confirmed on WhatsApp</div>
                         </div>
                     </div>
                 </div>
 
-                <div class="if-something-changes">
-                    <h4>If something changes</h4>
-                    <div class="change-options">
-                        <button class="change-option" onclick="talkOnWhatsApp()">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                            <span>Modify the choice</span>
-                        </button>
-                        <button class="change-option" onclick="talkOnWhatsApp()">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
-                            <span>Ask a question</span>
-                        </button>
-                        <button class="change-option" onclick="talkOnWhatsApp()">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
-                            <span>Talk directly on WhatsApp</span>
-                        </button>
-                    </div>
-                    <div class="change-reassurance">Nothing moves without clarity · Information is shared at every step</div>
-                </div>
+                <!-- WhatsApp confirmation CTA -->
+                <button onclick="confirmPaymentOnWhatsApp()" class="btn btn-primary" style="width:100%;margin-top:28px;background:#25D366;border:none;gap:10px;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    Confirm on WhatsApp
+                </button>
 
-                <div class="while-you-are-here">
-                    <h4>While here</h4>
-                    <div class="suggestion-list">
-                        <button class="suggestion-item" onclick="closeCheckout(); window.location.hash='#catalogue';">
-                            <span>Add essentials for the device</span>
-                        </button>
-                        <button class="suggestion-item" onclick="closeCheckout(); window.location.hash='#catalogue';">
-                            <span>See what others picked with this</span>
-                        </button>
-                    </div>
-                </div>
+                <!-- Reassurance -->
+                <div style="text-align:center;margin-top:14px;font-size:var(--fs-caption);opacity:0.45;font-weight:500;">Payment confirmed directly with Kovin · No third party</div>
 
-                <div class="this-stays-with-you">
-                    <h4>This stays for the long term</h4>
-                    <div class="retention-list">
-                        <div class="retention-item">Small benefits return over time</div>
-                        <div class="retention-item">Choices made are remembered</div>
-                        <div class="retention-item">Easier support whenever returning</div>
-                    </div>
-                    <div class="retention-note">Opens fully soon</div>
-                </div>
-
-                <div class="worth-coming-back">
-                    <h4>Worth coming back for</h4>
-                    <div class="worth-list">
-                        <div class="worth-item">New devices added regularly</div>
-                        <div class="worth-item">Better choices appear over time</div>
-                        <div class="worth-item">What fits you keeps improving</div>
-                    </div>
-                </div>
-
-                <div class="if-something-changes" style="background: var(--paper-warm); padding: 32px; border-radius: 32px; margin-top: 40px; border: 1px solid var(--border);">
-                    <h4 style="font-family: var(--font-display); font-size: 2rem; margin-bottom: 8px;">Need clarity again?</h4>
-                    <p style="font-size: 1rem; opacity: 0.7; margin-bottom: 24px;">Guidance is always available whenever questions arise.</p>
-                    <button onclick="talkOnWhatsApp()" class="btn btn-secondary" style="width: 100%; background: var(--paper); border-color: var(--border);">Talk on WhatsApp</button>
-                    <p style="text-align: center; margin-top: 16px; font-size: 0.85rem; opacity: 0.5; font-weight: 600;">No pressure · Just clarity</p>
-                </div>
-
-                <button onclick="talkOnWhatsApp()" class="btn btn-primary" style="width: 100%; margin-top: 32px; background: #25D366; border: none;">Talk now on WhatsApp</button>
-                <div class="guided-nav">
-                    <button class="guided-back" onclick="closeCheckout()">Return to Home</button>
+                <!-- Continue browsing -->
+                <div style="text-align:center;margin-top:24px;">
+                    <button onclick="closeCheckout();clearCartAfterOrder();" class="btn btn-secondary" style="width:100%;">Continue browsing</button>
                 </div>
             </div>
         </div>
@@ -2971,8 +3112,10 @@
                 </div>
 
                 <div class="hero-actions" style="margin-top: 24px;">
-                    <button onclick="openCheckout()" class="btn btn-primary" style="flex: 1;">Keep this ready</button>
-                    <a href="tel:+917200006006" class="btn btn-secondary">Take it home</a>
+                    <button onclick="addToCart(currentProduct)" class="btn btn-primary" style="flex: 1;" id="modal-add-cart-btn">Add to cart</button>
+                    <button onclick="openCartDrawer()" class="btn btn-secondary" style="position:relative;" id="modal-view-cart-btn" aria-label="View cart">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                    </button>
                 </div>
 
                 <div class="cart-hesitation">
@@ -3071,6 +3214,262 @@
         let guidedData = { category: '', priority: '', preference: '' };
         let deferredPrompt;
         let selectedDeliveryMethod = '';
+
+        /* ══════════════════════════════════════════════════════
+           CART STATE MANAGEMENT  —  Phase 2 · 8
+        ══════════════════════════════════════════════════════ */
+        let cartItems = []; // [{ ...product, qty: Number }]
+
+        function loadCart() {
+            try {
+                const raw = localStorage.getItem('kovin-cart');
+                if (raw) cartItems = JSON.parse(raw);
+            } catch(e) { cartItems = []; }
+            updateCartUI();
+        }
+
+        function saveCart() {
+            try { localStorage.setItem('kovin-cart', JSON.stringify(cartItems)); } catch(e) {}
+        }
+
+        function cartCount() {
+            return cartItems.reduce((s, i) => s + i.qty, 0);
+        }
+
+        function cartTotal() {
+            return cartItems.reduce((s, i) => {
+                const p = parseInt((i.price || '').replace(/[^0-9]/g, '')) || 0;
+                return s + p * i.qty;
+            }, 0);
+        }
+
+        function cartTotalFormatted() {
+            const t = cartTotal();
+            return t > 0 ? `₹${t.toLocaleString('en-IN')}` : '';
+        }
+
+        function updateCartUI() {
+            const count = cartCount();
+            const badge = document.getElementById('cart-badge');
+            if (badge) {
+                badge.textContent = count > 9 ? '9+' : String(count);
+                badge.style.display = count > 0 ? 'flex' : 'none';
+            }
+            const drawerTotal = document.getElementById('cart-drawer-total');
+            if (drawerTotal) drawerTotal.textContent = cartTotalFormatted();
+        }
+
+        function addToCart(product) {
+            if (!product || !product.id) return;
+            const existing = cartItems.find(i => i.id === product.id);
+            if (existing) {
+                existing.qty = Math.min(existing.qty + 1, 10);
+            } else {
+                cartItems.push({ ...product, qty: 1 });
+            }
+            saveCart();
+            updateCartUI();
+            showCartToast(product.name);
+            closeModal();
+            /* Small delay so modal close animation plays before drawer opens */
+            setTimeout(openCartDrawer, 380);
+        }
+
+        function removeFromCart(id) {
+            cartItems = cartItems.filter(i => i.id !== id);
+            saveCart();
+            updateCartUI();
+            renderCartItems();
+            if (cartItems.length === 0) {
+                const summary = document.getElementById('cart-summary');
+                const actions = document.getElementById('cart-actions');
+                const empty   = document.getElementById('cart-empty-state');
+                if (summary) summary.style.display = 'none';
+                if (actions) actions.style.display = 'none';
+                if (empty)   empty.classList.add('visible');
+            }
+        }
+
+        function updateCartQty(id, delta) {
+            const item = cartItems.find(i => i.id === id);
+            if (!item) return;
+            const newQty = Math.max(1, Math.min(10, item.qty + delta));
+            item.qty = newQty;
+            saveCart();
+            updateCartUI();
+            /* Update qty display in-place to avoid full re-render flicker */
+            const qtyEl = document.querySelector(`[data-cart-qty="${id}"]`);
+            if (qtyEl) qtyEl.textContent = newQty;
+            /* Update per-item price display */
+            const priceEl = document.querySelector(`[data-cart-item-total="${id}"]`);
+            if (priceEl) {
+                const unitPrice = parseInt((item.price || '').replace(/[^0-9]/g, '')) || 0;
+                priceEl.textContent = `₹${(unitPrice * newQty).toLocaleString('en-IN')}`;
+            }
+            /* Update drawer total */
+            const drawerTotal = document.getElementById('cart-drawer-total');
+            if (drawerTotal) drawerTotal.textContent = cartTotalFormatted();
+        }
+
+        function renderCartItems() {
+            const list    = document.getElementById('cart-items-list');
+            const summary = document.getElementById('cart-summary');
+            const actions = document.getElementById('cart-actions');
+            const empty   = document.getElementById('cart-empty-state');
+            if (!list) return;
+            if (cartItems.length === 0) {
+                list.innerHTML = '';
+                if (summary) summary.style.display = 'none';
+                if (actions) actions.style.display = 'none';
+                if (empty)   empty.classList.add('visible');
+                return;
+            }
+            if (empty)   empty.classList.remove('visible');
+            if (summary) { summary.style.display = ''; const t = document.getElementById('cart-drawer-total'); if(t) t.textContent = cartTotalFormatted(); }
+            if (actions) actions.style.display = '';
+            list.innerHTML = cartItems.map((item, idx) => {
+                const unitPrice = parseInt((item.price || '').replace(/[^0-9]/g, '')) || 0;
+                const lineTotal = unitPrice * item.qty;
+                return `
+                <div class="cart-item-row" style="animation-delay:${idx * 40}ms">
+                    <img class="cart-item-img" src="${item.image || ''}" alt="${item.name || ''}" loading="lazy">
+                    <div class="cart-item-info">
+                        <div class="cart-item-name">${item.name || ''}</div>
+                        <div class="cart-item-price" data-cart-item-total="${item.id}">₹${lineTotal.toLocaleString('en-IN')}</div>
+                        <div class="cart-item-controls">
+                            <button class="cart-qty-btn" onclick="updateCartQty(${item.id}, -1)" aria-label="Decrease quantity" touch-action="manipulation">−</button>
+                            <span class="cart-qty-value" data-cart-qty="${item.id}">${item.qty}</span>
+                            <button class="cart-qty-btn" onclick="updateCartQty(${item.id}, 1)" aria-label="Increase quantity" touch-action="manipulation">+</button>
+                        </div>
+                    </div>
+                    <button class="cart-item-remove" onclick="removeFromCart(${item.id})" aria-label="Remove ${item.name || 'item'} from cart">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                </div>`;
+            }).join('');
+        }
+
+        function renderCheckoutItems() {
+            const list  = document.getElementById('checkout-cart-list');
+            const total = document.getElementById('checkout-cart-total');
+            const tval  = document.getElementById('checkout-total-value');
+            if (!list) return;
+            list.innerHTML = cartItems.map(item => {
+                const unitPrice = parseInt((item.price || '').replace(/[^0-9]/g, '')) || 0;
+                const lineTotal = unitPrice * item.qty;
+                return `
+                <div class="checkout-cart-item">
+                    <img src="${item.image || ''}" alt="${item.name || ''}" loading="lazy">
+                    <div class="checkout-cart-item-info">
+                        <div class="checkout-cart-item-name">${item.name || ''}</div>
+                        <div class="checkout-cart-item-meta">Qty: ${item.qty}${item.price ? ' · ' + item.price + '/unit' : ''}</div>
+                    </div>
+                    <span class="checkout-cart-item-price">₹${lineTotal.toLocaleString('en-IN')}</span>
+                </div>`;
+            }).join('');
+            if (cartItems.length > 1 && total && tval) {
+                tval.textContent = cartTotalFormatted();
+                total.style.display = '';
+            } else if (total) { total.style.display = 'none'; }
+        }
+
+        function renderConfirmationItems() {
+            const list = document.getElementById('confirmation-items');
+            const totEl = document.getElementById('confirmation-total');
+            if (!list) return;
+            list.innerHTML = cartItems.map(item => {
+                const unitPrice = parseInt((item.price || '').replace(/[^0-9]/g, '')) || 0;
+                const lineTotal = unitPrice * item.qty;
+                return `
+                <div class="checkout-cart-item">
+                    <img src="${item.image || ''}" alt="${item.name || ''}" loading="lazy">
+                    <div class="checkout-cart-item-info">
+                        <div class="checkout-cart-item-name">${item.name || ''}</div>
+                        <div class="checkout-cart-item-meta">Qty ${item.qty}</div>
+                    </div>
+                    <span class="checkout-cart-item-price">₹${lineTotal.toLocaleString('en-IN')}</span>
+                </div>`;
+            }).join('');
+            if (cartItems.length > 0 && totEl) {
+                totEl.innerHTML = `<span>Total paid</span><span>${cartTotalFormatted()}</span>`;
+                totEl.style.display = '';
+            }
+        }
+
+        function clearCartAfterOrder() {
+            cartItems = [];
+            saveCart();
+            updateCartUI();
+        }
+
+        function showCartToast(name) {
+            const t = document.getElementById('cart-toast');
+            if (!t) return;
+            t.textContent = `${name} added`;
+            t.classList.add('show');
+            setTimeout(() => t.classList.remove('show'), 2200);
+        }
+
+        /* ── Cart Drawer open / close ── */
+        function openCartDrawer() {
+            renderCartItems();
+            _modalOpenTS = Date.now();
+            const overlay = document.getElementById('cart-overlay');
+            if (!overlay) return;
+            overlay.classList.add('active');
+            overlay.style.pointerEvents = '';
+            gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.34, ease: 'power2.out' });
+            if (isMobile()) {
+                gsap.fromTo('#cart-drawer', { y: '100%' }, { y: 0, duration: 0.48, ease: 'power4.out' });
+            } else {
+                gsap.fromTo('#cart-drawer', { scale: 0.94, opacity: 0, y: 24 }, { scale: 1, opacity: 1, y: 0, duration: 0.5, ease: 'power4.out', delay: 0.04 });
+            }
+        }
+
+        function closeCartDrawer() {
+            const overlay = document.getElementById('cart-overlay');
+            if (!overlay) return;
+            overlay.style.pointerEvents = 'none';
+            if (isMobile()) {
+                gsap.to('#cart-drawer', { y: '100%', duration: 0.34, ease: 'power3.in' });
+                gsap.to(overlay, { opacity: 0, duration: 0.34, ease: 'power2.in', delay: 0.08,
+                    onComplete: () => { overlay.classList.remove('active'); overlay.style.pointerEvents = ''; }
+                });
+            } else {
+                gsap.to('#cart-drawer', { scale: 0.95, opacity: 0, y: 14, duration: 0.26, ease: 'power3.in' });
+                gsap.to(overlay, { opacity: 0, duration: 0.3, ease: 'power2.in', delay: 0.04,
+                    onComplete: () => { overlay.classList.remove('active'); overlay.style.pointerEvents = ''; }
+                });
+            }
+        }
+
+        function handleCartOverlayClick(e) {
+            if (e.target.id === 'cart-overlay') {
+                if (Date.now() - _modalOpenTS < 500) return;
+                closeCartDrawer();
+            }
+        }
+
+        function proceedToCheckout() {
+            if (cartItems.length === 0) return;
+            closeCartDrawer();
+            setTimeout(() => {
+                _modalOpenTS = Date.now();
+                const overlay = document.getElementById('checkout-overlay');
+                overlay.classList.add('active');
+                overlay.style.pointerEvents = '';
+                nextCheckoutStep(1);
+                gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.36, ease: 'power2.out' });
+                if (isMobile()) {
+                    gsap.fromTo('.checkout-panel', { y: '100%' }, { y: 0, duration: 0.52, ease: 'power4.out' });
+                } else {
+                    gsap.fromTo('.checkout-panel',
+                        { scale: 0.94, opacity: 0, y: 24 },
+                        { scale: 1, opacity: 1, y: 0, duration: 0.58, ease: 'power4.out', delay: 0.05 }
+                    );
+                }
+            }, 420);
+        }
 
         function savingPct(price, old) {
             const p = parseInt(price.replace(/[^0-9]/g,''));
@@ -3472,30 +3871,13 @@
         }
 
         function openCheckout() {
-            if (!currentProduct) return;
-            _modalOpenTS = Date.now();
-            const img = document.getElementById('checkout-img');
-            img.src = currentProduct.image;
-            img.alt = currentProduct.name;
-            document.getElementById('checkout-name').innerText = currentProduct.name;
-            document.getElementById('checkout-price').innerText = currentProduct.price;
-            const overlay = document.getElementById('checkout-overlay');
-            overlay.classList.add('active');
-            overlay.style.pointerEvents = '';
-            nextCheckoutStep(1);
-            gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.36, ease: 'power2.out' });
-            if (isMobile()) {
-                gsap.fromTo('.checkout-panel', { y: '100%' }, { y: 0, duration: 0.52, ease: 'power4.out' });
-            } else {
-                gsap.fromTo('.checkout-panel',
-                    { scale: 0.94, opacity: 0, y: 24 },
-                    { scale: 1, opacity: 1, y: 0, duration: 0.58, ease: 'power4.out', delay: 0.05 }
-                );
+            /* Legacy entry-point — if called directly, add currentProduct to cart first */
+            if (currentProduct && !cartItems.find(i => i.id === currentProduct.id)) {
+                cartItems.push({ ...currentProduct, qty: 1 });
+                saveCart();
+                updateCartUI();
             }
-            setTimeout(() => {
-                const close = document.querySelector('#checkout-overlay .modal-close');
-                if (close) close.focus();
-            }, 100);
+            proceedToCheckout();
         }
 
         function closeCheckout() {
@@ -3518,15 +3900,27 @@
 
         function nextCheckoutStep(step) {
             document.querySelectorAll('.checkout-step').forEach(s => s.classList.remove('active'));
-            document.getElementById(`checkout-step-${step}`).classList.add('active');
+            const stepEl = document.getElementById(`checkout-step-${step}`);
+            if (!stepEl) return;
+            stepEl.classList.add('active');
             setCheckoutDots(step);
+            if (step === 1) renderCheckoutItems();
             if (step === 3) renderPaymentStep();
+            if (step === 4) renderConfirmationItems();
+            /* Scroll panel back to top on each step change */
+            const panel = document.getElementById('checkout-sheet');
+            if (panel) panel.scrollTop = 0;
         }
 
         function prevCheckoutStep(step) {
             document.querySelectorAll('.checkout-step').forEach(s => s.classList.remove('active'));
-            document.getElementById(`checkout-step-${step}`).classList.add('active');
+            const stepEl = document.getElementById(`checkout-step-${step}`);
+            if (!stepEl) return;
+            stepEl.classList.add('active');
             setCheckoutDots(step);
+            if (step === 1) renderCheckoutItems();
+            const panel = document.getElementById('checkout-sheet');
+            if (panel) panel.scrollTop = 0;
         }
 
         function selectDelivery(method, el) {
@@ -3553,40 +3947,68 @@
         const UPI_NAME = 'Kovin';
 
         function getPriceAmount() {
+            /* Use cart total; fall back to currentProduct for legacy callers */
+            const total = cartTotal();
+            if (total > 0) return String(total);
             if (!currentProduct || !currentProduct.price) return '';
-            /* Strip ₹ and commas → numeric string */
             return currentProduct.price.replace(/[₹,\s]/g, '');
+        }
+
+        function getOrderNote() {
+            if (cartItems.length === 1) return encodeURIComponent(cartItems[0].name || 'Kovin Order');
+            if (cartItems.length > 1) return encodeURIComponent(`Kovin Order (${cartItems.length} items)`);
+            return encodeURIComponent(currentProduct ? currentProduct.name : 'Kovin Order');
         }
 
         function buildUpiUri() {
             const amt  = getPriceAmount();
-            const note = encodeURIComponent(`${currentProduct ? currentProduct.name : 'Kovin Order'}`);
+            const note = getOrderNote();
             const pa   = encodeURIComponent(UPI_ID);
             const pn   = encodeURIComponent(UPI_NAME);
             return `upi://pay?pa=${pa}&pn=${pn}&cu=INR${amt ? '&am=' + amt : ''}&tn=${note}`;
         }
 
         function openUpiApp(scheme) {
-            const amt  = getPriceAmount();
-            const note = encodeURIComponent(`${currentProduct ? currentProduct.name : 'Kovin Order'}`);
-            const pa   = encodeURIComponent(UPI_ID);
-            const pn   = encodeURIComponent(UPI_NAME);
+            const amt    = getPriceAmount();
+            const note   = getOrderNote();
+            const pa     = encodeURIComponent(UPI_ID);
+            const pn     = encodeURIComponent(UPI_NAME);
             const params = `pa=${pa}&pn=${pn}&cu=INR${amt ? '&am=' + amt : ''}&tn=${note}`;
-            let url;
+
+            let primaryUrl;
             switch (scheme) {
-                case 'gpay':     url = `gpay://upi/pay?${params}`;    break;
-                case 'phonepe':  url = `phonepe://pay?${params}`;     break;
-                case 'paytm':    url = `paytmmp://pay?${params}`;     break;
-                case 'bhim':     url = `upi://pay?${params}`;         break;
-                default:         url = `upi://pay?${params}`;
+                case 'gpay':    primaryUrl = `gpay://upi/pay?${params}`;   break;
+                case 'phonepe': primaryUrl = `phonepe://pay?${params}`;    break;
+                case 'paytm':   primaryUrl = `paytmmp://pay?${params}`;    break;
+                case 'bhim':    primaryUrl = `upi://pay?${params}`;        break;
+                default:        primaryUrl = `upi://pay?${params}`;
             }
-            window.location.href = url;
-            /* Fallback — if app didn't open, try generic UPI after 1.2s */
+
+            /* Use hidden anchor trick — preserves SPA state, avoids page reload */
+            const anchor = document.createElement('a');
+            anchor.href = primaryUrl;
+            anchor.style.display = 'none';
+            document.body.appendChild(anchor);
+            anchor.click();
+            document.body.removeChild(anchor);
+
+            /* Fallback: only fires if page is STILL visible after 1.4s,
+               meaning the app did NOT take focus (deep-link failed). */
+            let appOpened = false;
+            const onHide = () => { appOpened = true; };
+            document.addEventListener('visibilitychange', onHide, { once: true });
             setTimeout(() => {
-                if (document.visibilityState === 'visible') {
-                    window.location.href = `upi://pay?${params}`;
+                document.removeEventListener('visibilitychange', onHide);
+                if (!appOpened && document.visibilityState === 'visible') {
+                    /* App didn't open — fall back to generic UPI intent */
+                    const fallback = document.createElement('a');
+                    fallback.href = `upi://pay?${params}`;
+                    fallback.style.display = 'none';
+                    document.body.appendChild(fallback);
+                    fallback.click();
+                    document.body.removeChild(fallback);
                 }
-            }, 1200);
+            }, 1400);
         }
 
         function copyUpiId() {
@@ -3630,8 +4052,10 @@
             const container = document.getElementById('payment-container');
             if (!container) return;
             const mobile    = isMobile();
-            const amt       = currentProduct ? currentProduct.price : '';
-            const name      = currentProduct ? currentProduct.name  : 'your order';
+            /* Use cart total; fall back to single product price */
+            const totalNum  = cartTotal();
+            const amt       = totalNum > 0 ? `₹${totalNum.toLocaleString('en-IN')}` : (currentProduct ? currentProduct.price : '');
+            const name      = cartItems.length > 0 ? `Kovin Order (${cartCount()} item${cartCount() > 1 ? 's' : ''})` : (currentProduct ? currentProduct.name : 'your order');
 
             const amtBadge = amt
                 ? `<div style="display:flex;justify-content:center;">
@@ -3729,20 +4153,36 @@
         }
 
         function confirmPaymentOnWhatsApp() {
-            const productName = currentProduct ? currentProduct.name  : 'a product';
-            const amt         = currentProduct ? currentProduct.price : '';
-            const text = `Hello Kovin, payment has been made for ${productName}${amt ? ' ('+amt+')' : ''}. Please confirm and share the next steps.`;
+            let itemsList = '';
+            if (cartItems.length > 0) {
+                itemsList = cartItems.map(i => `• ${i.name} × ${i.qty}`).join('\n');
+            } else if (currentProduct) {
+                itemsList = `• ${currentProduct.name}`;
+            }
+            const totalStr = cartTotalFormatted() || (currentProduct ? currentProduct.price : '');
+            const delivery = selectedDeliveryMethod ? `\nDelivery preference: ${selectedDeliveryMethod}` : '';
+            const text = `Hello Kovin, payment of ${totalStr} has been made for:\n${itemsList}${delivery}\n\nPlease confirm and share the next steps.`;
             window.open(`https://wa.me/917200006006?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
-        }
-
-        function sendInquiry() {
+            /* Move to confirmation step after triggering WhatsApp */
             nextCheckoutStep(4);
         }
 
+        function sendInquiry() {
+            /* Kept for backward compat — routes to confirmation step */
+            confirmPaymentOnWhatsApp();
+        }
+
         function talkOnWhatsApp() {
-            const deliveryText = selectedDeliveryMethod ? ` Preferred delivery method is ${selectedDeliveryMethod}.` : '';
-            const productName = currentProduct ? currentProduct.name : 'a product';
-            const text = `Hello Kovin, interest is shown in the ${productName}.${deliveryText} Could more details be provided?`;
+            const deliveryText = selectedDeliveryMethod ? ` Preferred delivery: ${selectedDeliveryMethod}.` : '';
+            let subject = '';
+            if (cartItems.length > 0) {
+                subject = cartItems.map(i => i.name).join(', ');
+            } else if (currentProduct) {
+                subject = currentProduct.name;
+            } else {
+                subject = 'a product';
+            }
+            const text = `Hello Kovin, interested in: ${subject}.${deliveryText} Could you share more details?`;
             window.open(`https://wa.me/917200006006?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
         }
 
@@ -4184,6 +4624,7 @@
             if (document.getElementById('modal-overlay').classList.contains('active')) { closeModal(); return; }
             if (document.getElementById('guided-overlay').classList.contains('active')) { closeGuidedFlow(); return; }
             if (document.getElementById('checkout-overlay').classList.contains('active')) { closeCheckout(); return; }
+            if (document.getElementById('cart-overlay') && document.getElementById('cart-overlay').classList.contains('active')) { closeCartDrawer(); return; }
             if (document.getElementById('chat-window').classList.contains('open')) { toggleChat(); return; }
         });
 
@@ -4464,8 +4905,12 @@
             initSheetDrag('guided-handle',  'guided-overlay',  closeGuidedFlow);
             initSheetDrag('checkout-handle','checkout-overlay', closeCheckout);
             initSheetDrag('modal-handle',   'modal-overlay',   closeModal);
+            initSheetDrag('cart-handle',    'cart-overlay',    closeCartDrawer);
 
-            /* ── 7. Dock scroll tracking handled by unified initNavBehaviour() ── */
+            /* ── 7. Load persisted cart ── */
+            loadCart();
+
+            /* ── 8. Dock scroll tracking handled by unified initNavBehaviour() ── */
         });
     </script>
 </body>
