@@ -41,6 +41,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
     <style>
         :root {
             /* ── Colour tokens ── */
@@ -172,7 +173,6 @@
             border: 1px solid var(--border);
             border-radius: 100px;
             box-shadow: var(--shadow-lux);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease;
             padding: 8px;
         }
         /* Navbar hide/show controlled entirely by GSAP — no CSS class toggle needed */
@@ -198,7 +198,8 @@
 
         .nav-pill svg { width: 20px; height: 20px; flex-shrink: 0; }
         .nav-pill span {
-            width: 0;
+            max-width: 0;
+            overflow: hidden;
             opacity: 0;
             transition: var(--pill-transition);
             margin-left: 0;
@@ -212,7 +213,7 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         .nav-pill:hover span, .nav-pill.active span {
-            width: auto;
+            max-width: 180px;
             opacity: 1;
         }
 
@@ -1065,6 +1066,175 @@
         .checkout-momentum { text-align: center; margin-top: var(--sp-6); font-size: var(--fs-small); font-weight: 600; color: var(--copper); letter-spacing: 0.01em; }
         .checkout-reassurance { text-align: center; margin-top: var(--sp-2); font-size: var(--fs-caption); opacity: 0.45; font-weight: 500; }
 
+        /* ══════════════════════════════════════════════════════
+           PAYMENT STEP  —  Phases 4 · 5 · 6
+        ══════════════════════════════════════════════════════ */
+        .payment-header { text-align: center; margin-bottom: 28px; }
+        .payment-header h2 {
+            font-family: var(--font-display);
+            font-size: clamp(1.6rem, 3vw, 2.1rem);
+            font-weight: 400;
+            letter-spacing: var(--ls-snug);
+            margin-bottom: 6px;
+        }
+        .payment-header p { font-size: var(--fs-small); opacity: 0.55; }
+
+        .payment-amount-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--paper-warm);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 10px 20px;
+            margin: 0 auto 28px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--ink);
+            letter-spacing: 0.01em;
+        }
+        .payment-amount-badge .pab-label { font-size: 0.78rem; font-weight: 500; opacity: 0.5; }
+
+        /* ── UPI app grid (mobile) ── */
+        .upi-app-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        .upi-app-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding: 20px 12px;
+            border-radius: 20px;
+            border: 1.5px solid var(--border);
+            background: var(--paper-warm);
+            cursor: pointer;
+            transition: border-color 0.18s, background 0.18s, transform 0.15s;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--ink);
+            letter-spacing: 0.01em;
+        }
+        @media (hover: hover) {
+            .upi-app-btn:hover { border-color: var(--copper); background: var(--paper); transform: translateY(-2px); }
+        }
+        .upi-app-btn:active { transform: scale(0.97); }
+        .upi-app-btn svg { width: 36px; height: 36px; }
+
+        /* ── QR block (desktop) ── */
+        .payment-qr-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: var(--paper-warm);
+            border: 1px solid var(--border);
+            border-radius: 28px;
+            padding: 32px 28px 24px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .payment-qr-label {
+            font-size: var(--fs-caption);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            opacity: 0.45;
+            margin-bottom: 20px;
+        }
+        .payment-qr-canvas-wrap {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin-bottom: 16px;
+        }
+        #payment-qr-canvas { display: block; border-radius: 12px; }
+        .payment-qr-logo {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px; height: 40px;
+            background: var(--ink);
+            color: var(--paper);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+            pointer-events: none;
+        }
+        .payment-qr-hint {
+            font-size: 0.8rem;
+            opacity: 0.5;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        /* ── Copy UPI ID row ── */
+        .payment-copy-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--paper-warm);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 14px 18px;
+            margin-bottom: 20px;
+        }
+        .payment-copy-upi-id {
+            flex: 1;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--ink);
+            opacity: 0.75;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .payment-copy-btn {
+            flex-shrink: 0;
+            padding: 8px 14px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            background: var(--paper);
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s;
+            color: var(--ink);
+        }
+        .payment-copy-btn:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+        .payment-copy-btn.copied { background: #25D366; color: white; border-color: #25D366; }
+
+        /* ── Payment confirm CTA ── */
+        .payment-confirm-btn {
+            width: 100%;
+            padding: 16px 24px;
+            border-radius: 100px;
+            background: #25D366;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            transition: opacity 0.18s, transform 0.15s;
+            margin-bottom: 12px;
+        }
+        .payment-confirm-btn:hover { opacity: 0.9; }
+        .payment-confirm-btn:active { transform: scale(0.98); }
+        .payment-reassurance {
+            text-align: center;
+            font-size: var(--fs-caption);
+            opacity: 0.42;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
         /* CONFIRMATION SCREEN */
         .confirmation-visual { width: 72px; height: 72px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--sp-8); color: white; font-size: 2rem; box-shadow: 0 10px 20px rgba(37, 211, 102, 0.2); }
         .confirmation-text { text-align: center; margin-bottom: var(--sp-8); }
@@ -1684,6 +1854,12 @@
             .checkout-header h2 { font-size: clamp(1.4rem, 4.5vw, 1.65rem); }
             .guided-option { min-height: 52px; padding: 14px 20px; }
             .checkout-option { min-height: 56px; padding: 14px 16px; }
+            /* ── Payment step mobile tweaks ── */
+            .payment-header h2 { font-size: clamp(1.4rem, 5vw, 1.7rem); }
+            .upi-app-btn { padding: 16px 8px; font-size: 0.78rem; }
+            .upi-app-btn svg { width: 32px; height: 32px; }
+            .payment-qr-wrap { padding: 24px 16px 18px; }
+            .payment-amount-badge { font-size: 1.05rem; }
 
             /* ── Chat as full-width bottom sheet ── */
             .chat-window {
@@ -2323,21 +2499,8 @@
 
             <!-- Step 3: Final Action -->
             <div class="checkout-step" id="checkout-step-3">
-                <div class="checkout-header">
-                    <h2>Almost There</h2>
-                    <p>One step to connect</p>
-                </div>
-                <div style="background: var(--paper-warm); padding: 24px; border-radius: 24px; margin-bottom: 32px; text-align: center;">
-                    <p style="font-weight: 600; margin-bottom: 8px;">Ready when you are</p>
-                    <p style="font-size: 0.9rem; opacity: 0.7;">Availability will be confirmed and guidance provided through the next steps on WhatsApp. No pressure at any point.</p>
-                </div>
-                <div class="checkout-momentum">No pressure · Clarity at every step</div>
-                <div class="checkout-reassurance">Takes less than a minute</div>
-                <div class="hero-actions" style="flex-direction: column; gap: 16px; margin-top: 16px;">
-                    <button onclick="sendInquiry()" class="btn btn-primary" style="width: 100%;">Keep this ready</button>
-                    <button onclick="closeCheckout()" class="btn btn-secondary" style="width: 100%;">Not right now</button>
-                </div>
-                <div class="guided-nav">
+                <div id="payment-container"></div>
+                <div class="guided-nav" style="margin-top: 8px;">
                     <button class="guided-back" onclick="prevCheckoutStep(2)">Back</button>
                 </div>
             </div>
@@ -2808,9 +2971,13 @@
             }
         }
 
+        let _modalOpenTS = 0;
+
         function openGuidedFlow() {
+            _modalOpenTS = Date.now();
             const overlay = document.getElementById('guided-overlay');
             overlay.classList.add('active');
+            overlay.style.pointerEvents = '';
             prevStep(1);
             gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.36, ease: 'power2.out' });
             if (isMobile()) {
@@ -2830,17 +2997,18 @@
 
         function closeGuidedFlow() {
             const overlay = document.getElementById('guided-overlay');
+            overlay.style.pointerEvents = 'none';
             if (isMobile()) {
                 gsap.to('.guided-panel', { y: '100%', duration: 0.36, ease: 'power3.in' });
                 gsap.to(overlay, {
                     opacity: 0, duration: 0.36, ease: 'power2.in', delay: 0.1,
-                    onComplete: () => { overlay.classList.remove('active'); announce('Guided flow closed.'); },
+                    onComplete: () => { overlay.classList.remove('active'); overlay.style.pointerEvents = ''; announce('Guided flow closed.'); },
                 });
             } else {
                 gsap.to('.guided-panel', { scale: 0.95, opacity: 0, y: 14, duration: 0.28, ease: 'power3.in' });
                 gsap.to(overlay, {
                     opacity: 0, duration: 0.34, ease: 'power2.in', delay: 0.06,
-                    onComplete: () => { overlay.classList.remove('active'); announce('Guided flow closed.'); },
+                    onComplete: () => { overlay.classList.remove('active'); overlay.style.pointerEvents = ''; announce('Guided flow closed.'); },
                 });
             }
         }
@@ -2908,11 +3076,14 @@
         function openModalFromGuided(id) {
             const p = products.find(prod => prod.id === id);
             closeGuidedFlow();
-            openModal(p);
+            setTimeout(() => openModal(p), 350);
         }
 
         function handleGuidedOverlayClick(e) {
-            if (e.target.id === 'guided-overlay') closeGuidedFlow();
+            if (e.target.id === 'guided-overlay') {
+                if (Date.now() - _modalOpenTS < 500) return;
+                closeGuidedFlow();
+            }
         }
 
         /* CHECKOUT FLOW LOGIC */
@@ -2925,6 +3096,7 @@
 
         function openCheckout() {
             if (!currentProduct) return;
+            _modalOpenTS = Date.now();
             const img = document.getElementById('checkout-img');
             img.src = currentProduct.image;
             img.alt = currentProduct.name;
@@ -2932,6 +3104,7 @@
             document.getElementById('checkout-price').innerText = currentProduct.price;
             const overlay = document.getElementById('checkout-overlay');
             overlay.classList.add('active');
+            overlay.style.pointerEvents = '';
             nextCheckoutStep(1);
             gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.36, ease: 'power2.out' });
             if (isMobile()) {
@@ -2950,17 +3123,18 @@
 
         function closeCheckout() {
             const overlay = document.getElementById('checkout-overlay');
+            overlay.style.pointerEvents = 'none';
             if (isMobile()) {
                 gsap.to('.checkout-panel', { y: '100%', duration: 0.36, ease: 'power3.in' });
                 gsap.to(overlay, {
                     opacity: 0, duration: 0.36, ease: 'power2.in', delay: 0.1,
-                    onComplete: () => { overlay.classList.remove('active'); },
+                    onComplete: () => { overlay.classList.remove('active'); overlay.style.pointerEvents = ''; },
                 });
             } else {
                 gsap.to('.checkout-panel', { scale: 0.95, opacity: 0, y: 14, duration: 0.28, ease: 'power3.in' });
                 gsap.to(overlay, {
                     opacity: 0, duration: 0.34, ease: 'power2.in', delay: 0.06,
-                    onComplete: () => { overlay.classList.remove('active'); },
+                    onComplete: () => { overlay.classList.remove('active'); overlay.style.pointerEvents = ''; },
                 });
             }
         }
@@ -2969,6 +3143,7 @@
             document.querySelectorAll('.checkout-step').forEach(s => s.classList.remove('active'));
             document.getElementById(`checkout-step-${step}`).classList.add('active');
             setCheckoutDots(step);
+            if (step === 3) renderPaymentStep();
         }
 
         function prevCheckoutStep(step) {
@@ -2988,7 +3163,199 @@
         }
 
         function handleCheckoutOverlayClick(e) {
-            if (e.target.id === 'checkout-overlay') closeCheckout();
+            if (e.target.id === 'checkout-overlay') {
+                if (Date.now() - _modalOpenTS < 500) return;
+                closeCheckout();
+            }
+        }
+
+        /* ══════════════════════════════════════════════════════
+           PAYMENT SYSTEM  —  UPI deep-links · QR · copy
+        ══════════════════════════════════════════════════════ */
+        const UPI_ID   = 'mailme.maqdoom@okhdfcbank';
+        const UPI_NAME = 'Kovin';
+
+        function getPriceAmount() {
+            if (!currentProduct || !currentProduct.price) return '';
+            /* Strip ₹ and commas → numeric string */
+            return currentProduct.price.replace(/[₹,\s]/g, '');
+        }
+
+        function buildUpiUri() {
+            const amt  = getPriceAmount();
+            const note = encodeURIComponent(`${currentProduct ? currentProduct.name : 'Kovin Order'}`);
+            const pa   = encodeURIComponent(UPI_ID);
+            const pn   = encodeURIComponent(UPI_NAME);
+            return `upi://pay?pa=${pa}&pn=${pn}&cu=INR${amt ? '&am=' + amt : ''}&tn=${note}`;
+        }
+
+        function openUpiApp(scheme) {
+            const amt  = getPriceAmount();
+            const note = encodeURIComponent(`${currentProduct ? currentProduct.name : 'Kovin Order'}`);
+            const pa   = encodeURIComponent(UPI_ID);
+            const pn   = encodeURIComponent(UPI_NAME);
+            const params = `pa=${pa}&pn=${pn}&cu=INR${amt ? '&am=' + amt : ''}&tn=${note}`;
+            let url;
+            switch (scheme) {
+                case 'gpay':     url = `gpay://upi/pay?${params}`;    break;
+                case 'phonepe':  url = `phonepe://pay?${params}`;     break;
+                case 'paytm':    url = `paytmmp://pay?${params}`;     break;
+                case 'bhim':     url = `upi://pay?${params}`;         break;
+                default:         url = `upi://pay?${params}`;
+            }
+            window.location.href = url;
+            /* Fallback — if app didn't open, try generic UPI after 1.2s */
+            setTimeout(() => {
+                if (document.visibilityState === 'visible') {
+                    window.location.href = `upi://pay?${params}`;
+                }
+            }, 1200);
+        }
+
+        function copyUpiId() {
+            const btn = document.getElementById('payment-copy-btn');
+            navigator.clipboard.writeText(UPI_ID).then(() => {
+                if (btn) { btn.textContent = 'Copied ✓'; btn.classList.add('copied'); }
+                setTimeout(() => {
+                    if (btn) { btn.textContent = 'Copy'; btn.classList.remove('copied'); }
+                }, 2200);
+            }).catch(() => {
+                /* Fallback for older browsers */
+                const el = document.createElement('textarea');
+                el.value = UPI_ID;
+                el.style.position = 'fixed'; el.style.opacity = '0';
+                document.body.appendChild(el);
+                el.select();
+                document.execCommand('copy');
+                document.body.removeChild(el);
+                if (btn) { btn.textContent = 'Copied ✓'; btn.classList.add('copied'); }
+                setTimeout(() => {
+                    if (btn) { btn.textContent = 'Copy'; btn.classList.remove('copied'); }
+                }, 2200);
+            });
+        }
+
+        function generateQR(canvasEl) {
+            if (typeof QRious === 'undefined') return;
+            new QRious({
+                element: canvasEl,
+                value: buildUpiUri(),
+                size: 200,
+                backgroundAlpha: 1,
+                background: '#F7F4EF',
+                foreground: '#1A1612',
+                level: 'H',   /* High error-correction — tolerates logo overlay */
+                padding: 10,
+            });
+        }
+
+        function renderPaymentStep() {
+            const container = document.getElementById('payment-container');
+            if (!container) return;
+            const mobile    = isMobile();
+            const amt       = currentProduct ? currentProduct.price : '';
+            const name      = currentProduct ? currentProduct.name  : 'your order';
+
+            const amtBadge = amt
+                ? `<div style="display:flex;justify-content:center;">
+                     <div class="payment-amount-badge">
+                       <span class="pab-label">Total</span>
+                       <span>${amt}</span>
+                     </div>
+                   </div>`
+                : '';
+
+            const copyRow = `
+                <div class="payment-copy-row">
+                    <span class="payment-copy-upi-id">${UPI_ID}</span>
+                    <button class="payment-copy-btn" id="payment-copy-btn" onclick="copyUpiId()">Copy</button>
+                </div>`;
+
+            const confirmBtn = `
+                <button class="payment-confirm-btn" onclick="confirmPaymentOnWhatsApp()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    I've paid · Confirm on WhatsApp
+                </button>
+                <p class="payment-reassurance">Payment goes directly to Kovin · Confirmation happens on WhatsApp · No pressure at any point</p>`;
+
+            if (mobile) {
+                /* ── MOBILE: UPI app grid ── */
+                container.innerHTML = `
+                    <div class="payment-header">
+                        <h2>Pay to Reserve</h2>
+                        <p>Choose your preferred UPI app</p>
+                    </div>
+                    ${amtBadge}
+                    <div class="upi-app-grid">
+                        <button class="upi-app-btn" onclick="openUpiApp('gpay')" aria-label="Pay with Google Pay">
+                            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="48" height="48" rx="12" fill="#fff"/>
+                                <text x="24" y="32" text-anchor="middle" font-size="20" font-family="sans-serif" fill="#4285F4" font-weight="700">G</text>
+                                <text x="24" y="32" text-anchor="middle" font-size="20" font-family="sans-serif" fill="#EA4335" font-weight="700" dx="-4">G</text>
+                            </svg>
+                            <svg viewBox="0 0 80 24" xmlns="http://www.w3.org/2000/svg" width="60" height="18">
+                                <text x="0" y="18" font-size="15" font-family="sans-serif" font-weight="700" fill="#4285F4">G</text>
+                                <text x="11" y="18" font-size="15" font-family="sans-serif" font-weight="700" fill="#EA4335">P</text>
+                                <text x="21" y="18" font-size="15" font-family="sans-serif" font-weight="700" fill="#FBBC05">a</text>
+                                <text x="31" y="18" font-size="15" font-family="sans-serif" font-weight="700" fill="#34A853">y</text>
+                            </svg>
+                        </button>
+                        <button class="upi-app-btn" onclick="openUpiApp('phonepe')" aria-label="Pay with PhonePe">
+                            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="48" height="48" rx="12" fill="#5F259F"/>
+                                <text x="24" y="32" text-anchor="middle" font-size="22" font-family="sans-serif" fill="white" font-weight="700">P</text>
+                            </svg>
+                            <span>PhonePe</span>
+                        </button>
+                        <button class="upi-app-btn" onclick="openUpiApp('paytm')" aria-label="Pay with Paytm">
+                            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="48" height="48" rx="12" fill="#00BAF2"/>
+                                <text x="24" y="32" text-anchor="middle" font-size="14" font-family="sans-serif" fill="white" font-weight="700">Paytm</text>
+                            </svg>
+                            <span>Paytm</span>
+                        </button>
+                        <button class="upi-app-btn" onclick="openUpiApp('bhim')" aria-label="Pay with BHIM UPI">
+                            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="48" height="48" rx="12" fill="#00529B"/>
+                                <text x="24" y="28" text-anchor="middle" font-size="12" font-family="sans-serif" fill="white" font-weight="700">BHIM</text>
+                                <text x="24" y="40" text-anchor="middle" font-size="9" font-family="sans-serif" fill="#FF9900" font-weight="700">UPI</text>
+                            </svg>
+                            <span>BHIM UPI</span>
+                        </button>
+                    </div>
+                    ${copyRow}
+                    ${confirmBtn}`;
+            } else {
+                /* ── DESKTOP: QR code ── */
+                container.innerHTML = `
+                    <div class="payment-header">
+                        <h2>Pay to Reserve</h2>
+                        <p>Scan with any UPI app to pay instantly</p>
+                    </div>
+                    ${amtBadge}
+                    <div class="payment-qr-wrap">
+                        <div class="payment-qr-label">Scan with any UPI app</div>
+                        <div class="payment-qr-canvas-wrap">
+                            <canvas id="payment-qr-canvas" width="200" height="200"></canvas>
+                            <div class="payment-qr-logo" aria-hidden="true">K</div>
+                        </div>
+                        <p class="payment-qr-hint">GPay · PhonePe · Paytm · BHIM · Any UPI app<br>Points to Kovin · ${UPI_ID}</p>
+                    </div>
+                    ${copyRow}
+                    ${confirmBtn}`;
+                /* Generate QR after DOM is painted */
+                requestAnimationFrame(() => {
+                    const canvas = document.getElementById('payment-qr-canvas');
+                    if (canvas) generateQR(canvas);
+                });
+            }
+        }
+
+        function confirmPaymentOnWhatsApp() {
+            const productName = currentProduct ? currentProduct.name  : 'a product';
+            const amt         = currentProduct ? currentProduct.price : '';
+            const text = `Hello Kovin, payment has been made for ${productName}${amt ? ' ('+amt+')' : ''}. Please confirm and share the next steps.`;
+            window.open(`https://wa.me/917200006006?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
         }
 
         function sendInquiry() {
@@ -3003,6 +3370,7 @@
         }
 
         function openModal(p) {
+            _modalOpenTS = Date.now();
             currentProduct = p;
             saveLastViewed(p);
             const img = document.getElementById('modal-img');
@@ -3031,6 +3399,7 @@
 
             const overlay = document.getElementById('modal-overlay');
             overlay.classList.add('active');
+            overlay.style.pointerEvents = '';
             gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.38, ease: 'power2.out' });
             if (isMobile()) {
                 gsap.fromTo('.modal-content', { y: '100%' }, { y: 0, duration: 0.52, ease: 'power4.out' });
@@ -3074,8 +3443,10 @@
                 featuresList.appendChild(li);
             });
 
+            _modalOpenTS = Date.now();
             const overlay = document.getElementById('modal-overlay');
             overlay.classList.add('active');
+            overlay.style.pointerEvents = '';
             gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.38, ease: 'power2.out' });
             if (isMobile()) {
                 gsap.fromTo('.modal-content', { y: '100%' }, { y: 0, duration: 0.52, ease: 'power4.out' });
@@ -3095,23 +3466,27 @@
 
         function closeModal() {
             const overlay = document.getElementById('modal-overlay');
+            overlay.style.pointerEvents = 'none';
             if (isMobile()) {
                 gsap.to('.modal-content', { y: '100%', duration: 0.36, ease: 'power3.in' });
                 gsap.to(overlay, {
                     opacity: 0, duration: 0.36, ease: 'power2.in', delay: 0.1,
-                    onComplete: () => { overlay.classList.remove('active'); announce('Product details closed.'); },
+                    onComplete: () => { overlay.classList.remove('active'); overlay.style.pointerEvents = ''; announce('Product details closed.'); },
                 });
             } else {
                 gsap.to('.modal-content', { scale: 0.94, opacity: 0, y: 16, duration: 0.3, ease: 'power3.in' });
                 gsap.to(overlay, {
                     opacity: 0, duration: 0.38, ease: 'power2.in', delay: 0.06,
-                    onComplete: () => { overlay.classList.remove('active'); announce('Product details closed.'); },
+                    onComplete: () => { overlay.classList.remove('active'); overlay.style.pointerEvents = ''; announce('Product details closed.'); },
                 });
             }
         }
 
         function handleOverlayClick(e) {
-            if (e.target.id === 'modal-overlay') closeModal();
+            if (e.target.id === 'modal-overlay') {
+                if (Date.now() - _modalOpenTS < 500) return;
+                closeModal();
+            }
         }
 
         function toggleTheme() {
@@ -3405,12 +3780,16 @@
             function showNav() {
                 if (navVisible) return;
                 navVisible = true;
+                headerEl.style.pointerEvents = '';
                 gsap.to(headerEl, { y: 0, opacity: 1, duration: 0.48, ease: 'power3.out', overwrite: true });
             }
             function hideNav() {
                 if (!navVisible) return;
                 navVisible = false;
-                gsap.to(headerEl, { y: -100, opacity: 0, duration: 0.36, ease: 'power3.in', overwrite: true });
+                gsap.to(headerEl, {
+                    y: -100, opacity: 0, duration: 0.36, ease: 'power3.in', overwrite: true,
+                    onComplete: () => { headerEl.style.pointerEvents = 'none'; },
+                });
             }
 
             window.addEventListener('scroll', () => {
