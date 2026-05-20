@@ -1292,6 +1292,38 @@
         .dock-pill.active span { width: auto; opacity: 1; }
         .dock-pill:focus-visible { outline: 3px solid var(--copper); outline-offset: 3px; }
 
+        /* ===== MOBILE STICKY CTA ===== */
+        .mobile-cta {
+            display: none;
+            position: fixed;
+            left: 16px;
+            right: 16px;
+            z-index: 150;
+            bottom: calc(env(safe-area-inset-bottom, 0px) + 90px);
+            pointer-events: none;
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.38s var(--ease-expo), transform 0.38s var(--ease-expo);
+        }
+        .mobile-cta.visible {
+            pointer-events: auto;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .mobile-cta-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--sp-2);
+            min-height: 52px;
+            font-size: var(--fs-small);
+            box-shadow: 0 8px 28px -4px rgba(15,16,32,0.3);
+        }
+        @media (max-width: 768px) {
+            .mobile-cta { display: flex; }
+        }
+
         /* ===== PWA PROMPT ===== */
         #pwa-prompt {
             position: fixed; bottom: 110px; left: 50%; transform: translateX(-50%) translateY(100px);
@@ -1403,19 +1435,25 @@
         }
 
         @media (max-width: 768px) {
-            .container { padding: 0 20px; }
+            /* ── Core layout ── */
+            .container { padding: 0 16px; }
             header, .bulb-wrap { display: none; }
 
-            /* Section rhythm — more breathing on mobile */
-            .section-padding { padding: 64px 0; }
+            /* ── Section rhythm ── */
+            .section-padding { padding: clamp(52px, 8vw, 72px) 0; }
             .section-header { margin-bottom: var(--sp-10); }
+            .section-header p { font-size: 1rem !important; }
 
-            /* Hero mobile */
-            .hero { padding-bottom: 48px; }
-            .hero-right { height: 280px; padding-top: 96px; }
-            .hero-device-stage { width: 155px; height: 265px; }
-            .hero-left { padding: 28px 20px 36px; }
-            .hero h1 { font-size: clamp(2.2rem, 9vw, 3rem); letter-spacing: -0.015em; }
+            /* ── Hero ── */
+            .hero { padding-bottom: 32px; }
+            .hero-right {
+                height: 260px;
+                padding-top: 88px;
+                perspective: none;
+            }
+            .hero-device-stage { width: 148px; height: 252px; }
+            .hero-left { padding: 24px 16px 32px; }
+            .hero h1 { font-size: clamp(2.1rem, 9vw, 2.8rem); letter-spacing: -0.015em; }
             .hero-desc { font-size: 1rem; max-width: 100%; }
             .hero-actions {
                 flex-direction: column;
@@ -1423,33 +1461,152 @@
                 width: 100%;
                 gap: var(--sp-3);
             }
-            .hero-actions .btn { width: 100%; justify-content: center; padding: 16px 28px; }
-            .hero-trust-indicators { gap: var(--sp-4); }
+            .hero-actions .btn {
+                width: 100%;
+                justify-content: center;
+                min-height: 52px;
+                padding: 14px 24px;
+            }
+            .hero-trust-indicators { gap: var(--sp-4); flex-wrap: wrap; justify-content: center; }
             .hero-trust-indicators span { font-size: var(--fs-micro); }
 
-            /* General mobile */
-            .bento-item { grid-column: span 12 !important; padding: 36px 32px; }
-            .bento-item h3 { font-size: 1.85rem; }
+            /* ── General cards ── */
+            .bento-item { grid-column: span 12 !important; padding: 28px 22px; border-radius: 24px; }
+            .bento-item h3 { font-size: clamp(1.55rem, 5vw, 1.85rem); }
             .bento-item p { font-size: 1rem; }
             .repair-grid { grid-template-columns: 1fr; gap: var(--sp-4); }
-            .repair-card { padding: 36px 32px; }
+            .repair-card { padding: 28px 22px; border-radius: 24px; }
+            .product-card { border-radius: 20px; }
 
-            .mobile-dock { display: flex; }
-            body { padding-bottom: 120px; }
-            .product-card, .bento-item, .repair-card { border-radius: 28px; }
-            .btn { padding: 16px 28px; font-size: var(--fs-small); }
-            .modal-overlay { padding: 12px; }
-            .modal-content { border-radius: 28px; max-height: 95vh; }
-            .modal-right { padding: 32px 28px; }
-            .modal-title { font-size: 1.85rem; }
-            .guided-panel { padding: 32px 24px; border-radius: 28px; }
-            .guided-question { font-size: 1.75rem; margin-bottom: var(--sp-8); }
-            .checkout-panel { padding: 32px 24px; border-radius: 28px; }
-            .checkout-header h2 { font-size: 1.65rem; }
-            .chat-window { width: calc(100vw - 32px); right: 16px; }
+            /* ── Catalogue / slider ── */
+            .cat-nav { gap: var(--sp-2); padding: 4px 0; }
+            .cat-nav-btn {
+                min-height: 44px;
+                padding: 10px 18px;
+                font-size: var(--fs-small);
+            }
+            .slider-section { margin-bottom: var(--sp-10); }
+            .slider-header { padding: 0 16px var(--sp-4); }
+            .slider-viewport { padding: 8px 16px 12px; }
+            .product-card { min-width: 220px; }
 
-            /* Footer mobile */
-            .footer-inner { padding: 56px 0 0; }
+            /* ── Contact section ── */
+            #contact .bento-item h3 {
+                font-size: clamp(1.75rem, 7vw, 2.4rem) !important;
+            }
+
+            /* ── Touch targets ── */
+            .btn { min-height: 48px; padding: 14px 24px; font-size: var(--fs-small); }
+            .slider-btn { width: 44px; height: 44px; }
+            .modal-close { width: 44px; height: 44px; font-size: 1.1rem; }
+
+            /* ── Mobile dock ── */
+            .mobile-dock {
+                display: flex;
+                height: 64px;
+                bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
+            }
+
+            /* ── Safe area body padding ── */
+            body {
+                padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 92px);
+            }
+
+            /* ── Bottom-sheet modals ── */
+            .modal-overlay {
+                align-items: flex-end;
+                padding: 0;
+            }
+            .modal-content {
+                border-radius: 28px 28px 0 0;
+                max-height: 92dvh;
+                width: 100%;
+                flex-direction: column;
+            }
+            .modal-left { display: none; }
+            .modal-right {
+                padding: 28px 20px calc(env(safe-area-inset-bottom, 0px) + 32px);
+                overflow-y: auto;
+                max-height: 92dvh;
+                border-radius: 0;
+            }
+            .modal-title { font-size: clamp(1.55rem, 5.5vw, 2rem); }
+
+            /* ── Bottom-sheet guided / checkout ── */
+            .guided-panel,
+            .checkout-panel {
+                border-radius: 28px 28px 0 0;
+                width: 100%;
+                max-height: 92dvh;
+                overflow-y: auto;
+                padding: 28px 20px calc(env(safe-area-inset-bottom, 0px) + 32px);
+                overscroll-behavior: contain;
+            }
+            .guided-question { font-size: clamp(1.45rem, 5vw, 1.75rem); margin-bottom: var(--sp-8); }
+            .checkout-header h2 { font-size: clamp(1.4rem, 4.5vw, 1.65rem); }
+            .guided-option { min-height: 52px; padding: 14px 20px; }
+            .checkout-option { min-height: 56px; padding: 14px 16px; }
+
+            /* ── Chat as full-width bottom sheet ── */
+            .chat-window {
+                width: 100%;
+                right: 0;
+                left: 0;
+                bottom: 0;
+                border-radius: 28px 28px 0 0;
+                height: 70dvh;
+                max-height: 70dvh;
+                border: none;
+                border-top: 1px solid var(--border);
+            }
+
+            /* ── Footer collapsible ── */
+            .footer-grid { grid-template-columns: 1fr; gap: 0; }
+            .footer-brand {
+                padding-bottom: var(--sp-8);
+                border-bottom: 1px solid var(--border);
+            }
+            .footer-col { border-bottom: 1px solid var(--border); }
+            .footer-col-label {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                cursor: pointer;
+                padding: var(--sp-5) 0;
+                user-select: none;
+                -webkit-user-select: none;
+                margin: 0;
+                min-height: 52px;
+            }
+            .footer-col-label .chevron {
+                width: 20px;
+                height: 20px;
+                flex-shrink: 0;
+                transition: transform 0.32s var(--ease-expo);
+            }
+            .footer-col.is-open .footer-col-label .chevron { transform: rotate(180deg); }
+            .footer-col ul {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.38s var(--ease-expo), padding-bottom 0.28s ease;
+                padding-bottom: 0;
+            }
+            .footer-col.is-open ul { max-height: 240px; padding-bottom: var(--sp-6); }
+            .footer-inner { padding: 40px 0 0; }
+            .footer-bottom { padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 16px); }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 { font-size: clamp(1.9rem, 10vw, 2.4rem); }
+            .hero-left { padding: 18px 14px 26px; }
+            .hero-right { height: 220px; padding-top: 78px; }
+            .hero-device-stage { width: 128px; height: 218px; }
+            .section-header h2 { font-size: clamp(1.7rem, 7.5vw, 2.1rem); }
+            .bento-item { padding: 22px 18px; }
+            .repair-card { padding: 22px 18px; }
+            .product-card { min-width: 192px; }
+            .cat-nav-btn { padding: 10px 14px; font-size: 0.78rem; }
+            .guided-option { font-size: var(--fs-small); }
         }
 
         /* ===== MOTION SYSTEM — INITIAL STATES =====
@@ -1804,6 +1961,14 @@
             </div>
         </div>
     </footer>
+
+    <!-- MOBILE STICKY CTA -->
+    <div id="mobile-cta" class="mobile-cta" aria-hidden="true">
+        <button class="mobile-cta-btn btn btn-primary" onclick="openGuidedFlow()" aria-label="Start guided discovery">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Find the right device
+        </button>
+    </div>
 
     <!-- MOBILE PILL DOCK -->
     <nav class="mobile-dock" aria-label="Mobile navigation">
@@ -2188,6 +2353,8 @@
             if (el) { el.textContent = ''; requestAnimationFrame(() => { el.textContent = msg; }); }
         }
 
+        const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
+
         const products = [
             { id: 1, category: 'phones', name: 'Samsung Galaxy S23 FE', specs: '6.4" AMOLED · 50MP · 4500mAh', price: '₹34,999', oldPrice: '₹44,999', badge: 'Built for more power', tags: ['Built for heavy use', 'Value that holds'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/fWEumNteCudVVPuo.png', desc: 'Samsung Galaxy S23 FE. Features a 6.4" Dynamic AMOLED 2X display, Exynos 2200 processor, 50MP main camera, 4500mAh battery, and 128GB storage.', expect: 'This fits usage if smooth performance for multitasking and a camera that captures clear details in any light are needed. The battery experience is reliable for a full day of active use.', fact: 'The performance stability during long video calls is better-than-expected for this model.', decision: 'Fits well if long battery is needed without thinking', urgency: 'Picked often this week', socialProof: 'Picked often this week', brand: 'Samsung', tier: 'flagship', priceContext: 'Holds value well over time', priceAnchor: 'Stays consistent for what is offered' },
             { id: 2, category: 'phones', name: 'Google Pixel 7a', specs: '6.1" OLED · 64MP · Tensor G2', price: '₹39,999', oldPrice: '₹43,999', badge: 'Balanced for everything', tags: ['Camera focused', 'Clean experience'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/AeIhJBFyYYuVXncG.png', desc: 'Google Pixel 7a. Features a 6.1" OLED display, Google Tensor G2 chip, 64MP dual camera system, 4385mAh battery, and 128GB storage.', expect: 'Chosen if a compact phone that takes incredible photos automatically is preferred. It provides a clean daily performance that feels fast and simple.', fact: 'The call clarity and noise cancellation features offer a unique usage advantage in busy environments.', decision: 'Works best if camera matters more than gaming', urgency: 'Limited pieces available', socialProof: 'Chosen by many for daily use', brand: 'Google', tier: 'balanced', priceContext: 'Chosen when a balanced device is wanted', priceAnchor: 'Seen across similar range devices' },
@@ -2390,11 +2557,15 @@
             const overlay = document.getElementById('guided-overlay');
             overlay.classList.add('active');
             prevStep(1);
-            gsap.fromTo(overlay,  { opacity: 0 }, { opacity: 1, duration: 0.36, ease: 'power2.out' });
-            gsap.fromTo('.guided-panel',
-                { scale: 0.94, opacity: 0, y: 24 },
-                { scale: 1, opacity: 1, y: 0, duration: 0.58, ease: 'power4.out', delay: 0.05 }
-            );
+            gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.36, ease: 'power2.out' });
+            if (isMobile()) {
+                gsap.fromTo('.guided-panel', { y: '100%' }, { y: 0, duration: 0.52, ease: 'power4.out' });
+            } else {
+                gsap.fromTo('.guided-panel',
+                    { scale: 0.94, opacity: 0, y: 24 },
+                    { scale: 1, opacity: 1, y: 0, duration: 0.58, ease: 'power4.out', delay: 0.05 }
+                );
+            }
             setTimeout(() => {
                 const close = document.querySelector('#guided-overlay .modal-close');
                 if (close) close.focus();
@@ -2404,11 +2575,19 @@
 
         function closeGuidedFlow() {
             const overlay = document.getElementById('guided-overlay');
-            gsap.to('.guided-panel', { scale: 0.95, opacity: 0, y: 14, duration: 0.28, ease: 'power3.in' });
-            gsap.to(overlay, {
-                opacity: 0, duration: 0.34, ease: 'power2.in', delay: 0.06,
-                onComplete: () => { overlay.classList.remove('active'); announce('Guided flow closed.'); },
-            });
+            if (isMobile()) {
+                gsap.to('.guided-panel', { y: '100%', duration: 0.36, ease: 'power3.in' });
+                gsap.to(overlay, {
+                    opacity: 0, duration: 0.36, ease: 'power2.in', delay: 0.1,
+                    onComplete: () => { overlay.classList.remove('active'); announce('Guided flow closed.'); },
+                });
+            } else {
+                gsap.to('.guided-panel', { scale: 0.95, opacity: 0, y: 14, duration: 0.28, ease: 'power3.in' });
+                gsap.to(overlay, {
+                    opacity: 0, duration: 0.34, ease: 'power2.in', delay: 0.06,
+                    onComplete: () => { overlay.classList.remove('active'); announce('Guided flow closed.'); },
+                });
+            }
         }
 
         function nextStep(step, value) {
@@ -2499,11 +2678,15 @@
             const overlay = document.getElementById('checkout-overlay');
             overlay.classList.add('active');
             nextCheckoutStep(1);
-            gsap.fromTo(overlay,  { opacity: 0 }, { opacity: 1, duration: 0.36, ease: 'power2.out' });
-            gsap.fromTo('.checkout-panel',
-                { scale: 0.94, opacity: 0, y: 24 },
-                { scale: 1, opacity: 1, y: 0, duration: 0.58, ease: 'power4.out', delay: 0.05 }
-            );
+            gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.36, ease: 'power2.out' });
+            if (isMobile()) {
+                gsap.fromTo('.checkout-panel', { y: '100%' }, { y: 0, duration: 0.52, ease: 'power4.out' });
+            } else {
+                gsap.fromTo('.checkout-panel',
+                    { scale: 0.94, opacity: 0, y: 24 },
+                    { scale: 1, opacity: 1, y: 0, duration: 0.58, ease: 'power4.out', delay: 0.05 }
+                );
+            }
             setTimeout(() => {
                 const close = document.querySelector('#checkout-overlay .modal-close');
                 if (close) close.focus();
@@ -2512,11 +2695,19 @@
 
         function closeCheckout() {
             const overlay = document.getElementById('checkout-overlay');
-            gsap.to('.checkout-panel', { scale: 0.95, opacity: 0, y: 14, duration: 0.28, ease: 'power3.in' });
-            gsap.to(overlay, {
-                opacity: 0, duration: 0.34, ease: 'power2.in', delay: 0.06,
-                onComplete: () => { overlay.classList.remove('active'); },
-            });
+            if (isMobile()) {
+                gsap.to('.checkout-panel', { y: '100%', duration: 0.36, ease: 'power3.in' });
+                gsap.to(overlay, {
+                    opacity: 0, duration: 0.36, ease: 'power2.in', delay: 0.1,
+                    onComplete: () => { overlay.classList.remove('active'); },
+                });
+            } else {
+                gsap.to('.checkout-panel', { scale: 0.95, opacity: 0, y: 14, duration: 0.28, ease: 'power3.in' });
+                gsap.to(overlay, {
+                    opacity: 0, duration: 0.34, ease: 'power2.in', delay: 0.06,
+                    onComplete: () => { overlay.classList.remove('active'); },
+                });
+            }
         }
 
         function nextCheckoutStep(step) {
@@ -2585,13 +2776,15 @@
 
             const overlay = document.getElementById('modal-overlay');
             overlay.classList.add('active');
-            /* Backdrop fade */
             gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.38, ease: 'power2.out' });
-            /* Content: scale up + drift up */
-            gsap.fromTo('.modal-content',
-                { scale: 0.93, opacity: 0, y: 28 },
-                { scale: 1, opacity: 1, y: 0, duration: 0.6, ease: 'power4.out', delay: 0.06 }
-            );
+            if (isMobile()) {
+                gsap.fromTo('.modal-content', { y: '100%' }, { y: 0, duration: 0.52, ease: 'power4.out' });
+            } else {
+                gsap.fromTo('.modal-content',
+                    { scale: 0.93, opacity: 0, y: 28 },
+                    { scale: 1, opacity: 1, y: 0, duration: 0.6, ease: 'power4.out', delay: 0.06 }
+                );
+            }
 
             setTimeout(() => {
                 const closeBtn = document.getElementById('modal-close-btn');
@@ -2629,10 +2822,14 @@
             const overlay = document.getElementById('modal-overlay');
             overlay.classList.add('active');
             gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.38, ease: 'power2.out' });
-            gsap.fromTo('.modal-content',
-                { scale: 0.93, opacity: 0, y: 28 },
-                { scale: 1, opacity: 1, y: 0, duration: 0.6, ease: 'power4.out', delay: 0.06 }
-            );
+            if (isMobile()) {
+                gsap.fromTo('.modal-content', { y: '100%' }, { y: 0, duration: 0.52, ease: 'power4.out' });
+            } else {
+                gsap.fromTo('.modal-content',
+                    { scale: 0.93, opacity: 0, y: 28 },
+                    { scale: 1, opacity: 1, y: 0, duration: 0.6, ease: 'power4.out', delay: 0.06 }
+                );
+            }
 
             setTimeout(() => {
                 const closeBtn = document.getElementById('modal-close-btn');
@@ -2643,19 +2840,19 @@
 
         function closeModal() {
             const overlay = document.getElementById('modal-overlay');
-            /* Content exits: scale down + drift down */
-            gsap.to('.modal-content', {
-                scale: 0.94, opacity: 0, y: 16,
-                duration: 0.3, ease: 'power3.in',
-            });
-            /* Backdrop fades — slightly slower, removes class when done */
-            gsap.to(overlay, {
-                opacity: 0, duration: 0.38, ease: 'power2.in', delay: 0.06,
-                onComplete: () => {
-                    overlay.classList.remove('active');
-                    announce('Product details closed.');
-                },
-            });
+            if (isMobile()) {
+                gsap.to('.modal-content', { y: '100%', duration: 0.36, ease: 'power3.in' });
+                gsap.to(overlay, {
+                    opacity: 0, duration: 0.36, ease: 'power2.in', delay: 0.1,
+                    onComplete: () => { overlay.classList.remove('active'); announce('Product details closed.'); },
+                });
+            } else {
+                gsap.to('.modal-content', { scale: 0.94, opacity: 0, y: 16, duration: 0.3, ease: 'power3.in' });
+                gsap.to(overlay, {
+                    opacity: 0, duration: 0.38, ease: 'power2.in', delay: 0.06,
+                    onComplete: () => { overlay.classList.remove('active'); announce('Product details closed.'); },
+                });
+            }
         }
 
         function handleOverlayClick(e) {
@@ -2675,21 +2872,32 @@
             const isOpen = chat.classList.contains('open');
             if (!isOpen) {
                 chat.classList.add('open');
-                gsap.fromTo(chat,
-                    { y: 40, opacity: 0, scale: 0.96 },
-                    { y: 0, opacity: 1, scale: 1, duration: 0.52, ease: 'power4.out' }
-                );
+                if (isMobile()) {
+                    gsap.fromTo(chat, { y: '100%' }, { y: 0, duration: 0.48, ease: 'power4.out' });
+                } else {
+                    gsap.fromTo(chat,
+                        { y: 40, opacity: 0, scale: 0.96 },
+                        { y: 0, opacity: 1, scale: 1, duration: 0.52, ease: 'power4.out' }
+                    );
+                }
                 setTimeout(() => {
                     const input = document.getElementById('chat-input');
                     if (input) input.focus();
                 }, 220);
                 announce('Chat opened.');
             } else {
-                gsap.to(chat, {
-                    y: 32, opacity: 0, scale: 0.96,
-                    duration: 0.3, ease: 'power3.in',
-                    onComplete: () => { chat.classList.remove('open'); },
-                });
+                if (isMobile()) {
+                    gsap.to(chat, {
+                        y: '100%', duration: 0.34, ease: 'power3.in',
+                        onComplete: () => { chat.classList.remove('open'); },
+                    });
+                } else {
+                    gsap.to(chat, {
+                        y: 32, opacity: 0, scale: 0.96,
+                        duration: 0.3, ease: 'power3.in',
+                        onComplete: () => { chat.classList.remove('open'); },
+                    });
+                }
                 announce('Chat closed.');
             }
         }
@@ -3012,6 +3220,55 @@
             document.getElementById('pwa-prompt').classList.remove('active');
         }
 
+        function initFooterCollapse() {
+            if (!window.matchMedia('(max-width: 768px)').matches) return;
+            document.querySelectorAll('.footer-col').forEach(col => {
+                const label = col.querySelector('.footer-col-label');
+                if (!label) return;
+                /* Add chevron icon */
+                const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                svg.setAttribute('viewBox', '0 0 24 24');
+                svg.setAttribute('fill', 'none');
+                svg.setAttribute('stroke', 'currentColor');
+                svg.setAttribute('stroke-width', '2.5');
+                svg.setAttribute('stroke-linecap', 'round');
+                svg.setAttribute('stroke-linejoin', 'round');
+                svg.classList.add('chevron');
+                svg.setAttribute('aria-hidden', 'true');
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                path.setAttribute('d', 'M6 9l6 6 6-6');
+                svg.appendChild(path);
+                label.appendChild(svg);
+                label.setAttribute('role', 'button');
+                label.setAttribute('aria-expanded', 'false');
+                label.setAttribute('tabindex', '0');
+                label.addEventListener('click', () => {
+                    const isOpen = col.classList.toggle('is-open');
+                    label.setAttribute('aria-expanded', String(isOpen));
+                });
+                label.addEventListener('keydown', e => {
+                    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); label.click(); }
+                });
+            });
+        }
+
+        function initMobileCTA() {
+            if (!window.matchMedia('(max-width: 768px)').matches) return;
+            const cta = document.getElementById('mobile-cta');
+            const hero = document.querySelector('.hero');
+            if (!cta || !hero) return;
+            const observer = new IntersectionObserver(([entry]) => {
+                if (!entry.isIntersecting) {
+                    cta.classList.add('visible');
+                    cta.removeAttribute('aria-hidden');
+                } else {
+                    cta.classList.remove('visible');
+                    cta.setAttribute('aria-hidden', 'true');
+                }
+            }, { threshold: 0.1 });
+            observer.observe(hero);
+        }
+
         window.addEventListener('load', () => {
             /* ── 1. Render dynamic content ── */
             renderCatalogue();
@@ -3054,6 +3311,10 @@
 
             /* ── 4. Pointer/hover motion system ── */
             initMotion();
+
+            /* ── 5. Mobile-specific enhancements ── */
+            initFooterCollapse();
+            initMobileCTA();
         });
     </script>
 </body>
