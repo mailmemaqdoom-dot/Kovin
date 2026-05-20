@@ -1235,6 +1235,200 @@
             line-height: 1.5;
         }
 
+        /* ══════════════════════════════════════════════════════
+           CINEMATIC IMAGE SYSTEM  —  Phases 2 · 3 · 4 · 5 · 6 · 7
+        ══════════════════════════════════════════════════════ */
+
+        /* ── Hero cinematic background ── */
+        .hero-bg-wrap {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .hero-bg-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: 72% center;
+            opacity: 0;                 /* fades in via GSAP */
+            transform: scale(1.06);
+            transform-origin: 72% center;
+            will-change: transform, opacity;
+        }
+        .hero-bg-wrap::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                /* Left mask — keeps text column fully readable */
+                linear-gradient(to right,
+                    var(--paper) 0%,
+                    rgba(247,244,239,0.97) 22%,
+                    rgba(247,244,239,0.88) 38%,
+                    rgba(247,244,239,0.58) 58%,
+                    rgba(247,244,239,0.12) 80%,
+                    rgba(247,244,239,0.04) 100%),
+                /* Top + bottom edge fades */
+                linear-gradient(to bottom,
+                    rgba(247,244,239,0.55) 0%,
+                    transparent 14%,
+                    transparent 82%,
+                    rgba(247,244,239,0.70) 100%);
+        }
+        [data-theme="dark"] .hero-bg-wrap::after {
+            background:
+                linear-gradient(to right,
+                    var(--paper) 0%,
+                    rgba(247,244,239,0.96) 22%,
+                    rgba(247,244,239,0.85) 40%,
+                    rgba(247,244,239,0.50) 60%,
+                    rgba(247,244,239,0.08) 100%);
+        }
+
+        /* ── Scene strips — cinematic category dividers ── */
+        .scene-strip {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            display: block;
+        }
+        .scene-strip-bg {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 21 / 7;
+            overflow: hidden;
+        }
+        .scene-strip-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            transform: scale(1.08);
+            will-change: transform;
+            display: block;
+        }
+        .scene-strip-overlay {
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(to bottom,
+                    rgba(26,22,18,0.08) 0%,
+                    rgba(26,22,18,0.0) 30%,
+                    rgba(26,22,18,0.42) 70%,
+                    rgba(26,22,18,0.78) 100%),
+                linear-gradient(to right,
+                    rgba(26,22,18,0.28) 0%,
+                    transparent 55%);
+        }
+        .scene-strip-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding:
+                clamp(18px, 2.5vw, 36px)
+                clamp(24px, calc((100vw - 1400px) / 2 + 40px), 120px);
+            color: #fff;
+            z-index: 2;
+        }
+        .scene-strip-eyebrow {
+            display: block;
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
+            opacity: 0.65;
+            margin-bottom: 6px;
+        }
+        .scene-strip-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 3.2vw, 3rem);
+            font-weight: 400;
+            line-height: 1.06;
+            letter-spacing: -0.022em;
+            margin: 0 0 6px;
+        }
+        .scene-strip-sub {
+            font-size: clamp(0.82rem, 1.1vw, 0.95rem);
+            opacity: 0.64;
+            max-width: 460px;
+            line-height: 1.58;
+            font-weight: 400;
+            margin: 0;
+        }
+
+        /* ── Bento item with full background image ── */
+        .bento-item.has-bg {
+            position: relative;
+            overflow: hidden;
+            color: #fff;
+            border: none !important;
+            background: var(--ink);
+        }
+        .bento-bg-img {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+        .bento-bg-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center 38%;
+            opacity: 0.48;
+            transition: opacity 0.5s ease, transform 0.7s ease;
+            display: block;
+        }
+        @media (hover: hover) {
+            .bento-item.has-bg:hover .bento-bg-img img {
+                opacity: 0.60;
+                transform: scale(1.04);
+            }
+        }
+        .bento-bg-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg,
+                rgba(26,22,18,0.72) 0%,
+                rgba(26,22,18,0.46) 55%,
+                rgba(26,22,18,0.18) 100%);
+            z-index: 1;
+        }
+        .bento-item.has-bg > *:not(.bento-bg-img):not(.bento-bg-overlay) {
+            position: relative;
+            z-index: 2;
+        }
+        .bento-item.has-bg h3,
+        .bento-item.has-bg p { color: #fff; }
+
+        /* ── Mobile responsive adjustments ── */
+        @media (max-width: 768px) {
+            .hero-bg-wrap::after {
+                background:
+                    linear-gradient(to bottom,
+                        var(--paper) 0%,
+                        rgba(247,244,239,0.97) 28%,
+                        rgba(247,244,239,0.80) 55%,
+                        rgba(247,244,239,0.30) 82%,
+                        rgba(247,244,239,0.06) 100%),
+                    linear-gradient(to right,
+                        var(--paper) 0%,
+                        rgba(247,244,239,0.80) 40%,
+                        transparent 100%);
+            }
+            .scene-strip-bg { aspect-ratio: 4 / 3; }
+            .scene-strip-content {
+                padding: 18px 20px;
+            }
+            .scene-strip-sub { display: none; }
+        }
+        @media (max-width: 480px) {
+            .scene-strip-bg { aspect-ratio: 3 / 2; }
+            .scene-strip-title { font-size: 1.55rem; }
+        }
+
         /* CONFIRMATION SCREEN */
         .confirmation-visual { width: 72px; height: 72px; background: #25D366; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--sp-8); color: white; font-size: 2rem; box-shadow: 0 10px 20px rgba(37, 211, 102, 0.2); }
         .confirmation-text { text-align: center; margin-bottom: var(--sp-8); }
@@ -1993,6 +2187,17 @@
     <main id="main-content">
         <section class="hero" id="hero">
 
+            <!-- Cinematic background — premium_entertainment_space -->
+            <div class="hero-bg-wrap" id="hero-bg-wrap" aria-hidden="true">
+                <img
+                    src="Photos/10_kovin_brand_signature_visual.png"
+                    alt=""
+                    width="1920"
+                    height="720"
+                    fetchpriority="high"
+                >
+            </div>
+
             <!-- Left: content -->
             <div class="hero-left">
                 <span class="hero-eyebrow hero-reveal">Guided Electronics · Tamil Nadu</span>
@@ -2062,7 +2267,17 @@
                     <h2>Built on something most stores forget.</h2>
                 </div>
                 <div class="bento-grid">
-                    <div class="bento-item large reveal">
+                    <div class="bento-item large reveal has-bg">
+                        <div class="bento-bg-img" aria-hidden="true">
+                            <img
+                                src="Photos/no_people_empty_discovery_gallery.png"
+                                alt=""
+                                loading="lazy"
+                                width="1280"
+                                height="480"
+                            >
+                        </div>
+                        <div class="bento-bg-overlay"></div>
                         <h3>Guided, Not Pushed.</h3>
                         <p>The right device is the one that fits how life is actually lived — not the most expensive one or the fastest-moving one. Clarity comes before any recommendation, and nothing is suggested unless it genuinely fits.</p>
                     </div>
@@ -2113,11 +2328,15 @@
                         <p>A 15–20 minute call to walk through the device in hand, compare options side by side, and answer every question — from anywhere in India. Free for anyone considering a purchase.</p>
                         <a href="https://wa.me/917200006006" class="btn btn-primary" style="margin-top: 32px;" target="_blank" rel="noopener noreferrer">Arrange via WhatsApp</a>
                     </div>
-                    <div class="bento-item reveal">
+                    <div class="bento-item reveal has-bg">
+                        <div class="bento-bg-img" aria-hidden="true">
+                            <img src="Photos/02_kovin_daily_life_technology.png" alt="" loading="lazy" width="960" height="540">
+                        </div>
+                        <div class="bento-bg-overlay"></div>
                         <span class="repair-icon" aria-hidden="true">🏪</span>
                         <h3>Visit in Person</h3>
                         <p>Coimbatore only. Come in, hold the device, compare it with others, and leave with complete clarity. No expectation to purchase on the day — ever.</p>
-                        <a href="https://wa.me/917200006006" class="btn btn-secondary" style="margin-top: 32px;" target="_blank" rel="noopener noreferrer">Schedule a Visit</a>
+                        <a href="https://wa.me/917200006006" class="btn" style="background:white;color:var(--ink);margin-top:32px;" target="_blank" rel="noopener noreferrer">Schedule a Visit</a>
                     </div>
                 </div>
             </div>
@@ -2130,6 +2349,19 @@
                     <h2>Something needs attention?</h2>
                     <p style="margin-top: 24px; opacity: 0.6; font-size: 1.2rem;">Most problems are fixable. A clear diagnostic happens first — no surprise charges, no unexplained work, ever.</p>
                 </div>
+            </div>
+            <!-- Service scene strip -->
+            <div class="scene-strip" style="margin: 32px 0 40px;" aria-hidden="true">
+                <div class="scene-strip-bg" style="aspect-ratio: 21/6;">
+                    <img src="Photos/09_kovin_trust_service_experience.png" alt="" loading="lazy" width="1920" height="548" style="object-position:center 30%;">
+                </div>
+                <div class="scene-strip-overlay"></div>
+                <div class="scene-strip-content">
+                    <span class="scene-strip-eyebrow">Kovin · Care that stays with you</span>
+                    <h2 class="scene-strip-title" style="font-size:clamp(1.5rem,2.5vw,2.4rem);">Honest diagnostics. No surprise charges.</h2>
+                </div>
+            </div>
+            <div class="container">
                 <div class="repair-grid">
                     <div class="repair-card reveal" role="button" tabindex="0" onclick="openRepairModal('Mobile Repair', 'Repair handled for all mobile brands. A clear diagnostic is shared before any work begins — nothing proceeds without explanation.', ['Screen Replacement', 'Battery Swap', 'Software Fix'], 'A full diagnostic is shared before work begins. Most screen repairs are completed the same day.', 'Most screen replacements are completed within 2 hours — the device comes back the same day.')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}">
                         <span class="repair-icon" aria-hidden="true">📱</span>
@@ -2153,14 +2385,18 @@
                         <span class="repair-tag" aria-hidden="true">Tap to enquire →</span>
                     </div>
                 </div>
-            </div>
+            </div><!-- /container -->
         </section>
 
         <section id="trust-process" class="section-padding">
             <div class="container">
                 <div class="bento-grid">
-                    <div class="bento-item large reveal">
-                        <span class="hero-eyebrow">The Process</span>
+                    <div class="bento-item large reveal has-bg">
+                        <div class="bento-bg-img" aria-hidden="true">
+                            <img src="Photos/06_kovin_guided_technology_experience.png" alt="" loading="lazy" width="1280" height="540">
+                        </div>
+                        <div class="bento-bg-overlay"></div>
+                        <span class="hero-eyebrow" style="color:rgba(255,255,255,0.7);">The Process</span>
                         <h3>What happens after choosing</h3>
                         <ul class="trust-list">
                             <li>Device is checked and verified before handover</li>
@@ -2767,6 +3003,58 @@
             { id: 'accessories', label: 'Everyday Additions' },
         ];
 
+        /* Scene strip visuals — cinematic category dividers */
+        const SCENE_STRIPS = {
+            phones:      {
+                img:     'Photos/01_kovin_hero_master_visual.png',
+                eyebrow: 'Phones · Everyday Carriers',
+                title:   'Everyday Phones',
+                sub:     'Each one chosen because it handles the day — not the most advertised option available.',
+                pos:     'center 42%',
+            },
+            speakers:    {
+                img:     'Photos/immersive_audio_experience.png',
+                eyebrow: 'Sound · Silence on Demand',
+                title:   'Sound & Silence',
+                sub:     'Chosen for how music actually sounds, and how noise actually disappears.',
+                pos:     'center 55%',
+            },
+            tv:          {
+                img:     'Photos/premium_entertainment_space.png',
+                eyebrow: 'Screens · Home Cinema',
+                title:   'Home Screens',
+                sub:     'Television that shows what the director intended — not what a cheap panel allows.',
+                pos:     'center 50%',
+            },
+            accessories: {
+                img:     'Photos/smart_accessories_flatlay.png',
+                eyebrow: 'Add-ons · Everyday Essentials',
+                title:   'Everyday Additions',
+                sub:     'Small decisions that change how a device feels after a year of daily use.',
+                pos:     'center 45%',
+            },
+        };
+
+        function buildSceneStrip(catId) {
+            const s = SCENE_STRIPS[catId];
+            if (!s) return null;
+            const el = document.createElement('div');
+            el.className = 'scene-strip';
+            el.dataset.scene = catId;
+            el.innerHTML = `
+                <div class="scene-strip-bg">
+                    <img src="${s.img}" alt="" loading="lazy" width="1920" height="650"
+                         style="object-position:${s.pos}" aria-hidden="true">
+                </div>
+                <div class="scene-strip-overlay"></div>
+                <div class="scene-strip-content">
+                    <span class="scene-strip-eyebrow">${s.eyebrow}</span>
+                    <h2 class="scene-strip-title">${s.title}</h2>
+                    <p class="scene-strip-sub">${s.sub}</p>
+                </div>`;
+            return el;
+        }
+
         function renderCatalogue() {
             const root = document.getElementById('catalogue-sliders');
             if (!root) return;
@@ -2774,6 +3062,11 @@
             CATEGORIES.forEach(cat => {
                 const items = products.filter(p => p.category === cat.id);
                 if (!items.length) return;
+
+                /* ── Scene strip before each category ── */
+                const strip = buildSceneStrip(cat.id);
+                if (strip) root.appendChild(strip);
+
                 const section = document.createElement('div');
                 section.className = 'slider-section';
                 section.id = `cat-${cat.id}`;
@@ -3568,6 +3861,13 @@
                 gsap.utils.toArray('.reveal, .hero-reveal, .product-card').forEach(el => {
                     gsap.set(el, { opacity: 1, y: 0, scale: 1 });
                 });
+                /* Also reset scene strip images and content */
+                gsap.utils.toArray('.scene-strip-bg img').forEach(img => {
+                    gsap.set(img, { scale: 1, yPercent: 0 });
+                });
+                gsap.utils.toArray('.scene-strip-content').forEach(c => {
+                    gsap.set(c, { opacity: 1, y: 0 });
+                });
                 return;
             }
 
@@ -3611,6 +3911,44 @@
                         ease: 'power3.out',
                     });
                     processed.add(el);
+                }
+            });
+
+            /* ── Scene strip — parallax image + content fade-up ── */
+            gsap.utils.toArray('.scene-strip').forEach(strip => {
+                const img     = strip.querySelector('.scene-strip-bg img');
+                const content = strip.querySelector('.scene-strip-content');
+
+                /* Parallax: image drifts upward slower than scroll */
+                if (img) {
+                    gsap.fromTo(img,
+                        { yPercent: 0 },
+                        {
+                            yPercent: -10,
+                            ease: 'none',
+                            scrollTrigger: {
+                                trigger: strip,
+                                start: 'top bottom',
+                                end: 'bottom top',
+                                scrub: 1.8,
+                            },
+                        }
+                    );
+                }
+
+                /* Content fade-up on enter */
+                if (content) {
+                    gsap.set(content, { opacity: 0, y: 24 });
+                    gsap.to(content, {
+                        opacity: 1, y: 0,
+                        duration: 0.9,
+                        ease: 'power3.out',
+                        scrollTrigger: {
+                            trigger: strip,
+                            start: 'top 78%',
+                            toggleActions: 'play none none none',
+                        },
+                    });
                 }
             });
 
@@ -3911,6 +4249,28 @@
             initRetention();
 
             const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            /* ── 1b. Hero cinematic background — fade in + Ken Burns ── */
+            const heroBgImg = document.querySelector('.hero-bg-wrap img');
+            if (heroBgImg) {
+                const targetOpacity = isMobile() ? 0.13 : 0.20;
+                if (!prefersReduced) {
+                    /* Fade in gently after page settles */
+                    gsap.to(heroBgImg, {
+                        opacity: targetOpacity,
+                        duration: 2.4,
+                        ease: 'power2.out',
+                        delay: 0.6,
+                    });
+                    /* Slow Ken Burns breathing — scale 1.06 → 1.01 */
+                    gsap.fromTo(heroBgImg,
+                        { scale: 1.06 },
+                        { scale: 1.01, duration: 28, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 0.6 }
+                    );
+                } else {
+                    gsap.set(heroBgImg, { opacity: targetOpacity, scale: 1 });
+                }
+            }
 
             /* ── 2. Hero entrance sequence ── */
             const heroReveals = [...document.querySelectorAll('.hero-reveal')];
