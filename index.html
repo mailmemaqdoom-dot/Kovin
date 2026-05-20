@@ -219,19 +219,51 @@
 
         .nav-pill.active { background: var(--copper); color: white; }
 
-        /* ===== BULB TOGGLE ===== */
+        /* ===== BULB TOGGLE (desktop) ===== */
         .bulb-wrap {
-            position: fixed; top: 0; right: 60px; z-index: 2000;
-            height: 120px; cursor: pointer; display: flex; flex-direction: column; align-items: center;
+            position: fixed; top: 0; right: clamp(16px, 3vw, 24px); z-index: 999;
+            height: 80px; cursor: pointer; display: flex; flex-direction: column; align-items: center;
         }
-        .bulb-wire { width: 1px; height: 60px; background: var(--copper); transition: height 0.3s; }
+        .bulb-wire { width: 1px; height: 44px; background: var(--copper); transition: height 0.3s; }
         .bulb-head {
-            width: 32px; height: 32px; border-radius: 50%;
+            width: 28px; height: 28px; border-radius: 50%;
             background: var(--copper); border: 2px solid var(--copper);
-            box-shadow: 0 0 30px var(--copper-glow); transition: var(--transition-smooth);
+            box-shadow: 0 0 20px var(--copper-glow); transition: var(--transition-smooth);
         }
         [data-theme="dark"] .bulb-head { background: transparent; box-shadow: none; }
-        .bulb-wrap:active .bulb-wire { height: 80px; }
+        .bulb-wrap:active .bulb-wire { height: 58px; }
+
+        /* ===== MOBILE DARK MODE TOGGLE ===== */
+        .mobile-theme-btn {
+            display: none;
+            position: fixed;
+            top: 14px;
+            right: 16px;
+            z-index: 1500;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--glass);
+            backdrop-filter: blur(20px) saturate(1.5);
+            -webkit-backdrop-filter: blur(20px) saturate(1.5);
+            border: 1px solid var(--border);
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            color: var(--ink);
+            box-shadow: 0 2px 12px rgba(26,22,18,0.10);
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+            touch-action: manipulation;
+        }
+        .mobile-theme-btn:active { transform: scale(0.86); }
+        .mobile-theme-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+        /* Sun icon in light mode, moon in dark mode */
+        .mobile-theme-btn .icon-moon { display: none; }
+        [data-theme="dark"] .mobile-theme-btn .icon-sun { display: none; }
+        [data-theme="dark"] .mobile-theme-btn .icon-moon { display: block; }
+        @media (max-width: 768px) {
+            .mobile-theme-btn { display: flex; }
+        }
 
         /* ===== HERO SECTION — Cinematic mobile-first ===== */
         .hero {
@@ -1717,7 +1749,8 @@
             position: fixed;
             bottom: calc(env(safe-area-inset-bottom, 0px) + 14px);
             left: 50%;
-            transform: translateX(-50%);
+            /* transform managed by GSAP — CSS sets initial center */
+            transform: translateX(-50%) translateY(0px);
             width: calc(100% - 32px);
             max-width: 440px;
             height: 64px;
@@ -1732,6 +1765,9 @@
             box-shadow: var(--shadow-lux), 0 2px 8px rgba(26,22,18,0.06);
             padding: 6px 8px;
             gap: 2px;
+            will-change: transform, opacity;
+            /* GPU compositing layer */
+            backface-visibility: hidden;
         }
         .dock-tab {
             display: flex;
@@ -1743,36 +1779,39 @@
             border-radius: 18px;
             color: var(--ink);
             opacity: 0.38;
-            transition: all 0.28s var(--ease-expo);
+            transition: opacity 0.22s ease, background 0.22s ease, color 0.22s ease;
             cursor: pointer;
             border: none;
             background: transparent;
             font-family: var(--font-body);
             position: relative;
             min-height: 44px;
+            /* Block any inherited pointer-events overrides */
+            pointer-events: auto;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
         .dock-tab svg {
             width: 22px;
             height: 22px;
             flex-shrink: 0;
-            transition: transform 0.3s var(--ease-spring);
+            transition: transform 0.28s var(--ease-spring);
         }
         .dock-tab-label {
             font-size: 9px;
             font-weight: 600;
             letter-spacing: 0.04em;
             line-height: 1;
-            opacity: 1;
-            transition: all 0.28s var(--ease-expo);
+            transition: font-weight 0.22s ease;
         }
         .dock-tab.active {
             opacity: 1;
             background: rgba(var(--primary-rgb), 0.10);
             color: var(--copper);
         }
-        .dock-tab.active svg { transform: scale(1.12); }
+        .dock-tab.active svg { transform: scale(1.14); }
         .dock-tab.active .dock-tab-label { font-weight: 700; }
-        .dock-tab:active { transform: scale(0.9); }
+        .dock-tab:active { transform: scale(0.88); transition: transform 0.1s ease; }
         .dock-tab:focus-visible { outline: 2px solid var(--copper); outline-offset: 2px; }
         /* Coming-soon profile tab */
         .dock-tab.soon { opacity: 0.22; pointer-events: none; }
@@ -1820,8 +1859,9 @@
             box-shadow: var(--shadow-lux); border: 1px solid var(--border);
             opacity: 0; transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             display: flex; flex-direction: column; gap: 16px;
+            pointer-events: none; /* CRITICAL: never block taps when invisible */
         }
-        #pwa-prompt.active { transform: translateX(-50%) translateY(0); opacity: 1; }
+        #pwa-prompt.active { transform: translateX(-50%) translateY(0); opacity: 1; pointer-events: auto; }
         .pwa-header { display: flex; align-items: center; gap: 16px; }
         .pwa-icon { width: 48px; height: 48px; background: var(--copper); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.2rem; }
         .pwa-text h4 { font-size: 1rem; margin-bottom: 4px; }
@@ -1931,11 +1971,11 @@
         @media (max-width: 768px) {
             /* ── Core layout ── */
             .container { padding: 0 16px; }
-            header, .bulb-wrap { display: none; }
+            header, .bulb-wrap { display: none !important; }
 
-            /* ── Section rhythm ── */
-            .section-padding { padding: clamp(52px, 8vw, 72px) 0; }
-            .section-header { margin-bottom: var(--sp-10); }
+            /* ── Section rhythm — tighter on mobile for flow continuity ── */
+            .section-padding { padding: clamp(40px, 7vw, 60px) 0; }
+            .section-header { margin-bottom: var(--sp-8); }
             .section-header p { font-size: 1rem !important; }
 
             /* ── Hero — cinematic mobile-first ── */
@@ -2022,6 +2062,13 @@
             body {
                 padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 92px);
             }
+
+            /* ── Immersive section flow — remove harsh borders ── */
+            #demo, #trust-process { border-top: none; }
+            /* Scene strips get zero margin for seamless bleed */
+            .scene-strip { margin-top: 0 !important; margin-bottom: 0 !important; }
+            /* Catalogue warm bg bleeds into surrounding sections */
+            #catalogue { padding-top: clamp(36px, 6vw, 52px); padding-bottom: clamp(36px, 6vw, 52px); }
 
             /* ── Bottom-sheet modals ── */
             .modal-overlay {
@@ -2146,13 +2193,19 @@
             transform: translateY(14px);
         }
 
-        /* Touch tap feedback */
+        /* Touch tap feedback — instant, native-app feel */
         @media (hover: none) {
-            .product-card:active { transform: scale(0.97); opacity: 0.85; }
-            .btn:active { transform: scale(0.95) !important; }
-            .guided-option:active { transform: scale(0.97); }
-            .cat-nav-btn:active { transform: scale(0.95); }
-            .repair-card:active { transform: scale(0.97); }
+            .product-card:active  { transform: scale(0.97); opacity: 0.85; transition: transform 0.08s ease, opacity 0.08s ease; }
+            .btn:active           { transform: scale(0.95) !important; transition: transform 0.08s ease !important; }
+            .guided-option:active { transform: scale(0.97); transition: transform 0.08s ease; }
+            .cat-nav-btn:active   { transform: scale(0.95); transition: transform 0.08s ease; }
+            .repair-card:active   { transform: scale(0.97); transition: transform 0.08s ease; }
+            .bento-item:active    { transform: scale(0.98); transition: transform 0.08s ease; }
+        }
+
+        /* Momentum scrolling on all scrollable containers */
+        .modal-right, .guided-panel, .checkout-panel, .slider-viewport {
+            -webkit-overflow-scrolling: touch;
         }
 
         /* Ensure focus states are always visible */
@@ -2172,6 +2225,14 @@
         <div class="bulb-wire"></div>
         <div class="bulb-head"></div>
     </div>
+
+    <!-- Mobile-only dark mode toggle — compact floating button -->
+    <button class="mobile-theme-btn" id="mobile-theme-btn" onclick="toggleTheme()" aria-label="Toggle dark mode">
+        <!-- Sun icon (light mode) -->
+        <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <!-- Moon icon (dark mode) -->
+        <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    </button>
 
     <header id="header">
         <nav aria-label="Main navigation">
@@ -4127,58 +4188,100 @@
             if (document.getElementById('chat-window').classList.contains('open')) { toggleChat(); return; }
         });
 
-        /* ── SMART NAVBAR — GSAP controlled, no flicker ────────────────────
-           Strategy: hide when scrolling down with intent (>60px scrolled,
-           delta > threshold). Reveal immediately on any upward movement.
-           Section active-state tracking runs independently.
+        /* ── UNIFIED SMART SCROLL HANDLER ──────────────────────────────────
+           Single passive listener handles:
+           1. Desktop header hide/show (GSAP, transform only)
+           2. Mobile dock hide/show (GSAP, preserves translateX(-50%))
+           3. Nav-pill + dock-tab active-state tracking
+
+           Strategy: hide on intentional downward scroll (>64px deep, >10px delta).
+           Instantly reveal on any upward movement or return to top.
         ────────────────────────────────────────────────────────────────── */
-        (function initNavbar() {
+        (function initNavBehaviour() {
             const headerEl  = document.getElementById('header');
-            let lastY       = 0;
-            let navVisible  = true;
-            const THRESHOLD = 10;   /* px delta before registering direction */
-            const HIDE_AFTER = 64;  /* minimum scroll depth before hiding   */
+            const dockEl    = document.getElementById('mobile-dock');
+            const THRESHOLD = 10;
+            const HIDE_AFTER = 64;
+            let lastY        = 0;
+            let navVisible   = true;
+            let dockVisible  = true;
+            let rafPending   = false;
+
+            /* ── Initialise GSAP on dock so it owns the transform matrix ── */
+            if (dockEl) {
+                gsap.set(dockEl, { x: '-50%', y: 0, opacity: 1 });
+            }
 
             function showNav() {
                 if (navVisible) return;
                 navVisible = true;
-                headerEl.style.pointerEvents = '';
-                gsap.to(headerEl, { y: 0, opacity: 1, duration: 0.48, ease: 'power3.out', overwrite: true });
+                if (headerEl) {
+                    headerEl.style.pointerEvents = '';
+                    gsap.to(headerEl, { y: 0, opacity: 1, duration: 0.42, ease: 'power3.out', overwrite: true });
+                }
             }
             function hideNav() {
                 if (!navVisible) return;
                 navVisible = false;
-                gsap.to(headerEl, {
-                    y: -100, opacity: 0, duration: 0.36, ease: 'power3.in', overwrite: true,
-                    onComplete: () => { headerEl.style.pointerEvents = 'none'; },
+                if (headerEl) {
+                    gsap.to(headerEl, {
+                        y: -100, opacity: 0, duration: 0.30, ease: 'power3.in', overwrite: true,
+                        onComplete: () => { if (headerEl) headerEl.style.pointerEvents = 'none'; },
+                    });
+                }
+            }
+            function showDock() {
+                if (dockVisible || !dockEl) return;
+                dockVisible = true;
+                dockEl.style.pointerEvents = '';
+                gsap.to(dockEl, { y: 0, opacity: 1, duration: 0.42, ease: 'power3.out', overwrite: true });
+            }
+            function hideDock() {
+                if (!dockVisible || !dockEl) return;
+                dockVisible = false;
+                gsap.to(dockEl, {
+                    y: 110, opacity: 0, duration: 0.30, ease: 'power3.in', overwrite: true,
+                    onComplete: () => { if (dockEl) dockEl.style.pointerEvents = 'none'; },
                 });
             }
 
-            window.addEventListener('scroll', () => {
+            function onScroll() {
                 const y     = window.pageYOffset;
                 const delta = y - lastY;
 
-                /* Direction logic */
                 if (Math.abs(delta) >= THRESHOLD) {
                     if (delta > 0 && y > HIDE_AFTER) {
                         hideNav();
+                        hideDock();
                     } else {
                         showNav();
+                        showDock();
                     }
                     lastY = y;
                 }
+                /* Always restore at very top */
+                if (y < HIDE_AFTER) {
+                    showNav();
+                    showDock();
+                    lastY = y;
+                }
 
-                /* Always show at top of page */
-                if (y < HIDE_AFTER) showNav();
-
-                /* Section active-state tracking */
-                const sections = ['hero', 'catalogue', 'repair', 'contact'];
-                sections.forEach(id => {
+                /* ── Active-state tracking: nav-pills + dock tabs ── */
+                const navSections = [
+                    { id: 'hero',      dockId: 'dock-home' },
+                    { id: 'catalogue', dockId: 'dock-explore' },
+                    { id: 'repair',    dockId: 'dock-home' },
+                    { id: 'contact',   dockId: 'dock-home' },
+                ];
+                let activeDockId = 'dock-home';
+                const scrollMid  = y + window.innerHeight * 0.4;
+                navSections.forEach(({ id, dockId }) => {
                     const el = document.getElementById(id);
                     if (!el) return;
                     const rect = el.getBoundingClientRect();
+                    /* Nav pills */
                     if (rect.top <= 140 && rect.bottom >= 140) {
-                        document.querySelectorAll('.nav-pill, .dock-pill').forEach(pill => {
+                        document.querySelectorAll('.nav-pill').forEach(pill => {
                             pill.classList.remove('active');
                             pill.removeAttribute('aria-current');
                             const href = pill.getAttribute('href');
@@ -4188,7 +4291,19 @@
                             }
                         });
                     }
+                    /* Dock tabs */
+                    if (el.offsetTop <= scrollMid) activeDockId = dockId;
                 });
+                updateDockActive(activeDockId);
+
+                rafPending = false;
+            }
+
+            window.addEventListener('scroll', () => {
+                if (!rafPending) {
+                    rafPending = true;
+                    requestAnimationFrame(onScroll);
+                }
             }, { passive: true });
         }());
 
@@ -4351,22 +4466,7 @@
             initSheetDrag('checkout-handle','checkout-overlay', closeCheckout);
             initSheetDrag('modal-handle',   'modal-overlay',   closeModal);
 
-            /* ── 7. Dock scroll tracking ── */
-            const sections = [
-                { id: 'hero',       dockId: 'dock-home' },
-                { id: 'catalogue',  dockId: 'dock-explore' },
-                { id: 'repair',     dockId: 'dock-home' },
-                { id: 'contact',    dockId: 'dock-home' },
-            ];
-            window.addEventListener('scroll', () => {
-                const scrollY = window.scrollY + window.innerHeight * 0.4;
-                let active = 'dock-home';
-                sections.forEach(s => {
-                    const el = document.getElementById(s.id);
-                    if (el && el.offsetTop <= scrollY) active = s.dockId;
-                });
-                updateDockActive(active);
-            }, { passive: true });
+            /* ── 7. Dock scroll tracking handled by unified initNavBehaviour() ── */
         });
     </script>
 </body>
