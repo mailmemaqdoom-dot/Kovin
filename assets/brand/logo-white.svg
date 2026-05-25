@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 64" fill="none" role="img" aria-label="Kovin">
+  <title>Kovin — Reverse / White</title>
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&amp;display=swap');
+      .wordmark {
+        font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+        font-weight: 600;
+        font-size: 42px;
+        letter-spacing: 0.08em;
+        fill: #F7F4EF;
+      }
+      .dot {
+        fill: #F4A460;
+      }
+    </style>
+  </defs>
+
+  <!-- Dark background swatch for preview contexts -->
+  <!-- Remove the rect below if embedding on a known dark background -->
+  <!-- <rect width="240" height="64" fill="#1A1612"/> -->
+
+  <text x="12" y="46" class="wordmark">Kov</text>
+  <circle cx="126" cy="40" r="3.5" class="dot"/>
+  <text x="136" y="46" class="wordmark">in</text>
+</svg>

@@ -1,0 +1,120 @@
+/**
+ * Kovin — Color Palette
+ * Standalone CSS custom properties for use in any project.
+ *
+ * Usage:
+ *   @import './assets/colors/palette.css';
+ *   color: var(--color-ink);
+ *
+ * Dark mode is automatic via prefers-color-scheme,
+ * or forced with [data-theme="dark"] on <html>.
+ */
+
+:root {
+  /* ─── Core Palette ─────────────────────────────── */
+
+  /* Ink — primary text, borders, headings */
+  --color-ink:          #1A1612;
+  --color-ink-60:       rgba(26, 22, 18, 0.60);
+  --color-ink-40:       rgba(26, 22, 18, 0.40);
+  --color-ink-20:       rgba(26, 22, 18, 0.20);
+  --color-ink-08:       rgba(26, 22, 18, 0.08);
+  --color-ink-04:       rgba(26, 22, 18, 0.04);
+
+  /* Paper — primary background */
+  --color-paper:        #F7F4EF;
+  /* Paper Warm — secondary background, cards */
+  --color-paper-warm:   #EDE8E0;
+  /* Paper Dim — subtle contrast layer */
+  --color-paper-dim:    #E5DDD4;
+
+  /* Copper — brand accent, CTAs, highlights */
+  --color-copper:       #E35336;
+  --color-copper-light: #F4A460;
+
+  /* Sand — warm accent, secondary highlights */
+  --color-sand:         #F4A460;
+
+  /* Wood — depth accent, supporting warm tone */
+  --color-wood:         #7B5940;
+
+  /* Glass — frosted overlay backgrounds */
+  --color-glass:        rgba(247, 244, 239, 0.72);
+  --color-glass-dark:   rgba(13, 11, 9, 0.72);
+
+  /* ─── Semantic Aliases ─────────────────────────── */
+  --color-bg:           var(--color-paper);
+  --color-bg-secondary: var(--color-paper-warm);
+  --color-text:         var(--color-ink);
+  --color-text-muted:   var(--color-ink-60);
+  --color-text-subtle:  var(--color-ink-40);
+  --color-border:       var(--color-ink-08);
+  --color-border-hover: var(--color-ink-20);
+  --color-accent:       var(--color-copper);
+  --color-accent-warm:  var(--color-sand);
+
+  /* ─── Gradients ────────────────────────────────── */
+  --gradient-hero:      linear-gradient(160deg, #EDE8E0 0%, #F7F4EF 100%);
+  --gradient-copper:    linear-gradient(135deg, #E35336 0%, #F4A460 100%);
+  --gradient-dark:      linear-gradient(180deg, rgba(26,22,18,0) 0%, rgba(26,22,18,0.72) 100%);
+
+  /* ─── Shadows ──────────────────────────────────── */
+  --shadow-card:        0 2px 12px rgba(26, 22, 18, 0.07), 0 1px 3px rgba(26, 22, 18, 0.05);
+  --shadow-lux:         0 8px 40px rgba(26, 22, 18, 0.14), 0 2px 10px rgba(26, 22, 18, 0.07);
+  --shadow-float:       0 16px 64px rgba(26, 22, 18, 0.18), 0 4px 16px rgba(26, 22, 18, 0.09);
+  --shadow-dock:        0 8px 32px rgba(26, 22, 18, 0.18), 0 2px 8px rgba(26, 22, 18, 0.10);
+}
+
+
+/* ─── Dark Mode ──────────────────────────────────── */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-ink:          #F7F4EF;
+    --color-ink-60:       rgba(247, 244, 239, 0.60);
+    --color-ink-40:       rgba(247, 244, 239, 0.40);
+    --color-ink-20:       rgba(247, 244, 239, 0.20);
+    --color-ink-08:       rgba(247, 244, 239, 0.08);
+    --color-ink-04:       rgba(247, 244, 239, 0.04);
+
+    --color-paper:        #0D0B09;
+    --color-paper-warm:   #161210;
+    --color-paper-dim:    #1E1A16;
+
+    --color-copper:       #E35336;
+    --color-copper-light: #F4A460;
+    --color-sand:         #F4A460;
+    --color-wood:         #A07858;
+
+    --color-glass:        rgba(13, 11, 9, 0.72);
+    --color-glass-dark:   rgba(247, 244, 239, 0.10);
+
+    --gradient-hero:      linear-gradient(160deg, #161210 0%, #0D0B09 100%);
+    --shadow-card:        0 2px 12px rgba(0, 0, 0, 0.30), 0 1px 3px rgba(0, 0, 0, 0.20);
+    --shadow-lux:         0 8px 40px rgba(0, 0, 0, 0.48), 0 2px 10px rgba(0, 0, 0, 0.24);
+    --shadow-float:       0 16px 64px rgba(0, 0, 0, 0.56), 0 4px 16px rgba(0, 0, 0, 0.30);
+    --shadow-dock:        0 8px 32px rgba(0, 0, 0, 0.50), 0 2px 8px rgba(0, 0, 0, 0.32);
+  }
+}
+
+/* Force dark mode with attribute (for manual toggle) */
+[data-theme="dark"] {
+  --color-ink:          #F7F4EF;
+  --color-ink-60:       rgba(247, 244, 239, 0.60);
+  --color-ink-40:       rgba(247, 244, 239, 0.40);
+  --color-ink-20:       rgba(247, 244, 239, 0.20);
+  --color-ink-08:       rgba(247, 244, 239, 0.08);
+  --color-ink-04:       rgba(247, 244, 239, 0.04);
+
+  --color-paper:        #0D0B09;
+  --color-paper-warm:   #161210;
+  --color-paper-dim:    #1E1A16;
+
+  --color-glass:        rgba(13, 11, 9, 0.72);
+
+  --gradient-hero:      linear-gradient(160deg, #161210 0%, #0D0B09 100%);
+  --shadow-card:        0 2px 12px rgba(0, 0, 0, 0.30), 0 1px 3px rgba(0, 0, 0, 0.20);
+  --shadow-lux:         0 8px 40px rgba(0, 0, 0, 0.48), 0 2px 10px rgba(0, 0, 0, 0.24);
+  --shadow-float:       0 16px 64px rgba(0, 0, 0, 0.56), 0 4px 16px rgba(0, 0, 0, 0.30);
+  --shadow-dock:        0 8px 32px rgba(0, 0, 0, 0.50), 0 2px 8px rgba(0, 0, 0, 0.32);
+}

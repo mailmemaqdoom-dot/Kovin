@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-label="Kovin monogram — light">
+  <title>Kovin — K Monogram (Light)</title>
+
+  <!-- Light background tile -->
+  <rect width="64" height="64" rx="16" fill="#F7F4EF"/>
+
+  <!-- K letterform -->
+  <rect x="16" y="13" width="4.5" height="38" rx="2" fill="#1A1612"/>
+  <path d="M20.5 32 L42 13" stroke="#1A1612" stroke-width="4.5" stroke-linecap="round"/>
+  <path d="M20.5 32 L42 51" stroke="#1A1612" stroke-width="4.5" stroke-linecap="round"/>
+
+  <!-- Copper accent dot -->
+  <circle cx="44" cy="51" r="4" fill="#E35336"/>
+</svg>

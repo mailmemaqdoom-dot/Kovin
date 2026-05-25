@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 64" fill="none" role="img" aria-label="Kovin">
+  <title>Kovin</title>
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&amp;display=swap');
+      .wordmark {
+        font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+        font-weight: 600;
+        font-size: 42px;
+        letter-spacing: 0.08em;
+        fill: #1A1612;
+      }
+      .dot {
+        fill: #E35336;
+      }
+    </style>
+  </defs>
+
+  <!-- Wordmark: Kov·in -->
+  <!-- K -->
+  <text x="12" y="46" class="wordmark">Kov</text>
+  <!-- Interpunct dot in copper -->
+  <circle cx="126" cy="40" r="3.5" class="dot"/>
+  <!-- in -->
+  <text x="136" y="46" class="wordmark">in</text>
+</svg>

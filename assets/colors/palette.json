@@ -1,0 +1,119 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/",
+  "meta": {
+    "brand": "Kovin",
+    "version": "1.0.0",
+    "description": "Kovin brand color tokens — importable into Figma, Sketch, or any design tool",
+    "lastUpdated": "2025-05"
+  },
+
+  "core": {
+    "ink": {
+      "value": "#1A1612",
+      "type": "color",
+      "description": "Primary text color. Deep warm black — not pure, has warmth.",
+      "darkMode": "#F7F4EF"
+    },
+    "paper": {
+      "value": "#F7F4EF",
+      "type": "color",
+      "description": "Primary background. Warm off-white, never cold or clinical.",
+      "darkMode": "#0D0B09"
+    },
+    "paperWarm": {
+      "value": "#EDE8E0",
+      "type": "color",
+      "description": "Secondary background for cards, panels, and subtle contrast layers.",
+      "darkMode": "#161210"
+    },
+    "paperDim": {
+      "value": "#E5DDD4",
+      "type": "color",
+      "description": "Tertiary background, deeper warm tone for nested surfaces.",
+      "darkMode": "#1E1A16"
+    },
+    "copper": {
+      "value": "#E35336",
+      "type": "color",
+      "description": "Brand accent. Used for CTAs, highlights, price save tags. Stays constant in both modes.",
+      "darkMode": "#E35336"
+    },
+    "copperLight": {
+      "value": "#F4A460",
+      "type": "color",
+      "description": "Warm secondary accent. Used for hover states, sand tones, subtle warmth.",
+      "darkMode": "#F4A460"
+    },
+    "sand": {
+      "value": "#F4A460",
+      "type": "color",
+      "description": "Alias for copperLight. Sandy warm tone for supporting UI elements.",
+      "darkMode": "#F4A460"
+    },
+    "wood": {
+      "value": "#7B5940",
+      "type": "color",
+      "description": "Deep warm brown. Used for supporting accents and depth.",
+      "darkMode": "#A07858"
+    }
+  },
+
+  "opacity": {
+    "ink60": { "value": "rgba(26, 22, 18, 0.60)", "type": "color", "description": "Muted text, secondary labels", "darkMode": "rgba(247, 244, 239, 0.60)" },
+    "ink40": { "value": "rgba(26, 22, 18, 0.40)", "type": "color", "description": "Subtle text, captions", "darkMode": "rgba(247, 244, 239, 0.40)" },
+    "ink20": { "value": "rgba(26, 22, 18, 0.20)", "type": "color", "description": "Hover borders", "darkMode": "rgba(247, 244, 239, 0.20)" },
+    "ink08": { "value": "rgba(26, 22, 18, 0.08)", "type": "color", "description": "Default borders, dividers", "darkMode": "rgba(247, 244, 239, 0.08)" },
+    "ink04": { "value": "rgba(26, 22, 18, 0.04)", "type": "color", "description": "Hairline borders, extremely subtle layers", "darkMode": "rgba(247, 244, 239, 0.04)" }
+  },
+
+  "gradients": {
+    "hero": {
+      "value": "linear-gradient(160deg, #EDE8E0 0%, #F7F4EF 100%)",
+      "type": "gradient",
+      "description": "Hero section background gradient",
+      "darkMode": "linear-gradient(160deg, #161210 0%, #0D0B09 100%)"
+    },
+    "copper": {
+      "value": "linear-gradient(135deg, #E35336 0%, #F4A460 100%)",
+      "type": "gradient",
+      "description": "Brand accent gradient — CTAs, badges, highlights"
+    },
+    "dark": {
+      "value": "linear-gradient(180deg, rgba(26,22,18,0) 0%, rgba(26,22,18,0.72) 100%)",
+      "type": "gradient",
+      "description": "Image overlay scrim — fades image to dark for text legibility"
+    }
+  },
+
+  "shadows": {
+    "card": {
+      "value": "0 2px 12px rgba(26,22,18,0.07), 0 1px 3px rgba(26,22,18,0.05)",
+      "type": "shadow",
+      "description": "Default card elevation",
+      "darkMode": "0 2px 12px rgba(0,0,0,0.30), 0 1px 3px rgba(0,0,0,0.20)"
+    },
+    "lux": {
+      "value": "0 8px 40px rgba(26,22,18,0.14), 0 2px 10px rgba(26,22,18,0.07)",
+      "type": "shadow",
+      "description": "Luxury elevation — modals, drawers, floating panels",
+      "darkMode": "0 8px 40px rgba(0,0,0,0.48), 0 2px 10px rgba(0,0,0,0.24)"
+    },
+    "float": {
+      "value": "0 16px 64px rgba(26,22,18,0.18), 0 4px 16px rgba(26,22,18,0.09)",
+      "type": "shadow",
+      "description": "Maximum elevation — highest z-index overlays",
+      "darkMode": "0 16px 64px rgba(0,0,0,0.56), 0 4px 16px rgba(0,0,0,0.30)"
+    },
+    "dock": {
+      "value": "0 8px 32px rgba(26,22,18,0.18), 0 2px 8px rgba(26,22,18,0.10)",
+      "type": "shadow",
+      "description": "Mobile dock navigation shadow",
+      "darkMode": "0 8px 32px rgba(0,0,0,0.50), 0 2px 8px rgba(0,0,0,0.32)"
+    }
+  },
+
+  "whatsapp": {
+    "green": { "value": "#25D366", "type": "color", "description": "WhatsApp brand green — used for order confirmation UI" },
+    "greenDark": { "value": "#128C7E", "type": "color", "description": "WhatsApp dark green — gradient end for confirmation animations" }
+  }
+}
