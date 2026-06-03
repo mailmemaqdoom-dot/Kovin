@@ -147,6 +147,9 @@
             touch-action: manipulation;
         }
 
+        /* Screen-reader-only utility */
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
         /* ===== SKIP NAV ===== */
         .skip-nav {
             position: absolute; top: -100%; left: 16px;
@@ -627,6 +630,41 @@
         .cat-nav-btn.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
         .cat-nav-btn:focus-visible { outline: 3px solid var(--copper); outline-offset: 3px; }
 
+        /* ── Catalogue search ── */
+        .catalogue-search-wrap { margin: var(--sp-6) 0 var(--sp-4); }
+        .catalogue-search-inner {
+            display: flex; align-items: center; gap: var(--sp-3);
+            background: var(--paper); border: 1.5px solid var(--border);
+            border-radius: 100px; padding: 10px 18px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+        .catalogue-search-inner:focus-within {
+            border-color: var(--copper); box-shadow: 0 0 0 3px rgba(227,83,54,0.12);
+        }
+        .catalogue-search-inner svg { opacity: 0.38; flex-shrink: 0; }
+        .catalogue-search-input {
+            flex: 1; border: none; background: none; outline: none;
+            font-family: var(--font-body); font-size: var(--fs-small); color: var(--ink);
+            min-width: 0;
+        }
+        .catalogue-search-input::placeholder { color: var(--ink); opacity: 0.35; }
+        .catalogue-search-clear {
+            width: 24px; height: 24px; border-radius: 50%; border: none;
+            background: var(--paper-warm); color: var(--ink); opacity: 0.55;
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            flex-shrink: 0; transition: opacity 0.15s;
+        }
+        .catalogue-search-clear:hover { opacity: 1; }
+        .catalogue-search-status {
+            font-size: var(--fs-caption); color: var(--ink); opacity: 0.45;
+            margin-top: var(--sp-2); padding-left: 4px; min-height: 1.2em;
+        }
+        /* Hide sections with no matching cards during search */
+        .slider-section.search-hidden { display: none; }
+        .scene-strip.search-hidden { display: none; }
+        .product-card.search-match { display: flex; }
+        .product-card.search-no-match { display: none; }
+
         /* Per-category slider row */
         .slider-section { margin-bottom: var(--sp-12); }
         .slider-section:last-child { margin-bottom: 0; }
@@ -774,9 +812,23 @@
             background: radial-gradient(circle at 50% 110%, rgba(227,83,54,0.06) 0%, transparent 65%);
             pointer-events: none;
         }
+        /* ── Image skeleton shimmer (shows while loading) ── */
+        @keyframes img-shimmer {
+            from { background-position: 200% 0; }
+            to   { background-position: -200% 0; }
+        }
+        .product-img-wrap.img-loading {
+            background: linear-gradient(100deg, var(--paper-warm) 30%, rgba(26,22,18,0.04) 50%, var(--paper-warm) 70%);
+            background-size: 200% 100%;
+            animation: img-shimmer 1.4s infinite ease-in-out;
+        }
+        .product-img-wrap.img-loading::after { display: none; }
+        .product-img-wrap.img-error {
+            background: var(--paper-warm);
+        }
         .product-img-wrap img {
             max-width: 72%; max-height: 72%; object-fit: contain;
-            transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+            transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
             position: relative; z-index: 1;
             filter: drop-shadow(0 12px 24px rgba(26,22,18,0.12));
         }
@@ -1512,6 +1564,15 @@
 
         .next-steps-clarity { margin-top: 32px; text-align: left; }
         .next-steps-clarity h4 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 16px; opacity: 0.9; }
+        /* Order ID chip */
+        .order-id-chip { display: inline-flex; align-items: center; gap: 8px; background: var(--paper-warm); border: 1px solid var(--border); border-radius: 100px; padding: 6px 14px; font-size: var(--fs-caption); font-weight: 600; letter-spacing: 0.04em; margin-bottom: 12px; }
+        .order-id-chip .order-id-label { opacity: 0.45; font-weight: 500; }
+        /* Checkout delivery notice */
+        .checkout-delivery-notice { background: var(--paper-warm); border-radius: 14px; padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: flex-start; gap: 12px; font-size: var(--fs-small); }
+        .checkout-delivery-notice svg { flex-shrink: 0; opacity: 0.55; margin-top: 2px; }
+        .checkout-delivery-notice strong { display: block; font-weight: 600; margin-bottom: 2px; }
+        /* Checkout validation error */
+        .checkout-validation-msg { color: var(--copper); font-size: var(--fs-caption); font-weight: 600; text-align: center; margin-top: 8px; min-height: 18px; transition: opacity 0.2s; }
         .next-steps-list { display: flex; flex-direction: column; gap: 12px; }
         .next-step-item { display: flex; align-items: flex-start; gap: 12px; font-size: 0.95rem; opacity: 0.7; line-height: 1.4; }
         .next-step-num { width: 24px; height: 24px; background: var(--ink); color: var(--paper); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 700; flex-shrink: 0; }
@@ -1587,10 +1648,11 @@
         .cart-item-price { font-size: var(--fs-small); color: var(--copper); font-weight: 700; }
         .cart-item-controls { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
         .cart-qty-btn {
-            width: 28px; height: 28px; border-radius: 50%;
+            /* 44×44 minimum tap target (WCAG 2.5.5) */
+            width: 44px; height: 44px; border-radius: 50%;
             background: var(--paper); border: 1px solid var(--border);
             display: flex; align-items: center; justify-content: center;
-            font-size: 1rem; font-weight: 600; cursor: pointer;
+            font-size: 1.1rem; font-weight: 600; cursor: pointer;
             touch-action: manipulation; color: var(--ink); flex-shrink: 0;
             transition: background 0.15s, border-color 0.15s;
         }
@@ -2272,7 +2334,7 @@
             }
             .cart-drawer-header h2 { font-size: clamp(1.4rem, 4.5vw, 1.65rem); }
             .cart-item-img { width: 52px; height: 52px; }
-            .cart-qty-btn { width: 26px; height: 26px; }
+            .cart-qty-btn { width: 44px; height: 44px; }
             .guided-question { font-size: clamp(1.45rem, 5vw, 1.75rem); margin-bottom: var(--sp-8); }
             .checkout-header h2 { font-size: clamp(1.4rem, 4.5vw, 1.65rem); }
             .guided-option { min-height: 52px; padding: 14px 20px; }
@@ -2548,6 +2610,20 @@
                     <h2>Picked with<br>intention.</h2>
                     <p class="catalogue-intro-text">Not the most options — the right ones. Every product here earned its place. Nothing added for the sake of appearing complete.</p>
                 </div>
+
+                <!-- Catalogue search — quick filter by product name/specs -->
+                <div class="catalogue-search-wrap reveal" id="catalogue-search-wrap">
+                    <label for="catalogue-search" class="sr-only">Search products</label>
+                    <div class="catalogue-search-inner">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                        <input type="search" id="catalogue-search" class="catalogue-search-input" placeholder="Search products…" aria-label="Search products" autocomplete="off" spellcheck="false">
+                        <button class="catalogue-search-clear" id="catalogue-search-clear" aria-label="Clear search" hidden>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                        </button>
+                    </div>
+                    <p class="catalogue-search-status" id="catalogue-search-status" aria-live="polite" aria-atomic="true"></p>
+                </div>
+
                 <nav class="cat-nav reveal" aria-label="Jump to collection">
                     <button class="cat-nav-btn active" onclick="scrollToCat('all', event)">Overview</button>
                     <button class="cat-nav-btn" onclick="scrollToCat('phones', event)">The Phone</button>
@@ -2912,19 +2988,21 @@
                 <div class="step-dot" id="gdot-4"></div>
             </div>
 
-            <!-- Step 1 -->
+            <!-- Step 1 — category selection -->
             <div class="guided-step active" id="step-1">
+                <!-- id="guided-title" stays here; JS updates aria-label on overlay for steps 2+ -->
                 <h2 class="guided-question" id="guided-title">What is on the mind today?</h2>
                 <div class="guided-options" role="group" aria-label="Choose a category">
                     <button class="guided-option" onclick="nextStep(2, 'phones')">A new phone</button>
-                    <button class="guided-option" onclick="nextStep(2, 'speakers')">Something for sound</button>
-                    <button class="guided-option" onclick="nextStep(2, 'tv')">A screen for home</button>
-                    <button class="guided-option" onclick="closeGuidedFlow()">Not sure yet — just browsing</button>
+                    <button class="guided-option" onclick="nextStep(2, 'audio')">Something for sound</button>
+                    <button class="guided-option" onclick="nextStep(2, 'screens')">A screen for home</button>
+                    <button class="guided-option" onclick="nextStep(2, 'daily')">Daily essentials</button>
                 </div>
             </div>
 
-            <!-- Step 2 -->
+            <!-- Step 2 — injected contextually by nextStep() based on category -->
             <div class="guided-step" id="step-2">
+                <!-- Content replaced by JS — default shown before first interaction -->
                 <h2 class="guided-question">What matters most in everyday use?</h2>
                 <div class="guided-options" role="group" aria-label="Choose what matters most">
                     <button class="guided-option" onclick="nextStep(3, 'battery')">Battery that lasts all day</button>
@@ -2937,7 +3015,7 @@
                 </div>
             </div>
 
-            <!-- Step 3 -->
+            <!-- Step 3 — preference depth -->
             <div class="guided-step" id="step-3">
                 <h2 class="guided-question">How do you usually go with decisions?</h2>
                 <div class="guided-options" role="group" aria-label="Choose your preference">
@@ -3036,7 +3114,8 @@
                     <button class="guided-back" onclick="prevCheckoutStep(1)">Back</button>
                 </div>
                 <div class="checkout-reassurance" style="margin-top: 24px;">Takes less than a minute</div>
-                <button onclick="nextCheckoutStep(3)" class="btn btn-primary" style="width: 100%; margin-top: 16px;">Continue with this</button>
+                <p class="checkout-validation-msg" id="delivery-validation-msg" aria-live="polite"></p>
+                <button onclick="advanceCheckoutFromDelivery()" class="btn btn-primary" style="width: 100%; margin-top: 8px;">Continue with this</button>
             </div>
 
             <!-- Step 3: Final Action -->
@@ -3054,6 +3133,9 @@
                     <div class="order-success-anim" aria-hidden="true">✓</div>
                     <h2 style="font-family:var(--font-display);font-size:clamp(1.75rem,2.5vw,2.25rem);font-weight:400;letter-spacing:var(--ls-snug);margin-bottom:8px;">Payment Sent</h2>
                     <p style="opacity:0.55;font-size:var(--fs-small);">Your selection is noted — we'll confirm shortly</p>
+                    <div id="order-id-display" style="margin-top:12px;display:none;">
+                        <span class="order-id-chip"><span class="order-id-label">Order</span><span id="order-id-value"></span></span>
+                    </div>
                 </div>
 
                 <!-- Order summary -->
@@ -3249,6 +3331,43 @@
         let guidedData = { category: '', priority: '', preference: '' };
         let deferredPrompt;
         let selectedDeliveryMethod = '';
+        /* Order number — generated once when payment is confirmed */
+        let _currentOrderId = '';
+
+        /* ── Focus-trap utility ─────────────────────────────────
+           Keeps keyboard focus inside an open modal / sheet.
+           WCAG 2.1 SC 2.1.2 — No Keyboard Trap (positive enforcement).
+        ─────────────────────────────────────────────────────── */
+        let _focusTrapCleanup = null;
+        function trapFocus(el) {
+            if (_focusTrapCleanup) _focusTrapCleanup();
+            const FOCUSABLE = 'a[href]:not([disabled]),button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+            function getFocusable() {
+                return Array.from(el.querySelectorAll(FOCUSABLE)).filter(n => {
+                    /* Skip elements inside hidden ancestors */
+                    return n.offsetParent !== null || n.getClientRects().length > 0;
+                });
+            }
+            function handleKey(e) {
+                if (e.key !== 'Tab') return;
+                const nodes = getFocusable();
+                if (!nodes.length) return;
+                const first = nodes[0], last = nodes[nodes.length - 1];
+                if (e.shiftKey) {
+                    if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+                } else {
+                    if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+                }
+            }
+            el.addEventListener('keydown', handleKey);
+            /* Move focus to first focusable inside panel */
+            const firstFocusable = getFocusable()[0];
+            if (firstFocusable) setTimeout(() => firstFocusable.focus(), 80);
+            _focusTrapCleanup = () => el.removeEventListener('keydown', handleKey);
+        }
+        function releaseFocusTrap() {
+            if (_focusTrapCleanup) { _focusTrapCleanup(); _focusTrapCleanup = null; }
+        }
 
         /* ══════════════════════════════════════════════════════
            CART STATE MANAGEMENT  —  Phase 2 · 8
@@ -3429,6 +3548,13 @@
                 totEl.innerHTML = `<span>Total paid</span><span>${cartTotalFormatted()}</span>`;
                 totEl.style.display = '';
             }
+            /* Show stable order ID in confirmation header */
+            const orderDisplay = document.getElementById('order-id-display');
+            const orderValue = document.getElementById('order-id-value');
+            if (orderDisplay && orderValue && _currentOrderId) {
+                orderValue.textContent = _currentOrderId;
+                orderDisplay.style.display = '';
+            }
         }
 
         function clearCartAfterOrder() {
@@ -3459,9 +3585,12 @@
             } else {
                 gsap.fromTo('#cart-drawer', { scale: 0.94, opacity: 0, y: 24 }, { scale: 1, opacity: 1, y: 0, duration: 0.5, ease: 'power4.out', delay: 0.04 });
             }
+            /* Trap focus inside cart drawer */
+            setTimeout(() => trapFocus(document.getElementById('cart-drawer') || overlay), 100);
         }
 
         function closeCartDrawer() {
+            releaseFocusTrap();
             const overlay = document.getElementById('cart-overlay');
             if (!overlay) return;
             overlay.style.pointerEvents = 'none';
@@ -3487,6 +3616,9 @@
 
         function proceedToCheckout() {
             if (cartItems.length === 0) return;
+            /* Reset delivery selection each new checkout session */
+            selectedDeliveryMethod = '';
+            _currentOrderId = '';
             closeCartDrawer();
             setTimeout(() => {
                 _modalOpenTS = Date.now();
@@ -3503,6 +3635,9 @@
                         { scale: 1, opacity: 1, y: 0, duration: 0.58, ease: 'power4.out', delay: 0.05 }
                     );
                 }
+                /* Trap focus inside checkout panel */
+                const panel = document.getElementById('checkout-sheet');
+                setTimeout(() => trapFocus(panel || overlay), 120);
             }, 420);
         }
 
@@ -3579,7 +3714,8 @@
             el.innerHTML = `
                 <div class="scene-strip-bg">
                     <img src="${col.img}" alt="" loading="lazy" width="1920" height="650"
-                         style="object-position:${col.imgPos}" aria-hidden="true">
+                         style="object-position:${col.imgPos}" aria-hidden="true"
+                         onerror="this.style.display='none'">
                 </div>
                 <div class="scene-strip-overlay"></div>
                 <div class="scene-strip-content">
@@ -3643,8 +3779,10 @@
             /* First spec bullet — the most truthful single line */
             const topSpec = (p.specs || '').split(' · ')[0];
             return `<div class="product-card" role="listitem" tabindex="0" aria-label="${p.name}, ${p.price}" data-id="${p.id}">
-                <div class="product-img-wrap">
-                    <img src="${p.image}" alt="${p.name}" loading="lazy">
+                <div class="product-img-wrap img-loading">
+                    <img src="${p.image}" alt="${p.name}" loading="lazy" decoding="async"
+                         onload="this.parentElement.classList.remove('img-loading')"
+                         onerror="this.parentElement.classList.remove('img-loading');this.parentElement.classList.add('img-error');this.style.display='none'">
                 </div>
                 <div class="product-body">
                     <p class="product-fit-line">${p.decision}</p>
@@ -3824,14 +3962,14 @@
                     { scale: 1, opacity: 1, y: 0, duration: 0.58, ease: 'power4.out', delay: 0.05 }
                 );
             }
-            setTimeout(() => {
-                const close = document.querySelector('#guided-overlay .modal-close');
-                if (close) close.focus();
-            }, 100);
+            /* Trap focus inside guided panel */
+            const panel = document.getElementById('guided-sheet');
+            setTimeout(() => trapFocus(panel || overlay), 100);
             announce('Guided flow opened. Step 1 of 4.');
         }
 
         function closeGuidedFlow() {
+            releaseFocusTrap();
             const overlay = document.getElementById('guided-overlay');
             overlay.style.pointerEvents = 'none';
             if (isMobile()) {
@@ -3849,9 +3987,74 @@
             }
         }
 
+        /* Contextual step-2 question definitions per category */
+        const GUIDED_STEP2 = {
+            phones: {
+                q: 'What matters most in everyday use?',
+                opts: [
+                    ['battery', 'Battery that lasts all day'],
+                    ['camera',  'Camera that gets the moment right'],
+                    ['smooth',  'Smooth, reliable daily use'],
+                    ['everything', 'A bit of everything balanced'],
+                ],
+            },
+            audio: {
+                q: 'When do you use it most?',
+                opts: [
+                    ['focus',   'Focused work — I need real quiet'],
+                    ['commute', 'Commutes and daily travel'],
+                    ['calls',   'Calls and meetings through the day'],
+                    ['casual',  'Casual listening — music and podcasts'],
+                ],
+            },
+            screens: {
+                q: 'What will the screen be used for most?',
+                opts: [
+                    ['movies',  'Films and long-form content'],
+                    ['sports',  'Live sport and fast action'],
+                    ['family',  'Family use — multiple viewing distances'],
+                    ['all',     'A bit of everything'],
+                ],
+            },
+            daily: {
+                q: 'What is the main need?',
+                opts: [
+                    ['charge',  'Charging that keeps pace with the day'],
+                    ['protect', 'Protecting a device I already have'],
+                    ['carry',   'Something for the commute or car'],
+                    ['all',     'A mix of the above'],
+                ],
+            },
+        };
+
         function nextStep(step, value) {
-            if (step === 2) guidedData.category = value;
-            if (step === 3) guidedData.priority = value;
+            if (step === 2) {
+                guidedData.category = value;
+                /* Inject contextual step-2 question based on category */
+                const cfg = GUIDED_STEP2[value] || GUIDED_STEP2.phones;
+                const step2El = document.getElementById('step-2');
+                if (step2El) {
+                    step2El.innerHTML = `
+                        <h2 class="guided-question">${cfg.q}</h2>
+                        <div class="guided-options" role="group" aria-label="Choose what fits">
+                            ${cfg.opts.map(([val, label]) =>
+                                `<button class="guided-option" onclick="nextStep(3, '${val}')">${label}</button>`
+                            ).join('')}
+                        </div>
+                        <div class="guided-nav">
+                            <button class="guided-back" onclick="prevStep(1)">Back</button>
+                        </div>`;
+                }
+                /* Update dialog aria-label for screen readers */
+                const overlay = document.getElementById('guided-overlay');
+                if (overlay) overlay.setAttribute('aria-label', cfg.q);
+            }
+            if (step === 3) {
+                guidedData.priority = value;
+                /* Reset dialog aria-label to step 3 question */
+                const overlay = document.getElementById('guided-overlay');
+                if (overlay) overlay.setAttribute('aria-label', 'How do you usually go with decisions?');
+            }
             document.querySelectorAll('.guided-step').forEach(s => s.classList.remove('active'));
             document.getElementById(`step-${step}`).classList.add('active');
             setGuidedDots(step);
@@ -3869,23 +4072,73 @@
             grid.innerHTML = '';
 
             let results = [];
+            const cat = guidedData.category;
 
-            if (guidedData.category === 'phones') {
-                if (guidedData.preference === 'best') {
-                    results = products.filter(p => p.category === 'phones' && p.tier === 'flagship');
-                } else if (guidedData.priority === 'battery' && guidedData.preference === 'simple') {
-                    results = products.filter(p => p.category === 'phones' && p.tier === 'balanced');
-                } else if (guidedData.priority === 'camera' && guidedData.preference === 'balanced') {
-                    results = products.filter(p => p.category === 'phones' && p.brand === 'Google');
-                } else if (guidedData.priority === 'smooth' && guidedData.preference === 'power') {
-                    results = products.filter(p => p.category === 'phones' && p.tier === 'flagship');
+            /* ── Resolve candidate products via COLLECTIONS productIds ──
+               This ensures audio/screens/daily categories surface the
+               correct products (including accessories tagged under a
+               different category string) regardless of product.category.
+            ── */
+            const colMap = { audio: 'audio', screens: 'screens', daily: 'daily' };
+            const primaryCol = COLLECTIONS.find(c => c.id === (colMap[cat] || cat));
+            const candidatePool = primaryCol
+                ? primaryCol.productIds.map(id => products.find(p => p.id === id)).filter(Boolean)
+                : products.filter(p => p.category === cat);
+
+            /* ── Phone-specific matching using all three questions ── */
+            if (cat === 'phones') {
+                const { priority, preference: pref } = guidedData;
+                if (pref === 'best' || priority === 'smooth') {
+                    /* Flagship tier first */
+                    results = candidatePool.filter(p => p.tier === 'flagship');
+                }
+                if ((results.length === 0) && (priority === 'camera' || pref === 'balanced')) {
+                    /* Camera priority → prefer Google */
+                    results = candidatePool.filter(p => p.brand === 'Google');
+                }
+                if (results.length === 0 && priority === 'battery') {
+                    /* Battery priority — both phones work; show all */
+                    results = candidatePool;
                 }
             }
 
+            /* ── Audio matching ── */
+            if (cat === 'audio') {
+                const { priority } = guidedData;
+                if (priority === 'focus' || priority === 'calls') {
+                    /* Need silence / mic quality → over-ear flagship first */
+                    results = candidatePool.filter(p => p.tier === 'flagship');
+                } else if (priority === 'commute' || priority === 'casual') {
+                    /* Daily wear → earbuds / balanced */
+                    results = candidatePool.filter(p => p.tier === 'balanced' || p.tier === 'simple');
+                }
+            }
+
+            /* ── Daily / accessories matching ── */
+            if (cat === 'daily') {
+                const { priority } = guidedData;
+                if (priority === 'charge') {
+                    /* Charging-related accessories */
+                    results = candidatePool.filter(p => p.id === 5 || p.id === 8);
+                } else if (priority === 'carry') {
+                    /* Carry / commute — stand, mount */
+                    results = candidatePool.filter(p => p.id === 10 || p.id === 12);
+                }
+                /* Other priorities: show full daily pool */
+            }
+
+            /* ── Fallback: show all candidates for the category ── */
             if (results.length === 0) {
-                results = products.filter(p => p.category === guidedData.category && p.tier === 'balanced');
-                if (results.length === 0) results = products.filter(p => p.category === guidedData.category);
-                if (results.length === 0) results = products.slice(0, 2);
+                results = candidatePool.length > 0 ? candidatePool : products.slice(0, 2);
+            }
+
+            /* Also surface related items from adjacent collection for 'protection' variant */
+            if (cat === 'daily' && results.length < 2) {
+                const protectionCol = COLLECTIONS.find(c => c.id === 'protection');
+                if (protectionCol) {
+                    const extras = protectionCol.productIds.map(id => products.find(p => p.id === id)).filter(Boolean);
+                    results = [...results, ...extras].filter((p, i, arr) => arr.findIndex(x => x.id === p.id) === i);
+                }
             }
 
             results = results.slice(0, 4);
@@ -3941,6 +4194,7 @@
         }
 
         function closeCheckout() {
+            releaseFocusTrap();
             const overlay = document.getElementById('checkout-overlay');
             overlay.style.pointerEvents = 'none';
             if (isMobile()) {
@@ -3958,6 +4212,14 @@
             }
         }
 
+        /* Checkout step titles for aria-label updates */
+        const CHECKOUT_STEP_LABELS = {
+            1: 'Step 1 — Review your selection',
+            2: 'Step 2 — Choose how it reaches you',
+            3: 'Step 3 — Pay to reserve',
+            4: 'Order confirmed',
+        };
+
         function nextCheckoutStep(step) {
             document.querySelectorAll('.checkout-step').forEach(s => s.classList.remove('active'));
             const stepEl = document.getElementById(`checkout-step-${step}`);
@@ -3967,9 +4229,42 @@
             if (step === 1) renderCheckoutItems();
             if (step === 3) renderPaymentStep();
             if (step === 4) renderConfirmationItems();
+            /* Update checkout dialog aria-label to reflect current step */
+            const overlay = document.getElementById('checkout-overlay');
+            if (overlay && CHECKOUT_STEP_LABELS[step]) {
+                overlay.setAttribute('aria-label', CHECKOUT_STEP_LABELS[step]);
+            }
             /* Scroll panel back to top on each step change */
             const panel = document.getElementById('checkout-sheet');
             if (panel) panel.scrollTop = 0;
+        }
+
+        /* ── Checkout delivery validation ──
+           Called by the "Continue with this" button in step 2.
+           Blocks advance if no delivery method has been selected.
+        ── */
+        function advanceCheckoutFromDelivery() {
+            const msgEl = document.getElementById('delivery-validation-msg');
+            if (!selectedDeliveryMethod) {
+                if (msgEl) {
+                    msgEl.textContent = 'Please choose how you’d like to receive your order.';
+                    /* Clear after 3s */
+                    setTimeout(() => { if (msgEl) msgEl.textContent = ''; }, 3000);
+                }
+                /* Shake the options for visual feedback */
+                const opts = document.querySelector('.checkout-options');
+                if (opts) {
+                    opts.style.transition = 'transform 0.08s ease';
+                    const shake = [4, -4, 3, -3, 0];
+                    shake.reduce((chain, v, i) => chain.then(() => new Promise(r => {
+                        opts.style.transform = `translateX(${v}px)`;
+                        setTimeout(r, 70);
+                    })), Promise.resolve()).then(() => { opts.style.transform = ''; });
+                }
+                return;
+            }
+            if (msgEl) msgEl.textContent = '';
+            nextCheckoutStep(3);
         }
 
         function prevCheckoutStep(step) {
@@ -4117,6 +4412,19 @@
             const amt       = totalNum > 0 ? `₹${totalNum.toLocaleString('en-IN')}` : (currentProduct ? currentProduct.price : '');
             const name      = cartItems.length > 0 ? `Kovin Order (${cartCount()} item${cartCount() > 1 ? 's' : ''})` : (currentProduct ? currentProduct.name : 'your order');
 
+            /* ── Delivery context notice ── */
+            const deliveryNoticeHtml = selectedDeliveryMethod === 'pickup'
+                ? `<div class="checkout-delivery-notice">
+                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l1.5-5h15L21 9"/><path d="M5 9v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9"/><path d="M3 9h18"/></svg>
+                       <div><strong>Store pickup · Coimbatore</strong>Ready within 2 hours. Bring this confirmation when you arrive.</div>
+                   </div>`
+                : selectedDeliveryMethod === 'delivery'
+                ? `<div class="checkout-delivery-notice">
+                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1" y="3" width="15" height="13" rx="2"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+                       <div><strong>Home delivery · Today</strong>Within Coimbatore city. We'll confirm the time on WhatsApp.</div>
+                   </div>`
+                : '';
+
             const amtBadge = amt
                 ? `<div style="display:flex;justify-content:center;">
                      <div class="payment-amount-badge">
@@ -4146,6 +4454,7 @@
                         <h2>Pay to Reserve</h2>
                         <p>Choose your preferred UPI app</p>
                     </div>
+                    ${deliveryNoticeHtml}
                     ${amtBadge}
                     <div class="upi-app-grid">
                         <button class="upi-app-btn" onclick="openUpiApp('gpay')" aria-label="Pay with Google Pay">
@@ -4193,6 +4502,7 @@
                         <h2>Pay to Reserve</h2>
                         <p>Scan with any UPI app to pay instantly</p>
                     </div>
+                    ${deliveryNoticeHtml}
                     ${amtBadge}
                     <div class="payment-qr-wrap">
                         <div class="payment-qr-label">Scan with any UPI app</div>
@@ -4213,6 +4523,16 @@
         }
 
         function confirmPaymentOnWhatsApp() {
+            /* Generate a stable order ID once per checkout session */
+            if (!_currentOrderId) {
+                /* Format: KVN-YYMMDD-XXXX — timestamp + 4-digit suffix based on time millis */
+                const now = new Date();
+                const ymd = String(now.getFullYear()).slice(-2)
+                    + String(now.getMonth() + 1).padStart(2, '0')
+                    + String(now.getDate()).padStart(2, '0');
+                const ms4 = String(now.getMilliseconds() * 10 + now.getSeconds()).slice(-4).padStart(4, '0');
+                _currentOrderId = `KVN-${ymd}-${ms4}`;
+            }
             let itemsList = '';
             if (cartItems.length > 0) {
                 itemsList = cartItems.map(i => `• ${i.name} × ${i.qty}`).join('\n');
@@ -4220,8 +4540,8 @@
                 itemsList = `• ${currentProduct.name}`;
             }
             const totalStr = cartTotalFormatted() || (currentProduct ? currentProduct.price : '');
-            const delivery = selectedDeliveryMethod ? `\nDelivery preference: ${selectedDeliveryMethod}` : '';
-            const text = `Hello Kovin, payment of ${totalStr} has been made for:\n${itemsList}${delivery}\n\nPlease confirm and share the next steps.`;
+            const delivery = selectedDeliveryMethod ? `\nDelivery: ${selectedDeliveryMethod}` : '';
+            const text = `Hello Kovin, payment of ${totalStr} has been made.\nOrder: ${_currentOrderId}\n${itemsList}${delivery}\n\nPlease confirm and share the next steps.`;
             window.open(`https://wa.me/917200006006?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
             /* Move to confirmation step after triggering WhatsApp */
             nextCheckoutStep(4);
@@ -4334,14 +4654,14 @@
                 );
             }
 
-            setTimeout(() => {
-                const closeBtn = document.getElementById('modal-close-btn');
-                if (closeBtn) closeBtn.focus();
-            }, 100);
+            /* Trap focus inside product modal */
+            const modalSheet = document.getElementById('modal-sheet');
+            setTimeout(() => trapFocus(modalSheet || document.getElementById('modal-overlay')), 100);
             announce(`${title} details opened.`);
         }
 
         function closeModal() {
+            releaseFocusTrap();
             const overlay = document.getElementById('modal-overlay');
             overlay.style.pointerEvents = 'none';
             if (isMobile()) {
@@ -4882,10 +5202,76 @@
             observer.observe(hero);
         }
 
+        /* ── Catalogue search handler ── */
+        function initCatalogueSearch() {
+            const input   = document.getElementById('catalogue-search');
+            const clearBtn = document.getElementById('catalogue-search-clear');
+            const status  = document.getElementById('catalogue-search-status');
+            if (!input) return;
+
+            function runSearch() {
+                const q = input.value.trim().toLowerCase();
+                clearBtn.hidden = !q;
+
+                if (!q) {
+                    /* Reset: show everything */
+                    document.querySelectorAll('.product-card').forEach(c => {
+                        c.classList.remove('search-no-match', 'search-match');
+                    });
+                    document.querySelectorAll('.slider-section').forEach(s => s.classList.remove('search-hidden'));
+                    document.querySelectorAll('.scene-strip').forEach(s => s.classList.remove('search-hidden'));
+                    if (status) status.textContent = '';
+                    return;
+                }
+
+                let totalVisible = 0;
+                document.querySelectorAll('.product-card').forEach(card => {
+                    const pid   = parseInt(card.dataset.id);
+                    const prod  = products.find(p => p.id === pid);
+                    if (!prod) { card.classList.add('search-no-match'); return; }
+                    /* Match against name, decision line, specs, badge */
+                    const haystack = [prod.name, prod.decision, prod.specs, prod.badge, prod.tags.join(' ')].join(' ').toLowerCase();
+                    const matches = q.split(' ').filter(Boolean).every(word => haystack.includes(word));
+                    card.classList.toggle('search-no-match', !matches);
+                    card.classList.toggle('search-match', matches);
+                    if (matches) totalVisible++;
+                });
+
+                /* Hide collection sections with no visible cards */
+                document.querySelectorAll('.slider-section').forEach(section => {
+                    const hasVisible = section.querySelectorAll('.product-card:not(.search-no-match)').length > 0;
+                    section.classList.toggle('search-hidden', !hasVisible);
+                    /* Also hide the corresponding scene strip */
+                    const colId = section.id.replace('cat-', '');
+                    const strip = document.querySelector(`.scene-strip[data-scene="${colId}"]`);
+                    if (strip) strip.classList.toggle('search-hidden', !hasVisible);
+                });
+
+                if (status) {
+                    status.textContent = totalVisible === 0
+                        ? 'No products match that search.'
+                        : `${totalVisible} product${totalVisible > 1 ? 's' : ''} found`;
+                }
+            }
+
+            let searchTimer;
+            input.addEventListener('input', () => {
+                clearTimeout(searchTimer);
+                searchTimer = setTimeout(runSearch, 160);
+            });
+
+            clearBtn.addEventListener('click', () => {
+                input.value = '';
+                input.focus();
+                runSearch();
+            });
+        }
+
         window.addEventListener('load', () => {
             /* ── 1. Render dynamic content ── */
             renderCatalogue();
             initRetention();
+            initCatalogueSearch();
 
             const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
