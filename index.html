@@ -1567,6 +1567,88 @@
         /* Order ID chip */
         .order-id-chip { display: inline-flex; align-items: center; gap: 8px; background: var(--paper-warm); border: 1px solid var(--border); border-radius: 100px; padding: 6px 14px; font-size: var(--fs-caption); font-weight: 600; letter-spacing: 0.04em; margin-bottom: 12px; }
         .order-id-chip .order-id-label { opacity: 0.45; font-weight: 500; }
+
+        /* ── Confidence indicator chip ──────────────────────────
+           Replaces marketing badges. Shows honest positioning.
+           "Balanced choice", "Better for camera-focused users", etc.
+        ─────────────────────────────────────────────────────── */
+        .confidence-chip {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: rgba(26,22,18,0.05); border: 1px solid var(--border);
+            border-radius: 100px; padding: 5px 12px;
+            font-family: var(--font-body); font-size: var(--fs-micro);
+            font-weight: 600; letter-spacing: 0.04em; color: var(--ink);
+            margin-bottom: var(--sp-3); flex-shrink: 0;
+        }
+        .confidence-chip::before {
+            content: ''; width: 6px; height: 6px; border-radius: 50%;
+            background: var(--copper); flex-shrink: 0;
+        }
+        [data-theme="dark"] .confidence-chip { background: rgba(247,244,239,0.08); }
+
+        /* Confidence chip on product cards — sits above fit-line */
+        .product-confidence { margin-bottom: 6px; }
+
+        /* ── Guidance "Why this was chosen" section ── */
+        .guidance-section { border-top: 1px solid var(--border); padding-top: var(--sp-5); margin-top: var(--sp-5); }
+        .guidance-section > h4 {
+            font-family: var(--font-body); font-size: var(--fs-caption);
+            font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+            opacity: 0.45; margin-bottom: var(--sp-4);
+        }
+        .guidance-chosen-for {
+            font-family: var(--font-display); font-size: 1.15rem; font-weight: 400;
+            line-height: 1.45; color: var(--ink); margin-bottom: var(--sp-5);
+            font-style: italic;
+        }
+        .guidance-rows { display: flex; flex-direction: column; gap: var(--sp-3); }
+        .guidance-row {
+            display: grid; grid-template-columns: 160px 1fr; gap: var(--sp-3);
+            align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--border);
+        }
+        .guidance-row:last-child { border-bottom: none; }
+        .guidance-row-label {
+            font-size: var(--fs-micro); font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.08em; opacity: 0.40; flex-shrink: 0;
+        }
+        .guidance-row-val { font-size: var(--fs-small); line-height: 1.55; }
+        .guidance-row-val.does-well { color: var(--ink); }
+        .guidance-row-val.not-ideal { color: var(--ink); opacity: 0.65; }
+        .guidance-row-val.who-prefers { color: var(--ink); font-style: italic; opacity: 0.75; }
+        @media (max-width: 768px) {
+            .guidance-row { grid-template-columns: 1fr; gap: 3px; }
+        }
+
+        /* ── After-sales support strip (confirmation page) ── */
+        .after-sales-strip {
+            background: var(--paper-warm); border-radius: 20px;
+            padding: var(--sp-5) var(--sp-6); margin-top: var(--sp-6);
+            border: 1px solid var(--border);
+        }
+        .after-sales-strip h4 {
+            font-family: var(--font-display); font-size: 1.3rem; font-weight: 400;
+            margin-bottom: var(--sp-3);
+        }
+        .after-sales-strip p {
+            font-size: var(--fs-small); opacity: 0.65; line-height: 1.6;
+            margin-bottom: var(--sp-4);
+        }
+        .after-sales-strip .after-sales-links {
+            display: flex; flex-direction: column; gap: var(--sp-2);
+        }
+        .after-sales-strip .after-sales-link {
+            display: flex; align-items: center; gap: var(--sp-3);
+            font-size: var(--fs-small); font-weight: 500; color: var(--copper);
+            text-decoration: none; padding: 8px 0;
+        }
+        .after-sales-strip .after-sales-link svg { opacity: 0.8; flex-shrink: 0; }
+
+        /* ── Cart confidence / momentum — guidance versions ── */
+        .cart-guidance-note {
+            font-size: var(--fs-caption); color: var(--ink); opacity: 0.5;
+            text-align: center; line-height: 1.5; padding: 8px 0;
+            font-style: italic;
+        }
         /* Checkout delivery notice */
         .checkout-delivery-notice { background: var(--paper-warm); border-radius: 14px; padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: flex-start; gap: 12px; font-size: var(--fs-small); }
         .checkout-delivery-notice svg { flex-shrink: 0; opacity: 0.55; margin-top: 2px; }
@@ -2517,8 +2599,8 @@
                 </div>
                 <div class="hero-trust-indicators hero-reveal">
                     <span>Every device checked before handover</span>
-                    <span>Pickup available from Coimbatore</span>
-                    <span>Clarity at every step</span>
+                    <span>Guidance before, during, and after purchase</span>
+                    <span>Support stays available — the relationship doesn't end at the sale</span>
                 </div>
             </div>
 
@@ -2596,8 +2678,8 @@
                         <p>Most repairs are completed within hours. A transparent diagnostic happens first — no surprise charges, no work done without explanation. Devices come back in the condition they should be in.</p>
                     </div>
                     <div class="bento-item large reveal">
-                        <h3>7-Day Promise.</h3>
-                        <p>If a manufacturing defect surfaces after purchase, a replacement is arranged within 7 days. The process is guided, clear, and handled without friction from either side.</p>
+                        <h3>Support That Stays.</h3>
+                        <p>The relationship with a device does not end at the moment of purchase. Setup guidance is available at handover. Questions that come up a week later are answered. If a manufacturing defect surfaces within 7 days, a replacement is arranged — guided, clear, no friction.</p>
                     </div>
                 </div>
             </div>
@@ -2608,7 +2690,7 @@
                 <div class="section-header reveal">
                     <span class="hero-eyebrow">Five Collections · Thirteen Products</span>
                     <h2>Picked with<br>intention.</h2>
-                    <p class="catalogue-intro-text">Not the most options — the right ones. Every product here earned its place. Nothing added for the sake of appearing complete.</p>
+                    <p class="catalogue-intro-text">Not the most options — the right ones. Every product here earned its place, and every product detail page explains why it was chosen, what it does exceptionally well, and what it may not be ideal for.</p>
                 </div>
 
                 <!-- Catalogue search — quick filter by product name/specs -->
@@ -2652,9 +2734,9 @@
         <section id="demo" class="section-padding">
             <div class="container">
                 <div class="section-header reveal">
-                    <span class="hero-eyebrow">Experience</span>
-                    <h2>Try it before deciding.</h2>
-                    <p style="margin-top: 24px; opacity: 0.6; font-size: 1.2rem;">Hold it. Compare it side by side. Ask everything that matters — before spending a single rupee.</p>
+                    <span class="hero-eyebrow">Decide With Confidence</span>
+                    <h2>Clarity before commitment.</h2>
+                    <p style="margin-top: 24px; opacity: 0.6; font-size: 1.2rem;">Every question is worth asking. Hold it. Compare side by side. Ask what it isn't good for. Leave with certainty — not just a purchase.</p>
                 </div>
                 <div class="bento-grid">
                     <div class="bento-item large reveal">
@@ -2732,11 +2814,12 @@
                         </div>
                         <div class="bento-bg-overlay"></div>
                         <span class="hero-eyebrow" style="color:rgba(255,255,255,0.7);">The Process</span>
-                        <h3>What happens after choosing</h3>
+                        <h3>What happens before, during, and after</h3>
                         <ul class="trust-list">
-                            <li>Device is checked and verified before handover</li>
-                            <li>Clear explanation of exactly what is being received</li>
-                            <li>Guidance available if anything feels uncertain afterward</li>
+                            <li>Honest recommendation — including what a product isn't ideal for</li>
+                            <li>Device checked, charged, and explained at handover</li>
+                            <li>Setup walkthrough included — leave with the device working</li>
+                            <li>Ongoing support available for questions that come up later</li>
                         </ul>
                     </div>
                     <div class="bento-item reveal" style="background: var(--copper); color: white; border: none;">
@@ -2910,7 +2993,7 @@
 
             <div class="cart-drawer-header">
                 <h2 id="cart-drawer-title">Your Selection</h2>
-                <p class="cart-drawer-sub">Ready to secure these</p>
+                <p class="cart-drawer-sub">No commitment until you confirm — take your time</p>
             </div>
 
             <!-- Empty state -->
@@ -3031,13 +3114,15 @@
 
             <!-- Step 4 (Results) -->
             <div class="guided-step" id="step-4">
-                <h2 class="guided-question">Here is what came up for you</h2>
+                <h2 class="guided-question">Based on your answers</h2>
+                <p style="font-size:var(--fs-small);opacity:0.5;margin-bottom:var(--sp-7);font-style:italic;">These are the options that fit most honestly. Each includes what it does well — and what it may not be ideal for.</p>
                 <div class="guided-results" id="guided-results-grid">
                     <!-- Results injected by JS -->
                 </div>
                 <div class="guided-nav">
                     <button class="guided-back" onclick="prevStep(1)">Start Over</button>
                 </div>
+                <div style="margin-top:var(--sp-6);text-align:center;font-size:var(--fs-caption);opacity:0.45;font-style:italic;">Still unsure? A 15-minute <a href="https://wa.me/917200006006" target="_blank" rel="noopener noreferrer" style="color:var(--copper);text-decoration:none;font-weight:600;">WhatsApp conversation</a> can help clarify.</div>
             </div>
         </div>
     </div>
@@ -3058,8 +3143,8 @@
             <!-- Step 1: Cart Review -->
             <div class="checkout-step active" id="checkout-step-1">
                 <div class="checkout-header">
-                    <h2 id="checkout-title">Looking good</h2>
-                    <p>Take a moment — no rush</p>
+                    <h2 id="checkout-title">What you've chosen</h2>
+                    <p>A moment to confirm — no pressure, no rush</p>
                 </div>
                 <!-- Dynamic cart items rendered by renderCheckoutItems() -->
                 <div class="checkout-cart-list" id="checkout-cart-list"></div>
@@ -3068,11 +3153,11 @@
                     <span id="checkout-total-value"></span>
                 </div>
                 <div class="checkout-trust-mini">
-                    <span>Verified before handover</span>
-                    <span>Every step explained clearly</span>
-                    <span>Guidance available anytime</span>
+                    <span>Checked and explained before handover</span>
+                    <span>Every step explained before it happens</span>
+                    <span>Setup guidance available after purchase</span>
                 </div>
-                <div class="checkout-momentum">No pressure · Guidance available throughout</div>
+                <div class="checkout-momentum">Nothing moves without your clarity · Help remains available throughout</div>
                 <div class="checkout-reassurance">Takes less than a minute</div>
                 <button onclick="nextCheckoutStep(2)" class="btn btn-primary" style="width: 100%; margin-top: 16px;">Continue with this</button>
             </div>
@@ -3128,11 +3213,11 @@
 
             <!-- Step 4: Order Confirmed -->
             <div class="checkout-step" id="checkout-step-4">
-                <!-- Success animation -->
+                <!-- Success -->
                 <div style="text-align:center; padding: 8px 0 24px;">
                     <div class="order-success-anim" aria-hidden="true">✓</div>
-                    <h2 style="font-family:var(--font-display);font-size:clamp(1.75rem,2.5vw,2.25rem);font-weight:400;letter-spacing:var(--ls-snug);margin-bottom:8px;">Payment Sent</h2>
-                    <p style="opacity:0.55;font-size:var(--fs-small);">Your selection is noted — we'll confirm shortly</p>
+                    <h2 style="font-family:var(--font-display);font-size:clamp(1.75rem,2.5vw,2.25rem);font-weight:400;letter-spacing:var(--ls-snug);margin-bottom:8px;">Confirmed — thank you.</h2>
+                    <p style="opacity:0.55;font-size:var(--fs-small);">Your order has been received. A real person will be in touch shortly.</p>
                     <div id="order-id-display" style="margin-top:12px;display:none;">
                         <span class="order-id-chip"><span class="order-id-label">Order</span><span id="order-id-value"></span></span>
                     </div>
@@ -3142,36 +3227,54 @@
                 <div class="checkout-cart-list" id="confirmation-items" style="margin-bottom:0;"></div>
                 <div class="order-total-line" id="confirmation-total" style="display:none;"></div>
 
-                <!-- What happens next -->
+                <!-- What happens next — including after-handover support -->
                 <div class="next-steps-clarity" style="margin-top:28px;">
-                    <h4>What happens next</h4>
+                    <h4>What happens from here</h4>
                     <div class="next-steps-list">
                         <div class="next-step-item">
                             <div class="next-step-num" aria-hidden="true">1</div>
-                            <div>Payment is verified · Takes a few minutes</div>
+                            <div>Payment verified — usually within a few minutes</div>
                         </div>
                         <div class="next-step-item">
                             <div class="next-step-num" aria-hidden="true">2</div>
-                            <div>Item is checked and set aside for you</div>
+                            <div>Device checked, charged, and set aside for you</div>
                         </div>
                         <div class="next-step-item">
                             <div class="next-step-num" aria-hidden="true">3</div>
-                            <div>Pickup or delivery details confirmed on WhatsApp</div>
+                            <div>Pickup or delivery details confirmed on WhatsApp — a real person, not a bot</div>
+                        </div>
+                        <div class="next-step-item">
+                            <div class="next-step-num" aria-hidden="true">4</div>
+                            <div>Setup walkthrough at handover — everything explained before you leave</div>
                         </div>
                     </div>
                 </div>
 
+                <!-- After-sales support strip -->
+                <div class="after-sales-strip">
+                    <h4>The support doesn't stop here.</h4>
+                    <p>After handover, guidance remains available. Whether it's a setup question, an app you're unsure about, or something that feels off — reach out and it will be sorted.</p>
+                    <div class="after-sales-links">
+                        <a href="https://wa.me/917200006006" target="_blank" rel="noopener noreferrer" class="after-sales-link">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                            Setup help on WhatsApp — anytime
+                        </a>
+                        <a href="tel:+917200006006" class="after-sales-link">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            Call directly — a real person answers
+                        </a>
+                    </div>
+                </div>
+
                 <!-- WhatsApp confirmation CTA -->
-                <button onclick="confirmPaymentOnWhatsApp()" class="btn btn-primary" style="width:100%;margin-top:28px;background:#25D366;border:none;gap:10px;">
+                <button onclick="confirmPaymentOnWhatsApp()" class="btn btn-primary" style="width:100%;margin-top:24px;background:#25D366;border:none;gap:10px;">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                    Confirm on WhatsApp
+                    Confirm payment on WhatsApp
                 </button>
 
-                <!-- Reassurance -->
-                <div style="text-align:center;margin-top:14px;font-size:var(--fs-caption);opacity:0.45;font-weight:500;">Payment confirmed directly with Kovin · No third party</div>
+                <div style="text-align:center;margin-top:12px;font-size:var(--fs-caption);opacity:0.40;font-weight:500;">Payment goes directly to Kovin · No third party · No stored card details</div>
 
-                <!-- Continue browsing -->
-                <div style="text-align:center;margin-top:24px;">
+                <div style="text-align:center;margin-top:20px;">
                     <button onclick="closeCheckout();clearCartAfterOrder();" class="btn btn-secondary" style="width:100%;">Continue browsing</button>
                 </div>
             </div>
@@ -3188,6 +3291,8 @@
             </div>
             <div class="modal-right">
                 <span class="hero-eyebrow" id="modal-badge">Authentic</span>
+                <!-- Confidence indicator: honest positioning, not a marketing badge -->
+                <div id="modal-confidence" style="margin-bottom:4px;"></div>
                 <h2 class="modal-title" id="modal-title">Product Name</h2>
                 <div id="modal-social-proof" class="social-proof-line"></div>
                 <div id="modal-decision" class="decision-line"></div>
@@ -3200,8 +3305,28 @@
                 </div>
 
                 <div class="modal-section">
-                    <h4>Did You Know?</h4>
+                    <h4>One Thing Worth Knowing</h4>
                     <p id="modal-fact"></p>
+                </div>
+
+                <!-- Why this was chosen — the core guidance section -->
+                <div class="modal-section guidance-section" id="modal-guidance-section">
+                    <h4>Why this was chosen</h4>
+                    <p class="guidance-chosen-for" id="modal-chosen-for"></p>
+                    <div class="guidance-rows">
+                        <div class="guidance-row">
+                            <span class="guidance-row-label">Does well</span>
+                            <span class="guidance-row-val does-well" id="modal-does-well"></span>
+                        </div>
+                        <div class="guidance-row">
+                            <span class="guidance-row-label">Not ideal if</span>
+                            <span class="guidance-row-val not-ideal" id="modal-not-ideal"></span>
+                        </div>
+                        <div class="guidance-row">
+                            <span class="guidance-row-label">Usually chosen by</span>
+                            <span class="guidance-row-val who-prefers" id="modal-who-prefers"></span>
+                        </div>
+                    </div>
                 </div>
 
                 <ul class="modal-features" id="modal-features" aria-label="Product features"></ul>
@@ -3220,28 +3345,25 @@
                 </div>
 
                 <div class="cart-confidence">
-                    <p>One step away from getting this</p>
-                    <span>Pickup today or delivery within 24-48 hours</span>
+                    <p>Ready when you are — no pressure to decide today</p>
+                    <span>Pickup or delivery arranged after you confirm</span>
                 </div>
 
-                <div class="cart-momentum">
-                    Selected by many for daily use · Ready for selection
-                </div>
-
-                <div class="hero-actions" style="margin-top: 24px;">
-                    <button onclick="addToCart(currentProduct)" class="btn btn-primary" style="flex: 1;" id="modal-add-cart-btn">Add to cart</button>
+                <div class="hero-actions" style="margin-top: 20px;">
+                    <button onclick="addToCart(currentProduct)" class="btn btn-primary" style="flex: 1;" id="modal-add-cart-btn">Keep this ready</button>
                     <button onclick="openCartDrawer()" class="btn btn-secondary" style="position:relative;" id="modal-view-cart-btn" aria-label="View cart">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
                     </button>
                 </div>
 
-                <div class="cart-hesitation">
-                    No confusion, clear process · Help available if needed
+                <div class="cart-hesitation" style="margin-top:10px;">
+                    Still weighing it? Ask on <a href="https://wa.me/917200006006" target="_blank" rel="noopener noreferrer" style="color:var(--copper);text-decoration:none;font-weight:600;">WhatsApp</a> — no obligation, just clarity.
                 </div>
 
-                <div class="micro-trust" id="modal-trust" style="margin-top: 24px;">
-                    <span>• Checked before handover</span>
-                    <span>• Support available if something feels off</span>
+                <div class="micro-trust" id="modal-trust" style="margin-top: 20px;">
+                    <span>• Checked and explained before handover</span>
+                    <span>• Setup guidance available after purchase</span>
+                    <span>• Support remains accessible — not just at the sale</span>
                 </div>
             </div>
         </div>
@@ -3312,19 +3434,19 @@
         }
 
         const products = [
-            { id: 1, category: 'phones', name: 'Samsung Galaxy S23 FE', specs: 'Screen stays vivid through the day · Camera ready in any light · Battery that outlasts the day', price: '₹34,999', oldPrice: '₹44,999', badge: 'Chosen for Reliability', tags: ['Handles the full day', 'Camera in any light'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/fWEumNteCudVVPuo.png', desc: 'A Samsung flagship brought to a considered price. The 6.4" Dynamic AMOLED screen is vivid without being harsh. The Exynos 2200 processor keeps things moving through a heavy day — calls, reels, photos, messages — without slowing down. Battery holds through the full day without needing a midday charge.', expect: 'Good fit for heavy daily use — multitasking, camera, social apps, calls. A single charge tends to hold through 14 to 16 hours of normal use. Not the top choice if gaming performance is the main priority.', fact: 'The display maintains colour accuracy at reduced brightness — easier on the eyes for late-night reading or early-morning checks.', decision: 'Handles heavy daily use without the full flagship cost', urgency: '', socialProof: '', brand: 'Samsung', tier: 'flagship', priceContext: 'Priced below original retail — performance unchanged', priceAnchor: 'Full flagship experience at a more considered price' },
-            { id: 2, category: 'phones', name: 'Google Pixel 7a', specs: 'Compact and comfortable to hold · Camera that processes photos automatically · Google chip for seamless daily use', price: '₹39,999', oldPrice: '₹43,999', badge: 'Camera Clarity', tags: ['Photos that look natural', 'Clean daily experience'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/AeIhJBFyYYuVXncG.png', desc: 'Google built the hardware and software together — it shows in how the device performs. The 64MP camera processes shots automatically so photos look natural without any editing. The Tensor G2 chip handles voice commands, transcription, and daily tasks quietly in the background. Compact enough for comfortable one-handed use.', expect: 'Best fit if camera quality is the main reason for upgrading. Photos look accurate across different lighting without post-editing. The compact size suits those who prefer something that fits easily in a pocket.', fact: 'The Tensor chip enables live call transcription — useful during long meetings or in busy environments where catching every word matters.', decision: 'The right choice when camera quality and a clean experience matter most', urgency: '', socialProof: '', brand: 'Google', tier: 'balanced', priceContext: 'Delivers above its price in camera and software performance', priceAnchor: 'More camera quality per rupee than most phones at this level' },
-            { id: 3, category: 'tv', name: 'Sony Bravia 4K LED', specs: '55" screen with true 4K clarity · Sound deep enough for most rooms · Connects to all streaming services', price: '₹54,990', oldPrice: '₹69,990', badge: 'Home Cinema', tags: ['Cinema quality at home', 'Sound that fills the room'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/PNuLvudbHcTmKOpp.png', desc: 'A 55-inch Sony Bravia calibrated to show 4K content as it was meant to be seen. The X1 processor keeps motion smooth and colours accurate. Built-in Dolby Audio is tuned to fill a medium room without a separate speaker setup. Smart TV platform connects to all major streaming services.', expect: 'A genuine upgrade over any HD television. Picture quality is visible from the first day. Works well for movies, cricket, and everyday content. A viewing distance of at least 2 metres gets the best from the 55-inch screen.', fact: 'The Dolby Audio is tuned for medium-sized rooms — many find a separate soundbar becomes unnecessary after this television.', decision: 'Right for those who want home cinema quality without excessive complexity', urgency: '', socialProof: '', brand: 'Sony', tier: 'balanced', priceContext: 'Reduced from original — same Sony quality, better value', priceAnchor: 'Premium brand at a price that makes sense for the home' },
-            { id: 4, category: 'speakers', name: 'Sony WH-1000XM5', specs: '30 hours before a charge · Silence on command · Clear calls in any environment', price: '₹26,990', oldPrice: '₹34,990', badge: 'The Benchmark', tags: ['Silence when needed', 'Calls that stay clear'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/XIJzeXSRHorEqzFw.png', desc: 'The benchmark for noise cancellation. Eight microphones read the environment and cancel what should not be heard — traffic, office noise, background conversations. The 30-hour battery handles full travel days. LDAC delivers hi-res audio over Bluetooth for those who care what music actually sounds like.', expect: 'Works well for focus, commuting, travel, and long calls. Call clarity holds even on busy roads. Music sounds noticeably fuller than earbuds at this price. Slightly larger than earbuds — not ideal for running or intense physical activity.', fact: 'Three minutes of charging gives three hours of playback — useful when leaving the house in a rush.', decision: 'The right choice for those who need to focus, travel, or listen without interruption', urgency: '', socialProof: '', brand: 'Sony', tier: 'flagship', priceContext: 'Reduced from original — the benchmark remains the same', priceAnchor: 'Industry-leading noise cancellation at a fairer price' },
-            { id: 5, category: 'accessories', name: 'Apple 20W USB-C Power Adapter', specs: 'Fast charges iPhone to 50% in 30 minutes · Stays cool during use · Small enough for any bag', price: '₹1,699', oldPrice: '₹1,900', badge: 'Genuine Apple', tags: ['Charges fast and safely', 'Built for iPhone'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/uVoVbsruMHDNSVBu.png', desc: 'Apple own charger, designed for Apple devices. Fast-charges iPhone 8 and above to 50% in around 30 minutes. Compact enough for a pocket or small bag. Runs at a safe temperature — no heat concerns during extended charging sessions.', expect: 'Works best with iPhone 8 and above, and recent iPad models. Noticeably faster than the older 5W charger. Non-Apple chargers at the wrong wattage can gradually reduce battery health — this one is designed to preserve it.', fact: 'Apple devices are calibrated to accept fast charging at the correct voltage. Third-party chargers at the wrong wattage can silently affect long-term battery health.', decision: 'The right choice for anyone using an iPhone who wants proper fast charging', urgency: '', socialProof: '', brand: 'Apple', tier: 'simple', priceContext: 'Genuine Apple hardware at a reasonable everyday price', priceAnchor: 'An investment that protects the device it charges' },
-            { id: 6, category: 'accessories', name: 'Premium Tempered Glass', specs: 'Feels like bare glass to the touch · Protects without visible thickness · Fingerprints stay minimal', price: '₹499', oldPrice: '₹999', badge: 'Invisible Guard', tags: ['Invisible once applied', 'Keeps the screen new'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/KelCDGFlqZNnFnFD.png', desc: '9H hardness glass that protects the screen without changing how it looks or feels. Edge-to-edge coverage means the corners — where most drops hit first — are also covered. The oleophobic coating keeps fingerprint smudges minimal throughout the day.', expect: 'Applied to a clean, dust-free screen it is nearly invisible. Touch sensitivity stays the same. The glass is designed to absorb impact — if it cracks from a drop, it took what the screen did not have to.', fact: 'The anti-smudge coating actively reduces fingerprint transfer — the screen stays noticeably cleaner between wipes.', decision: 'The simplest way to protect a screen investment', urgency: '', socialProof: '', brand: 'Generic', tier: 'simple', priceContext: 'A small cost that prevents a much larger one', priceAnchor: 'Fractional insurance for a screen that costs significantly more' },
-            { id: 7, category: 'accessories', name: 'Sleek Protective Case', specs: 'Absorbs impact without adding bulk · Raised edges protect camera and screen · Stays slim in the pocket', price: '₹799', oldPrice: '₹1,499', badge: 'Protection Without Bulk', tags: ['Protection without bulk', 'Raised camera edges'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/jdVRAWbtGZtmRYSW.png', desc: 'Shock-absorbing protection that does not add visible weight or thickness. The slim profile keeps the phone feeling natural in hand. Raised edges around the camera module and screen perimeter mean the device can sit face-down without glass contacting the surface.', expect: 'Works well for everyday carry. Not designed for heavy outdoor environments — a rugged case suits those needs better. Raised camera edges reduce surface contact every time the phone is set down.', fact: 'Camera glass is the most expensive component to replace. The raised lens edges here protect it with every placement.', decision: 'Protection that does not compromise how the phone feels in hand', urgency: '', socialProof: '', brand: 'Generic', tier: 'simple', priceContext: 'Strong protection at a straightforward price', priceAnchor: 'Less than the cost of one screen repair' },
-            { id: 8, category: 'accessories', name: 'Braided Fast Charge Cable', specs: '60W charging that holds speed · Tangle-free from day one · Built to outlast standard cables', price: '₹599', oldPrice: '₹1,199', badge: 'Built to Last', tags: ['Charges fast and reliably', 'Built for daily use'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/skNTrQiJTgkIzyjx.png', desc: 'A braided USB-C cable supporting up to 60W Power Delivery. Tangle-free by design — wraps and unwraps cleanly without the coiling that splits standard plastic cables over time. Reinforced connector ends resist the bending stress that causes most cable failures.', expect: 'Noticeably faster than 5W or 10W standard cables. The braided sleeve resists the fraying that typically starts near connector ends within a few months of daily use.', fact: 'The reinforced connector joints are rated to handle 10 times more bending cycles than standard plastic-sheathed cables.', decision: 'A cable built to last rather than replace', urgency: '', socialProof: '', brand: 'Generic', tier: 'simple', priceContext: 'More durable than the standard cable — saves the replacement cost', priceAnchor: 'Built to outlast two or three standard cables' },
-            { id: 10, category: 'accessories', name: 'Aluminum Phone Stand', specs: 'Holds the phone at a comfortable eye level · Stable on any surface · Charges while mounted', price: '₹399', oldPrice: '₹899', badge: 'Desk Essential', tags: ['Hands-free at the desk', 'Comfortable viewing angle'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/QLzXktccBITzJoEo.png', desc: 'Aluminium stand with an adjustable viewing angle that brings the phone to eye level. Non-slip silicone pads keep it stable on any desk surface. The hollow design allows a cable to pass through so the phone charges while sitting on the stand.', expect: 'Works well for video calls, cooking with a recipe open, or desk content viewing. Lightweight but solid — does not shift when tapping the screen. Fits most phone sizes with or without a case.', fact: 'Keeping the phone at eye level during video calls reduces neck strain over long meetings — a small adjustment with a noticeable daily effect.', decision: 'Makes hands-free use at a desk genuinely comfortable', urgency: '', socialProof: '', brand: 'Generic', tier: 'simple', priceContext: 'A simple addition that changes how the desk feels', priceAnchor: 'Less than a coffee out — earns its place within a week' },
-            { id: 11, category: 'accessories', name: 'Premium Wireless Earbuds', specs: 'Up to 24 hours total listening · Opens and connects automatically · Touch controls for music and calls', price: '₹2,999', oldPrice: '₹5,999', badge: 'Daily Companion', tags: ['Auto-connects on open', 'Full day battery'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/akufQOVWgjtpdbDf.png', desc: 'True wireless earbuds with a charging case that extends total listening to 24 hours. Opens and connects automatically the moment the case is opened — no manual pairing needed after the first setup. Touch controls handle playback and calls without reaching for the phone.', expect: 'Works well for commutes, walks, and focused work. Sound is balanced — clear across most genres. Not designed for intense workouts or water exposure. Auto-pairing makes them simple to use without thought.', fact: 'Automatic pairing activates in under two seconds from opening the case — useful when there is no time to navigate settings.', decision: 'Good for daily commutes, walks, or focused work', urgency: '', socialProof: '', brand: 'Generic', tier: 'balanced', priceContext: 'Significant reduction from original price', priceAnchor: 'Daily-use earbuds without the premium brand cost' },
-            { id: 12, category: 'accessories', name: 'Magnetic Car Mount', specs: 'Attaches in one move · Rotates 360° for any orientation · Holds securely through rough roads', price: '₹449', oldPrice: '₹999', badge: 'Hands Free', tags: ['One-hand mounting', 'Navigation stays visible'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/LeYyaTtVUntOTfPh.png', desc: 'A universal magnetic mount that fits into any air vent. One-handed attachment — the magnet grabs the phone and holds it securely. 360-degree rotation means portrait or landscape, whichever makes navigation clearer. Works with most Android and iPhone models.', expect: 'Strong enough to hold through rough roads. Works with most phone cases — thicker cases may reduce magnetic strength slightly. Keeps navigation visible without taking a hand off the wheel.', fact: 'A properly mounted phone removes the temptation of looking down while driving — one of the most common causes of road accidents.', decision: 'Keeps hands on the wheel and navigation clearly in view', urgency: '', socialProof: '', brand: 'Generic', tier: 'simple', priceContext: 'Simple addition to a safer drive', priceAnchor: 'Less than the cost of a single distracted driving fine' },
-            { id: 13, category: 'accessories', name: 'Device Cleaning Kit', specs: 'Safe on all screens and surfaces · Anti-static formula slows dust return · Microfiber cloth included', price: '₹249', oldPrice: '₹499', badge: 'Screen Care', tags: ['Safe on all surfaces', 'Reduces visible smudging'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/QdzcPYGrRoKDynVN.png', desc: 'Alcohol-free cleaning solution for screens and electronics. The anti-static formula removes fingerprints and smudges without leaving residue. Includes a microfiber cloth that will not scratch glass or coated surfaces. Safe for phones, tablets, laptops, and television panels.', expect: 'Spray lightly onto the cloth rather than directly onto the screen for best results. Safe for oleophobic coatings — unlike some household cleaners that strip them over time.', fact: 'The anti-static formula repels dust rather than just removing it — the screen stays cleaner for longer between wipes.', decision: 'Keeps displays looking new without risk of surface damage', urgency: '', socialProof: '', brand: 'Generic', tier: 'simple', priceContext: 'Everyday maintenance at a straightforward price', priceAnchor: 'Less than the cost of damage from using the wrong cleaner once' },
-            { id: 14, category: 'accessories', name: 'Camera Lens Protector', specs: 'Ultra-thin — photos look unchanged · Scratch-resistant tempered glass · Nearly invisible once applied', price: '₹299', oldPrice: '₹599', badge: 'Preserve Quality', tags: ['Photo quality unchanged', 'Protects resale value'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/gmvKvvXVYoSPYHjl.png', desc: 'Tempered glass protection sized for smartphone camera lenses. Ultra-thin profile means photos are taken through the protector with no visible quality difference. Scratch-resistant surface protects the original lens glass from keys, surfaces, and daily pocket wear.', expect: 'Applied to a clean, dust-free lens it is nearly invisible and photo quality stays unchanged. Particularly useful for phones with protruding lenses — those make contact with surfaces every time the phone is placed down.', fact: 'Camera lens scratches are one of the most common reasons phones lose resale value — and among the easiest things to prevent from day one.', decision: 'Protects the most-used component without affecting how photos look', urgency: '', socialProof: '', brand: 'Generic', tier: 'simple', priceContext: 'Small cost, significant protection from the first day', priceAnchor: 'A fraction of the cost of a lens repair or resale value loss' }
+            { id: 1, category: 'phones', name: 'Samsung Galaxy S23 FE', specs: 'Screen stays vivid through the day · Camera ready in any light · Battery that outlasts the day', price: '₹34,999', oldPrice: '₹44,999', badge: 'Chosen for Reliability', tags: ['Handles the full day', 'Camera in any light'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/fWEumNteCudVVPuo.png', desc: 'A Samsung flagship brought to a considered price. The 6.4" Dynamic AMOLED screen is vivid without being harsh. The Exynos 2200 processor keeps things moving through a heavy day — calls, reels, photos, messages — without slowing down. Battery holds through the full day without needing a midday charge.', expect: 'Good fit for heavy daily use — multitasking, camera, social apps, calls. A single charge tends to hold through 14 to 16 hours of normal use. Not the top choice if gaming performance is the main priority.', fact: 'The display maintains colour accuracy at reduced brightness — easier on the eyes for late-night reading or early-morning checks.', decision: 'Handles heavy daily use without the full flagship cost', urgency: '', socialProof: '', brand: 'Samsung', tier: 'flagship', priceContext: 'Priced below original retail — performance unchanged', priceAnchor: 'Full flagship experience at a more considered price', confidence: 'Reliable long-term choice', chosenFor: 'Chosen because it handles the demands of a full working day — calls, photography, and social use — without requiring constant management or a midday charge.', doesWell: 'Heavy daily use across 14–16 hours. Screen stays accurate and easy on the eyes at low brightness.', notIdealFor: 'Competitive mobile gaming where peak processor performance is the priority — a Snapdragon flagship handles that better.', whoPrefers: 'People who want a capable everyday phone without paying full flagship prices' },
+            { id: 2, category: 'phones', name: 'Google Pixel 7a', specs: 'Compact and comfortable to hold · Camera that processes photos automatically · Google chip for seamless daily use', price: '₹39,999', oldPrice: '₹43,999', badge: 'Camera Clarity', tags: ['Photos that look natural', 'Clean daily experience'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/AeIhJBFyYYuVXncG.png', desc: 'Google built the hardware and software together — it shows in how the device performs. The 64MP camera processes shots automatically so photos look natural without any editing. The Tensor G2 chip handles voice commands, transcription, and daily tasks quietly in the background. Compact enough for comfortable one-handed use.', expect: 'Best fit if camera quality is the main reason for upgrading. Photos look accurate across different lighting without post-editing. The compact size suits those who prefer something that fits easily in a pocket.', fact: 'The Tensor chip enables live call transcription — useful during long meetings or in busy environments where catching every word matters.', decision: 'The right choice when camera quality and a clean experience matter most', urgency: '', socialProof: '', brand: 'Google', tier: 'balanced', priceContext: 'Delivers above its price in camera and software performance', priceAnchor: 'More camera quality per rupee than most phones at this level', confidence: 'Better for camera-focused users', chosenFor: 'Chosen for its Google-built camera system — the only phone at this price where the hardware and software are designed together, producing natural photos without editing.', doesWell: 'Camera processing that produces accurate, natural photos in most lighting. Compact for comfortable one-handed use.', notIdealFor: 'Battery endurance — those with very heavy days may need a midday charge.', whoPrefers: 'People who photograph everyday moments and want results without any post-processing' },
+            { id: 3, category: 'tv', name: 'Sony Bravia 4K LED', specs: '55" screen with true 4K clarity · Sound deep enough for most rooms · Connects to all streaming services', price: '₹54,990', oldPrice: '₹69,990', badge: 'Considered choice for most rooms', tags: ['Cinema quality at home', 'Sound that fills the room'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/PNuLvudbHcTmKOpp.png', desc: 'A 55-inch Sony Bravia calibrated to show 4K content as it was meant to be seen. The X1 processor keeps motion smooth and colours accurate. Built-in Dolby Audio is tuned to fill a medium room without a separate speaker setup. Smart TV platform connects to all major streaming services.', expect: 'A genuine upgrade over any HD television. Picture quality is visible from the first day. Works well for movies, cricket, and everyday content. A viewing distance of at least 2 metres gets the best from the 55-inch screen.', fact: 'The Dolby Audio is tuned for medium-sized rooms — many find a separate soundbar becomes unnecessary after this television.', decision: 'Straightforward choice for most living rooms — calibrated, clear, no excess', urgency: '', socialProof: '', brand: 'Sony', tier: 'balanced', priceContext: 'Reduced from original — same Sony quality, better value', priceAnchor: 'Premium brand at a price that makes sense for the home', confidence: 'Straightforward choice for most rooms', chosenFor: 'Chosen because it delivers genuine 4K picture quality calibrated for medium living rooms — a rare combination of real performance and practical fit, without needing a soundbar.', doesWell: 'Calibrated picture for medium rooms. Built-in Dolby Audio often makes a separate soundbar unnecessary from day one.', notIdealFor: 'Very large rooms or very bright environments that need significantly higher brightness output.', whoPrefers: 'Anyone wanting a genuine 4K upgrade with all streaming services built in, without excessive complexity' },
+            { id: 4, category: 'speakers', name: 'Sony WH-1000XM5', specs: '30 hours before a charge · Silence on command · Clear calls in any environment', price: '₹26,990', oldPrice: '₹34,990', badge: 'Easiest recommendation for focus', tags: ['Silence when needed', 'Calls that stay clear'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/XIJzeXSRHorEqzFw.png', desc: 'The benchmark for noise cancellation. Eight microphones read the environment and cancel what should not be heard — traffic, office noise, background conversations. The 30-hour battery handles full travel days. LDAC delivers hi-res audio over Bluetooth for those who care what music actually sounds like.', expect: 'Works well for focus, commuting, travel, and long calls. Call clarity holds even on busy roads. Music sounds noticeably fuller than earbuds at this price. Slightly larger than earbuds — not ideal for running or intense physical activity.', fact: 'Three minutes of charging gives three hours of playback — useful when leaving the house in a rush.', decision: 'The right choice for those who need to focus, travel, or listen without interruption', urgency: '', socialProof: '', brand: 'Sony', tier: 'flagship', priceContext: 'Reduced from original — the benchmark remains the same', priceAnchor: 'Industry-leading noise cancellation at a fairer price', confidence: 'Easiest recommendation for focus and travel', chosenFor: 'Chosen because nothing else at this price comes close to its noise cancellation. It consistently earns its place for anyone who needs to concentrate, commute, or travel.', doesWell: 'Noise cancellation that genuinely quiets a busy environment — offices, commutes, travel. 30-hour battery.', notIdealFor: 'Running or intense physical activity — over-ear design is better suited for stationary or commuting use.', whoPrefers: 'People who work in busy environments, travel regularly, or spend long hours on calls' },
+            { id: 5, category: 'accessories', name: 'Apple 20W USB-C Power Adapter', specs: 'Fast charges iPhone to 50% in 30 minutes · Stays cool during use · Small enough for any bag', price: '₹1,699', oldPrice: '₹1,900', badge: 'Genuine Apple', tags: ['Charges fast and safely', 'Built for iPhone'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/uVoVbsruMHDNSVBu.png', desc: 'Apple own charger, designed for Apple devices. Fast-charges iPhone 8 and above to 50% in around 30 minutes. Compact enough for a pocket or small bag. Runs at a safe temperature — no heat concerns during extended charging sessions.', expect: 'Works best with iPhone 8 and above, and recent iPad models. Noticeably faster than the older 5W charger. Non-Apple chargers at the wrong wattage can gradually reduce battery health — this one is designed to preserve it.', fact: 'Apple devices are calibrated to accept fast charging at the correct voltage. Third-party chargers at the wrong wattage can silently affect long-term battery health.', decision: 'The right choice for anyone using an iPhone who wants proper fast charging', urgency: '', socialProof: '', brand: 'Apple', tier: 'simple', priceContext: 'Genuine Apple hardware at a reasonable everyday price', priceAnchor: 'An investment that protects the device it charges', confidence: 'Right choice for iPhone users', chosenFor: 'Chosen because using a third-party charger at the wrong wattage gradually reduces battery health. This is the correct charger — genuine Apple, designed for the device it charges.', doesWell: 'Fast, safe charging that preserves long-term battery health in Apple devices.', notIdealFor: 'Android devices or anything not using USB-C — optimised for Apple hardware.', whoPrefers: 'iPhone owners who want to charge correctly and protect their battery long-term' },
+            { id: 6, category: 'accessories', name: 'Premium Tempered Glass', specs: 'Feels like bare glass to the touch · Protects without visible thickness · Fingerprints stay minimal', price: '₹499', oldPrice: '₹999', badge: 'Sensible first addition', tags: ['Invisible once applied', 'Keeps the screen new'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/KelCDGFlqZNnFnFD.png', desc: '9H hardness glass that protects the screen without changing how it looks or feels. Edge-to-edge coverage means the corners — where most drops hit first — are also covered. The oleophobic coating keeps fingerprint smudges minimal throughout the day.', expect: 'Applied to a clean, dust-free screen it is nearly invisible. Touch sensitivity stays the same. The glass is designed to absorb impact — if it cracks from a drop, it took what the screen did not have to.', fact: 'The anti-smudge coating actively reduces fingerprint transfer — the screen stays noticeably cleaner between wipes.', decision: 'Protects without changing how the screen looks or feels', urgency: '', socialProof: '', brand: 'Generic', tier: 'simple', priceContext: 'A small cost that prevents a much larger one', priceAnchor: 'Fractional insurance for a screen that costs significantly more', confidence: 'Sensible first addition to any new phone', chosenFor: 'Chosen because screen damage is the most common and costly accident on a new device. This protects the screen without any visible change to how it looks or feels.', doesWell: 'Screen-feel preserved while absorbing impact that would otherwise reach the panel.', notIdealFor: 'Phones with heavily curved edges — flat-screen coverage only.', whoPrefers: 'Anyone who has cracked a screen before and does not want to do it again' },
+            { id: 7, category: 'accessories', name: 'Sleek Protective Case', specs: 'Absorbs impact without adding bulk · Raised edges protect camera and screen · Stays slim in the pocket', price: '₹799', oldPrice: '₹1,499', badge: 'Balanced protection', tags: ['Protection without bulk', 'Raised camera edges'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/jdVRAWbtGZtmRYSW.png', desc: 'Shock-absorbing protection that does not add visible weight or thickness. The slim profile keeps the phone feeling natural in hand. Raised edges around the camera module and screen perimeter mean the device can sit face-down without glass contacting the surface.', expect: 'Works well for everyday carry. Not designed for heavy outdoor environments — a rugged case suits those needs better. Raised camera edges reduce surface contact every time the phone is set down.', fact: 'Camera glass is the most expensive component to replace. The raised lens edges here protect it with every placement.', decision: 'Protection that does not change how the phone feels in hand', urgency: '', socialProof: '', brand: 'Generic', tier: 'simple', priceContext: 'Strong protection at a straightforward price', priceAnchor: 'Less than the cost of one screen repair', confidence: 'Balanced choice for everyday protection', chosenFor: 'Chosen because protection should not change how a phone feels in hand. This case absorbs impact while keeping the original weight and slim profile.', doesWell: 'Impact absorption without added bulk — the phone still feels like the phone.', notIdealFor: 'Heavy outdoor or construction environments — a rugged case handles those better.', whoPrefers: 'People who want genuine protection without the phone feeling different in the pocket' },
+            { id: 8, category: 'accessories', name: 'Braided Fast Charge Cable', specs: '60W charging that holds speed · Tangle-free from day one · Built to outlast standard cables', price: '₹599', oldPrice: '₹1,199', badge: 'Outlasts standard cables', tags: ['Charges fast and reliably', 'Built for daily use'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/skNTrQiJTgkIzyjx.png', desc: 'A braided USB-C cable supporting up to 60W Power Delivery. Tangle-free by design — wraps and unwraps cleanly without the coiling that splits standard plastic cables over time. Reinforced connector ends resist the bending stress that causes most cable failures.', expect: 'Noticeably faster than 5W or 10W standard cables. The braided sleeve resists the fraying that typically starts near connector ends within a few months of daily use.', fact: 'The reinforced connector joints are rated to handle 10 times more bending cycles than standard plastic-sheathed cables.', decision: 'A cable chosen to last, not to replace', urgency: '', socialProof: '', brand: 'Generic', tier: 'simple', priceContext: 'More durable than the standard cable — saves the replacement cost', priceAnchor: 'Built to outlast two or three standard cables', confidence: 'Outlasts standard cables significantly', chosenFor: 'Chosen because standard plastic cables begin fraying at the connector ends within months of daily use. This one is built to resist exactly that.', doesWell: 'Holds fast-charge speeds and resists fraying at connector ends — the most common failure point.', notIdealFor: 'Situations requiring lengths beyond 1.5 metres.', whoPrefers: 'Anyone tired of replacing cheap cables every few months' },
+            { id: 10, category: 'accessories', name: 'Aluminum Phone Stand', specs: 'Holds the phone at a comfortable eye level · Stable on any surface · Charges while mounted', price: '₹399', oldPrice: '₹899', badge: 'Understated desk improvement', tags: ['Hands-free at the desk', 'Comfortable viewing angle'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/QLzXktccBITzJoEo.png', desc: 'Aluminium stand with an adjustable viewing angle that brings the phone to eye level. Non-slip silicone pads keep it stable on any desk surface. The hollow design allows a cable to pass through so the phone charges while sitting on the stand.', expect: 'Works well for video calls, cooking with a recipe open, or desk content viewing. Lightweight but solid — does not shift when tapping the screen. Fits most phone sizes with or without a case.', fact: 'Keeping the phone at eye level during video calls reduces neck strain over long meetings — a small adjustment with a noticeable daily effect.', decision: 'Makes hands-free use at a desk genuinely comfortable', urgency: '', socialProof: '', brand: 'Generic', tier: 'simple', priceContext: 'A simple addition that changes how the desk feels', priceAnchor: 'Less than a coffee out — earns its place within a week', confidence: 'Understated daily desk improvement', chosenFor: 'Chosen because keeping a phone at eye level during calls or content reduces neck strain. A small change with a noticeable daily effect.', doesWell: 'Brings the phone to eye level, stays stable on any surface, allows charging while mounted.', notIdealFor: 'Very heavy phone cases — balance may be affected.', whoPrefers: 'Anyone who uses their phone at a desk, kitchen, or during video calls' },
+            { id: 11, category: 'accessories', name: 'Premium Wireless Earbuds', specs: 'Up to 24 hours total listening · Opens and connects automatically · Touch controls for music and calls', price: '₹2,999', oldPrice: '₹5,999', badge: 'Good daily pair without complications', tags: ['Auto-connects on open', 'Full day battery'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/akufQOVWgjtpdbDf.png', desc: 'True wireless earbuds with a charging case that extends total listening to 24 hours. Opens and connects automatically the moment the case is opened — no manual pairing needed after the first setup. Touch controls handle playback and calls without reaching for the phone.', expect: 'Works well for commutes, walks, and focused work. Sound is balanced — clear across most genres. Not designed for intense workouts or water exposure. Auto-pairing makes them simple to use without thought.', fact: 'Automatic pairing activates in under two seconds from opening the case — useful when there is no time to navigate settings.', decision: 'Hassle-free daily earbuds — opens, connects, works', urgency: '', socialProof: '', brand: 'Generic', tier: 'balanced', priceContext: 'Significant reduction from original price', priceAnchor: 'Daily-use earbuds without the premium brand cost', confidence: 'Good daily pair without complications', chosenFor: 'Chosen for daily carry — they open and connect automatically, last a full day with the case, and handle music and calls without requiring attention.', doesWell: 'Automatic connection on open and full-day total battery — genuinely hassle-free.', notIdealFor: 'Noise isolation is passive only — a busy train or flight will still be heard.', whoPrefers: 'People who want earbuds that work without thinking about them every day' },
+            { id: 12, category: 'accessories', name: 'Magnetic Car Mount', specs: 'Attaches in one move · Rotates 360° for any orientation · Holds securely through rough roads', price: '₹449', oldPrice: '₹999', badge: 'Practical safety addition', tags: ['One-hand mounting', 'Navigation stays visible'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/LeYyaTtVUntOTfPh.png', desc: 'A universal magnetic mount that fits into any air vent. One-handed attachment — the magnet grabs the phone and holds it securely. 360-degree rotation means portrait or landscape, whichever makes navigation clearer. Works with most Android and iPhone models.', expect: 'Strong enough to hold through rough roads. Works with most phone cases — thicker cases may reduce magnetic strength slightly. Keeps navigation visible without taking a hand off the wheel.', fact: 'A properly mounted phone removes the temptation of looking down while driving — one of the most common causes of road accidents.', decision: 'Keeps hands on the wheel and navigation clearly in view', urgency: '', socialProof: '', brand: 'Generic', tier: 'simple', priceContext: 'Simple addition to a safer drive', priceAnchor: 'Less than the cost of a single distracted driving fine', confidence: 'Practical safety addition for drivers', chosenFor: 'Chosen because a properly mounted phone removes the temptation to look down during navigation. The magnetic hold is strong enough for rough roads.', doesWell: 'One-handed mounting and 360° rotation — navigation visible without eyes off the road.', notIdealFor: 'Very thick protective cases may reduce magnetic strength slightly.', whoPrefers: 'Anyone who uses navigation regularly and wants both hands on the wheel' },
+            { id: 13, category: 'accessories', name: 'Device Cleaning Kit', specs: 'Safe on all screens and surfaces · Anti-static formula slows dust return · Microfiber cloth included', price: '₹249', oldPrice: '₹499', badge: 'Safe choice for screen coating', tags: ['Safe on all surfaces', 'Reduces visible smudging'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/QdzcPYGrRoKDynVN.png', desc: 'Alcohol-free cleaning solution for screens and electronics. The anti-static formula removes fingerprints and smudges without leaving residue. Includes a microfiber cloth that will not scratch glass or coated surfaces. Safe for phones, tablets, laptops, and television panels.', expect: 'Spray lightly onto the cloth rather than directly onto the screen for best results. Safe for oleophobic coatings — unlike some household cleaners that strip them over time.', fact: 'The anti-static formula repels dust rather than just removing it — the screen stays cleaner for longer between wipes.', decision: 'Keeps displays clean without risking the coating that makes them easy to clean', urgency: '', socialProof: '', brand: 'Generic', tier: 'simple', priceContext: 'Everyday maintenance at a straightforward price', priceAnchor: 'Less than the cost of damage from using the wrong cleaner once', confidence: 'Safe choice that protects screen coating', chosenFor: 'Chosen because many household cleaners strip the oleophobic coating from screens over time. This one removes smudges safely and keeps the coating intact.', doesWell: 'Removes fingerprints without damaging the oleophobic coating that keeps the screen clean longer.', notIdealFor: 'Surfaces that have already had their coating stripped by incorrect cleaning products.', whoPrefers: 'Anyone who wants their screen to stay clean longer between wipes' },
+            { id: 14, category: 'accessories', name: 'Camera Lens Protector', specs: 'Ultra-thin — photos look unchanged · Scratch-resistant tempered glass · Nearly invisible once applied', price: '₹299', oldPrice: '₹599', badge: 'Small investment, long-term value', tags: ['Photo quality unchanged', 'Protects resale value'], image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/gmvKvvXVYoSPYHjl.png', desc: 'Tempered glass protection sized for smartphone camera lenses. Ultra-thin profile means photos are taken through the protector with no visible quality difference. Scratch-resistant surface protects the original lens glass from keys, surfaces, and daily pocket wear.', expect: 'Applied to a clean, dust-free lens it is nearly invisible and photo quality stays unchanged. Particularly useful for phones with protruding lenses — those make contact with surfaces every time the phone is placed down.', fact: 'Camera lens scratches are one of the most common reasons phones lose resale value — and among the easiest things to prevent from day one.', decision: 'Protects the most-used component without affecting how photos look', urgency: '', socialProof: '', brand: 'Generic', tier: 'simple', priceContext: 'Small cost, significant protection from the first day', priceAnchor: 'A fraction of the cost of a lens repair or resale value loss', confidence: 'Small investment with long-term value', chosenFor: 'Chosen because camera lens scratches are one of the main causes of resale value loss — and among the easiest things to prevent from day one.', doesWell: 'Protects the lens glass with no visible effect on photo quality.', notIdealFor: 'Non-protruding camera designs where surface contact is minimal.', whoPrefers: 'Anyone with a protruding camera lens who wants to protect both photo quality and resale value' }
         ];
 
         let currentProduct = null;
@@ -3785,6 +3907,7 @@
                          onerror="this.parentElement.classList.remove('img-loading');this.parentElement.classList.add('img-error');this.style.display='none'">
                 </div>
                 <div class="product-body">
+                    ${p.confidence ? `<div class="product-confidence"><span class="confidence-chip">${p.confidence}</span></div>` : ''}
                     <p class="product-fit-line">${p.decision}</p>
                     <h3 class="product-name">${p.name}</h3>
                     <p class="product-tagline">${topSpec}</p>
@@ -4582,9 +4705,33 @@
             document.getElementById('modal-price').innerText = p.price || '';
             document.getElementById('modal-price-context').innerText = p.priceContext || '';
             document.getElementById('modal-price-anchor').innerText = p.priceAnchor || '';
-            document.getElementById('modal-badge').innerText = p.badge || 'Authentic';
+            document.getElementById('modal-badge').innerText = p.badge || 'Chosen carefully';
             document.getElementById('modal-expect').innerText = p.expect || '';
             document.getElementById('modal-fact').innerText = p.fact || '';
+
+            /* ── Confidence indicator chip ── */
+            const confEl = document.getElementById('modal-confidence');
+            if (confEl) {
+                confEl.innerHTML = p.confidence
+                    ? `<span class="confidence-chip" aria-label="Guidance note">${p.confidence}</span>`
+                    : '';
+            }
+
+            /* ── Why this was chosen — guidance section ── */
+            const guidanceSection = document.getElementById('modal-guidance-section');
+            const chosenForEl = document.getElementById('modal-chosen-for');
+            const doesWellEl = document.getElementById('modal-does-well');
+            const notIdealEl = document.getElementById('modal-not-ideal');
+            const whoPrefersEl = document.getElementById('modal-who-prefers');
+            if (p.chosenFor) {
+                if (guidanceSection) guidanceSection.style.display = '';
+                if (chosenForEl) chosenForEl.textContent = p.chosenFor || '';
+                if (doesWellEl) doesWellEl.textContent = p.doesWell || '';
+                if (notIdealEl) notIdealEl.textContent = p.notIdealFor || '';
+                if (whoPrefersEl) whoPrefersEl.textContent = p.whoPrefers || '';
+            } else {
+                if (guidanceSection) guidanceSection.style.display = 'none';
+            }
 
             const featuresList = document.getElementById('modal-features');
             featuresList.innerHTML = '';
@@ -4628,9 +4775,14 @@
             document.getElementById('modal-price').innerText = 'Diagnostic First';
             document.getElementById('modal-price-context').innerText = '';
             document.getElementById('modal-price-anchor').innerText = '';
-            document.getElementById('modal-badge').innerText = 'Expert Repair';
+            document.getElementById('modal-badge').innerText = 'Honest Repair Service';
             document.getElementById('modal-expect').innerText = expect || '';
             document.getElementById('modal-fact').innerText = fact || '';
+            /* Hide guidance section for repair modals */
+            const confEl = document.getElementById('modal-confidence');
+            if (confEl) confEl.innerHTML = '';
+            const guidanceSection = document.getElementById('modal-guidance-section');
+            if (guidanceSection) guidanceSection.style.display = 'none';
 
             const featuresList = document.getElementById('modal-features');
             featuresList.innerHTML = '';
