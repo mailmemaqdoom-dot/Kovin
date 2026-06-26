@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0">
+<meta name="theme-color" content="#F7F4EF">
+<meta name="description" content="Kovin Ownership Journey — a trusted companion that keeps helping after the purchase, not just before it.">
+<title>Your Ownership Journey · Kovin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<style>
+
+/* ══════════════════════════════════════════════════
+   KOVIN OWNERSHIP JOURNEY
+   "A beautifully designed journal, not a dashboard."
+══════════════════════════════════════════════════ */
+:root {
+  --ink:          #1A1612;
+  --paper:        #F7F4EF;
+  --paper-warm:   #EDE8E0;
+  --paper-dim:    #E5DDD4;
+  --copper:       #E35336;
+  --copper-deep:  #C9432A;
+  --sand:         #F4A460;
+  --border:       rgba(26,22,18,0.08);
+  --border-strong:rgba(26,22,18,0.16);
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+  --ease-out:     cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html { height: 100%; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+button { font: inherit; color: inherit; cursor: pointer; border: none; background: none; -webkit-tap-highlight-color: transparent; }
+a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+img { display: block; max-width: 100%; }
+ul { padding: 0; list-style: none; }
+:focus-visible { outline: 2px solid var(--copper); outline-offset: 3px; border-radius: 4px; }
+
+/* ══ Header ══ */
+.j-header {
+  position: sticky; top: 0; z-index: 100;
+  height: calc(56px + env(safe-area-inset-top, 0px));
+  padding: env(safe-area-inset-top, 0px) 18px 0;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(247,244,239,0.86);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  backdrop-filter: blur(18px) saturate(1.3);
+  border-bottom: 1px solid var(--border);
+}
+.j-back { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--paper-warm); border: 1px solid var(--border); color: var(--ink); }
+.j-back svg { width: 16px; height: 16px; }
+.j-header-title { display: flex; flex-direction: column; align-items: center; }
+.j-wordmark { font-family: var(--font-display); font-size: 1.22rem; font-weight: 500; letter-spacing: -0.02em; }
+.j-wordmark span { color: var(--copper); }
+.j-eyebrow-tag { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.4; margin-top: 1px; }
+.j-spacer { width: 36px; }
+
+/* ══════════════════════════════════════════════════
+   ONBOARDING
+══════════════════════════════════════════════════ */
+#onboarding { padding: 26px 20px 40px; }
+.j-onb-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 0.66rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--copper); margin-bottom: 14px;
+}
+.j-onb-eyebrow::before, .j-onb-eyebrow::after { content: ''; width: 16px; height: 1.5px; background: currentColor; opacity: 0.5; }
+#onboarding h1 {
+  font-family: var(--font-display); font-weight: 500; letter-spacing: -0.02em;
+  font-size: clamp(1.8rem, 7vw, 2.3rem); line-height: 1.12; margin-bottom: 12px;
+}
+#onboarding > p.j-onb-sub { font-size: 0.88rem; line-height: 1.6; opacity: 0.6; max-width: 340px; margin-bottom: 28px; }
+
+.j-onb-section-label {
+  font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.42; margin-bottom: 12px;
+}
+.j-device-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 28px; }
+.j-device-card {
+  background: var(--paper-warm); border: 1.5px solid var(--border); border-radius: 18px;
+  padding: 14px 12px; text-align: center; transition: border-color 0.2s ease, background 0.2s ease, transform 0.15s ease;
+}
+.j-device-card:active { transform: scale(0.97); }
+.j-device-card.is-chosen { border-color: var(--ink); background: var(--ink); color: var(--paper); }
+.j-device-card-img { width: 100%; height: 64px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px; }
+.j-device-card-img img { max-height: 56px; object-fit: contain; }
+.j-device-card-name { font-size: 0.78rem; font-weight: 600; line-height: 1.3; }
+
+.j-stage-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 30px; }
+.j-stage-opt {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 13px 16px; border-radius: 14px; background: var(--paper-warm); border: 1.5px solid transparent;
+  transition: border-color 0.2s ease, background 0.2s ease;
+  width: 100%; text-align: left;
+}
+.j-stage-opt.is-chosen { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.j-stage-opt-label { font-size: 0.86rem; font-weight: 600; }
+.j-stage-opt-sub { font-size: 0.72rem; opacity: 0.5; margin-top: 1px; }
+.j-stage-opt.is-chosen .j-stage-opt-sub { opacity: 0.65; }
+.j-stage-check { width: 17px; height: 17px; opacity: 0; flex-shrink: 0; }
+.j-stage-opt.is-chosen .j-stage-check { opacity: 1; }
+
+.j-btn-primary {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; min-height: 52px; padding: 15px 24px; border-radius: 100px;
+  background: var(--copper); color: #fff; font-size: 0.92rem; font-weight: 600;
+  box-shadow: 0 12px 28px -8px rgba(227,83,54,0.46);
+  transition: background 0.2s ease, transform 0.15s ease, opacity 0.2s ease;
+}
+.j-btn-primary:hover { background: var(--copper-deep); }
+.j-btn-primary:active { transform: scale(0.97); }
+.j-btn-primary[disabled] { opacity: 0.35; pointer-events: none; }
+.j-btn-primary svg { width: 16px; height: 16px; }
+
+.j-btn-secondary {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; min-height: 48px; padding: 13px 22px; border-radius: 100px;
+  background: transparent; color: var(--ink); font-size: 0.84rem; font-weight: 500;
+  border: 1.5px solid var(--border-strong);
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+.j-btn-secondary:hover { background: var(--paper-warm); }
+.j-btn-secondary:active { transform: scale(0.97); }
+
+/* ══════════════════════════════════════════════════
+   MAIN JOURNAL
+══════════════════════════════════════════════════ */
+#journal { display: none; }
+
+/* ── Device summary hero ── */
+.j-hero { padding: 26px 20px 30px; text-align: center; border-bottom: 1px solid var(--border); }
+.j-hero-img-wrap {
+  width: 116px; height: 116px; margin: 0 auto 16px; border-radius: 24px;
+  background: var(--paper-warm); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+}
+.j-hero-img-wrap img { max-width: 70%; max-height: 70%; object-fit: contain; }
+.j-hero-eyebrow { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--copper); margin-bottom: 8px; }
+.j-hero-name { font-family: var(--font-display); font-size: clamp(1.5rem, 5.5vw, 1.85rem); font-weight: 500; letter-spacing: -0.018em; margin-bottom: 6px; }
+.j-hero-stage { font-size: 0.84rem; opacity: 0.55; }
+.j-hero-switch { margin-top: 16px; font-size: 0.74rem; opacity: 0.4; text-decoration: underline; }
+
+/* ── Section shell ── */
+.j-section { padding: 32px 20px; }
+.j-section.is-divided { border-top: 1px solid var(--border); }
+.j-section-eyebrow { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--copper); margin-bottom: 10px; }
+.j-section-title { font-family: var(--font-display); font-weight: 500; letter-spacing: -0.018em; font-size: clamp(1.4rem, 5.5vw, 1.75rem); line-height: 1.18; margin-bottom: 8px; }
+.j-section-sub { font-size: 0.84rem; line-height: 1.6; opacity: 0.55; margin-bottom: 22px; max-width: 380px; }
+
+/* ── Ownership Timeline ── */
+.j-timeline { position: relative; padding-left: 28px; }
+.j-timeline::before { content: ''; position: absolute; left: 7px; top: 6px; bottom: 6px; width: 1.5px; background: var(--border-strong); }
+.j-tnode { position: relative; padding-bottom: 26px; }
+.j-tnode:last-child { padding-bottom: 0; }
+.j-tnode-dot {
+  position: absolute; left: -28px; top: 1px; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--paper); border: 2px solid var(--border-strong);
+  display: flex; align-items: center; justify-content: center;
+}
+.j-tnode-dot svg { width: 8px; height: 8px; opacity: 0; }
+.j-tnode.is-done .j-tnode-dot { background: var(--ink); border-color: var(--ink); }
+.j-tnode.is-done .j-tnode-dot svg { opacity: 1; color: var(--paper); }
+.j-tnode.is-active .j-tnode-dot { background: var(--copper); border-color: var(--copper); box-shadow: 0 0 0 4px rgba(227,83,54,0.14); }
+.j-tnode-label { font-family: var(--font-display); font-size: 1.08rem; font-weight: 500; line-height: 1.2; }
+.j-tnode.is-active .j-tnode-label { color: var(--copper); }
+.j-tnode:not(.is-done):not(.is-active) .j-tnode-label { opacity: 0.4; }
+.j-tnode-note { font-size: 0.78rem; opacity: 0.5; margin-top: 3px; line-height: 1.4; }
+.j-tnode.is-active .j-tnode-now {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 0.62rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--copper); margin-top: 4px;
+}
+.j-tnode-now::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--copper); }
+
+/* ── Day Zero cards ── */
+.j-dayzero-list { display: flex; flex-direction: column; gap: 10px; }
+.j-dz-card {
+  background: var(--paper-warm); border: 1px solid var(--border); border-radius: 18px;
+  padding: 15px 16px; display: flex; gap: 13px; align-items: flex-start; cursor: pointer;
+}
+.j-dz-icon { width: 38px; height: 38px; border-radius: 11px; background: var(--paper); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 1.05rem; flex-shrink: 0; }
+.j-dz-body { flex: 1; min-width: 0; }
+.j-dz-title { font-size: 0.88rem; font-weight: 600; line-height: 1.3; }
+.j-dz-text { font-size: 0.78rem; opacity: 0.55; line-height: 1.48; margin-top: 3px; }
+.j-dz-check { width: 24px; height: 24px; border-radius: 50%; border: 1.5px solid var(--border-strong); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s ease, border-color 0.2s ease; }
+.j-dz-check svg { width: 12px; height: 12px; opacity: 0; color: #fff; }
+.j-dz-card.is-done { opacity: 0.55; }
+.j-dz-card.is-done .j-dz-check { background: var(--copper); border-color: var(--copper); }
+.j-dz-card.is-done .j-dz-check svg { opacity: 1; }
+.j-dz-card.is-done .j-dz-title { text-decoration: line-through; text-decoration-color: rgba(26,22,18,0.25); }
+.j-dz-progress { text-align: center; font-size: 0.76rem; opacity: 0.45; margin-top: 14px; }
+
+/* ── Discovery cards ── */
+.j-discovery-list { display: flex; flex-direction: column; gap: 10px; }
+.j-disc-card { background: var(--paper); border: 1px solid var(--border); border-radius: 18px; padding: 16px 18px; }
+.j-disc-num { font-family: var(--font-display); font-size: 0.78rem; font-weight: 600; color: var(--copper); margin-bottom: 6px; }
+.j-disc-title { font-size: 0.92rem; font-weight: 600; margin-bottom: 5px; line-height: 1.3; }
+.j-disc-body { font-size: 0.8rem; line-height: 1.55; opacity: 0.6; }
+
+/* ── Device Health ── */
+.j-health-grid { display: flex; flex-direction: column; gap: 0; }
+.j-health-row { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-top: 1px solid var(--border); }
+.j-health-row:first-child { border-top: none; }
+.j-health-icon { width: 38px; height: 38px; border-radius: 11px; background: var(--paper-warm); display: flex; align-items: center; justify-content: center; font-size: 1.05rem; flex-shrink: 0; }
+.j-health-body { flex: 1; min-width: 0; }
+.j-health-label { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.4; margin-bottom: 2px; }
+.j-health-value { font-size: 0.94rem; font-weight: 600; margin-bottom: 2px; }
+.j-health-note { font-size: 0.76rem; opacity: 0.52; line-height: 1.4; }
+
+/* ── Decision Diary ── */
+.j-diary-card { background: var(--paper-warm); border-radius: 20px; padding: 20px 18px; }
+.j-diary-label { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.42; margin-bottom: 12px; }
+.j-diary-priorities { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+.j-diary-priority { display: flex; align-items: center; gap: 9px; font-size: 0.88rem; font-weight: 500; }
+.j-diary-priority::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--copper); flex-shrink: 0; }
+.j-diary-quote { font-family: var(--font-display); font-size: 1.12rem; font-weight: 400; font-style: italic; line-height: 1.4; margin-bottom: 16px; }
+.j-diary-rows { display: flex; flex-direction: column; }
+.j-diary-row { display: grid; grid-template-columns: 96px 1fr; gap: 10px; padding: 9px 0; border-top: 1px solid var(--border); align-items: baseline; }
+.j-diary-row-label { font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; opacity: 0.4; }
+.j-diary-row-val { font-size: 0.79rem; line-height: 1.48; }
+@media (max-width: 380px) { .j-diary-row { grid-template-columns: 1fr; gap: 2px; } }
+
+/* ── Would We Still Recommend ── */
+.j-recommend-card { border: 1.5px solid var(--ink); border-radius: 22px; padding: 22px 20px; }
+.j-recommend-badge { display: inline-flex; align-items: center; gap: 7px; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--copper); margin-bottom: 12px; }
+.j-recommend-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--copper); }
+.j-recommend-verdict { font-family: var(--font-display); font-size: 1.25rem; font-weight: 500; line-height: 1.32; margin-bottom: 16px; }
+.j-recommend-reasons { display: flex; flex-direction: column; gap: 8px; }
+.j-recommend-reason { display: flex; align-items: flex-start; gap: 9px; font-size: 0.82rem; line-height: 1.5; opacity: 0.72; }
+.j-recommend-reason svg { width: 14px; height: 14px; color: var(--copper); flex-shrink: 0; margin-top: 2px; }
+.j-recommend-alt { margin-top: 16px; background: var(--paper-warm); border-radius: 14px; padding: 13px 15px; font-size: 0.8rem; line-height: 1.55; opacity: 0.8; }
+.j-recommend-alt strong { font-weight: 600; }
+
+/* ── Life Changes ── */
+.j-life-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.j-life-chip {
+  padding: 10px 16px; border-radius: 100px; background: var(--paper-warm); border: 1.5px solid var(--border);
+  font-size: 0.8rem; font-weight: 600; transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.j-life-chip.is-on { background: var(--copper); color: #fff; border-color: var(--copper); }
+.j-life-ack { background: var(--paper-warm); border-radius: 14px; padding: 14px 16px; font-size: 0.82rem; line-height: 1.55; display: none; }
+.j-life-ack.is-visible { display: block; }
+.j-life-ack strong { color: var(--copper); }
+
+/* ── Support ── */
+.j-support-list { display: flex; flex-direction: column; gap: 10px; }
+.j-support-card { display: flex; align-items: center; gap: 13px; background: var(--paper-warm); border-radius: 18px; padding: 15px 16px; }
+.j-support-icon { width: 38px; height: 38px; border-radius: 11px; background: var(--paper); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.j-support-icon svg { width: 17px; height: 17px; opacity: 0.65; }
+.j-support-body { flex: 1; min-width: 0; }
+.j-support-title { font-size: 0.86rem; font-weight: 600; }
+.j-support-sub { font-size: 0.74rem; opacity: 0.5; margin-top: 1px; }
+.j-support-arrow { width: 15px; height: 15px; opacity: 0.3; flex-shrink: 0; }
+
+/* ── Footer ── */
+.j-footer { padding: 30px 20px calc(env(safe-area-inset-bottom, 0px) + 36px); text-align: center; }
+.j-footer-word { font-family: var(--font-display); font-size: 1.1rem; opacity: 0.5; }
+.j-footer-word span { color: var(--copper); }
+.j-footer-tag { font-size: 0.72rem; opacity: 0.4; margin-top: 6px; }
+.j-footer-switch { margin-top: 18px; font-size: 0.76rem; opacity: 0.42; text-decoration: underline; }
+
+/* ── reveal utility ── */
+.j-reveal { opacity: 0; transform: translateY(16px); }
+
+/* ══ Desktop ══ */
+@media (min-width: 720px) {
+  body { background: var(--paper-dim); }
+  #app-shell { max-width: 480px; margin: 0 auto; background: var(--paper); box-shadow: 0 0 80px rgba(0,0,0,0.08); min-height: 100dvh; }
+  .j-header { max-width: 480px; left: 50%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  .j-reveal { opacity: 1 !important; transform: none !important; }
+}
+
+</style>
+</head>
+<body>
+
+<div id="app-shell">
+
+  <header class="j-header">
+    <a href="index.html" class="j-back" aria-label="Back to Kovin">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    </a>
+    <div class="j-header-title">
+      <span class="j-wordmark">Kov<span>·</span>in</span>
+      <span class="j-eyebrow-tag">Ownership Journey</span>
+    </div>
+    <span class="j-spacer" aria-hidden="true"></span>
+  </header>
+
+  <!-- ░░ Onboarding (first visit only) ░░ -->
+  <div id="onboarding">
+    <span class="j-onb-eyebrow">Welcome back</span>
+    <h1>Let's pick up where things left off.</h1>
+    <p class="j-onb-sub">Tell us once — we'll remember. This helps your journey feel like it's actually about your device, not a generic dashboard.</p>
+
+    <div class="j-onb-section-label">Which device settled in with you?</div>
+    <div class="j-device-grid" id="onbDeviceGrid"></div>
+
+    <div class="j-onb-section-label">How long have you had it?</div>
+    <div class="j-stage-list" id="onbStageList"></div>
+
+    <button class="j-btn-primary" id="onbStartBtn" disabled>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      Begin my journey
+    </button>
+  </div>
+
+  <!-- ░░ Main journal (after onboarding) ░░ -->
+  <div id="journal">
+
+    <!-- Hero: device summary -->
+    <section class="j-hero">
+      <div class="j-hero-img-wrap"><img id="heroImg" src="" alt=""></div>
+      <div class="j-hero-eyebrow" id="heroEyebrow"></div>
+      <div class="j-hero-name" id="heroName"></div>
+      <div class="j-hero-stage" id="heroStageText"></div>
+      <button class="j-hero-switch" id="heroSwitchBtn">Not your device? Switch</button>
+    </section>
+
+    <!-- Ownership Timeline -->
+    <section class="j-section is-divided">
+      <div class="j-section-eyebrow">Your Timeline</div>
+      <div class="j-section-title">The journey so far.</div>
+      <p class="j-section-sub">Not a delivery tracker — a quiet record of where you are with this device.</p>
+      <div class="j-timeline" id="timelineList"></div>
+    </section>
+
+    <!-- Day Zero -->
+    <section class="j-section is-divided" id="dayZeroSection">
+      <div class="j-section-eyebrow">Day Zero</div>
+      <div class="j-section-title" id="dayZeroTitle">Getting properly started.</div>
+      <p class="j-section-sub" id="dayZeroSub">A few small things that make the first days noticeably smoother.</p>
+      <div class="j-dayzero-list" id="dayZeroList"></div>
+      <div class="j-dayzero-progress j-dz-progress" id="dayZeroProgress"></div>
+    </section>
+
+    <!-- Discovery Moments -->
+    <section class="j-section is-divided">
+      <div class="j-section-eyebrow">Discovery Moments</div>
+      <div class="j-section-title">Five things most owners never find.</div>
+      <p class="j-section-sub">Specific to this device — not generic tips copied from a manual.</p>
+      <div class="j-discovery-list" id="discoveryList"></div>
+    </section>
+
+    <!-- Device Health -->
+    <section class="j-section is-divided">
+      <div class="j-section-eyebrow">Device Health</div>
+      <div class="j-section-title">How things are holding up.</div>
+      <p class="j-section-sub">Plain language. No diagnostics, no percentages — just an honest read.</p>
+      <div class="j-health-grid" id="healthGrid"></div>
+    </section>
+
+    <!-- Decision Diary -->
+    <section class="j-section is-divided">
+      <div class="j-section-eyebrow">Decision Diary</div>
+      <div class="j-section-title">Why this was chosen.</div>
+      <p class="j-section-sub">Worth revisiting occasionally — reasoning rarely gets re-read once a purchase is made.</p>
+      <div class="j-diary-card" id="diaryCard"></div>
+    </section>
+
+    <!-- Would We Still Recommend It -->
+    <section class="j-section is-divided">
+      <div class="j-section-eyebrow">The Honest Question</div>
+      <div class="j-section-title">Would we still recommend it?</div>
+      <p class="j-section-sub">Kovin's signature check-in. We answer this honestly — never as a reason to push an upgrade.</p>
+      <div class="j-recommend-card" id="recommendCard"></div>
+    </section>
+
+    <!-- Life Changes -->
+    <section class="j-section is-divided">
+      <div class="j-section-eyebrow">Life Changes</div>
+      <div class="j-section-title">Has anything changed?</div>
+      <p class="j-section-sub">Tell us and we'll quietly factor it in next time you're choosing something new — no spam, no push notifications.</p>
+      <div class="j-life-chips" id="lifeChips"></div>
+      <div class="j-life-ack" id="lifeAck"></div>
+    </section>
+
+    <!-- Support -->
+    <section class="j-section is-divided">
+      <div class="j-section-eyebrow">Whenever You Need Us</div>
+      <div class="j-section-title">Support that feels like guidance.</div>
+      <p class="j-section-sub">Not a ticket queue. A real person, reachable directly.</p>
+      <div class="j-support-list" id="supportList"></div>
+    </section>
+
+    <!-- Footer -->
+    <div class="j-footer">
+      <div class="j-footer-word">Kov<span>·</span>in</div>
+      <div class="j-footer-tag">Guidance before, during, and long after the purchase.</div>
+      <button class="j-footer-switch" id="footerSwitchBtn">Switch device or restart journey</button>
+    </div>
+
+  </div><!-- /journal -->
+
+</div><!-- /app-shell -->
+
+<script>
+/* ══════════════════════════════════════════════════
+   KOVIN OWNERSHIP JOURNEY
+   "Kovin didn't disappear after I bought something.
+    It keeps helping me make better technology decisions."
+══════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* ─────────── Timeline stages ─────────── */
+  const STAGES = [
+    { id: 'confirmed', label: 'Purchase Confirmed', note: 'The decision is made. Everything from here is about settling in.' },
+    { id: 'setup',     label: 'Ready To Set Up',    note: 'The small things that make the first hour smoother.' },
+    { id: 'week1',     label: 'First Week',          note: 'Habits are forming — this is when most questions come up.' },
+    { id: 'month1',    label: 'One Month',           note: 'The device has settled into daily life properly now.' },
+    { id: 'month6',    label: 'Six Months',          note: 'Enough time to honestly judge whether it still fits.' },
+    { id: 'year1',     label: 'One Year',            note: 'A natural point to ask: would this still be the right choice?' },
+    { id: 'year2',     label: 'Two Years',           note: 'Technology has moved — worth an honest, no-pressure look.' },
+  ];
+
+  const STAGE_PICKS = [
+    { idx: 0, label: 'Just confirmed', sub: 'The order just came through' },
+    { idx: 1, label: 'Setting it up now', sub: 'Still moving things across' },
+    { idx: 2, label: 'About a week in', sub: 'Getting used to it' },
+    { idx: 3, label: 'About a month in', sub: 'Settled into daily life' },
+    { idx: 4, label: 'Around six months', sub: 'Comfortably familiar by now' },
+    { idx: 5, label: 'About a year', sub: 'Long enough to really know it' },
+    { idx: 6, label: 'Two years or more', sub: 'A genuinely honest check-in is due' },
+  ];
+
+  const LIFE_CHANGE_OPTIONS = [
+    'Started travelling more',
+    'Working from home',
+    'Creating more videos',
+    'Gaming more',
+    'Family needs changed',
+  ];
+
+  /* ─────────── Devices ─────────── */
+  const DEVICES = [
+    {
+      id: 1, category: 'phone', name: 'Samsung Galaxy S23 FE', price: '₹34,999',
+      image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/fWEumNteCudVVPuo.png',
+      diary: {
+        priorities: ['Battery that lasts the day', 'Day-to-day reliability', 'Comfortable, familiar size'],
+        chosenFor: 'Chosen because it handles a full working day — calls, photos, messages — without needing a midday charge or constant attention.',
+        doesWell: 'Heavy daily use across 14–16 hours on one charge.',
+        notIdealFor: 'Competitive mobile gaming, where a flagship processor pulls ahead.',
+        whoPrefers: 'People who want dependable performance without flagship prices.',
+        confidenceTag: 'Reliable long-term choice',
+      },
+      dayZero: [
+        { icon: '📲', title: 'Move your SIM across', body: 'A quick swap or eSIM transfer — most carriers do this free at any store.' },
+        { icon: '💬', title: 'Bring WhatsApp with you', body: 'Chat history transfers in minutes using a Google Drive backup.' },
+        { icon: '🔐', title: 'Sign in to your Google account', body: 'Contacts, photos, and apps restore automatically once signed in.' },
+        { icon: '🔋', title: 'Set up battery care', body: 'Turn on adaptive battery — it learns your habits within a few days.' },
+        { icon: '📷', title: 'Get the camera ready', body: 'A two-minute walkthrough of the modes worth knowing from day one.' },
+        { icon: '🛡️', title: 'Protect the screen', body: 'Tempered glass on day one costs far less than a repair later.' },
+        { icon: '🎧', title: 'Pair your accessories', body: 'Earbuds, watch, or case — get everything talking to each other.' },
+      ],
+      discovery: [
+        { title: 'Edge panel shortcuts', body: 'A swipe from the screen edge brings up your most-used apps instantly, without unlocking first.' },
+        { title: 'The battery-friendly charging habit', body: 'Frequent short charges are gentler on the battery over time than letting it run down to empty.' },
+        { title: 'Low-light mode that actually helps', body: 'The camera’s night mode does most of the work — just hold steady for two seconds.' },
+        { title: 'Secure Folder', body: 'A private, separate space for apps and files, hidden entirely from the main screen.' },
+        { title: 'Routines that run themselves', body: 'Set the phone to quiet down at bedtime or switch to driving mode automatically in the car.' },
+      ],
+      health: [
+        { icon: '🔋', label: 'Battery', value: 'Holding up well', valueLate: 'Likely a little tired — worth a free check', note: 'Comfortably getting through a full day for most owners at this stage.', noteLate: 'A two-year-old battery often benefits from a quick service check — no cause for concern, just good habit.' },
+        { icon: '💾', label: 'Storage', value: 'Comfortable room', note: 'No need to manage anything yet — plenty of space for photos and apps.' },
+        { icon: '🛡️', label: 'Warranty', value: 'Active', valueLate: 'Manufacturer term likely ended', note: 'Manufacturer coverage plus the Kovin 7-day handover promise.', noteLate: 'Kovin’s repair support stays available regardless of warranty status.' },
+        { icon: '⬆️', label: 'Software', value: 'Up to date', note: 'One UI updates apply automatically — nothing for you to do.' },
+      ],
+      recommend: {
+        verdictEarly: 'Yes — without hesitation. This still does exactly what it was chosen for.',
+        verdictMid: 'Yes — this remains the right call. The reasons it was chosen still hold up.',
+        verdictLate: 'Mostly, yes. A couple of newer phones now edge ahead on camera processing — but for everyday reliability, this still earns its place.',
+        reasonsEarly: ['Battery performance hasn’t changed — still genuinely all-day reliable.', 'Nothing in daily use has revealed a real limitation yet.'],
+        reasonsMid: ['Battery performance is typically still strong with normal care at this stage.', 'The price-to-reliability balance that made this a good choice hasn’t really moved.'],
+        reasonsLate: ['Reliability has likely held up — this was never about chasing the newest spec.', 'If camera quality has become a bigger priority, the Pixel line is worth a look — not as an upgrade push, just an honest comparison.'],
+        altLate: 'If photography has become more important to you, the <strong>Google Pixel 7a</strong> processes shots more naturally — worth knowing, not a reason to rush a change.',
+      },
+    },
+    {
+      id: 2, category: 'phone', name: 'Google Pixel 7a', price: '₹39,999',
+      image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/AeIhJBFyYYuVXncG.png',
+      diary: {
+        priorities: ['Photography that needs no editing', 'Comfortable, one-handed size', 'A clean, simple experience'],
+        chosenFor: 'Chosen for its Google-built camera system — hardware and software designed together, producing natural photos without editing.',
+        doesWell: 'Camera processing that produces natural, accurate photos in most lighting.',
+        notIdealFor: 'Heavy multi-day battery use without a charger nearby.',
+        whoPrefers: 'People who photograph everyday moments and want results without editing.',
+        confidenceTag: 'Better for camera-focused users',
+      },
+      dayZero: [
+        { icon: '📲', title: 'Move your SIM across', body: 'A quick swap or eSIM transfer — most carriers do this free at any store.' },
+        { icon: '💬', title: 'Bring WhatsApp with you', body: 'Chat history transfers in minutes using a Google Drive backup.' },
+        { icon: '🔐', title: 'Sign in to your Google account', body: 'Contacts, photos, and apps restore automatically once signed in.' },
+        { icon: '🔋', title: 'Set up battery care', body: 'Adaptive Battery learns your routine within the first few days.' },
+        { icon: '📷', title: 'Get the camera ready', body: 'A two-minute walkthrough of Night Sight and Magic Eraser, worth knowing from day one.' },
+        { icon: '🛡️', title: 'Protect the screen', body: 'Tempered glass on day one costs far less than a repair later.' },
+        { icon: '🎧', title: 'Pair your accessories', body: 'Earbuds, watch, or case — get everything talking to each other.' },
+      ],
+      discovery: [
+        { title: 'Night Sight, handheld', body: 'Holding steady for three seconds in low light produces results that genuinely surprise people.' },
+        { title: 'Magic Eraser', body: 'Tap to remove a stranger or object from the background of a photo — built in, not a separate app.' },
+        { title: 'Call Screen', body: 'Unknown numbers get auto-screened with a live transcript before you decide whether to pick up.' },
+        { title: 'At a Glance widget', body: 'Tap the home screen weather to see calendar, traffic, and flight status in one place.' },
+        { title: 'Hold for Me', body: 'The phone waits on hold for you and taps you back in the moment a human answers.' },
+      ],
+      health: [
+        { icon: '🔋', label: 'Battery', value: 'Reliable, with care', valueLate: 'Likely needs a midday top-up now', note: 'Was never the all-day champion — that hasn’t changed with normal use.', noteLate: 'Two years of daily charging cycles typically means a little less buffer by evening.' },
+        { icon: '💾', label: 'Storage', value: 'Comfortable room', note: 'No need to manage anything yet — plenty of space for photos and apps.' },
+        { icon: '🛡️', label: 'Warranty', value: 'Active', valueLate: 'Manufacturer term likely ended', note: 'Manufacturer coverage plus the Kovin 7-day handover promise.', noteLate: 'Kovin’s repair support stays available regardless of warranty status.' },
+        { icon: '⬆️', label: 'Software', value: 'Up to date', note: 'Pixel updates apply automatically — nothing for you to do.' },
+      ],
+      recommend: {
+        verdictEarly: 'Yes — without hesitation. The camera is still the easiest reason to love this phone.',
+        verdictMid: 'Yes — this remains the right call for anyone who values photos over raw specs.',
+        verdictLate: 'Mostly, yes. Camera processing has improved elsewhere, but the difference is incremental, not dramatic.',
+        reasonsEarly: ['Photo quality hasn’t changed — still consistently natural-looking.', 'The compact, one-handed feel is exactly as it was on day one.'],
+        reasonsMid: ['The camera advantage that made this a good choice is still genuinely there.', 'Software has stayed clean and fast — no clutter has crept in.'],
+        reasonsLate: ['The camera strength this was chosen for hasn’t aged badly — newer phones improve incrementally, not dramatically.', 'If all-day battery has become the bigger priority, the Galaxy S23 FE is worth comparing — not as an upgrade push, just an honest option.'],
+        altLate: 'If battery life matters more to you now than it did at purchase, the <strong>Samsung Galaxy S23 FE</strong> trades a little camera nuance for noticeably longer days.',
+      },
+    },
+    {
+      id: 3, category: 'tv', name: 'Sony Bravia 4K LED', price: '₹54,990',
+      image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/PNuLvudbHcTmKOpp.png',
+      diary: {
+        priorities: ['Genuine home cinema picture', 'Simple, all-in-one setup', 'No unnecessary complexity'],
+        chosenFor: 'Chosen because it delivers genuine 4K picture quality calibrated for medium living rooms, with sound that often removes the need for a soundbar.',
+        doesWell: 'Calibrated 4K picture for medium rooms with built-in sound that holds up.',
+        notIdealFor: 'Anyone who isn’t settled in one place — this is a living-room commitment.',
+        whoPrefers: 'Households wanting a genuine 4K upgrade without extra complexity.',
+        confidenceTag: 'Straightforward choice for most rooms',
+      },
+      dayZero: [
+        { icon: '📶', title: 'Connect to Wi-Fi', body: 'A stable connection unlocks every streaming app this television supports.' },
+        { icon: '🔑', title: 'Sign in to your streaming apps', body: 'Netflix, Prime, YouTube — sign in once, stay signed in.' },
+        { icon: '🔊', title: 'Calibrate the sound', body: 'The built-in “Standard” sound mode suits most rooms — a two-minute check confirms it.' },
+        { icon: '🎮', title: 'Pair the remote properly', body: 'Voice search and quick app switching both depend on a clean Bluetooth pairing.' },
+        { icon: '🧱', title: 'Check the mount or stand', body: 'A level mount avoids the slow drift that ruins picture geometry over months.' },
+        { icon: '🧴', title: 'Learn how to clean the screen', body: 'The wrong cloth can leave permanent marks — a microfiber cloth is all this needs.' },
+      ],
+      discovery: [
+        { title: 'The picture mode most rooms should use', body: '“Standard” usually looks more accurate than “Vivid” — the latter oversaturates for showroom lighting, not your living room.' },
+        { title: 'Auto-brightness, properly set', body: 'Eco mode adjusts brightness to the room automatically — most owners never turn it on.' },
+        { title: 'Voice remote shortcuts', body: 'Holding the mic button and naming a show skips three menus entirely.' },
+        { title: 'Game Mode', body: 'Switching this on for consoles removes a noticeable lag between button press and on-screen action.' },
+        { title: 'Screen mirroring', body: 'Mirroring a phone screen works without any extra app — built into the TV’s settings.' },
+      ],
+      health: [
+        { icon: '🖼️', label: 'Picture & sound', value: 'Calibrated well', note: 'Still showing accurate colour and the same room-filling sound from day one.' },
+        { icon: '📦', label: 'Apps installed', value: 'Up to date', note: 'Streaming apps update themselves quietly in the background.' },
+        { icon: '🛡️', label: 'Warranty', value: 'Active', valueLate: 'Manufacturer term likely ended', note: 'Manufacturer coverage plus the Kovin 7-day handover promise.', noteLate: 'Kovin’s repair support stays available regardless of warranty status.' },
+        { icon: '⬆️', label: 'Firmware', value: 'Up to date', note: 'The TV checks for updates automatically when connected to Wi-Fi.' },
+      ],
+      recommend: {
+        verdictEarly: 'Yes — without hesitation. The picture and sound are exactly what made this the right choice.',
+        verdictMid: 'Yes — this remains a genuinely good television for a medium room.',
+        verdictLate: 'Mostly, yes. Panel technology has moved on at the high end, but for everyday viewing this still holds up well.',
+        reasonsEarly: ['Picture calibration hasn’t drifted — still accurate out of the box settings.', 'Built-in sound is still doing the job a soundbar would otherwise need to do.'],
+        reasonsMid: ['The room-appropriate calibration that made this a good fit hasn’t changed.', 'All major streaming services remain built in, with no extra box needed.'],
+        reasonsLate: ['For typical movie and sport viewing, this still performs well against newer mid-range options.', 'If the room or viewing habits have changed significantly, it’s worth an honest look at OLED options — not because this one failed, but because needs evolve.'],
+        altLate: 'If the room has gotten darker or movie nights have become more frequent, an OLED panel handles deep blacks more dramatically — worth knowing, no pressure.',
+      },
+    },
+    {
+      id: 4, category: 'audio', name: 'Sony WH-1000XM5', price: '₹26,990',
+      image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/XIJzeXSRHorEqzFw.png',
+      diary: {
+        priorities: ['Genuine noise cancellation', 'Reliability on long travel days', 'Clear calls in any environment'],
+        chosenFor: 'Chosen because nothing else at this price comes close to its noise cancellation — it consistently earns its place for focus, travel, and long calls.',
+        doesWell: 'Noise cancellation that genuinely quiets a busy environment for 30 hours.',
+        notIdealFor: 'Running or intense activity — the over-ear design is built for stillness.',
+        whoPrefers: 'People who work in busy environments, travel often, or take long calls.',
+        confidenceTag: 'Easiest recommendation for focus and travel',
+      },
+      dayZero: [
+        { icon: '📱', title: 'Install Sony Headphones Connect', body: 'The app unlocks sound personalisation and firmware updates this headset is built around.' },
+        { icon: '🎚️', title: 'Personalise the sound', body: 'A short in-app hearing test tunes the equaliser specifically to you.' },
+        { icon: '🔇', title: 'Set up noise-cancelling modes', body: 'Switch between full cancellation and ambient awareness depending on where you are.' },
+        { icon: '🧳', title: 'Get into the carry-case habit', body: 'The case protects the hinge — the most common point of wear on any over-ear headphone.' },
+        { icon: '⬆️', title: 'Update the firmware', body: 'A one-time update in the app often improves call clarity noticeably.' },
+        { icon: '👂', title: 'Check the ear cushion fit', body: 'A proper seal is what makes the noise cancellation work as well as it does.' },
+      ],
+      discovery: [
+        { title: 'Speak-to-Chat', body: 'Starting to talk automatically pauses your music — no button required, and it resumes on its own.' },
+        { title: 'Multipoint pairing', body: 'Stay connected to both your laptop and phone at once, switching audio seamlessly between them.' },
+        { title: 'Adaptive Sound Control', body: 'The headphones learn your common locations and adjust noise cancellation automatically for each.' },
+        { title: 'Quick Attention mode', body: 'Cup your hand over the right ear cup to instantly lower the volume and hear your surroundings.' },
+        { title: 'Customising the NC button', body: 'The button on the left ear cup can be reassigned to whatever mode you switch to most.' },
+      ],
+      health: [
+        { icon: '🔋', label: 'Battery', value: 'Holding up well', valueLate: 'Slightly shorter runtime than new', note: 'Most owners still see close to 30 hours at this stage.', noteLate: 'A modest drop in total runtime is normal after two years of regular charging.' },
+        { icon: '👂', label: 'Ear cushions', value: 'Should still feel fresh', valueLate: 'Worth checking for wear', note: 'The foam holds its seal well over the first year of normal use.', noteLate: 'Replacement cushions are inexpensive and restore noise cancellation to original levels.' },
+        { icon: '🛡️', label: 'Warranty', value: 'Active', valueLate: 'Manufacturer term likely ended', note: 'Manufacturer coverage plus the Kovin 7-day handover promise.', noteLate: 'Kovin’s repair support stays available regardless of warranty status.' },
+        { icon: '⬆️', label: 'Firmware', value: 'Up to date', note: 'Updates apply through the Headphones Connect app when available.' },
+      ],
+      recommend: {
+        verdictEarly: 'Yes — without hesitation. The noise cancellation is still the benchmark at this price.',
+        verdictMid: 'Yes — this remains the easiest recommendation for focus, travel, and calls.',
+        verdictLate: 'Mostly, yes. Newer models exist, but the gap in real-world noise cancellation is smaller than the marketing suggests.',
+        reasonsEarly: ['Noise cancellation performance hasn’t changed — still genuinely effective in busy environments.', 'Battery life continues to comfortably cover full travel days.'],
+        reasonsMid: ['Call clarity and noise cancellation remain the standout reasons this was chosen.', 'Comfort over long wear hasn’t degraded with normal care.'],
+        reasonsLate: ['Real-world noise cancellation gains since this model are incremental, not transformative.', 'If ear cushions have worn down, a low-cost replacement often restores most of the original performance — usually a better first step than replacing the whole headphone.'],
+        altLate: 'Before considering a new pair, a cushion replacement is worth trying first — it resolves most of the “this doesn’t feel as good as it used to” feeling.',
+      },
+    },
+  ];
+
+  /* ─────────── State ─────────── */
+  let ownership = loadOwnership();
+
+  function loadOwnership() {
+    try {
+      const raw = localStorage.getItem('kovin-ownership');
+      if (raw) return JSON.parse(raw);
+    } catch (e) {}
+    return null;
+  }
+  function saveOwnership() {
+    try { localStorage.setItem('kovin-ownership', JSON.stringify(ownership)); } catch (e) {}
+  }
+
+  /* ─────────── DOM refs ─────────── */
+  const $onboarding = document.getElementById('onboarding');
+  const $journal     = document.getElementById('journal');
+  const $deviceGrid  = document.getElementById('onbDeviceGrid');
+  const $stageList   = document.getElementById('onbStageList');
+  const $startBtn     = document.getElementById('onbStartBtn');
+
+  let onbDeviceId = null;
+  let onbStageIdx = null;
+
+  /* ══ Onboarding ══ */
+  function buildOnboarding() {
+    $deviceGrid.innerHTML = DEVICES.map(d => `
+      <button class="j-device-card" data-device-id="${d.id}" aria-label="${d.name}">
+        <div class="j-device-card-img"><img src="${d.image}" alt="${d.name}" loading="lazy"></div>
+        <div class="j-device-card-name">${d.name}</div>
+      </button>`).join('');
+
+    $stageList.innerHTML = STAGE_PICKS.map(s => `
+      <button class="j-stage-opt" data-stage-idx="${s.idx}">
+        <span><span class="j-stage-opt-label">${s.label}</span><span class="j-stage-opt-sub"> · ${s.sub}</span></span>
+        <svg class="j-stage-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+      </button>`).join('');
+
+    document.querySelectorAll('.j-device-card').forEach(btn => {
+      btn.addEventListener('click', () => {
+        onbDeviceId = parseInt(btn.dataset.deviceId);
+        document.querySelectorAll('.j-device-card').forEach(b => b.classList.toggle('is-chosen', b === btn));
+        checkOnbReady();
+      });
+    });
+    document.querySelectorAll('.j-stage-opt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        onbStageIdx = parseInt(btn.dataset.stageIdx);
+        document.querySelectorAll('.j-stage-opt').forEach(b => b.classList.toggle('is-chosen', b === btn));
+        checkOnbReady();
+      });
+    });
+
+    $startBtn.addEventListener('click', () => {
+      if (onbDeviceId === null || onbStageIdx === null) return;
+      ownership = { deviceId: onbDeviceId, stageIdx: onbStageIdx, lifeChanges: [], dayZeroDone: [] };
+      saveOwnership();
+      showJournal();
+    });
+  }
+  function checkOnbReady() {
+    $startBtn.disabled = !(onbDeviceId !== null && onbStageIdx !== null);
+  }
+
+  /* ══ Journal rendering ══ */
+  function showJournal() {
+    $onboarding.style.display = 'none';
+    $journal.style.display = 'block';
+    renderJournal();
+    gsap.fromTo($journal, { opacity: 0 }, { opacity: 1, duration: 0.5, ease: 'power2.out' });
+    setupScrollReveals();
+  }
+
+  function getDevice() { return DEVICES.find(d => d.id === ownership.deviceId) || DEVICES[0]; }
+
+  function renderJournal() {
+    const device = getDevice();
+    const stage = STAGES[ownership.stageIdx];
+
+    /* Hero */
+    document.getElementById('heroImg').src = device.image;
+    document.getElementById('heroImg').alt = device.name;
+    document.getElementById('heroEyebrow').textContent = device.diary.confidenceTag;
+    document.getElementById('heroName').textContent = device.name;
+    document.getElementById('heroStageText').textContent = `Currently: ${stage.label}`;
+
+    /* Timeline */
+    document.getElementById('timelineList').innerHTML = STAGES.map((s, i) => {
+      const cls = i < ownership.stageIdx ? 'is-done' : (i === ownership.stageIdx ? 'is-active' : '');
+      return `
+        <div class="j-tnode ${cls}">
+          <div class="j-tnode-dot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div class="j-tnode-label">${s.label}</div>
+          <div class="j-tnode-note">${s.note}</div>
+          ${i === ownership.stageIdx ? '<div class="j-tnode-now">You are here</div>' : ''}
+        </div>`;
+    }).join('');
+
+    /* Day Zero */
+    const dzSection = document.getElementById('dayZeroSection');
+    const early = ownership.stageIdx <= 2;
+    document.getElementById('dayZeroTitle').textContent = early ? 'Getting properly started.' : 'Revisit your setup, anytime.';
+    document.getElementById('dayZeroSub').textContent = early
+      ? 'A few small things that make the first days noticeably smoother.'
+      : 'Most of this is probably done — but it stays here in case something was missed.';
+    document.getElementById('dayZeroList').innerHTML = device.dayZero.map((item, i) => {
+      const done = ownership.dayZeroDone.includes(i);
+      return `
+        <button class="j-dz-card ${done ? 'is-done' : ''}" data-dz-idx="${i}">
+          <div class="j-dz-icon" aria-hidden="true">${item.icon}</div>
+          <div class="j-dz-body">
+            <div class="j-dz-title">${item.title}</div>
+            <div class="j-dz-text">${item.body}</div>
+          </div>
+          <div class="j-dz-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+        </button>`;
+    }).join('');
+    updateDzProgress(device);
+    document.querySelectorAll('.j-dz-card').forEach(btn => {
+      btn.addEventListener('click', () => toggleDayZero(parseInt(btn.dataset.dzIdx), device));
+    });
+
+    /* Discovery */
+    document.getElementById('discoveryList').innerHTML = device.discovery.map((d, i) => `
+      <div class="j-disc-card">
+        <div class="j-disc-num">0${i + 1}</div>
+        <div class="j-disc-title">${d.title}</div>
+        <div class="j-disc-body">${d.body}</div>
+      </div>`).join('');
+
+    /* Health */
+    const isLate = ownership.stageIdx >= 6;
+    document.getElementById('healthGrid').innerHTML = device.health.map(h => `
+      <div class="j-health-row">
+        <div class="j-health-icon" aria-hidden="true">${h.icon}</div>
+        <div class="j-health-body">
+          <div class="j-health-label">${h.label}</div>
+          <div class="j-health-value">${isLate && h.valueLate ? h.valueLate : h.value}</div>
+          <div class="j-health-note">${isLate && h.noteLate ? h.noteLate : h.note}</div>
+        </div>
+      </div>`).join('');
+
+    /* Decision Diary */
+    document.getElementById('diaryCard').innerHTML = `
+      <div class="j-diary-label">You told us</div>
+      <div class="j-diary-priorities">
+        ${device.diary.priorities.map(p => `<div class="j-diary-priority">${p}</div>`).join('')}
+      </div>
+      <div class="j-diary-quote">${device.diary.chosenFor}</div>
+      <div class="j-diary-rows">
+        <div class="j-diary-row"><span class="j-diary-row-label">Does well</span><span class="j-diary-row-val">${device.diary.doesWell}</span></div>
+        <div class="j-diary-row"><span class="j-diary-row-label">Not ideal if</span><span class="j-diary-row-val">${device.diary.notIdealFor}</span></div>
+        <div class="j-diary-row"><span class="j-diary-row-label">Usually chosen by</span><span class="j-diary-row-val">${device.diary.whoPrefers}</span></div>
+      </div>`;
+
+    /* Would We Still Recommend */
+    renderRecommend(device);
+
+    /* Life Changes */
+    document.getElementById('lifeChips').innerHTML = LIFE_CHANGE_OPTIONS.map(opt => `
+      <button class="j-life-chip ${ownership.lifeChanges.includes(opt) ? 'is-on' : ''}" data-change="${opt}">${opt}</button>`).join('');
+    document.querySelectorAll('.j-life-chip').forEach(btn => {
+      btn.addEventListener('click', () => toggleLifeChange(btn.dataset.change, btn));
+    });
+    updateLifeAck();
+
+    /* Support */
+    const waBase = 'https://wa.me/917200006006?text=';
+    const supportItems = [
+      { icon: 'help', title: 'Need help setting something up?', sub: 'Walk-through, not a wait queue', msg: `Hello Kovin, I need help setting up my ${device.name}.` },
+      { icon: 'battery', title: 'Battery doesn’t feel right?', sub: 'A quick, honest read on what’s normal', msg: `Hello Kovin, my ${device.name}'s battery doesn't feel right. Could you take a look?` },
+      { icon: 'repair', title: 'Need a trusted repair?', sub: 'Clear diagnosis before any work begins', msg: `Hello Kovin, I'd like a repair check for my ${device.name}.` },
+      { icon: 'upgrade', title: 'Thinking about upgrading?', sub: 'An honest conversation, no pressure', msg: `Hello Kovin, I'm considering an upgrade from my ${device.name}. Could we talk it through?` },
+    ];
+    const SUPPORT_ICONS = {
+      help: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+      battery: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="6" width="18" height="12" rx="2"/><line x1="23" y1="13" x2="23" y2="11"/></svg>',
+      repair: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>',
+      upgrade: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>',
+    };
+    document.getElementById('supportList').innerHTML = supportItems.map(s => `
+      <a class="j-support-card" href="${waBase}${encodeURIComponent(s.msg)}" target="_blank" rel="noopener noreferrer">
+        <div class="j-support-icon" aria-hidden="true">${SUPPORT_ICONS[s.icon]}</div>
+        <div class="j-support-body">
+          <div class="j-support-title">${s.title}</div>
+          <div class="j-support-sub">${s.sub}</div>
+        </div>
+        <svg class="j-support-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+      </a>`).join('');
+  }
+
+  function renderRecommend(device) {
+    const idx = ownership.stageIdx;
+    let verdict, reasons, alt = '';
+    if (idx <= 3) {
+      verdict = 'Still early days — but every reason this was chosen is already showing.';
+      reasons = device.recommend.reasonsEarly;
+    } else if (idx <= 5) {
+      verdict = idx === 4 ? device.recommend.verdictEarly : device.recommend.verdictMid;
+      reasons = idx === 4 ? device.recommend.reasonsEarly : device.recommend.reasonsMid;
+    } else {
+      verdict = device.recommend.verdictLate;
+      reasons = device.recommend.reasonsLate;
+      alt = device.recommend.altLate || '';
+    }
+
+    document.getElementById('recommendCard').innerHTML = `
+      <div class="j-recommend-badge">Honest check-in · ${STAGES[idx].label}</div>
+      <div class="j-recommend-verdict">${verdict}</div>
+      <div class="j-recommend-reasons">
+        ${reasons.map(r => `<div class="j-recommend-reason"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span>${r}</span></div>`).join('')}
+      </div>
+      ${alt ? `<div class="j-recommend-alt">${alt}</div>` : ''}`;
+  }
+
+  /* ── Day Zero toggling ── */
+  function toggleDayZero(idx, device) {
+    const pos = ownership.dayZeroDone.indexOf(idx);
+    if (pos >= 0) ownership.dayZeroDone.splice(pos, 1);
+    else ownership.dayZeroDone.push(idx);
+    saveOwnership();
+    const card = document.querySelector(`[data-dz-idx="${idx}"]`);
+    card.classList.toggle('is-done');
+    gsap.fromTo(card, { scale: 0.97 }, { scale: 1, duration: 0.3, ease: 'power2.out' });
+    updateDzProgress(device);
+  }
+  function updateDzProgress(device) {
+    const total = device.dayZero.length;
+    const done = ownership.dayZeroDone.length;
+    document.getElementById('dayZeroProgress').textContent = done === 0
+      ? `${total} steps to a smoother start`
+      : done === total
+        ? 'All set — nothing left to do here'
+        : `${done} of ${total} done`;
+  }
+
+  /* ── Life changes ── */
+  function toggleLifeChange(change, btn) {
+    const pos = ownership.lifeChanges.indexOf(change);
+    if (pos >= 0) ownership.lifeChanges.splice(pos, 1);
+    else ownership.lifeChanges.push(change);
+    saveOwnership();
+    btn.classList.toggle('is-on');
+    gsap.fromTo(btn, { scale: 0.94 }, { scale: 1, duration: 0.32, ease: 'back.out(2)' });
+    updateLifeAck();
+  }
+  function updateLifeAck() {
+    const ack = document.getElementById('lifeAck');
+    if (!ownership.lifeChanges.length) { ack.classList.remove('is-visible'); return; }
+    ack.classList.add('is-visible');
+    ack.innerHTML = `<strong>Noted.</strong> Next time you're choosing something new, we'll quietly factor in: ${ownership.lifeChanges.join(', ').toLowerCase()}.`;
+  }
+
+  /* ── Switch device / restart ── */
+  function restart() {
+    ownership = null;
+    try { localStorage.removeItem('kovin-ownership'); } catch (e) {}
+    $journal.style.display = 'none';
+    onbDeviceId = null; onbStageIdx = null;
+    buildOnboarding();
+    $onboarding.style.display = 'block';
+    gsap.fromTo($onboarding, { opacity: 0 }, { opacity: 1, duration: 0.4, ease: 'power2.out' });
+  }
+  document.getElementById('heroSwitchBtn').addEventListener('click', restart);
+  document.getElementById('footerSwitchBtn').addEventListener('click', restart);
+
+  /* ── Scroll reveals ── */
+  function setupScrollReveals() {
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) return;
+    gsap.utils.toArray('.j-section, .j-hero').forEach(section => {
+      gsap.fromTo(section, { opacity: 0, y: 22 }, {
+        opacity: 1, y: 0, duration: 0.6, ease: 'power3.out',
+        scrollTrigger: { trigger: section, start: 'top 88%', once: true },
+      });
+    });
+    gsap.utils.toArray('.j-tnode').forEach((node, i) => {
+      gsap.fromTo(node, { opacity: 0, x: -10 }, {
+        opacity: 1, x: 0, duration: 0.5, ease: 'power3.out', delay: i * 0.05,
+        scrollTrigger: { trigger: node, start: 'top 90%', once: true },
+      });
+    });
+  }
+
+  /* ══ Boot ══ */
+  function init() {
+    buildOnboarding();
+    if (ownership && ownership.deviceId != null && ownership.stageIdx != null) {
+      $onboarding.style.display = 'none';
+      showJournal();
+    } else {
+      $onboarding.style.display = 'block';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+</body>
+</html>
