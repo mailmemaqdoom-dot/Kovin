@@ -2530,8 +2530,74 @@
             outline-offset: 2px;
         }
     </style>
+<!-- KOVIN-PWA:START -->
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Kovin">
+<meta name="mobile-web-app-capable" content="yes">
+<style>
+  /* Native-feeling cross-page transitions in browsers that support
+     the View Transitions API (Chrome/Edge on Android, desktop).
+     Everywhere else this is silently ignored — plain navigation. */
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root), ::view-transition-new(root) {
+    animation-duration: 0.32s;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  ::view-transition-old(root) { animation-name: kovin-fade-out; }
+  ::view-transition-new(root) { animation-name: kovin-fade-in; }
+  @keyframes kovin-fade-out { to { opacity: 0; transform: scale(0.99); } }
+  @keyframes kovin-fade-in { from { opacity: 0; transform: scale(1.01); } }
+
+  /* Offline-aware in-page banner (separate from offline.html, which
+     only appears on a full navigation with nothing cached). */
+  #kovin-offline-banner {
+    position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 18px);
+    transform: translateX(-50%) translateY(20px);
+    background: #1A1612; color: #F7F4EF; font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.8rem; font-weight: 600; padding: 11px 20px; border-radius: 100px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.28); z-index: 9999;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s ease, transform 0.3s ease;
+    white-space: nowrap; max-width: 90vw;
+  }
+  #kovin-offline-banner.is-visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+<!-- KOVIN-PWA:END -->
 </head>
 <body>
+
+    <!-- KOVIN-SPLASH:START — branded splash, guarantees on-brand cold-launch
+         regardless of how the OS renders the manifest-driven splash.
+         Fades out the instant the page is interactive. -->
+    <div id="kovin-splash" aria-hidden="true" style="position:fixed;inset:0;z-index:99999;background:#F7F4EF;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+        <div style="width:64px;height:64px;border-radius:18px;background:#E35336;display:flex;align-items:center;justify-content:center;margin-bottom:18px;animation:kovinSplashPulse 1.4s ease-in-out infinite;">
+            <div style="width:20px;height:20px;border-radius:50%;background:#F7F4EF;"></div>
+        </div>
+        <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:1.6rem;font-weight:500;letter-spacing:-0.02em;color:#1A1612;">Kov<span style="color:#E35336;">·</span>in</div>
+    </div>
+    <style>
+        @keyframes kovinSplashPulse { 0%,100%{transform:scale(1);opacity:1;} 50%{transform:scale(1.07);opacity:0.85;} }
+        #kovin-splash.is-hidden { opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+    </style>
+    <script>
+        /* Fade the splash the instant the page is ready — fast startup,
+           no flash of unstyled content while CSS/fonts finish loading. */
+        (function () {
+            function hideSplash() {
+                var el = document.getElementById('kovin-splash');
+                if (el) { el.classList.add('is-hidden'); setTimeout(function () { el.remove(); }, 450); }
+            }
+            if (document.readyState === 'complete') { setTimeout(hideSplash, 150); }
+            else { window.addEventListener('load', function () { setTimeout(hideSplash, 150); }); }
+            /* Never show the splash again after the very first paint this tab —
+               instant on in-app navigation back to the home shell. */
+            setTimeout(hideSplash, 1800); /* safety fallback */
+        })();
+    </script>
+    <!-- KOVIN-SPLASH:END -->
 
     <a href="#catalogue" class="skip-nav">Skip to catalogue</a>
 
@@ -5624,5 +5690,211 @@
             /* ── 8. Dock scroll tracking handled by unified initNavBehaviour() ── */
         });
     </script>
+<!-- KOVIN-PWA:START -->
+<div id="kovin-offline-banner" role="status" aria-live="polite">You're offline — saved products and recent guidance are still available.</div>
+<script>
+(function () {
+  'use strict';
+
+  /* ── Service worker: app-shell caching, offline fallback, push/sync-ready ── */
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    });
+  }
+
+  /* ── In-page offline/online banner (page already loaded, connection drops) ── */
+  var offlineBanner = document.getElementById('kovin-offline-banner');
+  function setOfflineState(isOffline) {
+    if (!offlineBanner) return;
+    if (isOffline) {
+      offlineBanner.textContent = "You're offline — saved products and recent guidance are still available.";
+      offlineBanner.classList.add('is-visible');
+    } else {
+      offlineBanner.textContent = 'Back online.';
+      offlineBanner.classList.add('is-visible');
+      setTimeout(function () { offlineBanner.classList.remove('is-visible'); }, 2200);
+    }
+  }
+  window.addEventListener('offline', function () { setOfflineState(true); });
+  window.addEventListener('online', function () { setOfflineState(false); });
+  if (!navigator.onLine) setOfflineState(true);
+
+  /* ── Native share — used by any element with [data-kovin-share] ── */
+  window.kovinShare = function (title, text, url) {
+    var shareUrl = url || window.location.href;
+    if (navigator.share) {
+      navigator.share({ title: title || 'Kovin', text: text || '', url: shareUrl }).catch(function () {});
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(shareUrl).then(function () {
+        if (offlineBanner) {
+          offlineBanner.textContent = 'Link copied.';
+          offlineBanner.classList.add('is-visible');
+          setTimeout(function () { offlineBanner.classList.remove('is-visible'); }, 1800);
+        }
+      }).catch(function () {});
+    }
+  };
+})();
+</script>
+<!-- KOVIN-PWA:END -->
+
+<!-- KOVIN-INSTALL-PTR:START — install prompt + pull-to-refresh.
+     Scoped to index.html only: the main app shell is the right
+     place to ask someone to install, and the only place a
+     full-page pull-to-refresh gesture makes sense. -->
+<div id="kovin-install-banner" role="dialog" aria-label="Install Kovin" style="display:none;position:fixed;left:16px;right:16px;bottom:calc(env(safe-area-inset-bottom,0px) + 16px);z-index:9000;background:var(--ink);color:var(--paper);border-radius:20px;padding:16px 18px;box-shadow:0 16px 40px rgba(0,0,0,0.3);">
+    <div style="display:flex;align-items:flex-start;gap:12px;">
+        <div style="width:38px;height:38px;border-radius:11px;background:var(--copper);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <div style="width:12px;height:12px;border-radius:50%;background:var(--paper);"></div>
+        </div>
+        <div style="flex:1;min-width:0;">
+            <div id="kovin-install-title" style="font-size:0.88rem;font-weight:700;margin-bottom:3px;">Install Kovin</div>
+            <div id="kovin-install-body" style="font-size:0.78rem;opacity:0.7;line-height:1.45;">Add it to your home screen for the full app experience — faster, full-screen, works offline.</div>
+        </div>
+        <button id="kovin-install-dismiss" aria-label="Dismiss" style="flex-shrink:0;width:26px;height:26px;border-radius:50%;background:rgba(247,244,239,0.1);display:flex;align-items:center;justify-content:center;color:var(--paper);opacity:0.6;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+    </div>
+    <button id="kovin-install-action" style="display:none;width:100%;margin-top:12px;min-height:42px;border-radius:100px;background:var(--copper);color:#fff;font-size:0.84rem;font-weight:700;">Install Now</button>
+</div>
+
+<div id="kovin-ptr-indicator" aria-hidden="true" style="position:fixed;top:calc(env(safe-area-inset-top,0px) + 8px);left:50%;width:34px;height:34px;border-radius:50%;background:var(--paper);border:1px solid var(--border);box-shadow:0 6px 18px rgba(0,0,0,0.12);display:flex;align-items:center;justify-content:center;z-index:9500;transform:translate(-50%,-60px);opacity:0;">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E35336" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="kovin-ptr-arrow"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ══════════════════════════════════════════════════
+     ADD TO HOME SCREEN — custom, on-brand prompt.
+     Android/Chrome: capture beforeinstallprompt, show our own
+     banner, call .prompt() only when the user taps ours.
+     iOS Safari: no beforeinstallprompt exists — show a short
+     instructional version instead ("tap Share, then Add to
+     Home Screen"). Never shown if already installed/standalone,
+     and remembers a dismissal for 14 days.
+  ══════════════════════════════════════════════════ */
+  var DISMISS_KEY = 'kovin-install-dismissed-at';
+  var DISMISS_DAYS = 14;
+
+  function isStandalone() {
+    return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  }
+  function recentlyDismissed() {
+    try {
+      var ts = parseInt(localStorage.getItem(DISMISS_KEY) || '0', 10);
+      return ts && (Date.now() - ts) < DISMISS_DAYS * 24 * 60 * 60 * 1000;
+    } catch (e) { return false; }
+  }
+  function dismissInstall() {
+    try { localStorage.setItem(DISMISS_KEY, String(Date.now())); } catch (e) {}
+    var banner = document.getElementById('kovin-install-banner');
+    if (banner) banner.style.display = 'none';
+  }
+
+  var deferredPrompt = null;
+  var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) && !window.MSStream;
+
+  function showInstallBanner(forIOS) {
+    if (isStandalone() || recentlyDismissed()) return;
+    var banner = document.getElementById('kovin-install-banner');
+    var actionBtn = document.getElementById('kovin-install-action');
+    var bodyEl = document.getElementById('kovin-install-body');
+    if (!banner) return;
+    if (forIOS) {
+      bodyEl.textContent = 'Tap the Share icon, then "Add to Home Screen" — for the full app experience, offline and full-screen.';
+      actionBtn.style.display = 'none';
+    } else {
+      bodyEl.textContent = 'Add it to your home screen for the full app experience — faster, full-screen, works offline.';
+      actionBtn.style.display = 'block';
+    }
+    banner.style.display = 'block';
+    if (window.gsap) {
+      gsap.fromTo(banner, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: 'power3.out' });
+    }
+  }
+
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault();
+    deferredPrompt = e;
+    showInstallBanner(false);
+  });
+
+  window.addEventListener('appinstalled', function () {
+    dismissInstall();
+  });
+
+  document.getElementById('kovin-install-dismiss').addEventListener('click', dismissInstall);
+  document.getElementById('kovin-install-action').addEventListener('click', function () {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.finally(function () { deferredPrompt = null; dismissInstall(); });
+  });
+
+  /* iOS gets the instructional version after a short delay, once,
+     since there's no install-readiness event to listen for. */
+  if (isIOS && !isStandalone() && !recentlyDismissed()) {
+    setTimeout(function () { showInstallBanner(true); }, 4000);
+  }
+
+  /* ══════════════════════════════════════════════════
+     PULL TO REFRESH — custom gesture, consistent across iOS
+     and Android standalone mode (native browser PTR is
+     unreliable once a PWA is installed). Only arms when the
+     page is scrolled to the very top.
+  ══════════════════════════════════════════════════ */
+  var ptrIndicator = document.getElementById('kovin-ptr-indicator');
+  var ptrArrow = document.getElementById('kovin-ptr-arrow');
+  var PTR_THRESHOLD = 70;
+  var ptrStartY = 0, ptrCurrentY = 0, ptrActive = false, ptrTriggered = false;
+
+  function atPageTop() { return (window.scrollY || document.documentElement.scrollTop) <= 0; }
+
+  window.addEventListener('touchstart', function (e) {
+    if (!atPageTop()) { ptrActive = false; return; }
+    ptrStartY = e.touches[0].clientY;
+    ptrActive = true;
+    ptrTriggered = false;
+  }, { passive: true });
+
+  window.addEventListener('touchmove', function (e) {
+    if (!ptrActive) return;
+    ptrCurrentY = e.touches[0].clientY;
+    var delta = ptrCurrentY - ptrStartY;
+    if (delta <= 0) { ptrIndicator.style.opacity = 0; return; }
+    var pull = Math.min(delta, PTR_THRESHOLD * 1.6);
+    var progress = Math.min(pull / PTR_THRESHOLD, 1);
+    ptrIndicator.style.transform = 'translate(-50%,' + (-60 + 80 * progress) + 'px)';
+    ptrIndicator.style.opacity = progress;
+    ptrArrow.style.transform = 'rotate(' + (progress >= 1 ? 180 : 0) + 'deg)';
+    ptrArrow.style.transition = 'transform 0.2s ease';
+    if (progress >= 1 && !ptrTriggered) {
+      ptrTriggered = true;
+      if (window.navigator.vibrate) { try { navigator.vibrate(8); } catch (e) {} }
+    }
+  }, { passive: true });
+
+  window.addEventListener('touchend', function () {
+    if (!ptrActive) return;
+    ptrActive = false;
+    if (ptrTriggered) {
+      ptrIndicator.style.transform = 'translate(-50%,20px)';
+      ptrIndicator.style.opacity = 1;
+      ptrArrow.outerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E35336" stroke-width="2.5" id="kovin-ptr-arrow" style="animation:kovinPtrSpin 0.7s linear infinite;"><circle cx="12" cy="12" r="8" stroke-dasharray="38 12" stroke-linecap="round"/></svg>';
+      setTimeout(function () { location.reload(); }, 420);
+    } else {
+      ptrIndicator.style.transform = 'translate(-50%,-60px)';
+      ptrIndicator.style.opacity = 0;
+    }
+  });
+})();
+</script>
+<style>
+  @keyframes kovinPtrSpin { to { transform: rotate(360deg); } }
+  #kovin-ptr-indicator { transition: transform 0.25s ease, opacity 0.25s ease; }
+</style>
+<!-- KOVIN-INSTALL-PTR:END -->
 </body>
 </html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0">
+<meta name="theme-color" content="#F7F4EF">
+<title>You're offline · Kovin</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" href="icons/favicon-32.png" sizes="32x32">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1A1612; --paper: #F7F4EF; --paper-warm: #EDE8E0;
+    --copper: #E35336; --border: rgba(26,22,18,0.08);
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body {
+    font-family: var(--font-body); background: var(--paper); color: var(--ink);
+    min-height: 100dvh; display: flex; flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  .off-wrap {
+    flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: calc(env(safe-area-inset-top,0px) + 32px) 28px calc(env(safe-area-inset-bottom,0px) + 32px);
+    text-align: center;
+  }
+  .off-dot {
+    width: 64px; height: 64px; border-radius: 50%; background: var(--copper);
+    margin-bottom: 28px; position: relative; flex-shrink: 0;
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+  .off-dot::after {
+    content: ''; position: absolute; inset: 0; border-radius: 50%;
+    border: 1.5px solid var(--copper); opacity: 0;
+    animation: ring 2.4s ease-out infinite;
+  }
+  @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+  @keyframes ring { 0% { transform: scale(1); opacity: 0.5; } 100% { transform: scale(1.8); opacity: 0; } }
+  .off-eyebrow {
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--copper); margin-bottom: 14px;
+  }
+  h1 {
+    font-family: var(--font-display); font-weight: 500; letter-spacing: -0.02em;
+    font-size: clamp(1.7rem, 7vw, 2.2rem); line-height: 1.2; margin-bottom: 14px; max-width: 320px;
+  }
+  p.off-sub { font-size: 0.92rem; line-height: 1.65; opacity: 0.6; max-width: 320px; margin-bottom: 30px; }
+  .off-actions { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 300px; }
+  .off-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 50px; padding: 14px 22px; border-radius: 100px;
+    font-size: 0.86rem; font-weight: 600; transition: transform 0.15s ease, background 0.2s ease;
+  }
+  .off-btn:active { transform: scale(0.97); }
+  .off-btn-primary { background: var(--copper); color: #fff; }
+  .off-btn-secondary { background: var(--paper-warm); color: var(--ink); border: 1px solid var(--border); }
+  .off-cart-note { margin-top: 26px; font-size: 0.76rem; opacity: 0.45; }
+  .off-cart-note strong { color: var(--copper); font-weight: 700; }
+</style>
+</head>
+<body>
+  <div class="off-wrap">
+    <div class="off-dot" aria-hidden="true"></div>
+    <span class="off-eyebrow">No connection right now</span>
+    <h1>You're offline.</h1>
+    <p class="off-sub">Your saved products and recent guidance are still available. Nothing is lost — this page will refresh itself the moment you're back.</p>
+    <div class="off-actions">
+      <button class="off-btn off-btn-primary" onclick="location.reload()">Try again</button>
+      <a class="off-btn off-btn-secondary" href="index.html">Go to what's saved</a>
+    </div>
+    <div class="off-cart-note" id="offCartNote"></div>
+  </div>
+
+  <script>
+    /* Reflect what's actually cached in localStorage — proves the
+       claim above rather than just asserting it. */
+    (function () {
+      try {
+        var cart = JSON.parse(localStorage.getItem('kovin-cart') || '[]');
+        var count = cart.reduce(function (n, i) { return n + (i.qty || 1); }, 0);
+        var note = document.getElementById('offCartNote');
+        if (count > 0) {
+          note.innerHTML = '<strong>' + count + '</strong> item' + (count > 1 ? 's' : '') + ' still kept ready in your cart.';
+        }
+      } catch (e) {}
+    })();
+
+    /* Auto-recover the moment connectivity returns. */
+    window.addEventListener('online', function () {
+      location.reload();
+    });
+  </script>
+</body>
+</html>
