@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0">
+<meta name="theme-color" content="#F7F4EF">
+<meta name="description" content="Kovin Second Opinion — an honest, balanced confidence review of any product you're considering, even ones we don't sell.">
+<title>Second Opinion · Kovin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<style>
+
+/* ══════════════════════════════════════════════════
+   KOVIN SECOND OPINION
+   Not a comparison tool. A confidence review.
+   "Trust Kovin even when Kovin recommends
+    a competitor's product."
+══════════════════════════════════════════════════ */
+:root {
+  --ink:          #1A1612;
+  --paper:        #F7F4EF;
+  --paper-warm:   #EDE8E0;
+  --paper-dim:    #E5DDD4;
+  --copper:       #E35336;
+  --copper-deep:  #C9432A;
+  --sand:         #F4A460;
+  --wood:         #7B5940;
+  --border:       rgba(26,22,18,0.08);
+  --border-strong:rgba(26,22,18,0.16);
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+  --ease-out:     cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html { height: 100%; }
+body {
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+button { font: inherit; color: inherit; cursor: pointer; border: none; background: none; -webkit-tap-highlight-color: transparent; }
+a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+img { display: block; max-width: 100%; }
+:focus-visible { outline: 2px solid var(--copper); outline-offset: 3px; border-radius: 4px; }
+
+/* ══ Header ══ */
+.so-header {
+  position: sticky; top: 0; z-index: 200;
+  height: calc(56px + env(safe-area-inset-top, 0px));
+  padding: env(safe-area-inset-top, 0px) 18px 0;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(247,244,239,0.92);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  backdrop-filter: blur(18px) saturate(1.3);
+  border-bottom: 1px solid var(--border);
+}
+.so-back { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--paper-warm); border: 1px solid var(--border); color: var(--ink); }
+.so-back svg { width: 16px; height: 16px; }
+.so-header-title { display: flex; flex-direction: column; align-items: center; }
+.so-wordmark { font-family: var(--font-display); font-size: 1.22rem; font-weight: 500; letter-spacing: -0.02em; }
+.so-wordmark span { color: var(--copper); }
+.so-eyebrow-tag { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.4; margin-top: 1px; }
+.so-spacer { width: 36px; }
+
+#lifeModeBanner { display: none; align-items: center; gap: 8px; padding: 9px 18px; background: rgba(227,83,54,0.1); border-bottom: 1px solid var(--border); color: var(--copper); font-size: 0.76rem; font-weight: 600; }
+
+/* ══════════════════════════════════════════════════
+   INTRO / PICKER
+══════════════════════════════════════════════════ */
+#intro { padding: 26px 20px 40px; }
+.so-intro-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 0.66rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--copper); margin-bottom: 14px;
+}
+.so-intro-eyebrow::before, .so-intro-eyebrow::after { content: ''; width: 16px; height: 1.5px; background: currentColor; opacity: 0.5; }
+#intro h1 { font-family: var(--font-display); font-weight: 500; letter-spacing: -0.02em; font-size: clamp(1.9rem, 7.5vw, 2.5rem); line-height: 1.12; margin-bottom: 14px; }
+#intro h1 em { font-style: italic; color: var(--copper); }
+#intro > p.so-intro-sub { font-size: 0.88rem; line-height: 1.65; opacity: 0.6; max-width: 360px; margin-bottom: 10px; }
+.so-intro-philosophy { background: var(--paper-warm); border-radius: 16px; padding: 16px 18px; margin: 18px 0 28px; font-family: var(--font-display); font-size: 1.05rem; font-style: italic; line-height: 1.5; }
+.so-section-label { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.42; margin-bottom: 12px; }
+
+.so-device-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 8px; }
+.so-device-card { display: flex; align-items: center; gap: 13px; background: var(--paper-warm); border: 1.5px solid var(--border); border-radius: 18px; padding: 13px 14px; text-align: left; transition: border-color 0.2s ease, background 0.2s ease, transform 0.15s ease; }
+.so-device-card:active { transform: scale(0.98); }
+.so-device-card.is-chosen { border-color: var(--ink); background: var(--ink); color: var(--paper); }
+.so-device-card-img { width: 46px; height: 46px; border-radius: 12px; background: var(--paper); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.so-device-card.is-chosen .so-device-card-img { background: rgba(247,244,239,0.1); border-color: rgba(247,244,239,0.14); }
+.so-device-card-img img { max-width: 70%; max-height: 70%; object-fit: contain; }
+.so-device-card-body { flex: 1; min-width: 0; }
+.so-device-card-name { font-size: 0.86rem; font-weight: 600; line-height: 1.3; }
+.so-device-card-tag { font-size: 0.64rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; margin-top: 2px; }
+.so-device-card-tag.sold { color: var(--copper); }
+.so-device-card-tag.independent { opacity: 0.45; }
+.so-device-card.is-chosen .so-device-card-tag.sold { color: var(--sand); }
+.so-device-card.is-chosen .so-device-card-tag.independent { opacity: 0.55; }
+
+.so-btn-primary { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 52px; padding: 15px 24px; border-radius: 100px; background: var(--copper); color: #fff; font-size: 0.92rem; font-weight: 600; box-shadow: 0 12px 28px -8px rgba(227,83,54,0.46); transition: background 0.2s ease, transform 0.15s ease, opacity 0.2s ease; margin-top: 18px; }
+.so-btn-primary:hover { background: var(--copper-deep); }
+.so-btn-primary:active { transform: scale(0.97); }
+.so-btn-primary[disabled] { opacity: 0.35; pointer-events: none; }
+.so-btn-primary svg { width: 16px; height: 16px; }
+.so-btn-primary.is-added { background: #25D366; box-shadow: 0 12px 28px -8px rgba(37,211,102,0.4); }
+.so-btn-secondary { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 48px; padding: 13px 22px; border-radius: 100px; background: transparent; color: var(--ink); font-size: 0.84rem; font-weight: 500; border: 1.5px solid var(--border-strong); transition: background 0.2s ease, transform 0.15s ease; }
+.so-btn-secondary:hover { background: var(--paper-warm); }
+.so-btn-secondary:active { transform: scale(0.97); }
+
+/* ══════════════════════════════════════════════════
+   REVIEW SCREEN
+══════════════════════════════════════════════════ */
+#reviewScreen { display: none; }
+
+.so-review-head { padding: 22px 20px; border-bottom: 1px solid var(--border); }
+.so-review-tag { display: inline-flex; align-items: center; gap: 7px; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 12px; border-radius: 100px; margin-bottom: 14px; }
+.so-review-tag.sold { background: rgba(227,83,54,0.1); color: var(--copper); }
+.so-review-tag.sold::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--copper); }
+.so-review-tag.independent { background: var(--paper-warm); color: var(--wood); border: 1px solid var(--border-strong); }
+.so-review-tag.independent::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--wood); }
+.so-review-top { display: flex; align-items: center; gap: 14px; }
+.so-review-img { width: 64px; height: 64px; border-radius: 16px; background: var(--paper-warm); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.so-review-img img { max-width: 70%; max-height: 70%; object-fit: contain; }
+.so-review-name { font-family: var(--font-display); font-size: 1.3rem; font-weight: 500; line-height: 1.18; }
+.so-review-change { margin-left: auto; font-size: 0.76rem; font-weight: 600; color: var(--copper); flex-shrink: 0; }
+
+.so-section { padding: 28px 20px; border-bottom: 1px solid var(--border); }
+.so-section:last-of-type { border-bottom: none; }
+.so-section-eyebrow { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--copper); margin-bottom: 10px; }
+.so-section-title { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.3rem, 5vw, 1.6rem); line-height: 1.2; margin-bottom: 6px; }
+
+/* Lead statement — "genuinely excellent at" */
+.so-lead-text { font-family: var(--font-display); font-size: 1.32rem; font-weight: 400; font-style: italic; line-height: 1.4; }
+
+/* Who loves it / who shouldn't */
+.so-audience-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 4px; }
+.so-audience-card { border-radius: 16px; padding: 15px 17px; }
+.so-audience-card.love { background: rgba(227,83,54,0.07); }
+.so-audience-card.consider { background: var(--paper-warm); }
+.so-audience-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+.so-audience-card.love .so-audience-label { color: var(--copper); }
+.so-audience-card.consider .so-audience-label { opacity: 0.5; }
+.so-audience-text { font-size: 0.86rem; line-height: 1.55; }
+.so-audience-card.consider .so-audience-text { opacity: 0.78; }
+
+/* Callout (misconceptions / discover later) */
+.so-callout { background: var(--paper-warm); border-radius: 16px; padding: 16px 17px; margin-top: 4px; }
+.so-callout p { font-size: 0.86rem; line-height: 1.58; }
+
+/* Cost of choosing this */
+.so-cost-card { border: 1px solid var(--border-strong); border-radius: 16px; padding: 16px 17px; margin-top: 4px; }
+.so-cost-card p { font-size: 0.86rem; line-height: 1.6; }
+
+/* Kovin Verdict — the most prominent card */
+.so-verdict-card { border: 1.5px solid var(--ink); border-radius: 22px; padding: 22px 20px; margin-top: 4px; }
+.so-verdict-badge { display: inline-flex; align-items: center; gap: 7px; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--copper); margin-bottom: 12px; }
+.so-verdict-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--copper); }
+.so-verdict-text { font-family: var(--font-display); font-size: 1.2rem; font-weight: 500; line-height: 1.36; }
+
+/* Alternative Thinking */
+.so-alt-card { background: var(--ink); color: var(--paper); border-radius: 18px; padding: 18px 19px; margin-top: 4px; }
+.so-alt-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sand); margin-bottom: 8px; }
+.so-alt-text { font-size: 0.88rem; line-height: 1.58; opacity: 0.92; }
+
+/* Long-term ownership */
+.so-longterm-text { font-size: 0.86rem; line-height: 1.6; opacity: 0.72; margin-top: 4px; }
+
+/* Independent-product CTA note */
+.so-independent-note { background: var(--paper-warm); border-radius: 14px; padding: 14px 16px; font-size: 0.82rem; line-height: 1.55; opacity: 0.75; margin-bottom: 12px; }
+
+.so-cta-area { padding: 6px 20px calc(env(safe-area-inset-bottom, 0px) + 30px); display: flex; flex-direction: column; gap: 10px; }
+.so-restart-link { display: block; text-align: center; margin-top: 14px; font-size: 0.78rem; opacity: 0.45; text-decoration: underline; }
+
+.so-toast { position: fixed; bottom: calc(env(safe-area-inset-bottom,0px) + 20px); left: 50%; transform: translateX(-50%) translateY(14px); background: var(--ink); color: var(--paper); padding: 11px 20px; border-radius: 100px; font-size: 0.8rem; font-weight: 600; box-shadow: 0 8px 28px rgba(0,0,0,0.3); opacity: 0; pointer-events: none; white-space: nowrap; z-index: 300; }
+
+@media (min-width: 720px) {
+  body { background: var(--paper-dim); }
+  #app-shell { max-width: 480px; margin: 0 auto; background: var(--paper); box-shadow: 0 0 80px rgba(0,0,0,0.08); min-height: 100dvh; }
+  .so-header { max-width: 480px; left: 50%; transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+</style>
+</head>
+<body>
+
+<div id="app-shell">
+
+  <header class="so-header">
+    <a href="index.html" class="so-back" aria-label="Back to Kovin">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    </a>
+    <div class="so-header-title">
+      <span class="so-wordmark">Kov<span>·</span>in</span>
+      <span class="so-eyebrow-tag">Second Opinion</span>
+    </div>
+    <span class="so-spacer" aria-hidden="true"></span>
+  </header>
+
+  <a href="lifemode.html" id="lifeModeBanner">
+    <span id="lifeModeBannerText"></span>
+    <span style="opacity:0.65;font-weight:500;margin-left:auto;">Change ›</span>
+  </a>
+
+  <!-- ░░ Intro / picker ░░ -->
+  <div id="intro">
+    <span class="so-intro-eyebrow">Not a comparison. A confidence review.</span>
+    <h1>Already considering<br>something? <em>Ask us first.</em></h1>
+    <p class="so-intro-sub">Bring anything you're weighing — including things we don't sell — and get the same honest read we'd give a friend.</p>
+    <div class="so-intro-philosophy">"Our job is to help you decide well. Sometimes that means pointing you toward something we don’t carry."</div>
+
+    <div class="so-section-label">What are you considering?</div>
+    <div class="so-device-list" id="introDeviceList"></div>
+
+    <button class="so-btn-primary" id="introStartBtn" disabled>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      Get the honest read
+    </button>
+  </div>
+
+  <!-- ░░ Review screen ░░ -->
+  <div id="reviewScreen">
+    <div class="so-review-head">
+      <span class="so-review-tag" id="reviewTag"></span>
+      <div class="so-review-top">
+        <div class="so-review-img"><img id="reviewImg" src="" alt=""></div>
+        <div class="so-review-name" id="reviewName"></div>
+        <button class="so-review-change" id="changeProductBtn">Change</button>
+      </div>
+    </div>
+
+    <section class="so-section">
+      <div class="so-section-eyebrow">Genuinely Excellent At</div>
+      <p class="so-lead-text" id="excellentText"></p>
+    </section>
+
+    <section class="so-section">
+      <div class="so-section-eyebrow">Fit</div>
+      <div class="so-section-title">Who this is for — honestly.</div>
+      <div class="so-audience-grid">
+        <div class="so-audience-card love"><div class="so-audience-label">Will probably love it</div><div class="so-audience-text" id="lovesText"></div></div>
+        <div class="so-audience-card consider"><div class="so-audience-label">Should consider another option</div><div class="so-audience-text" id="elseText"></div></div>
+      </div>
+    </section>
+
+    <section class="so-section">
+      <div class="so-section-eyebrow">Worth Knowing</div>
+      <div class="so-section-title">Common misconceptions.</div>
+      <div class="so-callout"><p id="misconceptionText"></p></div>
+    </section>
+
+    <section class="so-section">
+      <div class="so-section-eyebrow">In Hindsight</div>
+      <div class="so-section-title">What buyers usually discover later.</div>
+      <div class="so-callout"><p id="discoverText"></p></div>
+    </section>
+
+    <section class="so-section">
+      <div class="so-section-eyebrow">The Real Trade-off</div>
+      <div class="so-section-title">The cost of choosing this.</div>
+      <div class="so-cost-card"><p id="costText"></p></div>
+    </section>
+
+    <section class="so-section">
+      <div class="so-section-eyebrow">The Kovin Verdict</div>
+      <div class="so-verdict-card">
+        <div class="so-verdict-badge">Our honest read</div>
+        <div class="so-verdict-text" id="verdictText"></div>
+      </div>
+    </section>
+
+    <section class="so-section">
+      <div class="so-section-eyebrow">Alternative Thinking</div>
+      <div class="so-alt-card"><div class="so-alt-label">Worth considering too</div><div class="so-alt-text" id="altText"></div></div>
+    </section>
+
+    <section class="so-section">
+      <div class="so-section-eyebrow">Looking Ahead</div>
+      <div class="so-section-title">Long-term ownership expectations.</div>
+      <p class="so-longterm-text" id="longtermText"></p>
+    </section>
+
+    <div class="so-cta-area" id="ctaArea"></div>
+  </div><!-- /reviewScreen -->
+
+</div><!-- /app-shell -->
+
+<div class="so-toast" id="soToast" role="status" aria-live="polite"></div>
+
+<script>
+/* ══════════════════════════════════════════════════
+   KOVIN SECOND OPINION
+   "Trust Kovin even when Kovin recommends
+    a competitor's product."
+══════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  /* ─────────── Product pool — mixed: sold by Kovin + independent reviews ─────────── */
+  const PRODUCTS = [
+    {
+      id: 1, soldByKovin: true, name: 'Samsung Galaxy S23 FE', price: '₹34,999',
+      image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/fWEumNteCudVVPuo.png',
+      excellent: 'Genuinely excellent at all-day battery life without flagship-level pricing. This is the single most consistent thing owners report being happy about.',
+      loves: 'People who want a phone that simply works through a long day — calls, photos, social apps — without becoming a project to manage.',
+      elseOption: 'Anyone whose top priority is camera quality above everything else, or anyone who games competitively. Neither is this phone’s strength.',
+      misconception: 'People assume “FE” means a stripped-down phone. In daily use, the difference from the full flagship is much smaller than the price gap suggests.',
+      discover: 'Most owners only notice the screen’s colour accuracy after using it at night for a few weeks — it’s easier on the eyes than they expected.',
+      cost: 'Choosing this over the Pixel 7a costs you noticeably better low-light photo processing. You gain meaningfully longer battery life and a larger, more comfortable screen in return.',
+      verdict: 'Genuinely recommend it — for the person who’s already living their life around this phone rather than building their life around exploring it.',
+      alt: 'If photography is genuinely your top priority over everything else, the Pixel 7a is the more honest choice — even though it’s also ours.',
+      longterm: 'Expect this to feel completely normal, not exciting, by month three. By year two, the battery may ask for a slightly earlier evening charge — expected wear, not a fault.',
+    },
+    {
+      id: 2, soldByKovin: true, name: 'Google Pixel 7a', price: '₹39,999',
+      image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/AeIhJBFyYYuVXncG.png',
+      excellent: 'Genuinely excellent at producing photos that look right straight out of the camera — no editing needed, in almost any light.',
+      loves: 'People who photograph everyday life — kids, food, friends, travel — and want the result to look good without opening an editing app.',
+      elseOption: 'Anyone whose days are long and unpredictable, where a guaranteed full charge matters more than camera quality. The battery here is reliable, not exceptional.',
+      misconception: 'People assume a smaller phone means a smaller battery problem. The size and the battery story are unrelated here — it’s about chip efficiency, not capacity.',
+      discover: 'Most owners discover the call-screening feature months in, and it quietly becomes one of their favourite things about the phone.',
+      cost: 'Choosing this over the Galaxy S23 FE costs you some battery cushion on your longest, busiest days. You gain photos that consistently need zero editing.',
+      verdict: 'Genuinely recommend it — specifically for people who photograph often and care about the result more than almost anything else on the spec sheet.',
+      alt: 'If all-day battery without a second thought matters more to you than camera quality, the Galaxy S23 FE is the more honest pick — even though it’s also ours.',
+      longterm: 'The camera advantage doesn’t fade — still the most-cited reason for satisfaction at the two-year mark. Battery is the part most likely to ask for an earlier charge by then.',
+    },
+    {
+      id: 4, soldByKovin: true, name: 'Sony WH-1000XM5', price: '₹26,990',
+      image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/XIJzeXSRHorEqzFw.png',
+      excellent: 'Genuinely excellent at noise cancellation that holds up in real, busy environments — not just in a quiet demo room.',
+      loves: 'People who need to think clearly in places that don’t make it easy — open offices, busy commutes, long flights.',
+      elseOption: 'Anyone who exercises in them, or specifically wants to stay aware of their surroundings most of the time. The over-ear design and strong isolation work against both.',
+      misconception: 'People assume louder marketing about “cancellation levels” means a clear winner. Fit and seal matter as much as the chip inside — a loose fit can underperform a cheaper, well-fitted pair.',
+      discover: 'Most owners don’t realise how much they’ll use the Quick Attention hand-cup gesture until a few weeks in, when it becomes second nature.',
+      cost: 'Choosing this over AirPods Pro costs you the seamless Apple ecosystem magic — instant pairing, automatic switching across devices. You gain noticeably stronger, more consistent noise cancellation.',
+      verdict: 'Genuinely recommend it — for anyone who needs real silence on demand and isn’t deeply invested in Apple’s ecosystem.',
+      alt: 'If you’re already deep in Apple’s ecosystem and value that seamlessness more than best-in-class noise cancellation, AirPods Pro are the more honest choice — even though they aren’t ours to sell.',
+      longterm: 'Performance holds remarkably well. Ear cushions are the part most likely to wear first, usually around year two — a low-cost replacement restores most of the original feel.',
+    },
+    {
+      id: 101, soldByKovin: false, name: 'iPhone 13', price: null,
+      image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/AeIhJBFyYYuVXncG.png',
+      excellent: 'Genuinely excellent at holding its resale value and receiving software updates for far longer than almost anything in its price bracket — that’s not marketing, that’s just observable fact.',
+      loves: 'People already invested in Apple’s ecosystem — Mac, iPad, AirPods — where everything working together quietly removes a dozen small frictions.',
+      elseOption: 'Anyone who wants deep customisation, an easily replaceable battery, or an open file system. Apple’s approach to all three is intentionally restrictive.',
+      misconception: 'People assume the camera is automatically the best available. At this price point, the Pixel 7a’s computational photography genuinely produces more natural results in tricky lighting.',
+      discover: 'Most new owners discover months in how much smoother cross-device handoff feels — answering a call on a laptop, continuing a message on a tablet — once fully in the ecosystem.',
+      cost: 'Choosing this over the Pixel 7a costs you camera processing quality and a fair amount of money. You gain longer software support and stronger resale value down the line.',
+      verdict: 'We don’t sell this — and we’d still say: if you’re already living in Apple’s ecosystem, this is a genuinely sound choice. Switching ecosystems has a real cost too, and it’s easy to underestimate.',
+      alt: 'If you’re not already an Apple user and have no particular reason to become one, the Pixel 7a gets you better photos for meaningfully less money.',
+      longterm: 'iPhones tend to age unusually gracefully — four to five years of real usefulness isn’t unusual. The trade-off is paying more upfront for that long runway.',
+    },
+    {
+      id: 102, soldByKovin: false, name: 'AirPods Pro', price: null,
+      image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/akufQOVWgjtpdbDf.png',
+      excellent: 'Genuinely excellent at disappearing into an Apple-centred life — pairing instantly, switching between devices automatically, working without a single setting ever opened.',
+      loves: 'iPhone and Mac owners who want earbuds that require zero thought, ever, and who value that convenience more than the absolute best noise cancellation available.',
+      elseOption: 'Android users — many standout features quietly don’t work, or work worse, outside Apple’s ecosystem. Anyone wanting the strongest possible noise cancellation should also look elsewhere.',
+      misconception: 'People assume “Pro” means class-leading noise cancellation. It’s genuinely good — but the Sony WH-1000XM5 cancels more in real, busy environments. The “Pro” here is mostly about features, not raw cancellation strength.',
+      discover: 'Most owners don’t realise how much they relied on automatic device-switching until they try a different pair and have to manually reconnect everything.',
+      cost: 'Choosing this over the Sony WH-1000XM5 costs you a meaningful amount of noise-cancellation strength and battery life per charge. You gain effortless integration if you’re already on iPhone and Mac.',
+      verdict: 'We don’t sell this — and we’d still say: if your daily life already runs through an iPhone and a Mac, this may genuinely be the better choice for you than our own Sony WH-1000XM5. Different priorities really do have different right answers.',
+      alt: 'If real silence in a busy office or on a long flight is the actual priority, the Sony WH-1000XM5 will get you there more reliably, on any device.',
+      longterm: 'Battery capacity declines gradually, like most earbuds — expect a noticeably shorter case-charged runtime by year two or three. The case and earbuds themselves tend to outlast that battery curve.',
+    },
+    {
+      id: 103, soldByKovin: false, name: '75" Premium QLED Television', price: null,
+      image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/PNuLvudbHcTmKOpp.png',
+      excellent: 'Genuinely excellent for very large or very bright rooms — QLED panels at this size produce noticeably higher peak brightness than most LED panels, which matters when sunlight hits the screen directly.',
+      loves: 'Households with a large living room, big windows, or a screen-to-seating distance long enough to make the bigger size genuinely useful rather than overwhelming.',
+      elseOption: 'Anyone in a small or medium room. At 75 inches, the size itself can dominate a room that isn’t built for it — bigger isn’t automatically better.',
+      misconception: 'People assume a larger screen always means a better experience. Past a certain viewing distance, extra size adds nothing except glare and a sense of sitting too close.',
+      discover: 'Many buyers only realise after delivery how much furniture rearranging a screen this size actually requires — a bigger logistical decision than the box suggests.',
+      cost: 'Choosing this over the Sony Bravia 4K LED costs you a noticeably higher price and a screen that may be oversized for a typical room. You gain a real brightness advantage if your room genuinely needs it.',
+      verdict: 'We don’t sell this — and we’d still say: if your room is large and bright, this may be the more honest choice over our own Bravia. Size and brightness needs are genuinely room-specific, not a matter of which brand is better.',
+      alt: 'If your room is a typical medium living room, the Bravia at 55 inches will likely look better calibrated for the space — and cost meaningfully less.',
+      longterm: 'Panel brightness and colour accuracy hold up well over years in this category — the more common reason to replace a TV this size is the room or house changing, not the screen failing.',
+    },
+  ];
+
+  /* ─────────── State ─────────── */
+  let product = null;
+  let chosenId = null;
+
+  /* ─────────── DOM refs ─────────── */
+  const $intro = document.getElementById('intro');
+  const $reviewScreen = document.getElementById('reviewScreen');
+  const $deviceList = document.getElementById('introDeviceList');
+  const $startBtn = document.getElementById('introStartBtn');
+  const $toast = document.getElementById('soToast');
+  let toastTimer = null;
+
+  /* ══ Intro / picker ══ */
+  function buildIntro() {
+    $deviceList.innerHTML = PRODUCTS.map(p => `
+      <button class="so-device-card" data-id="${p.id}" aria-label="${p.name}">
+        <div class="so-device-card-img"><img src="${p.image}" alt="${p.name}" loading="lazy"></div>
+        <div class="so-device-card-body">
+          <div class="so-device-card-name">${p.name}</div>
+          <div class="so-device-card-tag ${p.soldByKovin ? 'sold' : 'independent'}">${p.soldByKovin ? 'Sold by Kovin' : 'Independent review · not in our catalogue'}</div>
+        </div>
+      </button>`).join('');
+
+    document.querySelectorAll('.so-device-card').forEach(btn => {
+      btn.addEventListener('click', () => {
+        chosenId = parseInt(btn.dataset.id);
+        document.querySelectorAll('.so-device-card').forEach(b => b.classList.toggle('is-chosen', b === btn));
+        $startBtn.disabled = false;
+      });
+    });
+
+    $startBtn.addEventListener('click', () => { if (chosenId !== null) beginReview(chosenId); });
+
+    const params = new URLSearchParams(window.location.search);
+    const fromUrl = parseInt(params.get('product'));
+    if (fromUrl && PRODUCTS.find(p => p.id === fromUrl)) beginReview(fromUrl);
+  }
+
+  /* ══ Begin review ══ */
+  function beginReview(id) {
+    product = PRODUCTS.find(p => p.id === id);
+    if (!product) return;
+
+    document.getElementById('reviewImg').src = product.image;
+    document.getElementById('reviewImg').alt = product.name;
+    document.getElementById('reviewName').textContent = product.name;
+
+    const tag = document.getElementById('reviewTag');
+    tag.className = `so-review-tag ${product.soldByKovin ? 'sold' : 'independent'}`;
+    tag.textContent = product.soldByKovin ? 'Sold by Kovin' : 'Independent review · not in our catalogue';
+
+    document.getElementById('excellentText').textContent = product.excellent;
+    document.getElementById('lovesText').textContent = product.loves;
+    document.getElementById('elseText').textContent = product.elseOption;
+    document.getElementById('misconceptionText').textContent = product.misconception;
+    document.getElementById('discoverText').textContent = product.discover;
+    document.getElementById('costText').textContent = product.cost;
+    document.getElementById('verdictText').textContent = product.verdict;
+    document.getElementById('altText').textContent = product.alt;
+    document.getElementById('longtermText').textContent = product.longterm;
+
+    renderCta();
+
+    $intro.style.display = 'none';
+    $reviewScreen.style.display = 'block';
+    window.scrollTo(0, 0);
+
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduced) {
+      gsap.fromTo($reviewScreen, { opacity: 0 }, { opacity: 1, duration: 0.45, ease: 'power2.out' });
+      gsap.fromTo('.so-section', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.45, stagger: 0.05, ease: 'power3.out', delay: 0.08 });
+    }
+  }
+
+  /* ── CTA: honest about whether Kovin can actually sell this ── */
+  function renderCta() {
+    const area = document.getElementById('ctaArea');
+    if (product.soldByKovin) {
+      area.innerHTML = `
+        <button class="so-btn-primary" id="keepReadyBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+          Keep this ready
+        </button>
+        <a class="so-btn-secondary" href="https://wa.me/917200006006?text=${encodeURIComponent('Hello Kovin, I read your second opinion on the ' + product.name + ' and have a question.')}" target="_blank" rel="noopener noreferrer">Ask a question</a>
+        <a class="so-restart-link" id="restartLink">Get a second opinion on something else</a>`;
+      document.getElementById('keepReadyBtn').addEventListener('click', keepThisReady);
+    } else {
+      area.innerHTML = `
+        <div class="so-independent-note">We don’t sell this, so there’s no purchase link here — just the honest opinion above. If it helps, we’re happy to talk it through.</div>
+        <a class="so-btn-primary" href="https://wa.me/917200006006?text=${encodeURIComponent('Hello Kovin, I read your second opinion on the ' + product.name + ' (something you don’t sell) and would like to talk it through.')}" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          Talk it through on WhatsApp
+        </a>
+        <a class="so-btn-secondary" href="library.html">See what we’d suggest instead in our Decision Library</a>
+        <a class="so-restart-link" id="restartLink">Get a second opinion on something else</a>`;
+    }
+    document.getElementById('restartLink').addEventListener('click', restart);
+  }
+
+  /* ══ Cart integration — only for products Kovin actually sells ══ */
+  function keepThisReady() {
+    if (!product.soldByKovin) return;
+    const btn = document.getElementById('keepReadyBtn');
+    let cart = [];
+    try { cart = JSON.parse(localStorage.getItem('kovin-cart')) || []; } catch (e) {}
+    const existing = cart.find(i => i.id === product.id);
+    if (existing) existing.qty = Math.min(existing.qty + 1, 10);
+    else cart.push({ id: product.id, name: product.name, price: product.price, image: product.image, qty: 1, oldPrice: null });
+    try { localStorage.setItem('kovin-cart', JSON.stringify(cart)); } catch (e) {}
+
+    btn.classList.add('is-added');
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Ready — view in cart';
+    gsap.fromTo(btn, { scale: 0.95 }, { scale: 1, duration: 0.4, ease: 'power2.out' });
+    showToast(`${product.name} kept ready`);
+  }
+
+  /* ══ Restart ══ */
+  function restart() {
+    product = null; chosenId = null;
+    $reviewScreen.style.display = 'none';
+    document.querySelectorAll('.so-device-card').forEach(b => b.classList.remove('is-chosen'));
+    $startBtn.disabled = true;
+    $intro.style.display = 'block';
+    gsap.fromTo($intro, { opacity: 0 }, { opacity: 1, duration: 0.4, ease: 'power2.out' });
+    window.scrollTo(0, 0);
+  }
+  document.getElementById('changeProductBtn').addEventListener('click', restart);
+
+  /* ── Toast ── */
+  function showToast(msg) {
+    $toast.textContent = msg;
+    clearTimeout(toastTimer);
+    gsap.killTweensOf($toast);
+    gsap.fromTo($toast, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power3.out', onComplete: () => { toastTimer = setTimeout(() => gsap.to($toast, { opacity: 0, y: 14, duration: 0.28, ease: 'power2.in' }), 2300); } });
+  }
+
+  /* ── Life Mode acknowledgment — light touch, set via lifemode.html ── */
+  const LIFE_MODE_INFO = {
+    college: { icon: '🎓', title: 'Starting College' }, parents: { icon: '👪', title: 'Buying For Parents' },
+    salary: { icon: '💼', title: 'First Salary' }, wfh: { icon: '🏠', title: 'Work From Home' },
+    travel: { icon: '✈️', title: 'Travelling Frequently' }, creator: { icon: '🎬', title: 'Content Creation' },
+    business: { icon: '📈', title: 'Business Essentials' }, entertainment: { icon: '🎥', title: 'Entertainment Upgrade' },
+    newhome: { icon: '🏡', title: 'Moving Into A New Home' },
+  };
+  function applyLifeModeBanner() {
+    let modeId = null;
+    try { modeId = localStorage.getItem('kovin-life-mode'); } catch (e) {}
+    const info = modeId ? LIFE_MODE_INFO[modeId] : null;
+    const banner = document.getElementById('lifeModeBanner');
+    const bannerText = document.getElementById('lifeModeBannerText');
+    if (info && banner && bannerText) {
+      banner.style.display = 'flex';
+      bannerText.textContent = `${info.icon} Tailored for: ${info.title}`;
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => { buildIntro(); applyLifeModeBanner(); });
+})();
+</script>
+</body>
+</html>
