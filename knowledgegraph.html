@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0">
+<meta name="theme-color" content="#F7F4EF">
+<meta name="description" content="The Kovin Knowledge Graph — how every recommendation is reasoned out loud, never an unexplained 'AI recommends'.">
+<title>How Kovin Thinks · Kovin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="knowledge-graph.js"></script>
+<style>
+
+/* ══════════════════════════════════════════════════
+   KOVIN KNOWLEDGE GRAPH
+   "Kovin understands technology in a way that's
+    easy for me to understand."
+══════════════════════════════════════════════════ */
+:root {
+  --ink:          #1A1612;
+  --paper:        #F7F4EF;
+  --paper-warm:   #EDE8E0;
+  --paper-dim:    #E5DDD4;
+  --copper:       #E35336;
+  --copper-deep:  #C9432A;
+  --sand:         #F4A460;
+  --wood:         #7B5940;
+  --border:       rgba(26,22,18,0.08);
+  --border-strong:rgba(26,22,18,0.16);
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+  --ease-out:     cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html { height: 100%; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+button { font: inherit; color: inherit; cursor: pointer; border: none; background: none; -webkit-tap-highlight-color: transparent; }
+a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+img { display: block; max-width: 100%; }
+ul { padding: 0; list-style: none; }
+:focus-visible { outline: 2px solid var(--copper); outline-offset: 3px; border-radius: 4px; }
+
+/* ══ Header ══ */
+.kg-header {
+  position: sticky; top: 0; z-index: 100;
+  height: calc(56px + env(safe-area-inset-top, 0px));
+  padding: env(safe-area-inset-top, 0px) 18px 0;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(247,244,239,0.86);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  backdrop-filter: blur(18px) saturate(1.3);
+  border-bottom: 1px solid var(--border);
+}
+.kg-back { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--paper-warm); border: 1px solid var(--border); color: var(--ink); flex-shrink: 0; }
+.kg-back svg { width: 16px; height: 16px; }
+.kg-header-title { display: flex; flex-direction: column; align-items: center; }
+.kg-wordmark { font-family: var(--font-display); font-size: 1.22rem; font-weight: 500; letter-spacing: -0.02em; }
+.kg-wordmark span { color: var(--copper); }
+.kg-eyebrow-tag { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.4; margin-top: 1px; }
+.kg-spacer { width: 36px; flex-shrink: 0; }
+
+/* ══ Intro ══ */
+.kg-intro { padding: 26px 20px 6px; }
+.kg-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 0.66rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--copper); margin-bottom: 14px;
+}
+.kg-eyebrow::before, .kg-eyebrow::after { content: ''; width: 16px; height: 1.5px; background: currentColor; opacity: 0.5; }
+.kg-intro h1 { font-family: var(--font-display); font-weight: 500; letter-spacing: -0.02em; font-size: clamp(1.9rem, 7.5vw, 2.5rem); line-height: 1.12; margin-bottom: 12px; }
+.kg-intro p { font-size: 0.88rem; line-height: 1.65; opacity: 0.6; max-width: 400px; }
+
+/* ══ Picker ══ */
+.kg-picker { padding: 24px 20px 6px; }
+.kg-picker-label { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.42; margin-bottom: 10px; }
+.kg-chip-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 18px; -webkit-overflow-scrolling: touch; }
+.kg-chip-row::-webkit-scrollbar { display: none; }
+.kg-chip {
+  flex: 0 0 auto; display: inline-flex; align-items: center; gap: 6px; padding: 9px 15px; border-radius: 100px;
+  background: var(--paper-warm); border: 1.5px solid var(--border); font-size: 0.8rem; font-weight: 600;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.kg-chip.is-active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+/* ══════════════════════════════════════════════════
+   CONSTELLATION
+══════════════════════════════════════════════════ */
+.kg-constellation { padding: 10px 20px 0; }
+.kg-anchor-wrap { position: relative; max-width: 280px; margin: 0 auto 8px; }
+.kg-anchor-shadow {
+  position: absolute; inset: 8px -8px -10px 8px; border-radius: 22px; background: var(--paper-dim);
+  border: 1px solid var(--border);
+}
+.kg-anchor {
+  position: relative; background: var(--ink); color: var(--paper); border-radius: 22px;
+  padding: 18px 18px 16px; text-align: center; z-index: 1;
+}
+.kg-anchor-img { width: 64px; height: 64px; margin: 0 auto 10px; border-radius: 16px; background: rgba(247,244,239,0.08); display: flex; align-items: center; justify-content: center; }
+.kg-anchor-img img { max-width: 70%; max-height: 70%; object-fit: contain; }
+.kg-anchor-name { font-family: var(--font-display); font-size: 1.22rem; font-weight: 500; line-height: 1.2; margin-bottom: 3px; }
+.kg-anchor-mode { font-size: 0.72rem; opacity: 0.6; }
+.kg-anchor-mode strong { color: var(--sand); font-weight: 600; }
+
+/* spine + nodes */
+.kg-spine-wrap { position: relative; padding: 20px 0 4px 46px; }
+.kg-spine-wrap::before { content: ''; position: absolute; left: 19px; top: 0; bottom: 14px; width: 1.5px; background: var(--border-strong); }
+.kg-node { position: relative; padding-bottom: 14px; }
+.kg-node:last-child { padding-bottom: 0; }
+.kg-node-dot {
+  position: absolute; left: -39px; top: 2px; width: 14px; height: 14px; border-radius: 50%;
+  background: var(--paper); border: 2px solid var(--border-strong); transition: border-color 0.3s ease, background 0.3s ease;
+}
+.kg-node.is-weighted .kg-node-dot { background: var(--copper); border-color: var(--copper); box-shadow: 0 0 0 4px rgba(227,83,54,0.14); }
+.kg-node-card {
+  background: var(--paper-warm); border: 1px solid var(--border); border-radius: 16px; padding: 12px 14px;
+  display: flex; align-items: center; gap: 10px; opacity: 0.45; transition: opacity 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+}
+.kg-node.is-weighted .kg-node-card { opacity: 1; background: rgba(227,83,54,0.07); border-color: rgba(227,83,54,0.2); }
+.kg-node-icon { font-size: 1.1rem; flex-shrink: 0; }
+.kg-node-body { flex: 1; min-width: 0; }
+.kg-node-label { font-size: 0.8rem; font-weight: 700; }
+.kg-node-note { font-size: 0.72rem; opacity: 0.6; line-height: 1.4; margin-top: 2px; }
+
+/* ══ Section shell ══ */
+.kg-section { padding: 30px 20px; }
+.kg-section.is-divided { border-top: 1px solid var(--border); }
+.kg-section-eyebrow { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--copper); margin-bottom: 10px; }
+.kg-section-title { font-family: var(--font-display); font-weight: 500; letter-spacing: -0.018em; font-size: clamp(1.3rem, 5.2vw, 1.6rem); line-height: 1.2; margin-bottom: 14px; }
+
+/* ══ Why this fits ══ */
+.kg-fit-list { display: flex; flex-direction: column; gap: 10px; }
+.kg-fit-card { display: flex; gap: 13px; align-items: flex-start; background: var(--paper-warm); border-radius: 16px; padding: 14px 15px; }
+.kg-fit-icon { width: 36px; height: 36px; border-radius: 11px; background: var(--paper); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.05rem; }
+.kg-fit-body { flex: 1; min-width: 0; }
+.kg-fit-label { font-size: 0.86rem; font-weight: 700; margin-bottom: 2px; }
+.kg-fit-note { font-size: 0.79rem; opacity: 0.6; line-height: 1.48; }
+
+/* ══ Why not / would change / valid until ══ */
+.kg-quote-card { border: 1.5px solid var(--ink); border-radius: 20px; padding: 20px 18px; }
+.kg-quote-badge { display: inline-flex; align-items: center; gap: 7px; font-size: 0.64rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--copper); margin-bottom: 10px; }
+.kg-quote-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--copper); }
+.kg-quote-text { font-family: var(--font-display); font-size: 1.14rem; font-weight: 400; font-style: italic; line-height: 1.42; }
+
+.kg-soft-card { background: var(--paper-warm); border-radius: 18px; padding: 18px 18px; }
+.kg-soft-card p { font-size: 0.86rem; line-height: 1.6; }
+
+.kg-upgrade-card { background: var(--ink); color: var(--paper); border-radius: 20px; padding: 19px 18px; }
+.kg-upgrade-window { font-family: var(--font-display); font-size: 1.18rem; font-weight: 500; margin-bottom: 6px; color: var(--sand); }
+.kg-upgrade-note { font-size: 0.84rem; line-height: 1.58; opacity: 0.78; }
+
+/* ══ Ownership arc ══ */
+.kg-arc-timeline { position: relative; padding-left: 28px; }
+.kg-arc-timeline::before { content: ''; position: absolute; left: 7px; top: 6px; bottom: 6px; width: 1.5px; background: var(--border-strong); }
+.kg-arc-node { position: relative; padding-bottom: 22px; }
+.kg-arc-node:last-child { padding-bottom: 0; }
+.kg-arc-dot { position: absolute; left: -28px; top: 1px; width: 16px; height: 16px; border-radius: 50%; background: var(--copper); border: 2px solid var(--copper); }
+.kg-arc-stage { font-family: var(--font-display); font-size: 1.05rem; font-weight: 500; color: var(--copper); line-height: 1.2; }
+.kg-arc-note { font-size: 0.79rem; opacity: 0.58; margin-top: 3px; line-height: 1.48; }
+
+/* ══ Compare ══ */
+.kg-compare-card { background: var(--paper-warm); border-radius: 20px; padding: 19px 18px; }
+.kg-compare-vs { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.4; margin-bottom: 10px; }
+.kg-compare-text { font-size: 0.88rem; line-height: 1.62; }
+.kg-compare-text strong { color: var(--copper-deep); }
+
+/* ══ Powers / footer links ══ */
+.kg-powers-grid { display: flex; flex-direction: column; gap: 8px; }
+.kg-power-link {
+  display: flex; align-items: center; gap: 12px; background: var(--paper-warm); border-radius: 14px; padding: 13px 15px;
+}
+.kg-power-icon { width: 32px; height: 32px; border-radius: 9px; background: var(--paper); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.95rem; }
+.kg-power-text { flex: 1; min-width: 0; }
+.kg-power-title { font-size: 0.82rem; font-weight: 600; }
+.kg-power-sub { font-size: 0.7rem; opacity: 0.5; margin-top: 1px; }
+.kg-power-arrow { width: 14px; height: 14px; opacity: 0.3; flex-shrink: 0; }
+
+.kg-footer { padding: 30px 20px calc(env(safe-area-inset-bottom, 0px) + 36px); text-align: center; }
+.kg-footer-word { font-family: var(--font-display); font-size: 1.1rem; opacity: 0.5; }
+
+/* ══ Desktop ══ */
+@media (min-width: 720px) {
+  body { background: var(--paper-dim); }
+  #app-shell { max-width: 480px; margin: 0 auto; background: var(--paper); box-shadow: 0 0 80px rgba(0,0,0,0.08); min-height: 100dvh; }
+  .kg-header { max-width: 480px; left: 50%; transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+</style>
+</head>
+<body>
+
+<div id="app-shell">
+
+  <header class="kg-header">
+    <a href="index.html" class="kg-back" aria-label="Back to Kovin">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    </a>
+    <div class="kg-header-title">
+      <span class="kg-wordmark">Kov<span>·</span>in</span>
+      <span class="kg-eyebrow-tag">How Kovin Thinks</span>
+    </div>
+    <span class="kg-spacer" aria-hidden="true"></span>
+  </header>
+
+  <div class="kg-intro">
+    <span class="kg-eyebrow">The intelligence behind every recommendation</span>
+    <h1>Every suggestion, reasoned out loud.</h1>
+    <p>Not "AI recommends." Every product, life situation, and trade-off here is connected on purpose — pick a product and a situation below, and watch the reasoning unfold in plain language.</p>
+  </div>
+
+  <div class="kg-picker">
+    <div class="kg-picker-label">Product</div>
+    <div class="kg-chip-row" id="productChips"></div>
+    <div class="kg-picker-label">Situation</div>
+    <div class="kg-chip-row" id="modeChips"></div>
+  </div>
+
+  <!-- ░░ Constellation ░░ -->
+  <div class="kg-constellation">
+    <div class="kg-anchor-wrap">
+      <div class="kg-anchor-shadow" aria-hidden="true"></div>
+      <div class="kg-anchor">
+        <div class="kg-anchor-img"><img id="anchorImg" src="" alt=""></div>
+        <div class="kg-anchor-name" id="anchorName"></div>
+        <div class="kg-anchor-mode">Reasoned for <strong id="anchorMode"></strong></div>
+      </div>
+    </div>
+    <div class="kg-spine-wrap" id="nodeSpine"></div>
+  </div>
+
+  <!-- ░░ Why this fits ░░ -->
+  <section class="kg-section is-divided">
+    <div class="kg-section-eyebrow">Why This Fits</div>
+    <div class="kg-section-title">What's actually weighing in.</div>
+    <div class="kg-fit-list" id="fitList"></div>
+  </section>
+
+  <!-- ░░ Why the alternative doesn't ░░ -->
+  <section class="kg-section is-divided" id="whyNotSection">
+    <div class="kg-section-eyebrow">Why The Alternative Doesn't</div>
+    <div class="kg-section-title" id="whyNotTitle"></div>
+    <div class="kg-quote-card">
+      <div class="kg-quote-badge">The honest trade-off</div>
+      <p class="kg-quote-text" id="whyNotText"></p>
+    </div>
+  </section>
+
+  <!-- ░░ What would change this ░░ -->
+  <section class="kg-section is-divided">
+    <div class="kg-section-eyebrow">What Would Change This</div>
+    <div class="kg-section-title">This isn't fixed — it's conditional.</div>
+    <div class="kg-soft-card"><p id="changeIfText"></p></div>
+  </section>
+
+  <!-- ░░ How long this stays right ░░ -->
+  <section class="kg-section is-divided">
+    <div class="kg-section-eyebrow">How Long This Stays Right</div>
+    <div class="kg-section-title">A recommendation has a shelf life too.</div>
+    <div class="kg-upgrade-card">
+      <div class="kg-upgrade-window" id="validWindow"></div>
+      <p class="kg-upgrade-note" id="validNote"></p>
+    </div>
+  </section>
+
+  <!-- ░░ How ownership changes ░░ -->
+  <section class="kg-section is-divided">
+    <div class="kg-section-eyebrow">How Ownership Changes</div>
+    <div class="kg-section-title">The same product, over time.</div>
+    <div class="kg-arc-timeline" id="arcTimeline"></div>
+  </section>
+
+  <!-- ░░ Compared to ░░ -->
+  <section class="kg-section is-divided">
+    <div class="kg-section-eyebrow">Compared To</div>
+    <div class="kg-section-title">Pick something else to weigh it against.</div>
+    <div class="kg-chip-row" id="compareChips" style="margin-bottom:14px;"></div>
+    <div class="kg-compare-card">
+      <div class="kg-compare-vs" id="compareVs"></div>
+      <p class="kg-compare-text" id="compareText"></p>
+    </div>
+  </section>
+
+  <!-- ░░ What this powers ░░ -->
+  <section class="kg-section is-divided">
+    <div class="kg-section-eyebrow">The Invisible Brain</div>
+    <div class="kg-section-title">This same reasoning powers —</div>
+    <div class="kg-powers-grid">
+      <a class="kg-power-link" href="confidence.html"><div class="kg-power-icon">◎</div><div class="kg-power-text"><div class="kg-power-title">Confidence Engine</div><div class="kg-power-sub">Personal confidence, scored from these same weights.</div></div><svg class="kg-power-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></a>
+      <a class="kg-power-link" href="secondopinion.html"><div class="kg-power-icon">⚖</div><div class="kg-power-text"><div class="kg-power-title">Second Opinion</div><div class="kg-power-sub">Honest, comparative reasoning — not brand bias.</div></div><svg class="kg-power-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></a>
+      <a class="kg-power-link" href="horizon.html"><div class="kg-power-icon">⏳</div><div class="kg-power-text"><div class="kg-power-title">Technology Horizon</div><div class="kg-power-sub">The same upgrade-path data, shown as a timeline.</div></div><svg class="kg-power-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></a>
+      <a class="kg-power-link" href="journey.html"><div class="kg-power-icon">✦</div><div class="kg-power-text"><div class="kg-power-title">Ownership Journey</div><div class="kg-power-sub">Ownership arcs, the same shape shown above.</div></div><svg class="kg-power-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></a>
+      <a class="kg-power-link" href="lifemode.html"><div class="kg-power-icon">◐</div><div class="kg-power-text"><div class="kg-power-title">Life Modes</div><div class="kg-power-sub">The situation weights used above, in full.</div></div><svg class="kg-power-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></a>
+      <a class="kg-power-link" href="family.html"><div class="kg-power-icon">⌂</div><div class="kg-power-text"><div class="kg-power-title">Family Hub</div><div class="kg-power-sub">Each profile's "what matters most" comes from here.</div></div><svg class="kg-power-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg></a>
+    </div>
+  </section>
+
+  <footer class="kg-footer">
+    <div class="kg-footer-word">Kov<span style="color:var(--copper);">·</span>in</div>
+  </footer>
+
+</div><!-- /app-shell -->
+
+<script>
+/* ══════════════════════════════════════════════════
+   KOVIN KNOWLEDGE GRAPH — VISUALIZATION
+══════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  if (!window.KovinGraph) return;
+  var G = window.KovinGraph;
+  var PRODUCTS = G.PRODUCTS, LIFE_MODES = G.LIFE_MODES, ATTR_META = G.ATTR_META;
+  var ATTR_KEYS = Object.keys(ATTR_META).filter(function (k) { return k !== 'price'; });
+
+  var state = { productId: 1, modeId: 'parents', compareId: null };
+
+  function buildChips(container, items, getKey, getLabel, getIcon, activeKey, onClick) {
+    container.innerHTML = items.map(function (item) {
+      var key = getKey(item);
+      var active = key === activeKey;
+      return '<button class="kg-chip' + (active ? ' is-active' : '') + '" data-key="' + key + '">' +
+        (getIcon ? getIcon(item) + ' ' : '') + getLabel(item) + '</button>';
+    }).join('');
+    Array.prototype.forEach.call(container.querySelectorAll('.kg-chip'), function (btn, i) {
+      btn.addEventListener('click', function () { onClick(items[i]); });
+    });
+  }
+
+  function render() {
+    var product = PRODUCTS[state.productId];
+    var mode = LIFE_MODES.filter(function (m) { return m.id === state.modeId; })[0];
+    var reasoning = G.reasonFor(state.productId, state.modeId);
+
+    /* Picker chips */
+    buildChips(document.getElementById('productChips'), Object.keys(PRODUCTS).map(Number),
+      function (id) { return id; }, function (id) { return PRODUCTS[id].name; }, null, state.productId,
+      function (id) { state.productId = id; if (state.compareId === id) state.compareId = null; render(); });
+
+    buildChips(document.getElementById('modeChips'), LIFE_MODES,
+      function (m) { return m.id; }, function (m) { return m.title; }, function (m) { return m.icon; }, state.modeId,
+      function (m) { state.modeId = m.id; render(); });
+
+    /* Anchor */
+    document.getElementById('anchorImg').src = product.image;
+    document.getElementById('anchorImg').alt = product.name;
+    document.getElementById('anchorName').textContent = product.name;
+    document.getElementById('anchorMode').textContent = mode.title;
+
+    /* Spine of attribute nodes — every connection in the graph, dimmed unless it's weighted for this situation */
+    var weightedKeys = reasoning.fits.map(function (f) { return f.key; });
+    var $spine = document.getElementById('nodeSpine');
+    $spine.innerHTML = ATTR_KEYS.filter(function (k) { return product[k]; }).map(function (k) {
+      var attr = product[k];
+      var weighted = weightedKeys.indexOf(k) !== -1;
+      return '<div class="kg-node' + (weighted ? ' is-weighted' : '') + '">' +
+        '<span class="kg-node-dot" aria-hidden="true"></span>' +
+        '<div class="kg-node-card"><span class="kg-node-icon" aria-hidden="true">' + ATTR_META[k].icon + '</span>' +
+        '<div class="kg-node-body"><div class="kg-node-label">' + ATTR_META[k].label + '</div>' +
+        '<div class="kg-node-note">' + attr.note + '</div></div></div></div>';
+    }).join('');
+
+    /* Why this fits */
+    document.getElementById('fitList').innerHTML = reasoning.fits.length
+      ? reasoning.fits.map(function (f) {
+          return '<div class="kg-fit-card"><div class="kg-fit-icon">' + f.icon + '</div>' +
+            '<div class="kg-fit-body"><div class="kg-fit-label">' + f.label + '</div><div class="kg-fit-note">' + f.note + '</div></div></div>';
+        }).join('')
+      : '<p class="kg-fit-note">Nothing here is decisively weighted for this situation — it is a safe, neutral fit rather than a standout one.</p>';
+
+    /* Why the alternative doesn't */
+    var $whyNot = document.getElementById('whyNotSection');
+    if (reasoning.whyNotAlternative) {
+      $whyNot.style.display = '';
+      document.getElementById('whyNotTitle').textContent = 'Why not the ' + reasoning.whyNotAlternative.productName + '?';
+      document.getElementById('whyNotText').textContent = reasoning.whyNotAlternative.reason;
+    } else {
+      $whyNot.style.display = 'none';
+    }
+
+    /* What would change this */
+    document.getElementById('changeIfText').textContent = reasoning.changeIf;
+
+    /* How long this stays right */
+    document.getElementById('validWindow').textContent = reasoning.validUntil.window;
+    document.getElementById('validNote').textContent = reasoning.validUntil.note;
+
+    /* Ownership arc */
+    document.getElementById('arcTimeline').innerHTML = reasoning.ownershipArc.map(function (a) {
+      return '<div class="kg-arc-node"><span class="kg-arc-dot" aria-hidden="true"></span>' +
+        '<div class="kg-arc-stage">' + a.stage + '</div><div class="kg-arc-note">' + a.note + '</div></div>';
+    }).join('');
+
+    /* Compare */
+    var others = Object.keys(PRODUCTS).map(Number).filter(function (id) { return id !== state.productId; });
+    if (!state.compareId || state.compareId === state.productId) state.compareId = others[0];
+    buildChips(document.getElementById('compareChips'), others,
+      function (id) { return id; }, function (id) { return PRODUCTS[id].name; }, null, state.compareId,
+      function (id) { state.compareId = id; render(); });
+    var cmp = G.compareFor(state.productId, state.compareId, state.modeId);
+    document.getElementById('compareVs').textContent = product.name + ' vs ' + PRODUCTS[state.compareId].name + ' — for ' + mode.title;
+    document.getElementById('compareText').innerHTML = 'For <strong>' + cmp.mode + '</strong>, the reasoning favors <strong>' + cmp.winnerName + '</strong>. ' + cmp.reason;
+
+    var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (window.gsap && !reduced) {
+      gsap.killTweensOf(['.kg-node', '.kg-fit-card', '.kg-arc-node']);
+      gsap.fromTo('.kg-node', { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: 0.4, stagger: 0.05, ease: 'power2.out' });
+      gsap.fromTo('.kg-fit-card', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, stagger: 0.06, ease: 'power2.out', delay: 0.1 });
+      gsap.fromTo('.kg-arc-node', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4, stagger: 0.07, ease: 'power2.out', delay: 0.1 });
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', render);
+})();
+</script>
+<!-- KOVIN-PWA:START -->
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Kovin">
+<meta name="mobile-web-app-capable" content="yes">
+<style>
+  /* Native-feeling cross-page transitions in browsers that support
+     the View Transitions API (Chrome/Edge on Android, desktop).
+     Everywhere else this is silently ignored — plain navigation. */
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root), ::view-transition-new(root) {
+    animation-duration: 0.32s;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  ::view-transition-old(root) { animation-name: kovin-fade-out; }
+  ::view-transition-new(root) { animation-name: kovin-fade-in; }
+  @keyframes kovin-fade-out { to { opacity: 0; transform: scale(0.99); } }
+  @keyframes kovin-fade-in { from { opacity: 0; transform: scale(1.01); } }
+
+  /* Offline-aware in-page banner (separate from offline.html, which
+     only appears on a full navigation with nothing cached). */
+  #kovin-offline-banner {
+    position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 18px);
+    transform: translateX(-50%) translateY(20px);
+    background: #1A1612; color: #F7F4EF; font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.8rem; font-weight: 600; padding: 11px 20px; border-radius: 100px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.28); z-index: 9999;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s ease, transform 0.3s ease;
+    white-space: nowrap; max-width: 90vw;
+  }
+  #kovin-offline-banner.is-visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+<!-- KOVIN-PWA:END -->
+<!-- KOVIN-PWA:START -->
+<div id="kovin-offline-banner" role="status" aria-live="polite">You're offline — saved products and recent guidance are still available.</div>
+<script>
+(function () {
+  'use strict';
+
+  /* ── Service worker: app-shell caching, offline fallback, push/sync-ready ── */
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    });
+  }
+
+  /* ── In-page offline/online banner (page already loaded, connection drops) ── */
+  var offlineBanner = document.getElementById('kovin-offline-banner');
+  function setOfflineState(isOffline) {
+    if (!offlineBanner) return;
+    if (isOffline) {
+      offlineBanner.textContent = "You're offline — saved products and recent guidance are still available.";
+      offlineBanner.classList.add('is-visible');
+    } else {
+      offlineBanner.textContent = 'Back online.';
+      offlineBanner.classList.add('is-visible');
+      setTimeout(function () { offlineBanner.classList.remove('is-visible'); }, 2200);
+    }
+  }
+  window.addEventListener('offline', function () { setOfflineState(true); });
+  window.addEventListener('online', function () { setOfflineState(false); });
+  if (!navigator.onLine) setOfflineState(true);
+
+  /* ── Native share — used by any element with [data-kovin-share] ── */
+  window.kovinShare = function (title, text, url) {
+    var shareUrl = url || window.location.href;
+    if (navigator.share) {
+      navigator.share({ title: title || 'Kovin', text: text || '', url: shareUrl }).catch(function () {});
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(shareUrl).then(function () {
+        if (offlineBanner) {
+          offlineBanner.textContent = 'Link copied.';
+          offlineBanner.classList.add('is-visible');
+          setTimeout(function () { offlineBanner.classList.remove('is-visible'); }, 1800);
+        }
+      }).catch(function () {});
+    }
+  };
+})();
+</script>
+<!-- KOVIN-PWA:END -->
+</body>
+</html>
