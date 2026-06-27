@@ -2696,7 +2696,7 @@
                     <span class="hero-eyebrow">Five Collections · Thirteen Products</span>
                     <h2>Picked with<br>intention.</h2>
                     <p class="catalogue-intro-text">Not the most options — the right ones. Every product here earned its place, and every product detail page explains why it was chosen, what it does exceptionally well, and what it may not be ideal for.</p>
-                    <p style="margin-top: 16px; font-size: var(--fs-small); opacity: 0.55;">Prefer fewer questions? Try the <a href="eliminate.html" style="color: var(--copper); font-weight: 600; text-decoration: none;">Elimination Engine</a> — remove the wrong choices first. Already own something from us? Visit your <a href="journey.html" style="color: var(--copper); font-weight: 600; text-decoration: none;">Ownership Journey</a>. Considering one product specifically? Check your <a href="confidence.html" style="color: var(--copper); font-weight: 600; text-decoration: none;">Confidence Score</a>. Curious what we've learned along the way? Browse the <a href="library.html" style="color: var(--copper); font-weight: 600; text-decoration: none;">Decision Library</a>.</p>
+                    <p style="margin-top: 16px; font-size: var(--fs-small); opacity: 0.55;">Prefer fewer questions? Try the <a href="eliminate.html" style="color: var(--copper); font-weight: 600; text-decoration: none;">Elimination Engine</a> — remove the wrong choices first. Already own something from us? Visit your <a href="journey.html" style="color: var(--copper); font-weight: 600; text-decoration: none;">Ownership Journey</a>. Considering one product specifically? Check your <a href="confidence.html" style="color: var(--copper); font-weight: 600; text-decoration: none;">Confidence Score</a>. Curious what we've learned along the way? Browse the <a href="library.html" style="color: var(--copper); font-weight: 600; text-decoration: none;">Decision Library</a>. Want to know how a choice ages? See the <a href="horizon.html" style="color: var(--copper); font-weight: 600; text-decoration: none;">Technology Horizon</a>.</p>
                 </div>
 
                 <!-- Catalogue search — quick filter by product name/specs -->
@@ -3305,7 +3305,8 @@
                 <span class="hero-eyebrow" id="modal-badge">Authentic</span>
                 <!-- Confidence indicator: honest positioning, not a marketing badge -->
                 <div id="modal-confidence" style="margin-bottom:4px;"></div>
-                <a id="modal-confidence-link" href="confidence.html" style="display:none;font-size:var(--fs-caption);color:var(--copper);font-weight:600;text-decoration:none;margin-bottom:var(--sp-3);">Not sure yet? Check your personal confidence score →</a>
+                <a id="modal-confidence-link" href="confidence.html" style="display:none;font-size:var(--fs-caption);color:var(--copper);font-weight:600;text-decoration:none;margin-bottom:4px;">Not sure yet? Check your personal confidence score →</a>
+                <a id="modal-horizon-link" href="horizon.html" style="display:none;font-size:var(--fs-caption);color:var(--copper);font-weight:600;text-decoration:none;margin-bottom:var(--sp-3);">Curious how this ages? See the Technology Horizon →</a>
                 <h2 class="modal-title" id="modal-title">Product Name</h2>
                 <div id="modal-social-proof" class="social-proof-line"></div>
                 <div id="modal-decision" class="decision-line"></div>
@@ -4812,10 +4813,16 @@
             }
             /* ── Confidence Engine deep link — only for products with a question set ── */
             const confLinkEl = document.getElementById('modal-confidence-link');
+            const hasConfidenceEngine = [1, 2, 3, 4].includes(p.id);
             if (confLinkEl) {
-                const hasConfidenceEngine = [1, 2, 3, 4].includes(p.id);
                 confLinkEl.style.display = hasConfidenceEngine ? 'inline-block' : 'none';
                 if (hasConfidenceEngine) confLinkEl.href = `confidence.html?product=${p.id}`;
+            }
+            /* ── Technology Horizon deep link — same product pool as the Confidence Engine ── */
+            const horizonLinkEl = document.getElementById('modal-horizon-link');
+            if (horizonLinkEl) {
+                horizonLinkEl.style.display = hasConfidenceEngine ? 'inline-block' : 'none';
+                if (hasConfidenceEngine) horizonLinkEl.href = `horizon.html?product=${p.id}`;
             }
 
             /* ── Why this was chosen — guidance section ── */
@@ -4884,6 +4891,8 @@
             if (confEl) confEl.innerHTML = '';
             const confLinkEl = document.getElementById('modal-confidence-link');
             if (confLinkEl) confLinkEl.style.display = 'none';
+            const horizonLinkEl = document.getElementById('modal-horizon-link');
+            if (horizonLinkEl) horizonLinkEl.style.display = 'none';
             const guidanceSection = document.getElementById('modal-guidance-section');
             if (guidanceSection) guidanceSection.style.display = 'none';
 

@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0">
+<meta name="theme-color" content="#F7F4EF">
+<meta name="description" content="Kovin Technology Horizon — understand not just what to buy, but how that decision will feel over the years that follow.">
+<title>The Technology Horizon · Kovin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<style>
+
+/* ══════════════════════════════════════════════════
+   KOVIN TECHNOLOGY HORIZON
+   "I know what buying this means for the next
+    several years." — Editorial, warm, timeline-based.
+   No spec charts. No fear. No countdowns.
+══════════════════════════════════════════════════ */
+:root {
+  --ink:          #1A1612;
+  --paper:        #F7F4EF;
+  --paper-warm:   #EDE8E0;
+  --paper-dim:    #E5DDD4;
+  --copper:       #E35336;
+  --copper-deep:  #C9432A;
+  --sand:         #F4A460;
+  --wood:         #7B5940;
+  --border:       rgba(26,22,18,0.08);
+  --border-strong:rgba(26,22,18,0.16);
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+  --ease-out:     cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html { height: 100%; }
+body {
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+button { font: inherit; color: inherit; cursor: pointer; border: none; background: none; -webkit-tap-highlight-color: transparent; }
+a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+img { display: block; max-width: 100%; }
+:focus-visible { outline: 2px solid var(--copper); outline-offset: 3px; border-radius: 4px; }
+
+/* ══ Header ══ */
+.h-header {
+  position: sticky; top: 0; z-index: 200;
+  height: calc(56px + env(safe-area-inset-top, 0px));
+  padding: env(safe-area-inset-top, 0px) 18px 0;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(247,244,239,0.92);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  backdrop-filter: blur(18px) saturate(1.3);
+  border-bottom: 1px solid var(--border);
+}
+.h-back { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--paper-warm); border: 1px solid var(--border); color: var(--ink); }
+.h-back svg { width: 16px; height: 16px; }
+.h-header-title { display: flex; flex-direction: column; align-items: center; }
+.h-wordmark { font-family: var(--font-display); font-size: 1.22rem; font-weight: 500; letter-spacing: -0.02em; }
+.h-wordmark span { color: var(--copper); }
+.h-eyebrow-tag { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.4; margin-top: 1px; }
+.h-spacer { width: 36px; }
+
+#lifeModeBanner { display: none; align-items: center; gap: 8px; padding: 9px 18px; background: rgba(227,83,54,0.1); border-bottom: 1px solid var(--border); color: var(--copper); font-size: 0.76rem; font-weight: 600; }
+
+/* ══════════════════════════════════════════════════
+   INTRO / PICKER
+══════════════════════════════════════════════════ */
+#intro { padding: 26px 20px 40px; }
+.h-intro-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 0.66rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--copper); margin-bottom: 14px;
+}
+.h-intro-eyebrow::before, .h-intro-eyebrow::after { content: ''; width: 16px; height: 1.5px; background: currentColor; opacity: 0.5; }
+#intro h1 { font-family: var(--font-display); font-weight: 500; letter-spacing: -0.02em; font-size: clamp(1.9rem, 7.5vw, 2.5rem); line-height: 1.12; margin-bottom: 14px; }
+#intro h1 em { font-style: italic; color: var(--copper); }
+#intro > p.h-intro-sub { font-size: 0.88rem; line-height: 1.65; opacity: 0.6; max-width: 360px; margin-bottom: 10px; }
+.h-intro-philosophy { background: var(--paper-warm); border-radius: 16px; padding: 16px 18px; margin: 18px 0 28px; font-family: var(--font-display); font-size: 1.05rem; font-style: italic; line-height: 1.5; }
+.h-section-label { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.42; margin-bottom: 12px; }
+.h-device-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+.h-device-card { background: var(--paper-warm); border: 1.5px solid var(--border); border-radius: 18px; padding: 14px 12px; text-align: center; transition: border-color 0.2s ease, background 0.2s ease, transform 0.15s ease; }
+.h-device-card:active { transform: scale(0.97); }
+.h-device-card.is-chosen { border-color: var(--ink); background: var(--ink); color: var(--paper); }
+.h-device-card-img { width: 100%; height: 64px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px; }
+.h-device-card-img img { max-height: 56px; object-fit: contain; }
+.h-device-card-name { font-size: 0.78rem; font-weight: 600; line-height: 1.3; }
+
+.h-btn-primary { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 52px; padding: 15px 24px; border-radius: 100px; background: var(--copper); color: #fff; font-size: 0.92rem; font-weight: 600; box-shadow: 0 12px 28px -8px rgba(227,83,54,0.46); transition: background 0.2s ease, transform 0.15s ease, opacity 0.2s ease; }
+.h-btn-primary:hover { background: var(--copper-deep); }
+.h-btn-primary:active { transform: scale(0.97); }
+.h-btn-primary[disabled] { opacity: 0.35; pointer-events: none; }
+.h-btn-primary svg { width: 16px; height: 16px; }
+.h-btn-primary.is-added { background: #25D366; box-shadow: 0 12px 28px -8px rgba(37,211,102,0.4); }
+.h-btn-secondary { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 48px; padding: 13px 22px; border-radius: 100px; background: transparent; color: var(--ink); font-size: 0.84rem; font-weight: 500; border: 1.5px solid var(--border-strong); transition: background 0.2s ease, transform 0.15s ease; }
+.h-btn-secondary:hover { background: var(--paper-warm); }
+.h-btn-secondary:active { transform: scale(0.97); }
+
+/* ══════════════════════════════════════════════════
+   HORIZON SCREEN
+══════════════════════════════════════════════════ */
+#horizonScreen { display: none; }
+.h-device-strip { display: flex; align-items: center; gap: 13px; padding: 18px 20px; border-bottom: 1px solid var(--border); }
+.h-device-strip-img { width: 52px; height: 52px; border-radius: 13px; background: var(--paper-warm); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.h-device-strip-img img { max-width: 70%; max-height: 70%; object-fit: contain; }
+.h-device-strip-name { font-family: var(--font-display); font-size: 1.18rem; font-weight: 500; line-height: 1.2; }
+.h-device-strip-sub { font-size: 0.72rem; opacity: 0.45; margin-top: 1px; }
+.h-device-strip-change { margin-left: auto; font-size: 0.76rem; font-weight: 600; color: var(--copper); flex-shrink: 0; }
+
+.h-section { padding: 32px 20px; border-bottom: 1px solid var(--border); }
+.h-section:last-of-type { border-bottom: none; }
+.h-section-eyebrow { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--copper); margin-bottom: 10px; }
+.h-section-title { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.4rem, 5.5vw, 1.75rem); line-height: 1.18; margin-bottom: 8px; }
+.h-section-sub { font-size: 0.84rem; line-height: 1.6; opacity: 0.55; max-width: 380px; margin-bottom: 22px; }
+
+/* ── Horizon timeline ── */
+.h-timeline { position: relative; padding-left: 30px; }
+.h-timeline::before { content: ''; position: absolute; left: 9px; top: 6px; bottom: 6px; width: 1.5px; background: var(--border-strong); }
+.h-tnode { position: relative; padding-bottom: 26px; }
+.h-tnode:last-child { padding-bottom: 0; }
+.h-tnode-dot { position: absolute; left: -30px; top: 1px; width: 19px; height: 19px; border-radius: 50%; background: var(--paper); border: 2px solid var(--border-strong); display: flex; align-items: center; justify-content: center; }
+.h-tnode-dot.is-future { border-style: dashed; }
+.h-tnode-marker { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--copper); margin-bottom: 4px; }
+.h-tnode-text { font-size: 0.88rem; line-height: 1.58; }
+
+.h-horizon-far { background: var(--paper-warm); border-radius: 16px; padding: 16px 18px; margin-top: 24px; }
+.h-horizon-far-label { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.42; margin-bottom: 8px; }
+.h-horizon-far p { font-size: 0.85rem; line-height: 1.58; }
+.h-horizon-far p + p { margin-top: 10px; }
+
+/* ── Wait or Buy ── */
+.h-waitbuy-card { border: 1.5px solid var(--ink); border-radius: 22px; padding: 22px 20px; }
+.h-waitbuy-badge { display: inline-flex; align-items: center; gap: 7px; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--copper); margin-bottom: 12px; }
+.h-waitbuy-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--copper); }
+.h-waitbuy-verdict { font-family: var(--font-display); font-size: 1.3rem; font-weight: 500; line-height: 1.3; margin-bottom: 10px; }
+.h-waitbuy-reason { font-size: 0.86rem; line-height: 1.58; opacity: 0.7; }
+
+/* ── Regret Predictor ── */
+.h-regret-qcard { background: var(--paper-warm); border-radius: 22px; padding: 20px 18px; margin-bottom: 14px; }
+.h-regret-qcard .qtext { font-family: var(--font-display); font-size: 1.18rem; font-weight: 500; line-height: 1.3; margin-bottom: 14px; }
+.h-regret-opts { display: flex; flex-direction: column; gap: 8px; }
+.h-regret-opt { display: block; width: 100%; text-align: left; padding: 13px 15px; border-radius: 13px; background: var(--paper); border: 1.5px solid var(--border); font-size: 0.85rem; font-weight: 600; line-height: 1.35; transition: border-color 0.18s ease, background 0.18s ease, transform 0.12s var(--ease-out); }
+.h-regret-opt:hover:not([disabled]) { border-color: var(--border-strong); }
+.h-regret-opt:active:not([disabled]) { transform: scale(0.98); }
+.h-regret-opt[disabled] { opacity: 0.4; }
+.h-regret-opt.is-chosen { background: var(--ink); color: var(--paper); opacity: 1; }
+.h-regret-progress { display: flex; gap: 4px; margin-bottom: 18px; }
+.h-regret-seg { flex: 1; height: 4px; border-radius: 2px; background: var(--paper-dim); transition: background 0.4s ease; }
+.h-regret-seg.is-filled { background: var(--copper); }
+
+.h-regret-result { border: 1.5px solid var(--ink); border-radius: 22px; padding: 22px 20px; }
+.h-regret-result-band { font-family: var(--font-display); font-size: 1.4rem; font-weight: 500; margin-bottom: 10px; }
+.h-regret-result-text { font-size: 0.86rem; line-height: 1.6; opacity: 0.72; margin-bottom: 16px; }
+.h-regret-result-notes { display: flex; flex-direction: column; gap: 8px; }
+.h-regret-note { display: flex; align-items: flex-start; gap: 9px; font-size: 0.82rem; line-height: 1.5; opacity: 0.68; }
+.h-regret-note svg { width: 14px; height: 14px; color: var(--copper); flex-shrink: 0; margin-top: 2px; }
+
+/* ── Long-Term Confidence dial ── */
+.h-confidence-wrap { text-align: center; }
+.h-dial-wrap { width: 120px; height: 120px; position: relative; margin: 0 auto 16px; }
+.h-dial-wrap svg { width: 120px; height: 120px; transform: rotate(-90deg); }
+.h-dial-ring-bg { fill: none; stroke: var(--paper-dim); stroke-width: 9; }
+.h-dial-ring-fg { fill: none; stroke: var(--copper); stroke-width: 9; stroke-linecap: round; }
+.h-dial-label { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.h-dial-band { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; line-height: 1.1; }
+.h-dial-sub { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.4; margin-top: 2px; }
+.h-confidence-text { font-size: 0.88rem; line-height: 1.62; max-width: 360px; margin: 0 auto; }
+
+.h-cta-area { padding: 6px 20px calc(env(safe-area-inset-bottom, 0px) + 30px); display: flex; flex-direction: column; gap: 10px; }
+.h-restart-link { display: block; text-align: center; margin-top: 14px; font-size: 0.78rem; opacity: 0.45; text-decoration: underline; }
+
+.h-toast { position: fixed; bottom: calc(env(safe-area-inset-bottom,0px) + 20px); left: 50%; transform: translateX(-50%) translateY(14px); background: var(--ink); color: var(--paper); padding: 11px 20px; border-radius: 100px; font-size: 0.8rem; font-weight: 600; box-shadow: 0 8px 28px rgba(0,0,0,0.3); opacity: 0; pointer-events: none; white-space: nowrap; z-index: 300; }
+
+@media (max-width: 380px) { .h-device-grid { gap: 8px; } }
+
+@media (min-width: 720px) {
+  body { background: var(--paper-dim); }
+  #app-shell { max-width: 480px; margin: 0 auto; background: var(--paper); box-shadow: 0 0 80px rgba(0,0,0,0.08); min-height: 100dvh; }
+  .h-header { max-width: 480px; left: 50%; transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+</style>
+</head>
+<body>
+
+<div id="app-shell">
+
+  <header class="h-header">
+    <a href="index.html" class="h-back" aria-label="Back to Kovin">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    </a>
+    <div class="h-header-title">
+      <span class="h-wordmark">Kov<span>·</span>in</span>
+      <span class="h-eyebrow-tag">Technology Horizon</span>
+    </div>
+    <span class="h-spacer" aria-hidden="true"></span>
+  </header>
+
+  <a href="lifemode.html" id="lifeModeBanner">
+    <span id="lifeModeBannerText"></span>
+    <span style="opacity:0.65;font-weight:500;margin-left:auto;">Change ›</span>
+  </a>
+
+  <!-- ░░ Intro / picker ░░ -->
+  <div id="intro">
+    <span class="h-intro-eyebrow">Not just what to buy</span>
+    <h1>Know what this means<br>for the next <em>few years</em>.</h1>
+    <p class="h-intro-sub">No spec charts. No countdowns. Just an honest, warm look at how a decision tends to feel six months from now, two years from now, and beyond.</p>
+    <div class="h-intro-philosophy">"The right purchase isn't the one that feels best today. It's the one that still feels right in two years."</div>
+
+    <div class="h-section-label">Which product should we look ahead on?</div>
+    <div class="h-device-grid" id="introDeviceGrid"></div>
+
+    <button class="h-btn-primary" id="introStartBtn" disabled>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+      See the horizon
+    </button>
+  </div>
+
+  <!-- ░░ Horizon screen ░░ -->
+  <div id="horizonScreen">
+
+    <div class="h-device-strip">
+      <div class="h-device-strip-img"><img id="stripImg" src="" alt=""></div>
+      <div>
+        <div class="h-device-strip-name" id="stripName"></div>
+        <div class="h-device-strip-sub">Technology Horizon</div>
+      </div>
+      <button class="h-device-strip-change" id="changeDeviceBtn">Change</button>
+    </div>
+
+    <!-- Technology Horizon timeline -->
+    <section class="h-section">
+      <div class="h-section-eyebrow">Technology Horizon</div>
+      <div class="h-section-title">How this tends to feel over time.</div>
+      <p class="h-section-sub">Not a prediction of failure — a calm record of how owners' experience actually shifts, stage by stage.</p>
+      <div class="h-timeline" id="horizonTimeline"></div>
+      <div class="h-horizon-far">
+        <div class="h-horizon-far-label">Looking further ahead</div>
+        <p id="upgradeWindowText"></p>
+        <p id="futureRecText"></p>
+      </div>
+    </section>
+
+    <!-- Wait or Buy -->
+    <section class="h-section">
+      <div class="h-section-eyebrow">Wait or Buy</div>
+      <div class="h-section-title">Is now actually a good time?</div>
+      <p class="h-section-sub">An honest read on timing — never a countdown, never a reason to rush.</p>
+      <div class="h-waitbuy-card" id="waitBuyCard"></div>
+    </section>
+
+    <!-- Technology Regret Predictor -->
+    <section class="h-section" id="regretSection">
+      <div class="h-section-eyebrow">Technology Regret Predictor</div>
+      <div class="h-section-title">A quick, honest expectations check.</div>
+      <p class="h-section-sub">Not a warning. Just a way to notice — gently — if what you expect matches how this actually ages.</p>
+      <div class="h-regret-progress" id="regretProgress"></div>
+      <div id="regretContent"></div>
+    </section>
+
+  </div><!-- /horizonScreen -->
+
+</div><!-- /app-shell -->
+
+<div class="h-toast" id="hToast" role="status" aria-live="polite"></div>
+
+<script>
+/* ══════════════════════════════════════════════════
+   KOVIN TECHNOLOGY HORIZON
+   "I know what buying this means for the next
+    several years."
+══════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  /* ─────────── Devices + horizon data ─────────── */
+  const DEVICES = [
+    {
+      id: 1, name: 'Samsung Galaxy S23 FE', price: '₹34,999',
+      image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/fWEumNteCudVVPuo.png',
+      timeline: [
+        { marker: 'Day One', text: 'Everything feels considered, not flashy. The battery and screen are the first things people notice — in a good way.' },
+        { marker: '6 Months', text: 'Daily rhythm sets in. Most owners stop thinking about charging altogether. Software still feels current.' },
+        { marker: '1 Year', text: 'Battery still comfortably carries a full day for most routines. This is typically when owners stop comparing it to new launches.' },
+        { marker: '2 Years', text: 'Updates continue. Battery may ask for a slightly earlier evening charge — a normal part of two years of use, not a fault.' },
+        { marker: '3+ Years', text: 'Still genuinely usable for calls, messages, and daily life. This is where most owners start window-shopping out of curiosity, not necessity.' },
+      ],
+      upgradeWindow: 'Most owners feel ready to consider something new around year two to three — not because this fails, but because that’s simply a comfortable natural rhythm for a phone.',
+      futureRec: 'Our recommendation here has been stable for a while, and we don’t expect that to change soon. If anything shifts, it will likely be in camera comparisons, not reliability.',
+      waitBuy: { verdict: 'Buy now, with confidence.', reason: 'This isn’t on the edge of a refresh that would meaningfully change what it offers. Waiting buys you very little here — the battery and reliability strengths are already fully present today.' },
+    },
+    {
+      id: 2, name: 'Google Pixel 7a', price: '₹39,999',
+      image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/AeIhJBFyYYuVXncG.png',
+      timeline: [
+        { marker: 'Day One', text: 'The camera is the headline from the first photo. Everything else feels calmly competent, not the star of the show.' },
+        { marker: '6 Months', text: 'The compact size keeps earning its place daily. Camera results remain the most-mentioned reason owners stay happy.' },
+        { marker: '1 Year', text: 'Photos still look right without editing. Heavier days may ask for a charger a little earlier than day one — expected, not a concern.' },
+        { marker: '2 Years', text: 'Support continues. The camera advantage that defined the purchase is still the most-cited reason owners are satisfied.' },
+        { marker: '3+ Years', text: 'Still a capable, comfortable phone. Battery is the part most likely to feel its age first — worth asking about a service check, if so.' },
+      ],
+      upgradeWindow: 'Most owners consider something new around year two to three, typically prompted by battery rather than the camera falling behind.',
+      futureRec: 'If anything changes our recommendation, it will likely be about battery longevity — not the camera, which has aged well across every generation we’ve watched.',
+      waitBuy: { verdict: 'Buy now, if the camera is the deciding factor.', reason: 'That strength doesn’t erode while you wait, and a newer phone rarely closes this exact gap quickly. Waiting mainly delays the part you actually want.' },
+    },
+    {
+      id: 3, name: 'Sony Bravia 4K LED', price: '₹54,990',
+      image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/PNuLvudbHcTmKOpp.png',
+      timeline: [
+        { marker: 'Day One', text: 'The picture looks calibrated, not aggressive. Most owners notice the calm, accurate colour before anything else.' },
+        { marker: '6 Months', text: 'The novelty fades into simply being the television. Built-in sound continues to make a soundbar feel optional, not missing.' },
+        { marker: '1 Year', text: 'Picture quality hasn’t visibly changed. This is typically when owners stop noticing the upgrade and just enjoy it.' },
+        { marker: '2 Years', text: 'Streaming apps keep updating themselves quietly. The panel itself doesn’t really age in a way most rooms would notice.' },
+        { marker: '3+ Years', text: 'Still a genuinely good picture for the room it was chosen for. The most common reason to reconsider by now is the room changing, not the television.' },
+      ],
+      upgradeWindow: 'Most owners keep a television like this for three to five years, often driven by a house move or room change rather than the screen itself fading.',
+      futureRec: 'Our recommendation here is tied closely to room size and lighting. If anything shifts, it’s more likely about which room this fits — not whether the panel still holds up.',
+      waitBuy: { verdict: 'Buy now, if the room is settled.', reason: 'Television panels improve gradually, not in sudden leaps. Waiting rarely changes the decision meaningfully — the room you’re placing it in matters more than the calendar.' },
+    },
+    {
+      id: 4, name: 'Sony WH-1000XM5', price: '₹26,990',
+      image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/XIJzeXSRHorEqzFw.png',
+      timeline: [
+        { marker: 'Day One', text: 'The silence is the first thing people notice — often within the first few minutes of wearing them.' },
+        { marker: '6 Months', text: 'Noise cancellation still feels as strong as day one. Ear cushions are holding their shape well for most owners at this point.' },
+        { marker: '1 Year', text: 'Battery life remains close to original. This is typically when owners stop thinking of these as “new” and just rely on them daily.' },
+        { marker: '2 Years', text: 'Ear cushions are the first part likely to show wear — a low-cost replacement at this stage often restores most of the original feel.' },
+        { marker: '3+ Years', text: 'Noise cancellation performance holds up well. Battery runtime may dip modestly — usually still comfortable for a working day, just not quite a full multi-day trip.' },
+      ],
+      upgradeWindow: 'Most owners keep these for three or more years, often replacing ear cushions once along the way rather than the headphone itself.',
+      futureRec: 'If our recommendation shifts, it’s more likely to be about cushion replacement timing than about the noise cancellation technology being meaningfully surpassed.',
+      waitBuy: { verdict: 'Buy now, if focus or travel is a near-term need.', reason: 'The noise cancellation advantage here doesn’t erode while you wait, and replacements rarely leap far ahead quickly. There’s little upside to delaying this one.' },
+    },
+  ];
+
+  /* ─────────── Regret Predictor — generic, expectation-alignment questions ─────────── */
+  const REGRET_QUESTIONS = [
+    {
+      q: 'When you picture using this in two years, what do you expect?',
+      options: [
+        { label: 'Still working well, just not brand new anymore', score: 3, note: 'This is exactly how owners who stay satisfied tend to think about it — a comfortable, realistic expectation.' },
+        { label: 'Honestly haven’t thought that far ahead', score: 2, note: 'Worth a moment of thought — most satisfaction differences come down to expectations set early, not the device itself.' },
+        { label: 'Probably replaced by something newer by then', score: 1, note: 'That’s a fair way to feel about fast-moving categories — just worth knowing this one tends to age slower than that expectation assumes.' },
+      ],
+    },
+    {
+      q: 'What would disappoint you most, looking back?',
+      options: [
+        { label: 'If support or updates stopped', score: 3, note: 'Good news — this is the area with the most predictable, longest runway of the three.' },
+        { label: 'If the battery noticeably weakened', score: 2, note: 'A fair concern — batteries do shift gradually over years. Knowing this upfront tends to soften the moment it happens.' },
+        { label: 'If a newer device made this feel outdated quickly', score: 1, note: 'Worth knowing this category tends to move in small, gradual steps rather than sudden leaps that age things overnight.' },
+      ],
+    },
+    {
+      q: 'How do you feel about replacing a small part — like cushions or a battery — along the way?',
+      options: [
+        { label: 'Totally fine — that’s normal maintenance', score: 3, note: 'This mindset alone tends to produce the highest long-term satisfaction of any single factor we’ve seen.' },
+        { label: 'I’d rather it just never need anything', score: 1, note: 'A completely understandable hope — just one that very few devices, in any category, fully live up to.' },
+      ],
+    },
+  ];
+
+  /* ─────────── State ─────────── */
+  let device = null;
+  let onbDeviceId = null;
+  let regretIndex = 0;
+  let regretScore = 0;
+  const REGRET_MAX = 9; /* 3 + 3 + 3 */
+
+  /* ─────────── DOM refs ─────────── */
+  const $intro = document.getElementById('intro');
+  const $horizonScreen = document.getElementById('horizonScreen');
+  const $deviceGrid = document.getElementById('introDeviceGrid');
+  const $startBtn = document.getElementById('introStartBtn');
+  const $toast = document.getElementById('hToast');
+  let toastTimer = null;
+
+  /* ══ Intro / picker ══ */
+  function buildIntro() {
+    $deviceGrid.innerHTML = DEVICES.map(d => `
+      <button class="h-device-card" data-device-id="${d.id}" aria-label="${d.name}">
+        <div class="h-device-card-img"><img src="${d.image}" alt="${d.name}" loading="lazy"></div>
+        <div class="h-device-card-name">${d.name}</div>
+      </button>`).join('');
+
+    document.querySelectorAll('.h-device-card').forEach(btn => {
+      btn.addEventListener('click', () => {
+        onbDeviceId = parseInt(btn.dataset.deviceId);
+        document.querySelectorAll('.h-device-card').forEach(b => b.classList.toggle('is-chosen', b === btn));
+        $startBtn.disabled = false;
+      });
+    });
+
+    $startBtn.addEventListener('click', () => { if (onbDeviceId !== null) beginHorizon(onbDeviceId); });
+
+    const params = new URLSearchParams(window.location.search);
+    const fromUrl = parseInt(params.get('product'));
+    if (fromUrl && DEVICES.find(d => d.id === fromUrl)) beginHorizon(fromUrl);
+  }
+
+  /* ══ Begin horizon for a device ══ */
+  function beginHorizon(deviceId) {
+    device = DEVICES.find(d => d.id === deviceId);
+    if (!device) return;
+    regretIndex = 0;
+    regretScore = 0;
+
+    document.getElementById('stripImg').src = device.image;
+    document.getElementById('stripImg').alt = device.name;
+    document.getElementById('stripName').textContent = device.name;
+
+    document.getElementById('horizonTimeline').innerHTML = device.timeline.map((t, i) => `
+      <div class="h-tnode">
+        <div class="h-tnode-dot ${i >= 3 ? 'is-future' : ''}"></div>
+        <div class="h-tnode-marker">${t.marker}</div>
+        <div class="h-tnode-text">${t.text}</div>
+      </div>`).join('');
+
+    document.getElementById('upgradeWindowText').textContent = device.upgradeWindow;
+    document.getElementById('futureRecText').textContent = device.futureRec;
+
+    document.getElementById('waitBuyCard').innerHTML = `
+      <div class="h-waitbuy-badge">Honest timing read</div>
+      <div class="h-waitbuy-verdict">${device.waitBuy.verdict}</div>
+      <div class="h-waitbuy-reason">${device.waitBuy.reason}</div>`;
+
+    buildRegretProgress();
+    renderRegretQuestion();
+
+    $intro.style.display = 'none';
+    $horizonScreen.style.display = 'block';
+    window.scrollTo(0, 0);
+
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduced) {
+      gsap.fromTo($horizonScreen, { opacity: 0 }, { opacity: 1, duration: 0.45, ease: 'power2.out' });
+      gsap.fromTo('.h-tnode', { opacity: 0, x: -10 }, { opacity: 1, x: 0, duration: 0.45, stagger: 0.07, ease: 'power3.out', delay: 0.1 });
+    }
+  }
+
+  function buildRegretProgress() {
+    document.getElementById('regretProgress').innerHTML = REGRET_QUESTIONS.map(() => '<span class="h-regret-seg"></span>').join('');
+  }
+  function updateRegretProgress() {
+    document.querySelectorAll('.h-regret-seg').forEach((seg, i) => seg.classList.toggle('is-filled', i < regretIndex));
+  }
+
+  /* ══ Regret Predictor question flow ══ */
+  function renderRegretQuestion() {
+    updateRegretProgress();
+    const content = document.getElementById('regretContent');
+    if (regretIndex >= REGRET_QUESTIONS.length) {
+      renderRegretResult();
+      return;
+    }
+    const q = REGRET_QUESTIONS[regretIndex];
+    content.innerHTML = `
+      <div class="h-regret-qcard" id="regretQCard">
+        <div class="qtext">${q.q}</div>
+        <div class="h-regret-opts">
+          ${q.options.map((opt, i) => `<button class="h-regret-opt" data-opt-idx="${i}">${opt.label}</button>`).join('')}
+        </div>
+      </div>`;
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduced) gsap.fromTo('#regretQCard', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.4, ease: 'power3.out' });
+
+    document.querySelectorAll('#regretQCard .h-regret-opt').forEach(btn => {
+      btn.addEventListener('click', () => answerRegret(parseInt(btn.dataset.optIdx), q));
+    });
+  }
+
+  function answerRegret(optIdx, q) {
+    const opt = q.options[optIdx];
+    document.querySelectorAll('#regretQCard .h-regret-opt').forEach((b, i) => {
+      b.setAttribute('disabled', 'true');
+      b.classList.toggle('is-chosen', i === optIdx);
+    });
+    regretScore += opt.score;
+    regretIndex++;
+    setTimeout(renderRegretQuestion, 420);
+  }
+
+  /* ══ Regret result → Long-Term Confidence capstone ══ */
+  function renderRegretResult() {
+    const pct = Math.round((regretScore / REGRET_MAX) * 100);
+    let band, bandText, dialPct;
+    if (pct >= 75) { band = 'Strong'; bandText = 'Your expectations line up well with how this actually ages. That alignment is the single biggest predictor of staying satisfied long-term.'; dialPct = 88; }
+    else if (pct >= 45) { band = 'Reasonable'; bandText = 'Mostly aligned, with a couple of expectations worth holding loosely. Nothing here suggests regret — just a few things worth knowing going in.'; dialPct = 68; }
+    else { band = 'Worth a Second Thought'; bandText = 'Your expectations lean toward “always like new.” Most devices, including this one, settle into a slightly different rhythm by year two — that’s normal, not a flaw, but worth knowing now rather than discovering it later.'; dialPct = 48; }
+
+    document.getElementById('regretContent').innerHTML = `
+      <div class="h-regret-result" id="regretResultCard">
+        <div class="h-regret-result-band">${band}</div>
+        <div class="h-regret-result-text">${bandText}</div>
+      </div>`;
+
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduced) gsap.fromTo('#regretResultCard', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.45, ease: 'power3.out' });
+
+    setTimeout(() => renderLongTermConfidence(dialPct, band), 500);
+  }
+
+  /* ══ Long-Term Ownership Confidence — capstone section ══ */
+  function renderLongTermConfidence(dialPct, band) {
+    const section = document.getElementById('regretSection');
+    const block = document.createElement('section');
+    block.className = 'h-section';
+    block.innerHTML = `
+      <div class="h-section-eyebrow">Long-Term Ownership Confidence</div>
+      <div class="h-section-title">Putting it all together.</div>
+      <div class="h-confidence-wrap">
+        <div class="h-dial-wrap">
+          <svg viewBox="0 0 64 64">
+            <circle class="h-dial-ring-bg" cx="32" cy="32" r="27.5"></circle>
+            <circle class="h-dial-ring-fg" id="ltDialRing" cx="32" cy="32" r="27.5" stroke-dasharray="172.8" stroke-dashoffset="172.8"></circle>
+          </svg>
+          <div class="h-dial-label"><div class="h-dial-band">${band}</div><div class="h-dial-sub">Long-term fit</div></div>
+        </div>
+        <p class="h-confidence-text">This brings together how ${device.name} tends to age, how its timing reads today, and how closely your own expectations match that reality. ${band === 'Strong' ? 'Buying this today is a genuinely settled decision — not just for now, but for the years it will actually be lived with.' : band === 'Reasonable' ? 'Buying this today is a sound decision, with a couple of expectations worth holding gently rather than firmly.' : 'Buying this can still be the right call — just go in with realistic expectations about how the years ahead will actually feel.'}</p>
+      </div>
+      <div class="h-cta-area">
+        <button class="h-btn-primary" id="keepReadyBtn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+          Keep this ready
+        </button>
+        <a class="h-btn-secondary" href="confidence.html?product=${device.id}">Check your personal Confidence Score too</a>
+        <a class="h-restart-link" id="restartLink">Look ahead on a different product</a>
+      </div>`;
+    section.after(block);
+
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduced) gsap.fromTo(block, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' });
+
+    const CIRC = 2 * Math.PI * 27.5;
+    const offset = CIRC * (1 - dialPct / 100);
+    gsap.to('#ltDialRing', { attr: { 'stroke-dashoffset': offset }, duration: 1, ease: 'power2.out', delay: 0.2 });
+
+    document.getElementById('keepReadyBtn').addEventListener('click', keepThisReady);
+    document.getElementById('restartLink').addEventListener('click', restart);
+  }
+
+  /* ══ Cart integration ══ */
+  function keepThisReady() {
+    const btn = document.getElementById('keepReadyBtn');
+    let cart = [];
+    try { cart = JSON.parse(localStorage.getItem('kovin-cart')) || []; } catch (e) {}
+    const existing = cart.find(i => i.id === device.id);
+    if (existing) existing.qty = Math.min(existing.qty + 1, 10);
+    else cart.push({ id: device.id, name: device.name, price: device.price, image: device.image, qty: 1, oldPrice: null });
+    try { localStorage.setItem('kovin-cart', JSON.stringify(cart)); } catch (e) {}
+
+    btn.classList.add('is-added');
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>Ready — view in cart';
+    gsap.fromTo(btn, { scale: 0.95 }, { scale: 1, duration: 0.4, ease: 'power2.out' });
+    showToast(`${device.name} kept ready`);
+  }
+
+  /* ══ Restart / change device ══ */
+  function restart() {
+    device = null; onbDeviceId = null;
+    const extra = document.querySelectorAll('#horizonScreen > .h-section');
+    extra.forEach((sec, i) => { if (i > 2) sec.remove(); });
+    $horizonScreen.style.display = 'none';
+    document.querySelectorAll('.h-device-card').forEach(b => b.classList.remove('is-chosen'));
+    $startBtn.disabled = true;
+    $intro.style.display = 'block';
+    gsap.fromTo($intro, { opacity: 0 }, { opacity: 1, duration: 0.4, ease: 'power2.out' });
+    window.scrollTo(0, 0);
+  }
+  document.getElementById('changeDeviceBtn').addEventListener('click', restart);
+
+  /* ── Toast ── */
+  function showToast(msg) {
+    $toast.textContent = msg;
+    clearTimeout(toastTimer);
+    gsap.killTweensOf($toast);
+    gsap.fromTo($toast, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power3.out', onComplete: () => { toastTimer = setTimeout(() => gsap.to($toast, { opacity: 0, y: 14, duration: 0.28, ease: 'power2.in' }), 2300); } });
+  }
+
+  /* ── Life Mode acknowledgment — light touch, set via lifemode.html ── */
+  const LIFE_MODE_INFO = {
+    college: { icon: '🎓', title: 'Starting College' }, parents: { icon: '👪', title: 'Buying For Parents' },
+    salary: { icon: '💼', title: 'First Salary' }, wfh: { icon: '🏠', title: 'Work From Home' },
+    travel: { icon: '✈️', title: 'Travelling Frequently' }, creator: { icon: '🎬', title: 'Content Creation' },
+    business: { icon: '📈', title: 'Business Essentials' }, entertainment: { icon: '🎥', title: 'Entertainment Upgrade' },
+    newhome: { icon: '🏡', title: 'Moving Into A New Home' },
+  };
+  function applyLifeModeBanner() {
+    let modeId = null;
+    try { modeId = localStorage.getItem('kovin-life-mode'); } catch (e) {}
+    const info = modeId ? LIFE_MODE_INFO[modeId] : null;
+    const banner = document.getElementById('lifeModeBanner');
+    const bannerText = document.getElementById('lifeModeBannerText');
+    if (info && banner && bannerText) {
+      banner.style.display = 'flex';
+      bannerText.textContent = `${info.icon} Tailored for: ${info.title}`;
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => { buildIntro(); applyLifeModeBanner(); });
+})();
+</script>
+</body>
+</html>
