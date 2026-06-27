@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0">
+<meta name="theme-color" content="#F7F4EF">
+<meta name="description" content="The Kovin Decision Library — a living record of why things were chosen, what surprised owners, and what we no longer recommend.">
+<title>The Decision Library · Kovin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<style>
+
+/* ══════════════════════════════════════════════════
+   KOVIN DECISION LIBRARY
+   Editorial. Premium. Not a blog.
+══════════════════════════════════════════════════ */
+:root {
+  --ink:          #1A1612;
+  --paper:        #F7F4EF;
+  --paper-warm:   #EDE8E0;
+  --paper-dim:    #E5DDD4;
+  --copper:       #E35336;
+  --copper-deep:  #C9432A;
+  --sand:         #F4A460;
+  --wood:         #7B5940;
+  --border:       rgba(26,22,18,0.08);
+  --border-strong:rgba(26,22,18,0.16);
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+  --ease-out:     cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html { height: 100%; }
+body {
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+button { font: inherit; color: inherit; cursor: pointer; border: none; background: none; -webkit-tap-highlight-color: transparent; }
+a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+img { display: block; max-width: 100%; }
+:focus-visible { outline: 2px solid var(--copper); outline-offset: 3px; border-radius: 4px; }
+
+/* ══ Header ══ */
+.lib-header {
+  position: sticky; top: 0; z-index: 200;
+  height: calc(56px + env(safe-area-inset-top, 0px));
+  padding: env(safe-area-inset-top, 0px) 18px 0;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(247,244,239,0.92);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  backdrop-filter: blur(18px) saturate(1.3);
+  border-bottom: 1px solid var(--border);
+}
+.lib-back { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--paper-warm); border: 1px solid var(--border); color: var(--ink); }
+.lib-back svg { width: 16px; height: 16px; }
+.lib-header-title { display: flex; flex-direction: column; align-items: center; }
+.lib-wordmark { font-family: var(--font-display); font-size: 1.22rem; font-weight: 500; letter-spacing: -0.02em; }
+.lib-wordmark span { color: var(--copper); }
+.lib-eyebrow-tag { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.4; margin-top: 1px; }
+.lib-spacer { width: 36px; }
+
+/* ══ Life Mode banner (consistent with other tools) ══ */
+#lifeModeBanner { display: none; align-items: center; gap: 8px; padding: 9px 18px; background: rgba(227,83,54,0.1); border-bottom: 1px solid var(--border); color: var(--copper); font-size: 0.76rem; font-weight: 600; }
+
+/* ══ Masthead ══ */
+.lib-masthead { padding: 30px 20px 22px; }
+.lib-masthead-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 0.66rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--copper); margin-bottom: 14px;
+}
+.lib-masthead-eyebrow::before, .lib-masthead-eyebrow::after { content: ''; width: 16px; height: 1.5px; background: currentColor; opacity: 0.5; }
+.lib-masthead h1 { font-family: var(--font-display); font-weight: 500; letter-spacing: -0.02em; font-size: clamp(2rem, 8vw, 2.7rem); line-height: 1.08; margin-bottom: 14px; }
+.lib-masthead h1 em { font-style: italic; color: var(--copper); }
+.lib-masthead p { font-size: 0.9rem; line-height: 1.65; opacity: 0.6; max-width: 380px; }
+
+/* ══ Sticky shelf nav ══ */
+.lib-nav-wrap { position: sticky; top: calc(56px + env(safe-area-inset-top, 0px)); z-index: 150; background: var(--paper); border-bottom: 1px solid var(--border); padding: 12px 0; }
+.lib-nav { display: flex; gap: 8px; overflow-x: auto; padding: 0 20px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+.lib-nav::-webkit-scrollbar { display: none; }
+.lib-nav-chip {
+  flex-shrink: 0; padding: 9px 15px; border-radius: 100px; background: var(--paper-warm);
+  border: 1.5px solid var(--border); font-size: 0.78rem; font-weight: 600; white-space: nowrap;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.lib-nav-chip.is-active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+/* ══ Shelf shell ══ */
+.lib-shelf { padding: 36px 0 8px; border-bottom: 1px solid var(--border); }
+.lib-shelf:last-of-type { border-bottom: none; }
+.lib-shelf-head { padding: 0 20px; margin-bottom: 20px; }
+.lib-shelf-num { font-family: var(--font-display); font-size: 0.8rem; font-weight: 600; color: var(--copper); opacity: 0.7; margin-bottom: 6px; }
+.lib-shelf-title { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.45rem, 5.5vw, 1.85rem); line-height: 1.16; margin-bottom: 8px; }
+.lib-shelf-sub { font-size: 0.84rem; line-height: 1.55; opacity: 0.55; max-width: 380px; }
+
+/* ══════════════════════════════════════════════════
+   SHELF 1 & 5 — horizontal swipe rails (flip cards / quotes)
+══════════════════════════════════════════════════ */
+.lib-rail { display: flex; gap: 12px; overflow-x: auto; padding: 4px 20px 14px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.lib-rail::-webkit-scrollbar { display: none; }
+
+/* Flip card — Why People Chose This */
+.lib-flip-card { flex: 0 0 240px; scroll-snap-align: start; height: 220px; perspective: 1200px; cursor: pointer; }
+.lib-flip-inner { position: relative; width: 100%; height: 100%; transition: transform 0.55s var(--ease-out); transform-style: preserve-3d; }
+.lib-flip-card.is-flipped .lib-flip-inner { transform: rotateY(180deg); }
+.lib-flip-face {
+  position: absolute; inset: 0; backface-visibility: hidden; border-radius: 20px; padding: 18px;
+  display: flex; flex-direction: column;
+}
+.lib-flip-front { background: var(--paper-warm); border: 1px solid var(--border); }
+.lib-flip-back { background: var(--ink); color: var(--paper); transform: rotateY(180deg); justify-content: center; }
+.lib-flip-img-wrap { width: 100%; height: 76px; display: flex; align-items: center; justify-content: center; margin-bottom: 10px; }
+.lib-flip-img-wrap img { max-width: 60%; max-height: 100%; object-fit: contain; }
+.lib-flip-product { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.45; margin-bottom: 6px; }
+.lib-flip-quote { font-family: var(--font-display); font-size: 1.08rem; font-weight: 500; line-height: 1.28; flex: 1; }
+.lib-flip-tap-hint { font-size: 0.66rem; opacity: 0.4; text-align: right; }
+.lib-flip-back-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sand); margin-bottom: 8px; }
+.lib-flip-back-text { font-size: 0.86rem; line-height: 1.55; opacity: 0.9; }
+
+/* Quote card — What Surprised Owners */
+.lib-quote-card { flex: 0 0 270px; scroll-snap-align: start; background: var(--ink); color: var(--paper); border-radius: 22px; padding: 24px 20px; display: flex; flex-direction: column; min-height: 200px; }
+.lib-quote-mark { font-family: var(--font-display); font-size: 2.6rem; color: var(--copper); line-height: 1; opacity: 0.7; margin-bottom: 4px; }
+.lib-quote-text { font-family: var(--font-display); font-size: 1.18rem; font-weight: 400; font-style: italic; line-height: 1.36; flex: 1; }
+.lib-quote-attr { font-size: 0.74rem; opacity: 0.6; margin-top: 14px; padding-top: 12px; border-top: 1px solid rgba(247,244,239,0.14); }
+.lib-quote-attr strong { color: var(--sand); font-weight: 600; }
+
+/* ══════════════════════════════════════════════════
+   SHELF 2 — Common Buying Mistakes
+══════════════════════════════════════════════════ */
+.lib-mistake-list { padding: 0 20px; display: flex; flex-direction: column; gap: 14px; }
+.lib-mistake-card { display: flex; gap: 14px; }
+.lib-mistake-num { font-family: var(--font-display); font-size: 1.6rem; font-weight: 500; color: var(--border-strong); flex-shrink: 0; width: 32px; line-height: 1.3; }
+.lib-mistake-body { flex: 1; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+.lib-mistake-the { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.4; margin-bottom: 4px; }
+.lib-mistake-wrong { font-size: 0.92rem; font-weight: 600; line-height: 1.4; text-decoration: line-through; text-decoration-color: rgba(227,83,54,0.4); text-decoration-thickness: 1.5px; margin-bottom: 10px; }
+.lib-mistake-better-label { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--copper); margin-bottom: 4px; }
+.lib-mistake-better { font-size: 0.86rem; line-height: 1.55; opacity: 0.78; }
+
+/* ══════════════════════════════════════════════════
+   SHELF 3 — Ownership Insights (2-col grid)
+══════════════════════════════════════════════════ */
+.lib-insight-grid { padding: 0 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.lib-insight-card { background: var(--paper-warm); border-radius: 16px; padding: 14px 13px; }
+.lib-insight-icon { font-size: 1.3rem; margin-bottom: 8px; display: block; }
+.lib-insight-text { font-size: 0.78rem; line-height: 1.48; }
+@media (max-width: 360px) { .lib-insight-grid { grid-template-columns: 1fr; } }
+
+/* ══════════════════════════════════════════════════
+   SHELF 4 — Technology Explained Simply (accordion)
+══════════════════════════════════════════════════ */
+.lib-accordion { padding: 0 20px; }
+.lib-acc-item { border-top: 1px solid var(--border); }
+.lib-acc-item:last-child { border-bottom: 1px solid var(--border); }
+.lib-acc-trigger { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 2px; text-align: left; }
+.lib-acc-term { font-family: var(--font-display); font-size: 1.12rem; font-weight: 500; }
+.lib-acc-icon { width: 22px; height: 22px; border-radius: 50%; background: var(--paper-warm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: transform 0.3s var(--ease-out); }
+.lib-acc-icon svg { width: 11px; height: 11px; }
+.lib-acc-item.is-open .lib-acc-icon { transform: rotate(45deg); background: var(--copper); color: #fff; }
+.lib-acc-panel { height: 0; overflow: hidden; }
+.lib-acc-panel-inner { font-size: 0.85rem; line-height: 1.6; opacity: 0.68; padding-bottom: 16px; max-width: 400px; }
+
+/* ══════════════════════════════════════════════════
+   SHELF 6 — What We'd Buy Today (verdict cards)
+══════════════════════════════════════════════════ */
+.lib-verdict-grid { padding: 0 20px; display: flex; flex-direction: column; gap: 10px; }
+.lib-verdict-card { display: flex; align-items: flex-start; gap: 14px; background: var(--paper); border: 1.5px solid var(--border-strong); border-radius: 18px; padding: 16px 17px; }
+.lib-verdict-icon { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1rem; }
+.lib-verdict-icon.yes { background: rgba(227,83,54,0.1); color: var(--copper); }
+.lib-verdict-icon.caveat { background: var(--paper-warm); color: var(--wood); }
+.lib-verdict-body { flex: 1; min-width: 0; }
+.lib-verdict-cat { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.4; margin-bottom: 4px; }
+.lib-verdict-text { font-size: 0.86rem; line-height: 1.5; }
+.lib-verdict-link { display: inline-flex; align-items: center; gap: 4px; font-size: 0.76rem; font-weight: 600; color: var(--copper); margin-top: 8px; }
+
+/* ══════════════════════════════════════════════════
+   SHELF 7 — Products We No Longer Recommend (retired)
+══════════════════════════════════════════════════ */
+.lib-retired-list { padding: 0 20px; display: flex; flex-direction: column; gap: 12px; }
+.lib-retired-card { background: var(--paper-dim); border-radius: 18px; padding: 17px 17px; opacity: 0.92; }
+.lib-retired-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 0.64rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--wood); margin-bottom: 8px; }
+.lib-retired-tag::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--wood); }
+.lib-retired-name { font-family: var(--font-display); font-size: 1.18rem; font-weight: 500; text-decoration: line-through; text-decoration-color: rgba(123,89,64,0.4); margin-bottom: 8px; }
+.lib-retired-reason { font-size: 0.84rem; line-height: 1.55; opacity: 0.68; margin-bottom: 12px; }
+.lib-retired-instead { display: flex; align-items: center; gap: 10px; background: var(--paper); border-radius: 12px; padding: 10px 12px; }
+.lib-retired-instead img { width: 30px; height: 30px; object-fit: contain; flex-shrink: 0; }
+.lib-retired-instead-text { font-size: 0.76rem; }
+.lib-retired-instead-text strong { font-weight: 600; }
+
+/* ══ Footer ══ */
+.lib-footer { padding: 36px 20px calc(env(safe-area-inset-bottom, 0px) + 36px); text-align: center; }
+.lib-footer-word { font-family: var(--font-display); font-size: 1.1rem; opacity: 0.5; }
+.lib-footer-word span { color: var(--copper); }
+.lib-footer-tag { font-size: 0.72rem; opacity: 0.4; margin: 6px 0 20px; }
+.lib-footer-links { display: flex; flex-direction: column; gap: 8px; max-width: 280px; margin: 0 auto; }
+.lib-footer-link { font-size: 0.8rem; font-weight: 600; color: var(--copper); padding: 9px 0; border-top: 1px solid var(--border); }
+
+/* ══ Desktop ══ */
+@media (min-width: 720px) {
+  body { background: var(--paper-dim); }
+  #app-shell { max-width: 480px; margin: 0 auto; background: var(--paper); box-shadow: 0 0 80px rgba(0,0,0,0.08); min-height: 100dvh; }
+  .lib-header, .lib-nav-wrap { max-width: 480px; left: 50%; transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  .lib-flip-inner { transition: none !important; }
+}
+
+</style>
+</head>
+<body>
+
+<div id="app-shell">
+
+  <header class="lib-header">
+    <a href="index.html" class="lib-back" aria-label="Back to Kovin">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    </a>
+    <div class="lib-header-title">
+      <span class="lib-wordmark">Kov<span>·</span>in</span>
+      <span class="lib-eyebrow-tag">Decision Library</span>
+    </div>
+    <span class="lib-spacer" aria-hidden="true"></span>
+  </header>
+
+  <a href="lifemode.html" id="lifeModeBanner">
+    <span id="lifeModeBannerText"></span>
+    <span style="opacity:0.65;font-weight:500;margin-left:auto;">Change ›</span>
+  </a>
+
+  <div class="lib-masthead">
+    <span class="lib-masthead-eyebrow">Not a blog. A living record.</span>
+    <h1>The <em>Decision</em><br>Library.</h1>
+    <p>Why things were chosen. What surprised owners. What we no longer recommend, and why. Built so you learn something useful every time you visit — not so we have something to publish.</p>
+  </div>
+
+  <div class="lib-nav-wrap">
+    <nav class="lib-nav" id="libNav" aria-label="Jump to a section"></nav>
+  </div>
+
+  <main id="shelvesWrap"></main>
+
+  <div class="lib-footer">
+    <div class="lib-footer-word">Kov<span>·</span>in</div>
+    <div class="lib-footer-tag">Trust, built through what we explain — not what we advertise.</div>
+    <div class="lib-footer-links">
+      <a class="lib-footer-link" href="confidence.html">Check your Confidence Score →</a>
+      <a class="lib-footer-link" href="eliminate.html">Try the Elimination Engine →</a>
+      <a class="lib-footer-link" href="journey.html">Visit your Ownership Journey →</a>
+      <a class="lib-footer-link" href="lifemode.html">Start with your life, not a category →</a>
+    </div>
+  </div>
+
+</div><!-- /app-shell -->
+
+<script>
+/* ══════════════════════════════════════════════════
+   KOVIN DECISION LIBRARY
+   "I learn something useful every time I visit."
+══════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  /* ─────────── Compact product lookup ─────────── */
+  const P = {
+    1: { name: 'Samsung Galaxy S23 FE', image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/fWEumNteCudVVPuo.png' },
+    2: { name: 'Google Pixel 7a', image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/AeIhJBFyYYuVXncG.png' },
+    3: { name: 'Sony Bravia 4K LED', image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/PNuLvudbHcTmKOpp.png' },
+    4: { name: 'Sony WH-1000XM5', image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/XIJzeXSRHorEqzFw.png' },
+    5: { name: 'Apple 20W USB-C Adapter', image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/uVoVbsruMHDNSVBu.png' },
+    7: { name: 'Sleek Protective Case', image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/jdVRAWbtGZtmRYSW.png' },
+    11: { name: 'Premium Wireless Earbuds', image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/akufQOVWgjtpdbDf.png' },
+  };
+
+  /* ─────────── Shelf content ─────────── */
+  const SHELVES = [
+    {
+      id: 'why', label: 'Why Chosen', num: 'Shelf 01', title: 'Why people chose this.',
+      sub: 'The real, unspun reason behind each pick — tap a card to see who it usually fits.',
+      render: renderWhy,
+    },
+    {
+      id: 'mistakes', label: 'Mistakes', num: 'Shelf 02', title: 'Common buying mistakes.',
+      sub: 'The same five mistakes account for most regretted purchases we see.',
+      render: renderMistakes,
+    },
+    {
+      id: 'insights', label: 'Ownership', num: 'Shelf 03', title: 'Ownership insights.',
+      sub: 'Small things that only become obvious after a few months of actually owning the thing.',
+      render: renderInsights,
+    },
+    {
+      id: 'tech', label: 'Explained', num: 'Shelf 04', title: 'Technology, explained simply.',
+      sub: 'No jargon. Tap a term for the plain-language version.',
+      render: renderTech,
+    },
+    {
+      id: 'surprise', label: 'Surprises', num: 'Shelf 05', title: 'What surprised owners.',
+      sub: 'Not marketing quotes — the specific things people did not expect to notice.',
+      render: renderSurprise,
+    },
+    {
+      id: 'today', label: 'Buy Today', num: 'Shelf 06', title: 'What we’d buy today.',
+      sub: 'Updated honestly, not on a schedule. Technology moves — our answers should too.',
+      render: renderToday,
+    },
+    {
+      id: 'retired', label: 'Retired', num: 'Shelf 07', title: 'Products we no longer recommend.',
+      sub: 'The hardest shelf to write, and the most important one to keep honest.',
+      render: renderRetired,
+    },
+  ];
+
+  /* ══ Shelf 1: Why People Chose This — flip cards ══ */
+  function renderWhy() {
+    const cards = [
+      { id: 1, quote: 'Not chasing a flagship — choosing a phone that won’t need a midday charge.', back: 'Fits people whose day is long before it’s exciting — calls, photos, messages, repeat.' },
+      { id: 2, quote: 'Almost everyone says the same thing first: the photos. Not the price. The photos.', back: 'Fits people who photograph everyday moments and want it right without editing.' },
+      { id: 4, quote: 'Rarely about music quality. Almost always about silence — a commute, an office, a flight.', back: 'Fits people who need to think clearly in places that don’t make it easy.' },
+      { id: 3, quote: 'Buyers aren’t comparing spec sheets. They’re asking: will this look right in my room?', back: 'Fits a household wanting one genuine upgrade, not a project.' },
+      { id: 11, quote: 'Chosen more for what it doesn’t require — no charging anxiety, no setup — than for sound.', back: 'Fits people who want earbuds that work without ever being thought about.' },
+    ];
+    return `<div class="lib-rail">${cards.map(c => {
+      const p = P[c.id];
+      return `<div class="lib-flip-card" data-flip>
+        <div class="lib-flip-inner">
+          <div class="lib-flip-face lib-flip-front">
+            <div class="lib-flip-img-wrap"><img src="${p.image}" alt="${p.name}" loading="lazy"></div>
+            <div class="lib-flip-product">${p.name}</div>
+            <div class="lib-flip-quote">${c.quote}</div>
+            <div class="lib-flip-tap-hint">Tap to flip ↻</div>
+          </div>
+          <div class="lib-flip-face lib-flip-back">
+            <div class="lib-flip-back-label">Who this fits</div>
+            <div class="lib-flip-back-text">${c.back}</div>
+          </div>
+        </div>
+      </div>`;
+    }).join('')}</div>`;
+  }
+
+  /* ══ Shelf 2: Common Buying Mistakes ══ */
+  function renderMistakes() {
+    const items = [
+      { wrong: 'Buying the phone with the best camera on paper.', better: 'Ask how you’ll actually use the camera — daytime snapshots and night shots reward very different strengths.' },
+      { wrong: 'Choosing a TV size based on the showroom, not the room.', better: 'Measure your real viewing distance first — showrooms are lit and arranged to make every screen look right.' },
+      { wrong: 'Assuming a louder noise-cancellation spec always wins.', better: 'Fit matters as much as the chip inside. A poor seal beats any number on a spec sheet.' },
+      { wrong: 'Treating battery mAh as the only battery metric that matters.', better: 'Software efficiency changes real-world battery life more than the number printed on the box.' },
+      { wrong: 'Buying screen protection as an afterthought, days later.', better: 'Most screen damage happens in the first 48 hours. Protect before, not after.' },
+    ];
+    return `<div class="lib-mistake-list">${items.map((m, i) => `
+      <div class="lib-mistake-card">
+        <div class="lib-mistake-num">${String(i + 1).padStart(2, '0')}</div>
+        <div class="lib-mistake-body">
+          <div class="lib-mistake-the">The mistake</div>
+          <div class="lib-mistake-wrong">${m.wrong}</div>
+          <div class="lib-mistake-better-label">Ask this instead</div>
+          <div class="lib-mistake-better">${m.better}</div>
+        </div>
+      </div>`).join('')}</div>`;
+  }
+
+  /* ══ Shelf 3: Ownership Insights ══ */
+  function renderInsights() {
+    const items = [
+      { icon: '🔋', text: 'Phone batteries age fastest in the first year — gentle charging habits early on pay off for years.' },
+      { icon: '📷', text: 'Most camera disappointment isn’t the camera — it’s shooting in the wrong mode for the light.' },
+      { icon: '🎧', text: 'Ear cushions wear out long before the electronics do. A cheap replacement often outperforms a new headphone.' },
+      { icon: '📺', text: 'TVs calibrated for showroom lighting often look “too cool” at home — one trip to Standard mode fixes most complaints.' },
+      { icon: '🧼', text: 'More phones get damaged by harsh cleaning chemicals than by drops.' },
+      { icon: '🔌', text: 'Off-brand fast chargers are the single most common cause of unusually quick battery wear.' },
+    ];
+    return `<div class="lib-insight-grid">${items.map(i => `
+      <div class="lib-insight-card">
+        <span class="lib-insight-icon" aria-hidden="true">${i.icon}</span>
+        <div class="lib-insight-text">${i.text}</div>
+      </div>`).join('')}</div>`;
+  }
+
+  /* ══ Shelf 4: Technology Explained Simply — accordion ══ */
+  function renderTech() {
+    const items = [
+      { term: 'Noise cancellation', body: 'Microphones listen to the world around you and produce an opposite sound wave that cancels it before it reaches your ear. It isn’t about blocking sound — it’s about erasing it.' },
+      { term: '4K calibrated', body: 'Means the screen’s colour and brightness were tuned at the factory for accuracy, not just labelled 4K. Two 4K televisions can look completely different sitting side by side.' },
+      { term: 'Adaptive battery', body: 'Software that learns which apps you actually use and quietly slows down the ones you don’t, instead of treating every app with equal priority.' },
+      { term: 'Optical vs digital zoom', body: 'Optical zoom physically moves the lens and keeps quality. Digital zoom just crops and stretches the image afterward — quality drops fast past a certain point.' },
+      { term: 'Battery health', body: 'Not how charged a battery is right now, but how much total capacity it can still hold compared to when it was new.' },
+      { term: 'Dolby Atmos vs Dolby Audio', body: 'Atmos adds height and direction to sound, like rain falling from above. Dolby Audio alone is a simpler, still-good stereo enhancement — not the same feature.' },
+    ];
+    return items.map((t, i) => `
+      <div class="lib-acc-item" data-acc-idx="${i}">
+        <button class="lib-acc-trigger" aria-expanded="false">
+          <span class="lib-acc-term">${t.term}</span>
+          <span class="lib-acc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></span>
+        </button>
+        <div class="lib-acc-panel"><div class="lib-acc-panel-inner">${t.body}</div></div>
+      </div>`).join('');
+  }
+
+  /* ══ Shelf 5: What Surprised Owners ══ */
+  function renderSurprise() {
+    const items = [
+      { quote: 'I didn’t think I’d notice the camera difference. I noticed it on day one.', name: 'Ananya', place: 'Coimbatore', product: 'Pixel 7a' },
+      { quote: 'I expected the noise cancellation to help on flights. I didn’t expect it to change how I felt at my own desk.', name: 'Karthik', place: 'RS Puram', product: 'WH-1000XM5' },
+      { quote: 'I thought a bigger TV would feel like more TV. It just felt closer.', name: 'Meena', place: 'Saravanampatti', product: 'Bravia 4K' },
+      { quote: 'Battery life on paper looked identical to my old phone. In real life, it wasn’t close.', name: 'Arjun', place: 'Peelamedu', product: 'Galaxy S23 FE' },
+    ];
+    return `<div class="lib-rail">${items.map(q => `
+      <div class="lib-quote-card">
+        <span class="lib-quote-mark" aria-hidden="true">“</span>
+        <div class="lib-quote-text">${q.quote}</div>
+        <div class="lib-quote-attr"><strong>${q.name}</strong>, ${q.place} · ${q.product}</div>
+      </div>`).join('')}</div>`;
+  }
+
+  /* ══ Shelf 6: What We'd Buy Today ══ */
+  function renderToday() {
+    const items = [
+      { cat: 'Phones', icon: '✓', kind: 'yes', text: 'Yes, both phones we carry. Neither has been meaningfully surpassed by anything at the same price.', link: 'confidence.html?product=1' },
+      { cat: 'Audio', icon: '✓', kind: 'yes', text: 'Yes, without hesitation. The WH-1000XM5 remains the easiest recommendation we make all year.', link: 'confidence.html?product=4' },
+      { cat: 'Screens', icon: '◐', kind: 'caveat', text: 'Yes, for the room it’s built for. If your room has changed — bigger, brighter — that’s worth an honest look first.', link: 'confidence.html?product=3' },
+      { cat: 'Accessories', icon: '✓', kind: 'yes', text: 'Mostly the same picks. Cheap accessories haven’t gotten better — they’ve just gotten cheaper.', link: null },
+    ];
+    return `<div class="lib-verdict-grid">${items.map(v => `
+      <div class="lib-verdict-card">
+        <div class="lib-verdict-icon ${v.kind}">${v.icon}</div>
+        <div class="lib-verdict-body">
+          <div class="lib-verdict-cat">${v.cat}</div>
+          <div class="lib-verdict-text">${v.text}</div>
+          ${v.link ? `<a class="lib-verdict-link" href="${v.link}">Check your own confidence →</a>` : ''}
+        </div>
+      </div>`).join('')}</div>`;
+  }
+
+  /* ══ Shelf 7: Products We No Longer Recommend ══ */
+  function renderRetired() {
+    const items = [
+      { name: 'Standard 10W Charger', reason: 'We carried a basic 10W charger for two years. We stopped — charging times became uncompetitive once 20W and above became normal, and the price gap no longer justified the wait.', insteadId: 5 },
+      { name: 'Budget Wireless Earbuds, First Generation', reason: 'An earlier budget earbud line we carried developed a known pairing-drop issue for a noticeable share of buyers after about eight months. We stopped recommending it before stock even ran out.', insteadId: 11 },
+      { name: 'Basic Silicone Case', reason: 'It looked fine in the store. In daily use, the corners wore through within months and stopped absorbing drops the way it did on day one.', insteadId: 7 },
+    ];
+    return `<div class="lib-retired-list">${items.map(r => {
+      const p = P[r.insteadId];
+      return `<div class="lib-retired-card">
+        <div class="lib-retired-tag">No longer recommended</div>
+        <div class="lib-retired-name">${r.name}</div>
+        <div class="lib-retired-reason">${r.reason}</div>
+        <div class="lib-retired-instead">
+          <img src="${p.image}" alt="${p.name}" loading="lazy">
+          <div class="lib-retired-instead-text">Now: <strong>${p.name}</strong></div>
+        </div>
+      </div>`;
+    }).join('')}</div>`;
+  }
+
+  /* ══ Build page ══ */
+  function buildShelves() {
+    const nav = document.getElementById('libNav');
+    const wrap = document.getElementById('shelvesWrap');
+
+    nav.innerHTML = SHELVES.map((s, i) => `<button class="lib-nav-chip ${i === 0 ? 'is-active' : ''}" data-target="shelf-${s.id}">${s.label}</button>`).join('');
+
+    wrap.innerHTML = SHELVES.map(s => `
+      <section class="lib-shelf" id="shelf-${s.id}">
+        <div class="lib-shelf-head">
+          <div class="lib-shelf-num">${s.num}</div>
+          <div class="lib-shelf-title">${s.title}</div>
+          <p class="lib-shelf-sub">${s.sub}</p>
+        </div>
+        ${s.render()}
+      </section>`).join('');
+
+    wireInteractions();
+    wireNav();
+  }
+
+  /* ── Flip cards ── */
+  function wireInteractions() {
+    document.querySelectorAll('[data-flip]').forEach(card => {
+      card.addEventListener('click', () => card.classList.toggle('is-flipped'));
+    });
+
+    /* Accordion */
+    document.querySelectorAll('.lib-acc-item').forEach(item => {
+      const trigger = item.querySelector('.lib-acc-trigger');
+      const panel = item.querySelector('.lib-acc-panel');
+      const inner = item.querySelector('.lib-acc-panel-inner');
+      trigger.addEventListener('click', () => {
+        const isOpen = item.classList.contains('is-open');
+        if (isOpen) {
+          item.classList.remove('is-open');
+          trigger.setAttribute('aria-expanded', 'false');
+          gsap.to(panel, { height: 0, duration: 0.38, ease: 'power2.inOut' });
+        } else {
+          item.classList.add('is-open');
+          trigger.setAttribute('aria-expanded', 'true');
+          gsap.to(panel, { height: inner.offsetHeight, duration: 0.42, ease: 'power2.out' });
+        }
+      });
+    });
+  }
+
+  /* ── Sticky shelf nav: scroll-spy + click-to-jump ── */
+  function wireNav() {
+    const chips = Array.from(document.querySelectorAll('.lib-nav-chip'));
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        const target = document.getElementById(chip.dataset.target);
+        if (target) {
+          const offset = document.querySelector('.lib-nav-wrap').offsetHeight + document.querySelector('.lib-header').offsetHeight + 10;
+          const top = target.getBoundingClientRect().top + window.scrollY - offset;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      });
+    });
+
+    const sections = SHELVES.map(s => document.getElementById(`shelf-${s.id}`));
+    if ('IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const idx = sections.indexOf(entry.target);
+            chips.forEach((c, i) => c.classList.toggle('is-active', i === idx));
+          }
+        });
+      }, { rootMargin: '-30% 0px -55% 0px', threshold: 0 });
+      sections.forEach(sec => sec && observer.observe(sec));
+    }
+  }
+
+  /* ── Life Mode acknowledgment — light touch, set via lifemode.html ── */
+  const LIFE_MODE_INFO = {
+    college: { icon: '🎓', title: 'Starting College' },
+    parents: { icon: '👪', title: 'Buying For Parents' },
+    salary: { icon: '💼', title: 'First Salary' },
+    wfh: { icon: '🏠', title: 'Work From Home' },
+    travel: { icon: '✈️', title: 'Travelling Frequently' },
+    creator: { icon: '🎬', title: 'Content Creation' },
+    business: { icon: '📈', title: 'Business Essentials' },
+    entertainment: { icon: '🎥', title: 'Entertainment Upgrade' },
+    newhome: { icon: '🏡', title: 'Moving Into A New Home' },
+  };
+  function applyLifeModeBanner() {
+    let modeId = null;
+    try { modeId = localStorage.getItem('kovin-life-mode'); } catch (e) {}
+    const info = modeId ? LIFE_MODE_INFO[modeId] : null;
+    const banner = document.getElementById('lifeModeBanner');
+    const bannerText = document.getElementById('lifeModeBannerText');
+    if (info && banner && bannerText) {
+      banner.style.display = 'flex';
+      bannerText.textContent = `${info.icon} Tailored for: ${info.title}`;
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => { buildShelves(); applyLifeModeBanner(); });
+})();
+</script>
+</body>
+</html>
