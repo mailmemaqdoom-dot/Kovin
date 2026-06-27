@@ -394,6 +394,12 @@ img { display: block; max-width: 100%; }
     </button>
   </header>
 
+  <!-- ░░ Life Mode banner — shown when a life situation is active ░░ -->
+  <a href="lifemode.html" id="lifeModeBanner" style="display:none;align-items:center;gap:8px;padding:9px 18px;background:rgba(227,83,54,0.14);border-bottom:1px solid rgba(227,83,54,0.2);color:#fff;font-size:0.76rem;font-weight:600;">
+    <span id="lifeModeBannerText"></span>
+    <span style="opacity:0.65;font-weight:500;margin-left:auto;">Change ›</span>
+  </a>
+
   <!-- ░░ Stage — product visualization ░░ -->
   <section class="sel-stage" aria-label="Product stage">
     <div class="sel-glow" id="selGlow" aria-hidden="true"></div>
@@ -633,14 +639,44 @@ img { display: block; max-width: 100%; }
   /* ─── Animatable elements for stagger ─── */
   const ANIM_ELS = () => [selConfidence, selProductName, document.querySelector('.sel-divider'), selHeadline, selFit, selHighlights];
 
+  /* ── Life Mode acknowledgment — set via lifemode.html ──
+     Light-touch: shows a banner and biases which scenario opens
+     first. Does not duplicate lifemode.html's full dataset. ── */
+  const LIFE_MODE_INFO = {
+    college: { icon: '🎓', title: 'Starting College', scenario: 'daily' },
+    parents: { icon: '👪', title: 'Buying For Parents', scenario: 'daily' },
+    salary: { icon: '💼', title: 'First Salary', scenario: 'work' },
+    wfh: { icon: '🏠', title: 'Work From Home', scenario: 'focus' },
+    travel: { icon: '✈️', title: 'Travelling Frequently', scenario: 'travel' },
+    creator: { icon: '🎬', title: 'Content Creation', scenario: 'photo' },
+    business: { icon: '📈', title: 'Business Essentials', scenario: 'calls' },
+    entertainment: { icon: '🎥', title: 'Entertainment Upgrade', scenario: 'cinema' },
+    newhome: { icon: '🏡', title: 'Moving Into A New Home', scenario: 'cinema' },
+  };
+  function applyLifeModeBanner() {
+    let modeId = null;
+    try { modeId = localStorage.getItem('kovin-life-mode'); } catch (e) {}
+    const info = modeId ? LIFE_MODE_INFO[modeId] : null;
+    const banner = document.getElementById('lifeModeBanner');
+    const bannerText = document.getElementById('lifeModeBannerText');
+    if (info && banner && bannerText) {
+      banner.style.display = 'flex';
+      bannerText.textContent = `${info.icon} Tailored for: ${info.title}`;
+      return info.scenario;
+    }
+    return null;
+  }
+
   /* ══ Initialise ══ */
   function init() {
     buildImages();
     buildChips();
     syncCartBadge();
+    const biasedScenario = applyLifeModeBanner();
+    const startId = (biasedScenario && SCENARIOS.find(s => s.id === biasedScenario)) ? biasedScenario : SCENARIOS[0].id;
     /* Select first scenario on next frame so GSAP is ready */
     requestAnimationFrame(() => {
-      selectScenario(SCENARIOS[0].id, true);
+      selectScenario(startId, true);
     });
   }
 

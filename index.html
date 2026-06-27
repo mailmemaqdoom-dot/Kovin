@@ -2587,9 +2587,13 @@
 
             <!-- Left: content -->
             <div class="hero-left">
-                <span class="hero-eyebrow hero-reveal">Guided Electronics · Tamil Nadu</span>
-                <h1 class="hero-reveal">The device that<br>actually <em>fits</em><br>your life</h1>
-                <p class="hero-desc hero-reveal">Phones, audio, and essentials chosen based on how life is actually lived — guided, not pushed.</p>
+                <a href="lifemode.html" id="life-mode-pill" class="hero-reveal" style="display:none;align-items:center;gap:8px;align-self:flex-start;background:rgba(227,83,54,0.1);border:1px solid rgba(227,83,54,0.25);border-radius:100px;padding:7px 14px;font-size:var(--fs-caption);font-weight:600;color:var(--copper);text-decoration:none;margin-bottom:var(--sp-4);">
+                    <span id="life-mode-pill-text"></span>
+                    <span style="opacity:0.6;font-weight:500;">· Change</span>
+                </a>
+                <span class="hero-eyebrow hero-reveal" id="hero-eyebrow">Guided Electronics · Tamil Nadu</span>
+                <h1 class="hero-reveal" id="hero-headline">The device that<br>actually <em>fits</em><br>your life</h1>
+                <p class="hero-desc hero-reveal" id="hero-sub">Phones, audio, and essentials chosen based on how life is actually lived — guided, not pushed.</p>
                 <div class="hero-actions hero-reveal">
                     <a href="selector.html" class="btn btn-primary">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
@@ -2602,6 +2606,7 @@
                     <span>Guidance before, during, and after purchase</span>
                     <span>Support stays available — the relationship doesn't end at the sale</span>
                 </div>
+                <a href="lifemode.html" id="life-mode-entry-link" class="hero-reveal" style="display:inline-flex;margin-top:var(--sp-4);font-size:var(--fs-small);color:var(--ink);opacity:0.5;text-decoration:underline;">Not browsing generally? Tell us what's going on in your life →</a>
             </div>
 
             <!-- Right: floating device stage -->
@@ -2716,6 +2721,8 @@
                     <button class="cat-nav-btn" onclick="scrollToCat('protection', event)">Protect</button>
                 </nav>
             </div>
+            <!-- Life Mode rail — injected by JS when a life mode is active -->
+            <div id="life-mode-rail" class="container" style="display:none;margin-bottom:var(--sp-10);"></div>
             <div id="catalogue-sliders"></div>
         </section>
 
@@ -2744,7 +2751,7 @@
                         <span class="repair-icon" aria-hidden="true">🎥</span>
                         <h3>Video Walkthrough</h3>
                         <p>A 15–20 minute call to walk through the device in hand, compare options side by side, and answer every question — from anywhere in India. Free for anyone considering a purchase.</p>
-                        <a href="https://wa.me/917200006006" class="btn btn-primary" style="margin-top: 32px;" target="_blank" rel="noopener noreferrer">Arrange via WhatsApp</a>
+                        <a href="https://wa.me/917200006006" id="demo-consult-link" class="btn btn-primary" style="margin-top: 32px;" target="_blank" rel="noopener noreferrer">Arrange via WhatsApp</a>
                     </div>
                     <div class="bento-item reveal has-bg">
                         <div class="bento-bg-img" aria-hidden="true">
@@ -3437,6 +3444,87 @@
             });
             const el = document.getElementById(activeId);
             if (el) { el.classList.add('active'); el.setAttribute('aria-current', 'page'); }
+        }
+
+        /* ══════════════════════════════════════════════════
+           LIFE MODE — "Life first. Technology second."
+           Set via lifemode.html → localStorage['kovin-life-mode'].
+           Adapts hero, catalogue rail, and consultation CTA.
+        ══════════════════════════════════════════════════ */
+        const LIFE_MODES = {
+            college:        { icon: '🎓', title: 'Starting College', heroHeadline: 'Everything before<br>move-in <em>day</em>.', heroSub: 'Phones, audio, and the small things that make dorm life easier — chosen for a budget that still has to last the semester.', railTitle: 'Picked for a new campus chapter', productIds: [2, 8, 10], consultMsg: 'Hello Kovin, I’m starting college and want guidance on a phone and essentials that fit a tighter budget.' },
+            parents:        { icon: '👪', title: 'Buying For Parents', heroHeadline: 'Chosen with<br><em>patience</em>, not specs.', heroSub: 'Simple, reliable, and explained clearly — comfortable from day one, not a learning curve.', railTitle: 'Picked for comfort, not complexity', productIds: [1, 3, 13], consultMsg: 'Hello Kovin, I’m buying for my parents and would like a guided setup, not just a box handed over.' },
+            salary:         { icon: '💼', title: 'First Salary', heroHeadline: 'Your first<br>considered <em>investment</em>.', heroSub: 'Quality that lasts, picked deliberately — not the most expensive option, the right one.', railTitle: 'Picked for a deliberate first upgrade', productIds: [1, 4, 11], consultMsg: 'Hello Kovin, this is my first real considered purchase and I want honest guidance on where it’s worth spending more.' },
+            wfh:            { icon: '🏠', title: 'Work From Home', heroHeadline: 'Built for the<br><em>home office</em>.', heroSub: 'Audio that blocks distraction, a screen that’s comfortable, and the small things that make calls clearer.', railTitle: 'Picked for focused, calmer workdays', productIds: [4, 10, 8], consultMsg: 'Hello Kovin, I work from home and want guidance on audio gear for calls and focus specifically.' },
+            travel:         { icon: '✈️', title: 'Travelling Frequently', heroHeadline: 'Built for the next<br><em>flight</em>.', heroSub: 'Battery that survives the journey, noise cancellation that makes it bearable, and gear that just works.', railTitle: 'Picked for the road, not the desk', productIds: [4, 1, 12], consultMsg: 'Hello Kovin, I travel frequently and want guidance on the most reliable gear to carry.' },
+            creator:        { icon: '🎬', title: 'Content Creation', heroHeadline: 'Made for the daily<br>grind of <em>creating</em>.', heroSub: 'Photography that needs no editing, audio that sounds right the first take, and accessories that keep up.', railTitle: 'Picked for shooting and editing on the go', productIds: [2, 11, 10], consultMsg: 'Hello Kovin, I create content regularly and want guidance beyond just the phone — lighting and audio too.' },
+            business:       { icon: '📈', title: 'Business Essentials', heroHeadline: 'Tools that disappear<br>into the <em>work</em>.', heroSub: 'Calls that stay clear, batteries that don’t quit mid-meeting, and devices that just work.', railTitle: 'Picked for reliability under pressure', productIds: [1, 4, 5], consultMsg: 'Hello Kovin, I need dependable business essentials and want guidance on multi-device call setups.' },
+            entertainment:  { icon: '🎥', title: 'Entertainment Upgrade', heroHeadline: 'The living room,<br><em>upgraded</em>.', heroSub: 'A screen calibrated for real rooms, and sound that means the soundbar can wait.', railTitle: 'Picked for the living room', productIds: [3, 4], consultMsg: 'Hello Kovin, I want to upgrade my entertainment setup and need honest guidance on screen size for my room.' },
+            newhome:        { icon: '🏡', title: 'Moving Into A New Home', heroHeadline: 'A fresh space deserves<br>a considered <em>start</em>.', heroSub: 'From the living room screen to the small things that make a new place feel settled.', railTitle: 'Picked for settling in, room by room', productIds: [3, 10, 13], consultMsg: 'Hello Kovin, I’m moving into a new home and want guidance on what technology to set up first.' },
+        };
+
+        function applyLifeMode() {
+            let modeId = null;
+            try { modeId = localStorage.getItem('kovin-life-mode'); } catch (e) {}
+            const mode = modeId ? LIFE_MODES[modeId] : null;
+
+            const pill = document.getElementById('life-mode-pill');
+            const pillText = document.getElementById('life-mode-pill-text');
+            const entryLink = document.getElementById('life-mode-entry-link');
+            const rail = document.getElementById('life-mode-rail');
+            const consultLink = document.getElementById('demo-consult-link');
+
+            if (!mode) {
+                if (pill) pill.style.display = 'none';
+                if (entryLink) entryLink.style.display = 'inline-flex';
+                if (rail) rail.style.display = 'none';
+                return;
+            }
+
+            /* Hero */
+            const heroHeadline = document.getElementById('hero-headline');
+            const heroSub = document.getElementById('hero-sub');
+            const heroEyebrow = document.getElementById('hero-eyebrow');
+            if (heroHeadline) heroHeadline.innerHTML = mode.heroHeadline;
+            if (heroSub) heroSub.textContent = mode.heroSub;
+            if (heroEyebrow) heroEyebrow.textContent = mode.title + ' · Tamil Nadu';
+
+            /* Pill + entry link */
+            if (pill) pill.style.display = 'inline-flex';
+            if (pillText) pillText.textContent = `${mode.icon} ${mode.title}`;
+            if (entryLink) entryLink.style.display = 'none';
+
+            /* Consultation CTA */
+            if (consultLink) consultLink.href = `https://wa.me/917200006006?text=${encodeURIComponent(mode.consultMsg)}`;
+
+            /* Catalogue rail — rendered after `products` and `buildCard` are defined,
+               so this is invoked from the window load handler, not at parse time. */
+            if (rail) {
+                const items = mode.productIds.map(id => products.find(p => p.id === id)).filter(Boolean);
+                if (items.length) {
+                    rail.style.display = 'block';
+                    rail.innerHTML = `
+                        <div class="slider-header">
+                            <div class="slider-title-group">
+                                <h3 class="slider-category-name">${mode.railTitle}</h3>
+                                <span class="collection-character">Because you told us: ${mode.title}</span>
+                            </div>
+                        </div>
+                        <div class="slider-viewport">
+                            <div class="slider-track" id="life-mode-track" role="list" aria-label="${mode.railTitle}">
+                                ${items.map(p => buildCard(p)).join('')}
+                            </div>
+                        </div>`;
+                    rail.querySelectorAll('.product-card').forEach(card => {
+                        card.addEventListener('click', () => {
+                            const p = products.find(pr => pr.id === parseInt(card.dataset.id));
+                            if (p) openModal(p);
+                        });
+                    });
+                } else {
+                    rail.style.display = 'none';
+                }
+            }
         }
 
         const products = [
@@ -5437,6 +5525,7 @@
         window.addEventListener('load', () => {
             /* ── 1. Render dynamic content ── */
             renderCatalogue();
+            applyLifeMode();
             initRetention();
             initCatalogueSearch();
 

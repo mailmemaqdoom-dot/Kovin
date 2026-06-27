@@ -304,6 +304,12 @@ ul { padding: 0; list-style: none; }
     <span class="j-spacer" aria-hidden="true"></span>
   </header>
 
+  <!-- ░░ Life Mode banner — shown when a life situation is active ░░ -->
+  <a href="lifemode.html" id="lifeModeBanner" style="display:none;align-items:center;gap:8px;padding:9px 18px;background:rgba(227,83,54,0.1);border-bottom:1px solid var(--border);color:var(--copper);font-size:0.76rem;font-weight:600;">
+    <span id="lifeModeBannerText"></span>
+    <span style="opacity:0.65;font-weight:500;margin-left:auto;">Change ›</span>
+  </a>
+
   <!-- ░░ Onboarding (first visit only) ░░ -->
   <div id="onboarding">
     <span class="j-onb-eyebrow">Welcome back</span>
@@ -909,9 +915,34 @@ ul { padding: 0; list-style: none; }
     });
   }
 
+  /* ── Life Mode acknowledgment — light touch, set via lifemode.html ── */
+  const LIFE_MODE_INFO = {
+    college: { icon: '🎓', title: 'Starting College' },
+    parents: { icon: '👪', title: 'Buying For Parents' },
+    salary: { icon: '💼', title: 'First Salary' },
+    wfh: { icon: '🏠', title: 'Work From Home' },
+    travel: { icon: '✈️', title: 'Travelling Frequently' },
+    creator: { icon: '🎬', title: 'Content Creation' },
+    business: { icon: '📈', title: 'Business Essentials' },
+    entertainment: { icon: '🎥', title: 'Entertainment Upgrade' },
+    newhome: { icon: '🏡', title: 'Moving Into A New Home' },
+  };
+  function applyLifeModeBanner() {
+    let modeId = null;
+    try { modeId = localStorage.getItem('kovin-life-mode'); } catch (e) {}
+    const info = modeId ? LIFE_MODE_INFO[modeId] : null;
+    const banner = document.getElementById('lifeModeBanner');
+    const bannerText = document.getElementById('lifeModeBannerText');
+    if (info && banner && bannerText) {
+      banner.style.display = 'flex';
+      bannerText.textContent = `${info.icon} Tailored for: ${info.title}`;
+    }
+  }
+
   /* ══ Boot ══ */
   function init() {
     buildOnboarding();
+    applyLifeModeBanner();
     if (ownership && ownership.deviceId != null && ownership.stageIdx != null) {
       $onboarding.style.display = 'none';
       showJournal();

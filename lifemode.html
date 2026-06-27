@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0">
+<meta name="theme-color" content="#1A1612">
+<meta name="description" content="Kovin Life Mode — begin with your life, not a category. Technology recommended around what's actually happening.">
+<title>Life Mode · Kovin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<style>
+
+/* ══════════════════════════════════════════════════
+   KOVIN LIFE MODE
+   "Life first. Technology second."
+══════════════════════════════════════════════════ */
+:root {
+  --ink:          #1A1612;
+  --paper:        #F7F4EF;
+  --paper-warm:   #EDE8E0;
+  --paper-dim:    #E5DDD4;
+  --copper:       #E35336;
+  --copper-deep:  #C9432A;
+  --sand:         #F4A460;
+  --border:       rgba(26,22,18,0.08);
+  --border-strong:rgba(26,22,18,0.16);
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+  --ease-out:     cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html { height: 100%; }
+body {
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+button { font: inherit; color: inherit; cursor: pointer; border: none; background: none; -webkit-tap-highlight-color: transparent; }
+a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+img { display: block; max-width: 100%; }
+:focus-visible { outline: 2px solid var(--copper); outline-offset: 3px; border-radius: 4px; }
+
+/* ══ Header ══ */
+.lm-header {
+  position: sticky; top: 0; z-index: 200;
+  height: calc(56px + env(safe-area-inset-top, 0px));
+  padding: env(safe-area-inset-top, 0px) 18px 0;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(247,244,239,0.9);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  backdrop-filter: blur(18px) saturate(1.3);
+  border-bottom: 1px solid var(--border);
+}
+.lm-back { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--paper-warm); border: 1px solid var(--border); color: var(--ink); }
+.lm-back svg { width: 16px; height: 16px; }
+.lm-header-title { display: flex; flex-direction: column; align-items: center; }
+.lm-wordmark { font-family: var(--font-display); font-size: 1.22rem; font-weight: 500; letter-spacing: -0.02em; }
+.lm-wordmark span { color: var(--copper); }
+.lm-eyebrow-tag { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.4; margin-top: 1px; }
+.lm-spacer { width: 36px; }
+
+/* ══════════════════════════════════════════════════
+   GRID SCREEN
+══════════════════════════════════════════════════ */
+#grid-screen { padding-bottom: 30px; }
+.lm-grid-intro { padding: 26px 20px 18px; }
+.lm-grid-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 0.66rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--copper); margin-bottom: 14px;
+}
+.lm-grid-eyebrow::before, .lm-grid-eyebrow::after { content: ''; width: 16px; height: 1.5px; background: currentColor; opacity: 0.5; }
+.lm-grid-intro h1 { font-family: var(--font-display); font-weight: 500; letter-spacing: -0.02em; font-size: clamp(1.9rem, 7.5vw, 2.5rem); line-height: 1.12; margin-bottom: 12px; }
+.lm-grid-intro p { font-size: 0.88rem; line-height: 1.65; opacity: 0.6; max-width: 360px; }
+
+.lm-tiles { padding: 8px 20px 0; display: flex; flex-direction: column; gap: 14px; }
+.lm-tile {
+  position: relative; width: 100%; height: 168px; border-radius: 22px; overflow: hidden;
+  background: var(--ink);
+}
+.lm-tile img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.lm-tile-grad {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(26,22,18,0.05) 0%, rgba(26,22,18,0.35) 45%, rgba(26,22,18,0.86) 100%);
+}
+.lm-tile-content { position: absolute; left: 0; right: 0; bottom: 0; padding: 16px 18px; color: #fff; }
+.lm-tile-icon { font-size: 1.5rem; margin-bottom: 6px; display: block; }
+.lm-tile-title { font-family: var(--font-display); font-size: 1.3rem; font-weight: 500; line-height: 1.15; margin-bottom: 3px; }
+.lm-tile-tagline { font-size: 0.76rem; opacity: 0.82; line-height: 1.4; max-width: 280px; }
+.lm-tile:active { transform: scale(0.98); }
+
+/* ══════════════════════════════════════════════════
+   DETAIL SCREEN
+══════════════════════════════════════════════════ */
+#detail-screen { display: none; }
+.lm-stage { position: relative; height: 46vh; min-height: 320px; max-height: 460px; overflow: hidden; }
+.lm-stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.lm-stage-grad { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(26,22,18,0.15) 0%, rgba(26,22,18,0.35) 40%, rgba(26,22,18,0.92) 100%); }
+.lm-stage-content { position: absolute; left: 0; right: 0; bottom: 0; padding: 22px 20px; color: #fff; }
+.lm-stage-back {
+  position: absolute; top: calc(env(safe-area-inset-top,0px) + 12px); left: 16px; z-index: 5;
+  display: inline-flex; align-items: center; gap: 6px; font-size: 0.78rem; font-weight: 600;
+  color: #fff; background: rgba(255,255,255,0.14); padding: 8px 14px; border-radius: 100px;
+  backdrop-filter: blur(10px);
+}
+.lm-stage-back svg { width: 13px; height: 13px; }
+.lm-stage-icon { font-size: 1.8rem; margin-bottom: 8px; display: block; }
+.lm-stage-title { font-family: var(--font-display); font-size: clamp(1.9rem, 7vw, 2.4rem); font-weight: 500; line-height: 1.1; margin-bottom: 8px; }
+.lm-stage-sub { font-size: 0.88rem; line-height: 1.6; opacity: 0.85; max-width: 340px; }
+
+.lm-detail-body { padding: 28px 20px 0; }
+.lm-section { margin-bottom: 30px; }
+.lm-section-eyebrow { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--copper); margin-bottom: 10px; }
+.lm-section-title { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.3rem, 5vw, 1.6rem); line-height: 1.2; margin-bottom: 14px; }
+
+.lm-product-rail { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+.lm-product-rail::-webkit-scrollbar { display: none; }
+.lm-pcard { flex: 0 0 150px; scroll-snap-align: start; background: var(--paper-warm); border-radius: 16px; padding: 12px; border: 1px solid var(--border); }
+.lm-pcard-img { width: 100%; height: 92px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px; }
+.lm-pcard-img img { max-width: 78%; max-height: 78%; object-fit: contain; }
+.lm-pcard-name { font-size: 0.78rem; font-weight: 600; line-height: 1.3; margin-bottom: 3px; }
+.lm-pcard-price { font-size: 0.78rem; font-weight: 700; color: var(--copper); }
+.lm-pcard-fit { font-size: 0.7rem; opacity: 0.55; line-height: 1.4; margin-top: 5px; font-style: italic; }
+
+.lm-guidance-card { background: var(--paper-warm); border-radius: 18px; padding: 18px 18px; }
+.lm-guidance-card p { font-size: 0.86rem; line-height: 1.62; }
+.lm-guidance-card p + p { margin-top: 10px; }
+
+.lm-accessory-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.lm-acc-chip { display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px; border-radius: 100px; background: var(--paper-warm); border: 1px solid var(--border); font-size: 0.78rem; font-weight: 600; }
+.lm-acc-chip img { width: 18px; height: 18px; object-fit: contain; }
+
+.lm-consult-card {
+  border: 1.5px solid var(--ink); border-radius: 18px; padding: 18px 18px; display: flex; align-items: flex-start; gap: 13px;
+}
+.lm-consult-icon { width: 38px; height: 38px; border-radius: 11px; background: var(--paper-warm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.lm-consult-icon svg { width: 17px; height: 17px; }
+.lm-consult-body p:first-child { font-size: 0.88rem; font-weight: 600; margin-bottom: 4px; }
+.lm-consult-body p:last-child { font-size: 0.78rem; opacity: 0.55; line-height: 1.5; }
+
+.lm-tools-row { display: flex; flex-direction: column; gap: 8px; }
+.lm-tool-link {
+  display: flex; align-items: center; gap: 12px; background: var(--paper-warm); border-radius: 14px; padding: 13px 15px;
+}
+.lm-tool-link-icon { width: 32px; height: 32px; border-radius: 9px; background: var(--paper); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 0.95rem; }
+.lm-tool-link-text { flex: 1; min-width: 0; }
+.lm-tool-link-title { font-size: 0.82rem; font-weight: 600; }
+.lm-tool-link-sub { font-size: 0.7rem; opacity: 0.5; margin-top: 1px; }
+.lm-tool-link-arrow { width: 14px; height: 14px; opacity: 0.3; flex-shrink: 0; }
+
+/* ══ CTA ══ */
+.lm-cta-area { padding: 6px 20px calc(env(safe-area-inset-bottom, 0px) + 30px); display: flex; flex-direction: column; gap: 10px; }
+.lm-btn-primary {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; min-height: 54px; padding: 16px 24px; border-radius: 100px;
+  background: var(--copper); color: #fff; font-size: 0.94rem; font-weight: 600;
+  box-shadow: 0 14px 30px -8px rgba(227,83,54,0.48);
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+.lm-btn-primary:hover { background: var(--copper-deep); }
+.lm-btn-primary:active { transform: scale(0.97); }
+.lm-btn-primary svg { width: 16px; height: 16px; }
+.lm-btn-secondary {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; min-height: 48px; padding: 13px 22px; border-radius: 100px;
+  background: transparent; color: var(--ink); font-size: 0.84rem; font-weight: 500;
+  border: 1.5px solid var(--border-strong);
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+.lm-btn-secondary:hover { background: var(--paper-warm); }
+.lm-btn-secondary:active { transform: scale(0.97); }
+
+/* ══ Toast ══ */
+.lm-toast {
+  position: fixed; bottom: calc(env(safe-area-inset-bottom,0px) + 20px); left: 50%;
+  transform: translateX(-50%) translateY(14px);
+  background: var(--ink); color: var(--paper); padding: 11px 20px; border-radius: 100px;
+  font-size: 0.8rem; font-weight: 600; box-shadow: 0 8px 28px rgba(0,0,0,0.3);
+  opacity: 0; pointer-events: none; white-space: nowrap; z-index: 300;
+}
+
+/* ══ Desktop ══ */
+@media (min-width: 720px) {
+  body { background: var(--paper-dim); }
+  #app-shell { max-width: 480px; margin: 0 auto; background: var(--paper); box-shadow: 0 0 80px rgba(0,0,0,0.08); min-height: 100dvh; }
+  .lm-header { max-width: 480px; left: 50%; transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+</style>
+</head>
+<body>
+
+<div id="app-shell">
+
+  <header class="lm-header">
+    <a href="index.html" class="lm-back" aria-label="Back to Kovin">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    </a>
+    <div class="lm-header-title">
+      <span class="lm-wordmark">Kov<span>·</span>in</span>
+      <span class="lm-eyebrow-tag">Life Mode</span>
+    </div>
+    <span class="lm-spacer" aria-hidden="true"></span>
+  </header>
+
+  <!-- ░░ Grid screen ░░ -->
+  <div id="grid-screen">
+    <div class="lm-grid-intro">
+      <span class="lm-grid-eyebrow">Life first, technology second</span>
+      <h1>What's actually going on in your life?</h1>
+      <p>Not a category. Not a brand. Tell us the situation, and everything — recommendations, guidance, even the conversation — shapes itself around it.</p>
+    </div>
+    <div class="lm-tiles" id="tilesWrap"></div>
+  </div>
+
+  <!-- ░░ Detail screen ░░ -->
+  <div id="detail-screen">
+    <div class="lm-stage">
+      <img id="stageImg" src="" alt="">
+      <div class="lm-stage-grad"></div>
+      <button class="lm-stage-back" id="stageBackBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        All life situations
+      </button>
+      <div class="lm-stage-content">
+        <span class="lm-stage-icon" id="stageIcon"></span>
+        <div class="lm-stage-title" id="stageTitle"></div>
+        <p class="lm-stage-sub" id="stageSub"></p>
+      </div>
+    </div>
+
+    <div class="lm-detail-body">
+      <section class="lm-section">
+        <div class="lm-section-eyebrow">What Changes For You</div>
+        <div class="lm-section-title" id="collectionTitle"></div>
+        <div class="lm-product-rail" id="productRail"></div>
+      </section>
+
+      <section class="lm-section">
+        <div class="lm-section-eyebrow">Guidance</div>
+        <div class="lm-section-title">How recommendations shift.</div>
+        <div class="lm-guidance-card" id="guidanceCard"></div>
+      </section>
+
+      <section class="lm-section" id="accessorySection">
+        <div class="lm-section-eyebrow">Accessories</div>
+        <div class="lm-section-title">Worth adding for this situation.</div>
+        <div class="lm-accessory-chips" id="accessoryChips"></div>
+      </section>
+
+      <section class="lm-section">
+        <div class="lm-section-eyebrow">Consultation</div>
+        <div class="lm-section-title">If you'd rather talk it through.</div>
+        <a class="lm-consult-card" id="consultLink" href="#" target="_blank" rel="noopener noreferrer">
+          <div class="lm-consult-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          </div>
+          <div class="lm-consult-body">
+            <p id="consultTitle"></p>
+            <p>A real person on WhatsApp, not a script.</p>
+          </div>
+        </a>
+      </section>
+
+      <section class="lm-section">
+        <div class="lm-section-eyebrow">Carries Through</div>
+        <div class="lm-section-title">The rest of Kovin adapts too.</div>
+        <div class="lm-tools-row">
+          <a class="lm-tool-link" id="confidenceLink" href="confidence.html">
+            <div class="lm-tool-link-icon">◎</div>
+            <div class="lm-tool-link-text"><div class="lm-tool-link-title">Confidence Engine</div><div class="lm-tool-link-sub" id="confidenceSub"></div></div>
+            <svg class="lm-tool-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+          </a>
+          <a class="lm-tool-link" href="journey.html">
+            <div class="lm-tool-link-icon">✦</div>
+            <div class="lm-tool-link-text"><div class="lm-tool-link-title">Ownership Journey</div><div class="lm-tool-link-sub" id="journeySub"></div></div>
+            <svg class="lm-tool-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <div class="lm-cta-area">
+      <button class="lm-btn-primary" id="enterBtn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+        <span id="enterBtnLabel">Enter Kovin</span>
+      </button>
+      <button class="lm-btn-secondary" id="chooseDifferentBtn">Choose a different life situation</button>
+    </div>
+  </div><!-- /detail-screen -->
+
+</div><!-- /app-shell -->
+
+<div class="lm-toast" id="lmToast" role="status" aria-live="polite"></div>
+
+<script>
+/* ══════════════════════════════════════════════════
+   KOVIN LIFE MODE
+   "This platform understands my life before
+    recommending technology."
+══════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  /* ─────────── Compact product lookup (image, name, price) ─────────── */
+  const P = {
+    1:  { name: 'Samsung Galaxy S23 FE', price: '₹34,999', image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/fWEumNteCudVVPuo.png' },
+    2:  { name: 'Google Pixel 7a', price: '₹39,999', image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/AeIhJBFyYYuVXncG.png' },
+    3:  { name: 'Sony Bravia 4K LED', price: '₹54,990', image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/PNuLvudbHcTmKOpp.png' },
+    4:  { name: 'Sony WH-1000XM5', price: '₹26,990', image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/XIJzeXSRHorEqzFw.png' },
+    5:  { name: 'Apple 20W USB-C Adapter', price: '₹1,699', image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/uVoVbsruMHDNSVBu.png' },
+    6:  { name: 'Premium Tempered Glass', price: '₹499', image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/KelCDGFlqZNnFnFD.png' },
+    7:  { name: 'Sleek Protective Case', price: '₹799', image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/jdVRAWbtGZtmRYSW.png' },
+    8:  { name: 'Braided Fast Charge Cable', price: '₹599', image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/skNTrQiJTgkIzyjx.png' },
+    10: { name: 'Aluminum Phone Stand', price: '₹399', image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/QLzXktccBITzJoEo.png' },
+    11: { name: 'Premium Wireless Earbuds', price: '₹2,999', image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/akufQOVWgjtpdbDf.png' },
+    12: { name: 'Magnetic Car Mount', price: '₹449', image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/LeYyaTtVUntOTfPh.png' },
+    13: { name: 'Device Cleaning Kit', price: '₹249', image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/QdzcPYGrRoKDynVN.png' },
+    14: { name: 'Camera Lens Protector', price: '₹299', image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/gmvKvvXVYoSPYHjl.png' },
+  };
+
+  /* ─────────── Life Modes ─────────── */
+  const MODES = [
+    {
+      id: 'college', icon: '🎓', title: 'Starting College', tagline: 'New campus, new independence — the essentials that actually last a semester.',
+      image: 'Photos/07_kovin_mobile_first_digital_experience.png',
+      heroHeadline: 'Everything before move-in day.', heroSub: 'Phones, audio, and the small things that make dorm life easier — chosen for a budget that still has to last.',
+      collectionTitle: 'Picked for a new campus chapter', productIds: [2, 8, 10],
+      fitNotes: { 2: 'Camera good enough for assignments and memories, without flagship pricing.', 8: 'A cable built to survive a dorm room, not just a desk.', 10: 'Props the phone up for lecture calls home.' },
+      guidance: ['Guidance leans toward affordability and durability — not the newest spec.', 'Camera and battery still matter, but price-to-value carries more weight here than usual.'],
+      accessoryIds: [8, 10, 6],
+      consultTitle: 'Ask about staying connected on a tight budget.', consultMsg: 'Hello Kovin, I’m starting college and want guidance on a phone and essentials that fit a tighter budget.',
+      confidenceSub: 'Battery and price-per-rupee questions carry more weight for this mode.',
+      journeySub: 'Day Zero leans on WhatsApp and Google account setup — the basics of a new chapter.',
+    },
+    {
+      id: 'parents', icon: '👪', title: 'Buying For Parents', tagline: 'Technology that respects how they already live — not how you’d want it.',
+      image: 'Photos/09_kovin_trust_service_experience.png',
+      heroHeadline: 'Chosen with patience, not specs.', heroSub: 'Simple, reliable, and explained clearly — comfortable from day one, not a learning curve.',
+      collectionTitle: 'Picked for comfort, not complexity', productIds: [1, 3, 13],
+      fitNotes: { 1: 'Reliable battery means fewer reminders to charge it.', 3: 'A simple, calibrated TV experience — nothing to configure.', 13: 'Keeps screens clean without anyone needing to think about it.' },
+      guidance: ['Guidance leans toward simplicity and reliability over cutting-edge features.', 'Comfort and consistency outrank novelty every time for this mode.'],
+      accessoryIds: [7, 13],
+      consultTitle: 'Ask for a setup walkthrough, not just a handover.', consultMsg: 'Hello Kovin, I’m buying for my parents and would like a guided setup, not just a box handed over.',
+      confidenceSub: 'Reliability and simplicity questions are weighted higher than camera or specs.',
+      journeySub: 'Day Zero and Support sections are emphasized — setup help matters more here.',
+    },
+    {
+      id: 'salary', icon: '💼', title: 'First Salary', tagline: 'The first real upgrade — chosen with intention, not impulse.',
+      image: 'Photos/10_kovin_brand_signature_visual.png',
+      heroHeadline: 'Your first considered investment.', heroSub: 'Quality that lasts, picked deliberately — not the most expensive option, the right one.',
+      collectionTitle: 'Picked for a deliberate first upgrade', productIds: [1, 4, 11],
+      fitNotes: { 1: 'A flagship-feeling phone without flagship-only pricing.', 4: 'The kind of headphone worth owning for years.', 11: 'An easy daily companion that doesn’t demand much from a first real budget.' },
+      guidance: ['Guidance leans toward long-term value and things that hold up over years.', 'Less about the cheapest option, more about what’s actually worth paying for.'],
+      accessoryIds: [6, 7],
+      consultTitle: 'Talk through what’s worth paying more for.', consultMsg: 'Hello Kovin, this is my first real considered purchase and I want honest guidance on where it’s worth spending more.',
+      confidenceSub: 'Longevity questions ("how long do you expect to keep this") matter more here.',
+      journeySub: 'Decision Diary becomes meaningful — revisiting why a first big purchase was made.',
+    },
+    {
+      id: 'wfh', icon: '🏠', title: 'Work From Home', tagline: 'A setup that makes the workday calmer, not busier.',
+      image: 'Photos/02_kovin_daily_life_technology.png',
+      heroHeadline: 'Built for the home office.', heroSub: 'Audio that blocks distraction, a screen that’s comfortable, and the small things that make calls clearer.',
+      collectionTitle: 'Picked for focused, calmer workdays', productIds: [4, 10, 8],
+      fitNotes: { 4: 'Genuine noise cancellation for back-to-back calls.', 10: 'Brings the phone to eye level for video calls.', 8: 'A desk cable that survives daily plugging and unplugging.' },
+      guidance: ['Guidance leans toward focus, call clarity, and desk comfort.', 'Battery still matters, but staying power through meetings matters more.'],
+      accessoryIds: [10, 8],
+      consultTitle: 'Ask about noise cancellation for calls versus deep focus.', consultMsg: 'Hello Kovin, I work from home and want guidance on audio gear for calls and focus specifically.',
+      confidenceSub: '"Where will you wear these most?" leans toward office and calls for this mode.',
+      journeySub: 'Discovery Moments highlight call-clarity and focus features first.',
+    },
+    {
+      id: 'travel', icon: '✈️', title: 'Travelling Frequently', tagline: 'Light, dependable, and ready before you are.',
+      image: 'Photos/03_kovin_immersive_audio_experience.png',
+      heroHeadline: 'Built for the next flight, not just this one.', heroSub: 'Battery that survives the journey, noise cancellation that makes it bearable, and gear that just works.',
+      collectionTitle: 'Picked for the road, not the desk', productIds: [4, 1, 12],
+      fitNotes: { 4: '30 hours of battery and real silence for long-haul days.', 1: 'A phone that doesn’t need a midday charger hunt mid-trip.', 12: 'Keeps navigation visible without a hand off the wheel.' },
+      guidance: ['Guidance leans toward battery life and reliability over the newest feature.', 'Anything fragile or fussy drops in priority for this mode.'],
+      accessoryIds: [12, 8],
+      consultTitle: 'Ask what to carry for international trips specifically.', consultMsg: 'Hello Kovin, I travel frequently and want guidance on the most reliable gear to carry.',
+      confidenceSub: '"How much do you travel or commute?" is weighted toward Regularly for this mode.',
+      journeySub: 'Health checks emphasize battery longevity across long travel days.',
+    },
+    {
+      id: 'creator', icon: '🎬', title: 'Content Creation', tagline: 'Camera, sound, and storage that keep up with you.',
+      image: 'Photos/08_kovin_cinematic_product_rail.png',
+      heroHeadline: 'Made for the daily grind of creating.', heroSub: 'Photography that needs no editing, audio that sounds right the first take, and accessories that keep up.',
+      collectionTitle: 'Picked for shooting and editing on the go', productIds: [2, 11, 10],
+      fitNotes: { 2: 'Camera processing built specifically for natural, editing-free results.', 11: 'Light enough to forget while recording voiceovers on the move.', 10: 'A stable angle for talking-head shots without extra gear.' },
+      guidance: ['Guidance leans toward camera quality and editing-free results.', 'Storage habits and lens care matter more than for an average buyer.'],
+      accessoryIds: [10, 14],
+      consultTitle: 'Ask about lighting and audio setups beyond the phone.', consultMsg: 'Hello Kovin, I create content regularly and want guidance beyond just the phone — lighting and audio too.',
+      confidenceSub: '"None — I want it right out of the camera" carries the most weight here.',
+      journeySub: 'Discovery Moments surface camera-specific tips first.',
+    },
+    {
+      id: 'business', icon: '📈', title: 'Business Essentials', tagline: 'Dependable enough that nobody on the call notices the tech.',
+      image: 'Photos/06_kovin_guided_technology_experience.png',
+      heroHeadline: 'Tools that disappear into the work.', heroSub: 'Calls that stay clear, batteries that don’t quit mid-meeting, and devices that just work.',
+      collectionTitle: 'Picked for reliability under pressure', productIds: [1, 4, 5],
+      fitNotes: { 1: 'Dependable enough to never become the story in a meeting.', 4: 'Eight microphones keep your voice clear on every call.', 5: 'Genuine fast charging so battery is never the excuse.' },
+      guidance: ['Guidance leans toward reliability, call clarity, and minimal downtime.', 'Novelty features matter far less than consistency for this mode.'],
+      accessoryIds: [5, 8],
+      consultTitle: 'Ask about switching between phone and laptop calls.', consultMsg: 'Hello Kovin, I need dependable business essentials and want guidance on multi-device call setups.',
+      confidenceSub: '"How do calls factor into your day?" is weighted toward Frequently.',
+      journeySub: 'Support section is surfaced earlier — uptime matters more for this mode.',
+    },
+    {
+      id: 'entertainment', icon: '🎥', title: 'Entertainment Upgrade', tagline: 'Movie nights, properly done.',
+      image: 'Photos/04_kovin_premium_entertainment_space.png',
+      heroHeadline: 'The living room, upgraded.', heroSub: 'A screen calibrated for real rooms, and sound that means the soundbar can wait.',
+      collectionTitle: 'Picked for the living room', productIds: [3, 4],
+      fitNotes: { 3: 'Calibrated 4K with Dolby Audio built in.', 4: 'A second, personal option for late-night viewing without disturbing anyone.' },
+      guidance: ['Guidance leans toward room size and viewing habits over spec sheets.', 'Picture and sound matter more than portability or battery here.'],
+      accessoryIds: [],
+      consultTitle: 'Ask whether your room size genuinely suits this screen.', consultMsg: 'Hello Kovin, I want to upgrade my entertainment setup and need honest guidance on screen size for my room.',
+      confidenceSub: '"How do you mainly watch?" leans toward movies and sound quality.',
+      journeySub: 'Would We Still Recommend leans on room-fit honesty over spec comparisons.',
+    },
+    {
+      id: 'newhome', icon: '🏡', title: 'Moving Into A New Home', tagline: 'Setting up a new space, one honest choice at a time.',
+      image: 'Photos/05_kovin_smart_accessories_flatlay.png',
+      heroHeadline: 'A fresh space deserves a considered start.', heroSub: 'From the living room screen to the small things that make a new place feel settled.',
+      collectionTitle: 'Picked for settling in, room by room', productIds: [3, 10, 13],
+      fitNotes: { 3: 'A single, considered screen rather than rushing every room at once.', 10: 'A small, immediate comfort for a kitchen counter or new desk.', 13: 'Keeps new screens looking new for longer.' },
+      guidance: ['Guidance leans toward setting up rooms thoughtfully, not all at once.', 'Sequencing matters — what to set up first versus what can wait.'],
+      accessoryIds: [10, 13],
+      consultTitle: 'Ask what to set up first in a new home.', consultMsg: 'Hello Kovin, I’m moving into a new home and want guidance on what technology to set up first.',
+      confidenceSub: '"Will this move rooms or homes with you?" leans toward No, permanent.',
+      journeySub: 'Timeline framing emphasizes a fresh start rather than a replacement.',
+    },
+  ];
+
+  /* ─────────── State ─────────── */
+  let currentMode = null;
+
+  /* ─────────── DOM refs ─────────── */
+  const $gridScreen   = document.getElementById('grid-screen');
+  const $detailScreen = document.getElementById('detail-screen');
+  const $tilesWrap     = document.getElementById('tilesWrap');
+  const $toast          = document.getElementById('lmToast');
+  let toastTimer        = null;
+
+  /* ══ Build grid ══ */
+  function buildGrid() {
+    $tilesWrap.innerHTML = MODES.map(m => `
+      <button class="lm-tile" data-mode-id="${m.id}" aria-label="${m.title}">
+        <img src="${m.image}" alt="" loading="lazy">
+        <div class="lm-tile-grad"></div>
+        <div class="lm-tile-content">
+          <span class="lm-tile-icon" aria-hidden="true">${m.icon}</span>
+          <div class="lm-tile-title">${m.title}</div>
+          <div class="lm-tile-tagline">${m.tagline}</div>
+        </div>
+      </button>`).join('');
+
+    document.querySelectorAll('.lm-tile').forEach(btn => {
+      btn.addEventListener('click', () => openDetail(btn.dataset.modeId));
+    });
+  }
+
+  /* ══ Open detail screen for a mode ══ */
+  function openDetail(modeId) {
+    const m = MODES.find(x => x.id === modeId);
+    if (!m) return;
+    currentMode = m;
+
+    document.getElementById('stageImg').src = m.image;
+    document.getElementById('stageIcon').textContent = m.icon;
+    document.getElementById('stageTitle').textContent = m.heroHeadline;
+    document.getElementById('stageSub').textContent = m.heroSub;
+    document.getElementById('collectionTitle').textContent = m.collectionTitle;
+
+    document.getElementById('productRail').innerHTML = m.productIds.map(id => {
+      const p = P[id];
+      if (!p) return '';
+      return `<div class="lm-pcard">
+        <div class="lm-pcard-img"><img src="${p.image}" alt="${p.name}" loading="lazy"></div>
+        <div class="lm-pcard-name">${p.name}</div>
+        <div class="lm-pcard-price">${p.price}</div>
+        <div class="lm-pcard-fit">${m.fitNotes[id] || ''}</div>
+      </div>`;
+    }).join('');
+
+    document.getElementById('guidanceCard').innerHTML = m.guidance.map(g => `<p>${g}</p>`).join('');
+
+    const accSection = document.getElementById('accessorySection');
+    if (m.accessoryIds.length) {
+      accSection.style.display = '';
+      document.getElementById('accessoryChips').innerHTML = m.accessoryIds.map(id => {
+        const p = P[id];
+        if (!p) return '';
+        return `<span class="lm-acc-chip"><img src="${p.image}" alt=""> ${p.name}</span>`;
+      }).join('');
+    } else {
+      accSection.style.display = 'none';
+    }
+
+    document.getElementById('consultTitle').textContent = m.consultTitle;
+    document.getElementById('consultLink').href = `https://wa.me/917200006006?text=${encodeURIComponent(m.consultMsg)}`;
+
+    document.getElementById('confidenceSub').textContent = m.confidenceSub;
+    document.getElementById('journeySub').textContent = m.journeySub;
+    const firstProductId = m.productIds[0];
+    document.getElementById('confidenceLink').href = [1,2,3,4].includes(firstProductId) ? `confidence.html?product=${firstProductId}` : 'confidence.html';
+
+    document.getElementById('enterBtnLabel').textContent = `Enter Kovin — ${m.title}`;
+
+    $gridScreen.style.display = 'none';
+    $detailScreen.style.display = 'block';
+    window.scrollTo(0, 0);
+
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduced) {
+      gsap.fromTo($detailScreen, { opacity: 0 }, { opacity: 1, duration: 0.45, ease: 'power2.out' });
+      gsap.fromTo('.lm-stage-content > *', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.06, ease: 'power3.out', delay: 0.1 });
+      gsap.fromTo('.lm-section', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power3.out', delay: 0.2 });
+    }
+  }
+
+  function closeDetail() {
+    $detailScreen.style.display = 'none';
+    $gridScreen.style.display = 'block';
+    window.scrollTo(0, 0);
+  }
+
+  /* ══ Enter Kovin in this mode ══ */
+  function enterMode() {
+    if (!currentMode) return;
+    try { localStorage.setItem('kovin-life-mode', currentMode.id); } catch (e) {}
+    showToast(`Entering Kovin — ${currentMode.title}`);
+    setTimeout(() => { window.location.href = 'index.html'; }, 500);
+  }
+
+  /* ══ Toast ══ */
+  function showToast(msg) {
+    $toast.textContent = msg;
+    clearTimeout(toastTimer);
+    gsap.killTweensOf($toast);
+    gsap.fromTo($toast, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power3.out' });
+  }
+
+  document.getElementById('stageBackBtn').addEventListener('click', closeDetail);
+  document.getElementById('chooseDifferentBtn').addEventListener('click', closeDetail);
+  document.getElementById('enterBtn').addEventListener('click', enterMode);
+
+  document.addEventListener('DOMContentLoaded', buildGrid);
+})();
+</script>
+</body>
+</html>
