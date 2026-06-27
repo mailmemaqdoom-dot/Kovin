@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0">
+<meta name="theme-color" content="#F7F4EF">
+<meta name="description" content="Kovin Family — a household technology hub. Profiles for everyone you buy for, remembered with care.">
+<title>Family · Kovin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<style>
+
+/* ══════════════════════════════════════════════════
+   KOVIN FAMILY
+   "Kovin understands everyone in my family, not just me."
+══════════════════════════════════════════════════ */
+:root {
+  --ink:          #1A1612;
+  --paper:        #F7F4EF;
+  --paper-warm:   #EDE8E0;
+  --paper-dim:    #E5DDD4;
+  --copper:       #E35336;
+  --copper-deep:  #C9432A;
+  --sand:         #F4A460;
+  --wood:         #7B5940;
+  --border:       rgba(26,22,18,0.08);
+  --border-strong:rgba(26,22,18,0.16);
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+  --ease-out:     cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html { height: 100%; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+button { font: inherit; color: inherit; cursor: pointer; border: none; background: none; -webkit-tap-highlight-color: transparent; }
+a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+img { display: block; max-width: 100%; }
+ul { padding: 0; list-style: none; }
+input, select { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--copper); outline-offset: 3px; border-radius: 4px; }
+
+/* ══ Header ══ */
+.fam-header {
+  position: sticky; top: 0; z-index: 100;
+  height: calc(56px + env(safe-area-inset-top, 0px));
+  padding: env(safe-area-inset-top, 0px) 18px 0;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(247,244,239,0.86);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  backdrop-filter: blur(18px) saturate(1.3);
+  border-bottom: 1px solid var(--border);
+}
+.fam-back { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--paper-warm); border: 1px solid var(--border); color: var(--ink); flex-shrink: 0; }
+.fam-back svg { width: 16px; height: 16px; }
+.fam-header-title { display: flex; flex-direction: column; align-items: center; }
+.fam-wordmark { font-family: var(--font-display); font-size: 1.22rem; font-weight: 500; letter-spacing: -0.02em; }
+.fam-wordmark span { color: var(--copper); }
+.fam-eyebrow-tag { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.4; margin-top: 1px; }
+.fam-spacer { width: 36px; flex-shrink: 0; }
+
+/* ══════════════════════════════════════════════════
+   HUB SCREEN
+══════════════════════════════════════════════════ */
+#hub-screen { padding-bottom: 40px; }
+.fam-intro { padding: 26px 20px 4px; }
+.fam-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 0.66rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--copper); margin-bottom: 14px;
+}
+.fam-eyebrow::before, .fam-eyebrow::after { content: ''; width: 16px; height: 1.5px; background: currentColor; opacity: 0.5; }
+.fam-intro h1 { font-family: var(--font-display); font-weight: 500; letter-spacing: -0.02em; font-size: clamp(1.9rem, 7.5vw, 2.5rem); line-height: 1.12; margin-bottom: 12px; }
+.fam-intro p { font-size: 0.88rem; line-height: 1.65; opacity: 0.6; max-width: 380px; }
+
+/* ── Glance card ── */
+.fam-glance { margin: 22px 20px 6px; background: var(--ink); color: var(--paper); border-radius: 22px; padding: 20px 20px; }
+.fam-glance-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.5; margin-bottom: 10px; }
+.fam-glance-text { font-family: var(--font-display); font-size: 1.18rem; font-weight: 400; line-height: 1.4; }
+.fam-glance-text strong { color: var(--sand); font-weight: 600; }
+
+/* ── Profile grid ── */
+.fam-grid-label { padding: 30px 20px 14px; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.42; }
+.fam-grid { padding: 0 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.fam-card {
+  position: relative; text-align: left; background: var(--paper-warm); border: 1px solid var(--border);
+  border-radius: 20px; padding: 16px 14px 14px; transition: transform 0.15s ease, border-color 0.2s ease;
+}
+.fam-card:active { transform: scale(0.97); }
+.fam-card-avatar {
+  width: 46px; height: 46px; border-radius: 14px; background: var(--paper); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center; font-size: 1.4rem; margin-bottom: 12px;
+}
+.fam-card-name { font-size: 0.92rem; font-weight: 700; line-height: 1.25; margin-bottom: 2px; }
+.fam-card-relation { font-size: 0.7rem; opacity: 0.5; margin-bottom: 10px; }
+.fam-card-meta { font-size: 0.72rem; font-weight: 600; color: var(--copper); }
+.fam-card-flag {
+  position: absolute; top: 14px; right: 14px; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--sand); box-shadow: 0 0 0 3px rgba(244,164,96,0.22); display: none;
+}
+.fam-card.has-flag .fam-card-flag { display: block; }
+
+/* ══════════════════════════════════════════════════
+   DETAIL SCREEN
+══════════════════════════════════════════════════ */
+#detail-screen { display: none; }
+.fam-stage { padding: 26px 20px 24px; border-bottom: 1px solid var(--border); }
+.fam-stage-top { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px; }
+.fam-stage-avatar {
+  width: 64px; height: 64px; border-radius: 18px; background: var(--paper-warm); border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center; font-size: 2rem; flex-shrink: 0;
+}
+.fam-stage-body { flex: 1; min-width: 0; padding-top: 2px; }
+.fam-stage-relation { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--copper); margin-bottom: 4px; }
+.fam-stage-name-row { display: flex; align-items: center; gap: 8px; }
+.fam-stage-name { font-family: var(--font-display); font-size: clamp(1.5rem, 6vw, 1.85rem); font-weight: 500; letter-spacing: -0.018em; line-height: 1.15; }
+.fam-edit-btn { width: 28px; height: 28px; border-radius: 50%; background: var(--paper-warm); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.fam-edit-btn svg { width: 12px; height: 12px; opacity: 0.6; }
+.fam-stage-desc { font-size: 0.84rem; line-height: 1.58; opacity: 0.6; max-width: 400px; }
+
+/* ── Section shell ── */
+.fam-section { padding: 26px 20px; }
+.fam-section.is-divided { border-top: 1px solid var(--border); }
+.fam-section-eyebrow { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--copper); margin-bottom: 10px; }
+.fam-section-title { font-family: var(--font-display); font-weight: 500; letter-spacing: -0.018em; font-size: clamp(1.3rem, 5.2vw, 1.6rem); line-height: 1.2; margin-bottom: 14px; }
+
+/* ── Chips (focus / preferences / accessories) ── */
+.fam-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.fam-chip { display: inline-flex; align-items: center; padding: 9px 15px; border-radius: 100px; background: var(--paper-warm); border: 1px solid var(--border); font-size: 0.79rem; font-weight: 600; }
+.fam-chip.is-focus { background: rgba(227,83,54,0.08); border-color: rgba(227,83,54,0.22); color: var(--copper-deep); }
+.fam-pref-list { display: flex; flex-direction: column; gap: 9px; }
+.fam-pref-item { display: flex; align-items: flex-start; gap: 9px; font-size: 0.86rem; line-height: 1.5; }
+.fam-pref-item::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--copper); margin-top: 7px; flex-shrink: 0; }
+
+/* ── Owned devices ── */
+.fam-device-rail { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+.fam-device-rail::-webkit-scrollbar { display: none; }
+.fam-dcard { position: relative; flex: 0 0 152px; scroll-snap-align: start; background: var(--paper-warm); border-radius: 16px; padding: 12px; border: 1px solid var(--border); }
+.fam-dcard-img { width: 100%; height: 80px; display: flex; align-items: center; justify-content: center; margin-bottom: 8px; font-size: 1.8rem; }
+.fam-dcard-img img { max-width: 78%; max-height: 78%; object-fit: contain; }
+.fam-dcard-name { font-size: 0.78rem; font-weight: 600; line-height: 1.3; margin-bottom: 3px; }
+.fam-dcard-meta { font-size: 0.7rem; opacity: 0.5; line-height: 1.4; }
+.fam-dcard-price { font-size: 0.76rem; font-weight: 700; color: var(--copper); margin-top: 4px; }
+.fam-dcard-remove { position: absolute; top: 8px; right: 8px; width: 20px; height: 20px; border-radius: 50%; background: var(--paper); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; opacity: 0.55; }
+.fam-dcard-remove svg { width: 9px; height: 9px; }
+.fam-add-card {
+  flex: 0 0 152px; border-radius: 16px; border: 1.5px dashed var(--border-strong); background: transparent;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; min-height: 132px;
+}
+.fam-add-card svg { width: 20px; height: 20px; opacity: 0.4; }
+.fam-add-card span { font-size: 0.74rem; font-weight: 600; opacity: 0.5; }
+
+/* ── History lists (purchase / support / consultation) ── */
+.fam-hist-list { display: flex; flex-direction: column; }
+.fam-hist-row { display: flex; gap: 14px; padding: 13px 0; border-top: 1px solid var(--border); }
+.fam-hist-row:first-child { border-top: none; }
+.fam-hist-date { flex: 0 0 78px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.42; padding-top: 1px; }
+.fam-hist-body { flex: 1; min-width: 0; }
+.fam-hist-title { font-size: 0.86rem; font-weight: 600; line-height: 1.4; }
+.fam-hist-sub { font-size: 0.78rem; opacity: 0.55; line-height: 1.45; margin-top: 2px; }
+.fam-hist-amount { font-size: 0.82rem; font-weight: 700; color: var(--copper); white-space: nowrap; padding-top: 1px; }
+.fam-empty-note { font-size: 0.82rem; opacity: 0.45; line-height: 1.55; padding: 4px 0; }
+
+/* ── Upgrade timeline card ── */
+.fam-upgrade-card { background: var(--paper-warm); border-radius: 20px; padding: 19px 18px; display: flex; gap: 14px; align-items: flex-start; }
+.fam-upgrade-icon { width: 40px; height: 40px; border-radius: 12px; background: var(--paper); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.fam-upgrade-icon svg { width: 18px; height: 18px; color: var(--copper); }
+.fam-upgrade-window { font-family: var(--font-display); font-size: 1.12rem; font-weight: 500; margin-bottom: 5px; }
+.fam-upgrade-note { font-size: 0.82rem; line-height: 1.55; opacity: 0.62; }
+
+/* ── Warranty list ── */
+.fam-warranty-list { display: flex; flex-direction: column; gap: 9px; }
+.fam-warranty-row { display: flex; align-items: center; gap: 12px; background: var(--paper-warm); border-radius: 14px; padding: 13px 15px; }
+.fam-warranty-body { flex: 1; min-width: 0; }
+.fam-warranty-name { font-size: 0.84rem; font-weight: 600; }
+.fam-warranty-sub { font-size: 0.74rem; opacity: 0.5; margin-top: 1px; }
+.fam-warranty-badge { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; padding: 5px 11px; border-radius: 100px; white-space: nowrap; }
+.fam-warranty-badge.active { background: rgba(122,160,98,0.16); color: #5C7A3E; }
+.fam-warranty-badge.soon { background: rgba(244,164,96,0.22); color: var(--wood); }
+.fam-warranty-badge.expired { background: rgba(26,22,18,0.08); color: var(--ink); opacity: 0.55; }
+.fam-warranty-badge.none { background: rgba(26,22,18,0.06); color: var(--ink); opacity: 0.4; }
+
+/* ── Consultation CTA ── */
+.fam-consult-card {
+  border: 1.5px solid var(--ink); border-radius: 18px; padding: 18px 18px; display: flex; align-items: flex-start; gap: 13px; margin-top: 14px;
+}
+.fam-consult-icon { width: 38px; height: 38px; border-radius: 11px; background: var(--paper-warm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.fam-consult-icon svg { width: 17px; height: 17px; }
+.fam-consult-body p:first-child { font-size: 0.88rem; font-weight: 600; margin-bottom: 4px; }
+.fam-consult-body p:last-child { font-size: 0.78rem; opacity: 0.55; line-height: 1.5; }
+
+/* ── CTA area ── */
+.fam-cta-area { padding: 8px 20px calc(env(safe-area-inset-bottom, 0px) + 32px); display: flex; flex-direction: column; gap: 10px; }
+.fam-btn-primary {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; min-height: 54px; padding: 16px 24px; border-radius: 100px;
+  background: var(--copper); color: #fff; font-size: 0.94rem; font-weight: 600;
+  box-shadow: 0 14px 30px -8px rgba(227,83,54,0.48);
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+.fam-btn-primary:hover { background: var(--copper-deep); }
+.fam-btn-primary:active { transform: scale(0.97); }
+.fam-btn-primary svg { width: 16px; height: 16px; }
+.fam-btn-secondary {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; min-height: 48px; padding: 13px 22px; border-radius: 100px;
+  background: transparent; color: var(--ink); font-size: 0.84rem; font-weight: 500;
+  border: 1.5px solid var(--border-strong);
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+.fam-btn-secondary:hover { background: var(--paper-warm); }
+.fam-btn-secondary:active { transform: scale(0.97); }
+
+/* ══ Sheets (Add device / Rename) ══ */
+.fam-sheet-overlay {
+  position: fixed; inset: 0; background: rgba(26,22,18,0.5); z-index: 400;
+  opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+  display: flex; align-items: flex-end; justify-content: center;
+}
+.fam-sheet-overlay.is-open { opacity: 1; pointer-events: auto; }
+.fam-sheet {
+  width: 100%; max-width: 480px; background: var(--paper); border-radius: 26px 26px 0 0;
+  padding: 12px 20px calc(env(safe-area-inset-bottom, 0px) + 24px); transform: translateY(100%);
+  transition: transform 0.32s var(--ease-out); max-height: 86vh; overflow-y: auto;
+}
+.fam-sheet-overlay.is-open .fam-sheet { transform: translateY(0); }
+.fam-sheet-handle { width: 36px; height: 4px; border-radius: 3px; background: var(--border-strong); margin: 0 auto 18px; }
+.fam-sheet-title { font-family: var(--font-display); font-size: 1.4rem; font-weight: 500; margin-bottom: 4px; }
+.fam-sheet-sub { font-size: 0.8rem; opacity: 0.55; line-height: 1.5; margin-bottom: 18px; }
+.fam-field { margin-bottom: 14px; }
+.fam-field label { display: block; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; opacity: 0.45; margin-bottom: 7px; }
+.fam-field input, .fam-field select {
+  width: 100%; padding: 13px 15px; border-radius: 12px; background: var(--paper-warm); border: 1.5px solid var(--border);
+  font-size: 0.88rem; color: var(--ink);
+}
+.fam-field input:focus, .fam-field select:focus { border-color: var(--copper); outline: none; }
+
+/* ══ Toast ══ */
+.fam-toast {
+  position: fixed; bottom: calc(env(safe-area-inset-bottom,0px) + 20px); left: 50%;
+  transform: translateX(-50%) translateY(14px);
+  background: var(--ink); color: var(--paper); padding: 11px 20px; border-radius: 100px;
+  font-size: 0.8rem; font-weight: 600; box-shadow: 0 8px 28px rgba(0,0,0,0.3);
+  opacity: 0; pointer-events: none; white-space: nowrap; z-index: 500;
+}
+
+/* ══ Desktop ══ */
+@media (min-width: 720px) {
+  body { background: var(--paper-dim); }
+  #app-shell { max-width: 480px; margin: 0 auto; background: var(--paper); box-shadow: 0 0 80px rgba(0,0,0,0.08); min-height: 100dvh; }
+  .fam-header { max-width: 480px; left: 50%; transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+</style>
+</head>
+<body>
+
+<div id="app-shell">
+
+  <header class="fam-header">
+    <a href="index.html" class="fam-back" aria-label="Back to Kovin">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    </a>
+    <div class="fam-header-title">
+      <span class="fam-wordmark">Kov<span>·</span>in</span>
+      <span class="fam-eyebrow-tag">Family</span>
+    </div>
+    <span class="fam-spacer" aria-hidden="true"></span>
+  </header>
+
+  <!-- ░░ Hub screen ░░ -->
+  <div id="hub-screen">
+    <div class="fam-intro">
+      <span class="fam-eyebrow">One household, understood</span>
+      <h1>Everyone you buy for, in one place.</h1>
+      <p>Not an account page. A place that remembers what each person in your family actually owns, prefers, and needs next — so we never start from zero.</p>
+    </div>
+
+    <div class="fam-glance" id="glanceCard">
+      <div class="fam-glance-label">Family at a glance</div>
+      <div class="fam-glance-text" id="glanceText"></div>
+    </div>
+
+    <div class="fam-grid-label">Profiles</div>
+    <div class="fam-grid" id="profileGrid"></div>
+  </div>
+
+  <!-- ░░ Detail screen ░░ -->
+  <div id="detail-screen">
+    <div class="fam-stage">
+      <button class="fam-back" id="stageBackBtn" aria-label="Back to family" style="margin-bottom:16px;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      </button>
+      <div class="fam-stage-top">
+        <div class="fam-stage-avatar" id="stageAvatar"></div>
+        <div class="fam-stage-body">
+          <div class="fam-stage-relation" id="stageRelation"></div>
+          <div class="fam-stage-name-row">
+            <div class="fam-stage-name" id="stageName"></div>
+            <button class="fam-edit-btn" id="renameBtn" aria-label="Rename this profile">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <p class="fam-stage-desc" id="stageDesc"></p>
+    </div>
+
+    <div class="fam-detail-body">
+      <section class="fam-section">
+        <div class="fam-section-eyebrow">What Matters Most</div>
+        <div class="fam-section-title" id="focusTitle">What we weigh first.</div>
+        <div class="fam-chips" id="focusChips"></div>
+      </section>
+
+      <section class="fam-section is-divided">
+        <div class="fam-section-eyebrow">Owned Devices</div>
+        <div class="fam-section-title">What they already have.</div>
+        <div class="fam-device-rail" id="deviceRail"></div>
+      </section>
+
+      <section class="fam-section is-divided">
+        <div class="fam-section-eyebrow">Purchase History</div>
+        <div class="fam-section-title">Everything bought, in order.</div>
+        <div class="fam-hist-list" id="purchaseHistList"></div>
+      </section>
+
+      <section class="fam-section is-divided">
+        <div class="fam-section-eyebrow">Technology Preferences</div>
+        <div class="fam-section-title">What we've learned matters to them.</div>
+        <div class="fam-pref-list" id="prefList"></div>
+      </section>
+
+      <section class="fam-section is-divided">
+        <div class="fam-section-eyebrow">Upgrade Timeline</div>
+        <div class="fam-section-title">When it's worth revisiting.</div>
+        <div class="fam-upgrade-card">
+          <div class="fam-upgrade-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <div class="fam-upgrade-window" id="upgradeWindow"></div>
+            <p class="fam-upgrade-note" id="upgradeNote"></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="fam-section is-divided">
+        <div class="fam-section-eyebrow">Warranty</div>
+        <div class="fam-section-title">What's covered, and until when.</div>
+        <div class="fam-warranty-list" id="warrantyList"></div>
+      </section>
+
+      <section class="fam-section is-divided" id="accessorySection">
+        <div class="fam-section-eyebrow">Accessories</div>
+        <div class="fam-section-title">Already part of the setup.</div>
+        <div class="fam-chips" id="accessoryChips"></div>
+      </section>
+
+      <section class="fam-section is-divided">
+        <div class="fam-section-eyebrow">Support History</div>
+        <div class="fam-section-title">When we've helped before.</div>
+        <div class="fam-hist-list" id="supportHistList"></div>
+      </section>
+
+      <section class="fam-section is-divided">
+        <div class="fam-section-eyebrow">Consultation History</div>
+        <div class="fam-section-title">Conversations we've had about them.</div>
+        <div class="fam-hist-list" id="consultHistList"></div>
+        <a class="fam-consult-card" id="consultLink" href="#" target="_blank" rel="noopener noreferrer">
+          <div class="fam-consult-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          </div>
+          <div class="fam-consult-body">
+            <p id="consultTitle"></p>
+            <p>A real person on WhatsApp, who already knows this profile.</p>
+          </div>
+        </a>
+      </section>
+    </div>
+
+    <div class="fam-cta-area">
+      <a class="fam-btn-primary" id="findBtn" href="selector.html">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span id="findBtnLabel">Find something for them</span>
+      </a>
+      <button class="fam-btn-secondary" id="addDeviceBtn">Add an owned device</button>
+    </div>
+  </div><!-- /detail-screen -->
+
+</div><!-- /app-shell -->
+
+<!-- ░░ Add device sheet ░░ -->
+<div class="fam-sheet-overlay" id="addSheetOverlay" role="dialog" aria-modal="true" aria-labelledby="addSheetTitle">
+  <div class="fam-sheet">
+    <div class="fam-sheet-handle"></div>
+    <div class="fam-sheet-title" id="addSheetTitle">Add a device</div>
+    <p class="fam-sheet-sub" id="addSheetSub">Tell us what they already own — it helps every future recommendation.</p>
+    <div class="fam-field">
+      <label for="addName">Device name</label>
+      <input type="text" id="addName" placeholder="e.g. Samsung Galaxy A55" maxlength="60">
+    </div>
+    <div class="fam-field">
+      <label for="addCategory">Category</label>
+      <select id="addCategory">
+        <option value="Phone">Phone</option>
+        <option value="Audio">Audio</option>
+        <option value="TV">TV</option>
+        <option value="Smart Device">Smart Device</option>
+        <option value="Accessory">Accessory</option>
+        <option value="Other">Other</option>
+      </select>
+    </div>
+    <div class="fam-field">
+      <label for="addMonth">Purchase month</label>
+      <input type="month" id="addMonth">
+    </div>
+    <div class="fam-field">
+      <label for="addPrice">Price (optional)</label>
+      <input type="number" id="addPrice" placeholder="e.g. 24999" min="0">
+    </div>
+    <button class="fam-btn-primary" id="addSaveBtn" style="margin-top:6px;">Add to profile</button>
+    <button class="fam-btn-secondary" id="addCancelBtn" style="margin-top:10px;">Cancel</button>
+  </div>
+</div>
+
+<!-- ░░ Rename sheet ░░ -->
+<div class="fam-sheet-overlay" id="renameSheetOverlay" role="dialog" aria-modal="true" aria-labelledby="renameSheetTitle">
+  <div class="fam-sheet">
+    <div class="fam-sheet-handle"></div>
+    <div class="fam-sheet-title" id="renameSheetTitle">Rename this profile</div>
+    <p class="fam-sheet-sub">Make it personal — first names, nicknames, whatever you'd actually call them.</p>
+    <div class="fam-field">
+      <label for="renameInput">Name</label>
+      <input type="text" id="renameInput" maxlength="40">
+    </div>
+    <button class="fam-btn-primary" id="renameSaveBtn" style="margin-top:6px;">Save name</button>
+    <button class="fam-btn-secondary" id="renameCancelBtn" style="margin-top:10px;">Cancel</button>
+  </div>
+</div>
+
+<div class="fam-toast" id="famToast" role="status" aria-live="polite"></div>
+
+<script>
+/* ══════════════════════════════════════════════════
+   KOVIN FAMILY
+   "Kovin understands everyone in my family, not just me."
+══════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  const STORAGE_KEY = 'kovin-family';
+  const WA_NUMBER = '917200006006';
+
+  /* ─────────── Default warranty length by category (months) ─────────── */
+  const DEFAULT_WARRANTY = { Phone: 12, Audio: 12, TV: 12, 'Smart Device': 12, Accessory: 6, Other: 12 };
+
+  /* ─────────── Seed data ─────────── */
+  function seedData() {
+    return [
+      {
+        id: 'me', icon: '🧑', name: 'Me', relation: 'You',
+        description: 'Your own devices, preferences, and history — the starting point everything else is compared against.',
+        buyingFocus: ['Camera quality', 'Performance', 'Design', 'Battery life'],
+        devices: [
+          { id: 'me-d1', name: 'Samsung Galaxy S23 FE', category: 'Phone', image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/fWEumNteCudVVPuo.png', price: 34999, purchasedAt: '2024-03', warrantyMonths: 12 },
+          { id: 'me-d2', name: 'Sony WH-1000XM5', category: 'Audio', image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/XIJzeXSRHorEqzFw.png', price: 26990, purchasedAt: '2023-07', warrantyMonths: 12 },
+        ],
+        preferences: ['Prefers flagship cameras over raw benchmark speed', 'Always chooses real noise cancellation', 'Tends to upgrade a phone roughly every two years'],
+        upgrade: { window: 'Around early 2026', note: 'Battery health and software-support length will start to matter more than specs from here.' },
+        accessories: ['Premium Tempered Glass', 'Braided Fast Charge Cable'],
+        support: [{ date: 'Sep 2024', title: 'Screen protector replacement', sub: 'Replaced free under first-year care.' }],
+        consultations: [{ date: 'Mar 2024', title: 'Choosing between Galaxy S23 FE and Pixel 7a' }],
+      },
+      {
+        id: 'parents', icon: '👴', name: 'Appa & Amma', relation: 'Parents',
+        description: 'Technology that respects how they already live — comfortable from day one, never a learning curve.',
+        buyingFocus: ['Large display', 'Simple interface', 'Strong battery', 'Loud speaker', 'Easy service support'],
+        devices: [
+          { id: 'parents-d1', name: 'Samsung Galaxy S23 FE', category: 'Phone', image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/fWEumNteCudVVPuo.png', price: 34999, purchasedAt: '2023-01', warrantyMonths: 12 },
+        ],
+        preferences: ['Wants things explained once, clearly', 'Avoids anything with too many menus', 'Values a familiar layout over new features'],
+        upgrade: { window: 'Not for another 2–3 years', note: 'Their current phone still does everything they need. We will say so plainly when that changes — no upsell before then.' },
+        accessories: ['Sleek Protective Case', 'Device Cleaning Kit'],
+        support: [{ date: 'Jun 2024', title: 'Font size and brightness walkthrough', sub: 'Resolved over a 10-minute phone call.' }],
+        consultations: [{ date: 'Jan 2023', title: 'Simplest phone with the biggest, brightest screen' }],
+      },
+      {
+        id: 'spouse', icon: '💍', name: 'Spouse', relation: 'Partner',
+        description: 'Devices chosen around what they actually use daily — camera and comfort over raw specs.',
+        buyingFocus: ['Camera for memories', 'Reliability', 'Style', 'Shared storage'],
+        devices: [
+          { id: 'spouse-d1', name: 'Google Pixel 7a', category: 'Phone', image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/AeIhJBFyYYuVXncG.png', price: 39999, purchasedAt: '2023-11', warrantyMonths: 12 },
+          { id: 'spouse-d2', name: 'Premium Wireless Earbuds', category: 'Audio', image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/akufQOVWgjtpdbDf.png', price: 2999, purchasedAt: '2023-11', warrantyMonths: 6 },
+        ],
+        preferences: ['Cares more about camera quality than raw speed', 'Prefers compact, lighter devices'],
+        upgrade: { window: 'Around late 2025', note: 'Battery health and camera processing are the two things worth watching as this one ages.' },
+        accessories: ['Magnetic Car Mount'],
+        support: [],
+        consultations: [{ date: 'Nov 2023', title: 'Best camera phone available under ₹40,000' }],
+      },
+      {
+        id: 'children', icon: '🧒', name: 'Aarav (9) & Diya (6)', relation: 'Children',
+        description: 'No personal phones yet by choice — protection, location awareness, and shared-device guidance instead.',
+        buyingFocus: ['Durability', 'Location features', 'Screen protection', 'Parental guidance'],
+        devices: [
+          { id: 'children-d1', name: 'Premium Tempered Glass', category: 'Accessory', image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/KelCDGFlqZNnFnFD.png', price: 499, purchasedAt: '2024-02', warrantyMonths: 6 },
+        ],
+        preferences: ['No personal phone yet — shared family tablet only', 'Screen-time limits matter more than specs'],
+        upgrade: { window: 'Revisit when a child starts middle school', note: 'A personal device gets recommended only when it is actually needed — never just based on age.' },
+        accessories: ['Sleek Protective Case'],
+        support: [{ date: 'Feb 2024', title: 'Parental controls on the shared tablet', sub: 'Configured screen-time limits and app restrictions together.' }],
+        consultations: [{ date: 'Feb 2024', title: 'Whether a smartwatch makes sense for school drop-off tracking' }],
+      },
+      {
+        id: 'home', icon: '🏠', name: 'Home', relation: 'Household',
+        description: 'The shared spaces — living room screen, connectivity, and the smart devices everyone relies on.',
+        buyingFocus: ['TV', 'Wi-Fi', 'Speakers', 'Smart devices'],
+        devices: [
+          { id: 'home-d1', name: 'Sony Bravia 4K LED', category: 'TV', image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/PNuLvudbHcTmKOpp.png', price: 54990, purchasedAt: '2023-08', warrantyMonths: 12 },
+        ],
+        preferences: ['Living room is the priority room', 'Calibrated picture preferred over raw screen size'],
+        upgrade: { window: 'Not for 4–5 years', note: 'A TV is usually the longest-held device in a home. No reason to revisit this soon.' },
+        accessories: [],
+        support: [{ date: 'Oct 2023', title: 'Wall-mount installation guidance', sub: 'Talked through mount height and ideal viewing distance.' }],
+        consultations: [{ date: 'Aug 2023', title: 'Right screen size for a 12 × 14 ft living room' }],
+      },
+      {
+        id: 'office', icon: '💼', name: 'Office', relation: 'Workspace',
+        description: 'Calls happen here daily — clarity, charging speed, and reliability matter more than novelty.',
+        buyingFocus: ['Reliability', 'Video call clarity', 'Fast charging', 'Minimal downtime'],
+        devices: [
+          { id: 'office-d1', name: 'Sony WH-1000XM5', category: 'Audio', image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/XIJzeXSRHorEqzFw.png', price: 26990, purchasedAt: '2024-02', warrantyMonths: 12 },
+          { id: 'office-d2', name: 'Apple 20W USB-C Adapter', category: 'Accessory', image: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663562145517/uVoVbsruMHDNSVBu.png', price: 1699, purchasedAt: '2024-02', warrantyMonths: 6 },
+        ],
+        preferences: ['Calls happen daily — clarity matters more than novelty', 'Charging speed matters more than design'],
+        upgrade: { window: 'Around mid-2025', note: 'Headphone battery health is the main thing worth watching for daily call use.' },
+        accessories: ['Braided Fast Charge Cable'],
+        support: [],
+        consultations: [{ date: 'Feb 2024', title: 'Best headset for back-to-back video calls' }],
+      },
+    ];
+  }
+
+  /* ─────────── State ─────────── */
+  let family = loadFamily();
+  let currentProfileId = null;
+
+  function loadFamily() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) return JSON.parse(raw);
+    } catch (e) {}
+    return seedData();
+  }
+  function saveFamily() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(family)); } catch (e) {}
+  }
+  function getProfile(id) { return family.find(p => p.id === id); }
+
+  /* ─────────── Helpers ─────────── */
+  const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  function formatMonthLabel(ym) {
+    if (!ym) return '';
+    const [y, m] = ym.split('-').map(Number);
+    return `${MONTHS[m - 1]} ${y}`;
+  }
+  function formatPrice(price) {
+    if (price === null || price === undefined || price === '') return null;
+    return '₹' + Number(price).toLocaleString('en-IN');
+  }
+  function monthsBetween(ym, now) {
+    const [y, m] = ym.split('-').map(Number);
+    return (now.getFullYear() - y) * 12 + (now.getMonth() + 1 - m);
+  }
+  function warrantyStatus(device) {
+    if (!device.warrantyMonths) return { label: 'No warranty', cls: 'none' };
+    const elapsed = monthsBetween(device.purchasedAt, new Date());
+    if (elapsed >= device.warrantyMonths) return { label: 'Expired', cls: 'expired' };
+    if (elapsed >= device.warrantyMonths - 1) return { label: 'Expiring soon', cls: 'soon' };
+    return { label: 'Active', cls: 'active' };
+  }
+  function deviceIconFallback(category) {
+    return { Phone: '📱', Audio: '🎧', TV: '📺', 'Smart Device': '🔌', Accessory: '🧰', Other: '✦' }[category] || '✦';
+  }
+
+  /* ─────────── Toast ─────────── */
+  const $toast = document.getElementById('famToast');
+  let toastTimer = null;
+  function showToast(msg) {
+    $toast.textContent = msg;
+    clearTimeout(toastTimer);
+    if (window.gsap) {
+      gsap.killTweensOf($toast);
+      gsap.fromTo($toast, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.3, ease: 'power3.out' });
+      toastTimer = setTimeout(() => gsap.to($toast, { opacity: 0, y: 14, duration: 0.3 }), 2200);
+    } else {
+      $toast.style.opacity = 1;
+      toastTimer = setTimeout(() => { $toast.style.opacity = 0; }, 2200);
+    }
+  }
+
+  /* ─────────── Build hub ─────────── */
+  function buildGlance() {
+    let totalDevices = 0, expiringSoon = 0, totalConsults = 0;
+    family.forEach(p => {
+      totalDevices += p.devices.length;
+      totalConsults += p.consultations.length;
+      p.devices.forEach(d => { if (warrantyStatus(d).cls === 'soon') expiringSoon++; });
+    });
+    let text = `<strong>${totalDevices}</strong> device${totalDevices === 1 ? '' : 's'} across your family.`;
+    if (expiringSoon > 0) text += ` <strong>${expiringSoon}</strong> warrant${expiringSoon === 1 ? 'y is' : 'ies are'} ending soon.`;
+    if (totalConsults > 0) text += ` ${totalConsults} consultation${totalConsults === 1 ? '' : 's'} on record.`;
+    document.getElementById('glanceText').innerHTML = text;
+  }
+
+  function buildGrid() {
+    const $grid = document.getElementById('profileGrid');
+    $grid.innerHTML = family.map(p => {
+      const flagged = p.devices.some(d => ['soon', 'expired'].includes(warrantyStatus(d).cls));
+      const meta = p.devices.length ? `${p.devices.length} device${p.devices.length === 1 ? '' : 's'}` : 'No devices yet';
+      return `<button class="fam-card${flagged ? ' has-flag' : ''}" data-profile-id="${p.id}" aria-label="${p.name}">
+        <span class="fam-card-flag" aria-hidden="true"></span>
+        <div class="fam-card-avatar" aria-hidden="true">${p.icon}</div>
+        <div class="fam-card-name">${p.name}</div>
+        <div class="fam-card-relation">${p.relation}</div>
+        <div class="fam-card-meta">${meta}</div>
+      </button>`;
+    }).join('');
+    $grid.querySelectorAll('.fam-card').forEach(btn => {
+      btn.addEventListener('click', () => openDetail(btn.dataset.profileId));
+    });
+  }
+
+  /* ─────────── Build detail ─────────── */
+  function openDetail(id) {
+    const p = getProfile(id);
+    if (!p) return;
+    currentProfileId = id;
+    renderDetail(p);
+
+    document.getElementById('hub-screen').style.display = 'none';
+    document.getElementById('detail-screen').style.display = 'block';
+    window.scrollTo(0, 0);
+
+    const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (window.gsap && !reduced) {
+      gsap.fromTo('#detail-screen', { opacity: 0 }, { opacity: 1, duration: 0.4, ease: 'power2.out' });
+      gsap.fromTo('.fam-section', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.06, ease: 'power3.out', delay: 0.08 });
+    }
+  }
+
+  function closeDetail() {
+    document.getElementById('detail-screen').style.display = 'none';
+    document.getElementById('hub-screen').style.display = 'block';
+    window.scrollTo(0, 0);
+    buildGlance();
+    buildGrid();
+  }
+
+  function renderDetail(p) {
+    document.getElementById('stageAvatar').textContent = p.icon;
+    document.getElementById('stageRelation').textContent = p.relation;
+    document.getElementById('stageName').textContent = p.name;
+    document.getElementById('stageDesc').textContent = p.description;
+
+    document.getElementById('focusChips').innerHTML = p.buyingFocus.map(f => `<span class="fam-chip is-focus">${f}</span>`).join('');
+
+    /* Owned devices */
+    const $rail = document.getElementById('deviceRail');
+    $rail.innerHTML = p.devices.map(d => {
+      const price = formatPrice(d.price);
+      return `<div class="fam-dcard" data-device-id="${d.id}">
+        <button class="fam-dcard-remove" data-remove-id="${d.id}" aria-label="Remove ${d.name}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+        <div class="fam-dcard-img">${d.image ? `<img src="${d.image}" alt="${d.name}" loading="lazy">` : deviceIconFallback(d.category)}</div>
+        <div class="fam-dcard-name">${d.name}</div>
+        <div class="fam-dcard-meta">${formatMonthLabel(d.purchasedAt)} · ${d.category}</div>
+        ${price ? `<div class="fam-dcard-price">${price}</div>` : ''}
+      </div>`;
+    }).join('') + `<button class="fam-add-card" id="railAddBtn" aria-label="Add a device">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        <span>Add device</span>
+      </button>`;
+    $rail.querySelectorAll('[data-remove-id]').forEach(btn => {
+      btn.addEventListener('click', (e) => { e.stopPropagation(); removeDevice(btn.dataset.removeId); });
+    });
+    document.getElementById('railAddBtn').addEventListener('click', openAddSheet);
+
+    /* Purchase history — devices sorted newest first */
+    const sortedDevices = [...p.devices].sort((a, b) => b.purchasedAt.localeCompare(a.purchasedAt));
+    const $purchaseList = document.getElementById('purchaseHistList');
+    if (sortedDevices.length) {
+      $purchaseList.innerHTML = sortedDevices.map(d => {
+        const price = formatPrice(d.price);
+        return `<div class="fam-hist-row">
+          <div class="fam-hist-date">${formatMonthLabel(d.purchasedAt)}</div>
+          <div class="fam-hist-body"><div class="fam-hist-title">${d.name}</div><div class="fam-hist-sub">${d.category}</div></div>
+          ${price ? `<div class="fam-hist-amount">${price}</div>` : ''}
+        </div>`;
+      }).join('');
+    } else {
+      $purchaseList.innerHTML = `<p class="fam-empty-note">No purchases recorded yet.</p>`;
+    }
+
+    /* Preferences */
+    document.getElementById('prefList').innerHTML = p.preferences.length
+      ? p.preferences.map(pref => `<div class="fam-pref-item">${pref}</div>`).join('')
+      : `<p class="fam-empty-note">Nothing learned yet — this fills in as we talk and as devices are added.</p>`;
+
+    /* Upgrade timeline */
+    document.getElementById('upgradeWindow').textContent = p.upgrade.window;
+    document.getElementById('upgradeNote').textContent = p.upgrade.note;
+
+    /* Warranty */
+    const $warranty = document.getElementById('warrantyList');
+    if (p.devices.length) {
+      $warranty.innerHTML = p.devices.map(d => {
+        const st = warrantyStatus(d);
+        return `<div class="fam-warranty-row">
+          <div class="fam-warranty-body">
+            <div class="fam-warranty-name">${d.name}</div>
+            <div class="fam-warranty-sub">${st.cls === 'none' ? 'Accessory — not covered' : `Purchased ${formatMonthLabel(d.purchasedAt)}`}</div>
+          </div>
+          <span class="fam-warranty-badge ${st.cls}">${st.label}</span>
+        </div>`;
+      }).join('');
+    } else {
+      $warranty.innerHTML = `<p class="fam-empty-note">No devices to cover yet.</p>`;
+    }
+
+    /* Accessories */
+    const $accSection = document.getElementById('accessorySection');
+    if (p.accessories.length) {
+      $accSection.style.display = '';
+      document.getElementById('accessoryChips').innerHTML = p.accessories.map(a => `<span class="fam-chip">${a}</span>`).join('');
+    } else {
+      $accSection.style.display = 'none';
+    }
+
+    /* Support history */
+    const $support = document.getElementById('supportHistList');
+    $support.innerHTML = p.support.length
+      ? p.support.map(s => `<div class="fam-hist-row">
+          <div class="fam-hist-date">${s.date}</div>
+          <div class="fam-hist-body"><div class="fam-hist-title">${s.title}</div><div class="fam-hist-sub">${s.sub}</div></div>
+        </div>`).join('')
+      : `<p class="fam-empty-note">No support requests yet for this profile.</p>`;
+
+    /* Consultation history */
+    const $consult = document.getElementById('consultHistList');
+    $consult.innerHTML = p.consultations.length
+      ? p.consultations.map(c => `<div class="fam-hist-row">
+          <div class="fam-hist-date">${c.date}</div>
+          <div class="fam-hist-body"><div class="fam-hist-title">${c.title}</div></div>
+        </div>`).join('')
+      : `<p class="fam-empty-note">No conversations recorded yet.</p>`;
+
+    document.getElementById('consultTitle').textContent = `Talk to Kovin about ${p.name}.`;
+    const waMsg = `Hello Kovin, I'd like guidance for ${p.name} (${p.relation}).`;
+    document.getElementById('consultLink').href = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(waMsg)}`;
+
+    document.getElementById('findBtnLabel').textContent = `Find something for ${p.name}`;
+    document.getElementById('findBtn').href = `selector.html?for=${p.id}`;
+  }
+
+  /* ─────────── Add device sheet ─────────── */
+  const $addOverlay = document.getElementById('addSheetOverlay');
+  function openAddSheet() {
+    document.getElementById('addSheetSub').textContent = `Tell us what ${getProfile(currentProfileId).name} already owns — it helps every future recommendation.`;
+    document.getElementById('addName').value = '';
+    document.getElementById('addCategory').value = 'Phone';
+    document.getElementById('addMonth').value = '';
+    document.getElementById('addPrice').value = '';
+    $addOverlay.classList.add('is-open');
+  }
+  function closeAddSheet() { $addOverlay.classList.remove('is-open'); }
+
+  function saveNewDevice() {
+    const p = getProfile(currentProfileId);
+    if (!p) return;
+    const name = document.getElementById('addName').value.trim();
+    const category = document.getElementById('addCategory').value;
+    let month = document.getElementById('addMonth').value;
+    const priceRaw = document.getElementById('addPrice').value;
+    if (!name) { showToast('Add a device name first.'); return; }
+    if (!month) {
+      const now = new Date();
+      month = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    }
+    const device = {
+      id: 'custom-' + Math.random().toString(36).slice(2, 10),
+      name, category, image: null,
+      price: priceRaw ? Number(priceRaw) : null,
+      purchasedAt: month,
+      warrantyMonths: DEFAULT_WARRANTY[category] || 12,
+    };
+    p.devices.push(device);
+    saveFamily();
+    renderDetail(p);
+    closeAddSheet();
+    showToast(`Added to ${p.name}'s devices.`);
+  }
+
+  function removeDevice(deviceId) {
+    const p = getProfile(currentProfileId);
+    if (!p) return;
+    p.devices = p.devices.filter(d => d.id !== deviceId);
+    saveFamily();
+    renderDetail(p);
+    showToast('Device removed.');
+  }
+
+  /* ─────────── Rename sheet ─────────── */
+  const $renameOverlay = document.getElementById('renameSheetOverlay');
+  function openRenameSheet() {
+    const p = getProfile(currentProfileId);
+    document.getElementById('renameInput').value = p.name;
+    $renameOverlay.classList.add('is-open');
+  }
+  function closeRenameSheet() { $renameOverlay.classList.remove('is-open'); }
+  function saveRename() {
+    const p = getProfile(currentProfileId);
+    const val = document.getElementById('renameInput').value.trim();
+    if (!val) { showToast('Name can’t be empty.'); return; }
+    p.name = val;
+    saveFamily();
+    renderDetail(p);
+    closeRenameSheet();
+    showToast('Name updated.');
+  }
+
+  /* ─────────── Wire up ─────────── */
+  document.getElementById('stageBackBtn').addEventListener('click', closeDetail);
+  document.getElementById('renameBtn').addEventListener('click', openRenameSheet);
+  document.getElementById('addDeviceBtn').addEventListener('click', openAddSheet);
+  document.getElementById('addSaveBtn').addEventListener('click', saveNewDevice);
+  document.getElementById('addCancelBtn').addEventListener('click', closeAddSheet);
+  document.getElementById('renameSaveBtn').addEventListener('click', saveRename);
+  document.getElementById('renameCancelBtn').addEventListener('click', closeRenameSheet);
+  $addOverlay.addEventListener('click', (e) => { if (e.target === $addOverlay) closeAddSheet(); });
+  $renameOverlay.addEventListener('click', (e) => { if (e.target === $renameOverlay) closeRenameSheet(); });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    buildGlance();
+    buildGrid();
+  });
+})();
+</script>
+<!-- KOVIN-PWA:START -->
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Kovin">
+<meta name="mobile-web-app-capable" content="yes">
+<style>
+  /* Native-feeling cross-page transitions in browsers that support
+     the View Transitions API (Chrome/Edge on Android, desktop).
+     Everywhere else this is silently ignored — plain navigation. */
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root), ::view-transition-new(root) {
+    animation-duration: 0.32s;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  ::view-transition-old(root) { animation-name: kovin-fade-out; }
+  ::view-transition-new(root) { animation-name: kovin-fade-in; }
+  @keyframes kovin-fade-out { to { opacity: 0; transform: scale(0.99); } }
+  @keyframes kovin-fade-in { from { opacity: 0; transform: scale(1.01); } }
+
+  /* Offline-aware in-page banner (separate from offline.html, which
+     only appears on a full navigation with nothing cached). */
+  #kovin-offline-banner {
+    position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 18px);
+    transform: translateX(-50%) translateY(20px);
+    background: #1A1612; color: #F7F4EF; font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.8rem; font-weight: 600; padding: 11px 20px; border-radius: 100px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.28); z-index: 9999;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s ease, transform 0.3s ease;
+    white-space: nowrap; max-width: 90vw;
+  }
+  #kovin-offline-banner.is-visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+<!-- KOVIN-PWA:END -->
+<!-- KOVIN-PWA:START -->
+<div id="kovin-offline-banner" role="status" aria-live="polite">You're offline — saved products and recent guidance are still available.</div>
+<script>
+(function () {
+  'use strict';
+
+  /* ── Service worker: app-shell caching, offline fallback, push/sync-ready ── */
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    });
+  }
+
+  /* ── In-page offline/online banner (page already loaded, connection drops) ── */
+  var offlineBanner = document.getElementById('kovin-offline-banner');
+  function setOfflineState(isOffline) {
+    if (!offlineBanner) return;
+    if (isOffline) {
+      offlineBanner.textContent = "You're offline — saved products and recent guidance are still available.";
+      offlineBanner.classList.add('is-visible');
+    } else {
+      offlineBanner.textContent = 'Back online.';
+      offlineBanner.classList.add('is-visible');
+      setTimeout(function () { offlineBanner.classList.remove('is-visible'); }, 2200);
+    }
+  }
+  window.addEventListener('offline', function () { setOfflineState(true); });
+  window.addEventListener('online', function () { setOfflineState(false); });
+  if (!navigator.onLine) setOfflineState(true);
+
+  /* ── Native share — used by any element with [data-kovin-share] ── */
+  window.kovinShare = function (title, text, url) {
+    var shareUrl = url || window.location.href;
+    if (navigator.share) {
+      navigator.share({ title: title || 'Kovin', text: text || '', url: shareUrl }).catch(function () {});
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(shareUrl).then(function () {
+        if (offlineBanner) {
+          offlineBanner.textContent = 'Link copied.';
+          offlineBanner.classList.add('is-visible');
+          setTimeout(function () { offlineBanner.classList.remove('is-visible'); }, 1800);
+        }
+      }).catch(function () {});
+    }
+  };
+})();
+</script>
+<!-- KOVIN-PWA:END -->
+</body>
+</html>
