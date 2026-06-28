@@ -6,7 +6,7 @@
  * Bump CACHE_VERSION on any deploy that changes cached files so
  * old clients pick up fresh content instead of stale cache.
  */
-const CACHE_VERSION = 'kovin-v7';
+const CACHE_VERSION = 'kovin-v8';
 
 const APP_SHELL = [
   './',
@@ -38,11 +38,20 @@ const APP_SHELL = [
   './icons/favicon-32.png',
 ];
 
-/* ── Install: precache the app shell ── */
+/* ── Install: precache the app shell ──
+   Deliberately NOT cache.addAll() — addAll() is atomic, so a single
+   slow or briefly-unreachable file (a redirect hiccup, a CDN blip)
+   fails the *entire* install, leaving the browser stuck on whatever
+   service worker it had before and never picking up this deploy.
+   Caching each file independently means one bad entry can't block
+   the other 25 from precaching, and skipWaiting() still runs so the
+   new worker takes over right away. */
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_VERSION)
-      .then((cache) => cache.addAll(APP_SHELL))
+      .then((cache) => Promise.all(
+        APP_SHELL.map((url) => cache.add(url).catch(() => {}))
+      ))
       .then(() => self.skipWaiting())
   );
 });
