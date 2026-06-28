@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0">
+<meta name="theme-color" content="#F7F4EF">
+<meta name="description" content="The Kovin Principles — ten rules that govern every recommendation, every conversation, every decision. Not marketing copy. The operating system.">
+<title>Principles · Kovin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<style>
+
+/* ══════════════════════════════════════════════════
+   KOVIN PRINCIPLES
+   Not a feature. The philosophy underneath everything.
+══════════════════════════════════════════════════ */
+:root {
+  --ink:          #1A1612;
+  --paper:        #F7F4EF;
+  --paper-warm:   #EDE8E0;
+  --paper-dim:    #E5DDD4;
+  --copper:       #E35336;
+  --copper-deep:  #C9432A;
+  --sand:         #F4A460;
+  --border:       rgba(26,22,18,0.08);
+  --border-strong:rgba(26,22,18,0.16);
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+  --ease-out:     cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html { height: 100%; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+:focus-visible { outline: 2px solid var(--copper); outline-offset: 3px; border-radius: 4px; }
+
+/* ══ Header ══ */
+.pr-header {
+  position: sticky; top: 0; z-index: 100;
+  height: calc(56px + env(safe-area-inset-top, 0px));
+  padding: env(safe-area-inset-top, 0px) 18px 0;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(247,244,239,0.86);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  backdrop-filter: blur(18px) saturate(1.3);
+  border-bottom: 1px solid var(--border);
+}
+.pr-back { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--paper-warm); border: 1px solid var(--border); color: var(--ink); flex-shrink: 0; }
+.pr-back svg { width: 16px; height: 16px; }
+.pr-header-title { display: flex; flex-direction: column; align-items: center; }
+.pr-wordmark { font-family: var(--font-display); font-size: 1.22rem; font-weight: 500; letter-spacing: -0.02em; }
+.pr-wordmark span { color: var(--copper); }
+.pr-eyebrow-tag { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.4; margin-top: 1px; }
+.pr-spacer { width: 36px; flex-shrink: 0; }
+
+/* ══ Opening ══ */
+.pr-opening { padding: 60px 24px 70px; text-align: center; }
+.pr-opening-eyebrow { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--copper); margin-bottom: 22px; }
+.pr-opening h1 {
+  font-family: var(--font-display); font-weight: 400; letter-spacing: -0.02em;
+  font-size: clamp(2.1rem, 9vw, 2.9rem); line-height: 1.22; max-width: 420px; margin: 0 auto 22px;
+}
+.pr-opening h1 em { font-style: italic; color: var(--copper); }
+.pr-opening p { font-size: 0.92rem; line-height: 1.7; opacity: 0.58; max-width: 360px; margin: 0 auto; }
+
+/* ══ Principle plate ══ */
+.pr-plate {
+  padding: 64px 26px; border-top: 1px solid var(--border);
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+}
+.pr-plate-num {
+  font-family: var(--font-display); font-style: italic; font-size: 0.95rem; color: var(--copper);
+  margin-bottom: 18px; letter-spacing: 0.04em;
+}
+.pr-plate-statement {
+  font-family: var(--font-display); font-weight: 400; letter-spacing: -0.015em;
+  font-size: clamp(1.55rem, 6.8vw, 2.1rem); line-height: 1.28; max-width: 440px; margin-bottom: 20px;
+}
+.pr-plate-body {
+  font-size: 0.88rem; line-height: 1.75; opacity: 0.58; max-width: 380px;
+}
+.pr-plate-link { display: inline-block; margin-top: 16px; font-size: 0.78rem; font-weight: 600; color: var(--copper-deep); border-bottom: 1px solid rgba(227,83,54,0.35); padding-bottom: 1px; }
+
+/* ══ Surface translation ══ */
+.pr-surfaces { padding: 60px 24px; border-top: 1px solid var(--border); }
+.pr-surfaces-eyebrow { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--copper); margin-bottom: 14px; text-align: center; }
+.pr-surfaces h2 {
+  font-family: var(--font-display); font-weight: 400; letter-spacing: -0.018em; text-align: center;
+  font-size: clamp(1.5rem, 6vw, 1.9rem); line-height: 1.25; max-width: 380px; margin: 0 auto 36px;
+}
+.pr-surface-row { padding: 18px 0; border-top: 1px solid var(--border); }
+.pr-surface-row:first-child { border-top: none; }
+.pr-surface-name { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--copper-deep); margin-bottom: 7px; }
+.pr-surface-text { font-size: 0.86rem; line-height: 1.62; opacity: 0.68; }
+
+/* ══ Closing ══ */
+.pr-closing { padding: 70px 26px calc(env(safe-area-inset-bottom, 0px) + 70px); text-align: center; border-top: 1px solid var(--border); background: var(--ink); color: var(--paper); }
+.pr-closing-quote { font-family: var(--font-display); font-style: italic; font-weight: 400; font-size: clamp(1.4rem, 6vw, 1.8rem); line-height: 1.4; max-width: 400px; margin: 0 auto 24px; }
+.pr-closing-sub { font-size: 0.84rem; opacity: 0.55; line-height: 1.65; max-width: 340px; margin: 0 auto; }
+.pr-closing-word { font-family: var(--font-display); font-size: 1.05rem; opacity: 0.5; margin-top: 36px; }
+
+/* ══ Desktop ══ */
+@media (min-width: 720px) {
+  body { background: var(--paper-dim); }
+  #app-shell { max-width: 540px; margin: 0 auto; background: var(--paper); box-shadow: 0 0 80px rgba(0,0,0,0.08); min-height: 100dvh; }
+  .pr-header { max-width: 540px; left: 50%; transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+</style>
+</head>
+<body>
+
+<div id="app-shell">
+
+  <header class="pr-header">
+    <a href="index.html" class="pr-back" aria-label="Back to Kovin">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    </a>
+    <div class="pr-header-title">
+      <span class="pr-wordmark">Kov<span>·</span>in</span>
+      <span class="pr-eyebrow-tag">Principles</span>
+    </div>
+    <span class="pr-spacer" aria-hidden="true"></span>
+  </header>
+
+  <div class="pr-opening">
+    <div class="pr-opening-eyebrow">Not a feature</div>
+    <h1>The rules <em>before</em> every recommendation.</h1>
+    <p>Ten principles that govern every decision Kovin makes — what gets recommended, what gets said in a conversation, what gets left out of the catalogue entirely.</p>
+  </div>
+
+  <section class="pr-plate">
+    <div class="pr-plate-num">I.</div>
+    <div class="pr-plate-statement">Clarity before conversion.</div>
+    <p class="pr-plate-body">Never optimise for a sale if it reduces customer understanding. A confused customer who buys is a worse outcome than one who waits because the decision still doesn't feel clear.</p>
+  </section>
+
+  <section class="pr-plate">
+    <div class="pr-plate-num">II.</div>
+    <div class="pr-plate-statement">Recommend only what you'd confidently recommend to your own family.</div>
+    <p class="pr-plate-body">Margin, stock, and vendor relationships never enter the recommendation. If the honest answer is "not yet," or "buy it elsewhere," that's the recommendation.</p>
+    <a class="pr-plate-link" href="family.html">See it in Family Hub →</a>
+  </section>
+
+  <section class="pr-plate">
+    <div class="pr-plate-num">III.</div>
+    <div class="pr-plate-statement">Never hide trade-offs.</div>
+    <p class="pr-plate-body">Every recommendation explains what's gained and what's given up. A recommendation with no trade-off named isn't a recommendation — it's an advertisement.</p>
+    <a class="pr-plate-link" href="knowledgegraph.html">See it in How Kovin Thinks →</a>
+  </section>
+
+  <section class="pr-plate">
+    <div class="pr-plate-num">IV.</div>
+    <div class="pr-plate-statement">A smaller honest catalogue beats a larger confusing one.</div>
+    <p class="pr-plate-body">Every product added without a clear, distinct reason to exist makes every other recommendation slightly less trustworthy.</p>
+    <a class="pr-plate-link" href="eliminate.html">See it in the Elimination Engine →</a>
+  </section>
+
+  <section class="pr-plate">
+    <div class="pr-plate-num">V.</div>
+    <div class="pr-plate-statement">Technology adapts to your life. You never adapt to it.</div>
+    <p class="pr-plate-body">If a feature needs a tutorial to make sense, the feature is wrong — not the tutorial.</p>
+    <a class="pr-plate-link" href="lifemode.html">See it in Life Modes →</a>
+  </section>
+
+  <section class="pr-plate">
+    <div class="pr-plate-num">VI.</div>
+    <div class="pr-plate-statement">Ownership matters more than the purchase.</div>
+    <p class="pr-plate-body">Designed for years, not minutes. The months after checkout are where trust is actually built — or lost.</p>
+    <a class="pr-plate-link" href="journey.html">See it in Ownership Journey →</a>
+  </section>
+
+  <section class="pr-plate">
+    <div class="pr-plate-num">VII.</div>
+    <div class="pr-plate-statement">Respect attention. Never overload, pressure, or manipulate.</div>
+    <p class="pr-plate-body">No countdown timers. No fake scarcity. Every screen is built to let you leave with an answer, not to keep you scrolling.</p>
+  </section>
+
+  <section class="pr-plate">
+    <div class="pr-plate-num">VIII.</div>
+    <div class="pr-plate-statement">Every interaction leaves you slightly more knowledgeable.</div>
+    <p class="pr-plate-body">If you can't explain your own decision afterward, the interaction failed — regardless of what it sold.</p>
+    <a class="pr-plate-link" href="memory.html">See it in Technology Memory →</a>
+  </section>
+
+  <section class="pr-plate">
+    <div class="pr-plate-num">IX.</div>
+    <div class="pr-plate-statement">Trust compounds. It's never traded for short-term revenue.</div>
+    <p class="pr-plate-body">Recommending a competitor's product, when that's honestly the better fit, costs a sale and earns something worth more.</p>
+    <a class="pr-plate-link" href="secondopinion.html">See it in Second Opinion →</a>
+  </section>
+
+  <section class="pr-plate">
+    <div class="pr-plate-num">X.</div>
+    <div class="pr-plate-statement">Every recommendation is explainable. No black boxes.</div>
+    <p class="pr-plate-body">This applies to a salesperson's instinct as much as to any future AI Kovin builds or buys. "The algorithm said so" is never an acceptable answer.</p>
+    <a class="pr-plate-link" href="trust.html">See it in Trust Passport →</a>
+  </section>
+
+  <section class="pr-surfaces">
+    <div class="pr-surfaces-eyebrow">Beyond the website</div>
+    <h2>These ten hold everywhere Kovin operates.</h2>
+    <div>
+      <div class="pr-surface-row"><div class="pr-surface-name">Consultation &amp; Sales</div><div class="pr-surface-text">A conversation that ends in "not yet, here's why" is a successful one. Compensation is never structured to reward selling against what someone actually needs.</div></div>
+      <div class="pr-surface-row"><div class="pr-surface-name">Technicians &amp; Support</div><div class="pr-surface-text">Every repair leaves you understanding what was actually wrong — not just "it's fixed now."</div></div>
+      <div class="pr-surface-row"><div class="pr-surface-name">Inventory &amp; Catalogue</div><div class="pr-surface-text">A product that can't be confidently recommended to family is a candidate for removal, regardless of margin.</div></div>
+      <div class="pr-surface-row"><div class="pr-surface-name">Internal systems</div><div class="pr-surface-text">ERP, CRM, and admin tooling are held to the same standard as this page — customer history makes someone easier to help, never easier to pressure.</div></div>
+      <div class="pr-surface-row"><div class="pr-surface-name">Any future AI</div><div class="pr-surface-text">No AI-generated recommendation reaches a customer without a plain-language reason attached. That isn't a feature request — it's a hard gate.</div></div>
+    </div>
+  </section>
+
+  <footer class="pr-closing">
+    <p class="pr-closing-quote">"Would I tell my own family this?"</p>
+    <p class="pr-closing-sub">That's the only test that has ever mattered here — before the sale, during it, and for as long as you own what you bought.</p>
+    <div class="pr-closing-word">Kov<span style="color:var(--copper);">·</span>in</div>
+  </footer>
+
+</div><!-- /app-shell -->
+
+<script>
+(function () {
+  'use strict';
+  var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced || !window.gsap || !window.ScrollTrigger) return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  document.querySelectorAll('.pr-plate').forEach(function (plate) {
+    gsap.fromTo(plate, { opacity: 0, y: 22 }, {
+      opacity: 1, y: 0, duration: 0.7, ease: 'power2.out',
+      scrollTrigger: { trigger: plate, start: 'top 82%', once: true },
+    });
+  });
+  gsap.fromTo('.pr-surface-row', { opacity: 0, y: 14 }, {
+    opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power2.out',
+    scrollTrigger: { trigger: '.pr-surfaces', start: 'top 80%', once: true },
+  });
+})();
+</script>
+<!-- KOVIN-PWA:START -->
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Kovin">
+<meta name="mobile-web-app-capable" content="yes">
+<style>
+  /* Native-feeling cross-page transitions in browsers that support
+     the View Transitions API (Chrome/Edge on Android, desktop).
+     Everywhere else this is silently ignored — plain navigation. */
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root), ::view-transition-new(root) {
+    animation-duration: 0.32s;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  ::view-transition-old(root) { animation-name: kovin-fade-out; }
+  ::view-transition-new(root) { animation-name: kovin-fade-in; }
+  @keyframes kovin-fade-out { to { opacity: 0; transform: scale(0.99); } }
+  @keyframes kovin-fade-in { from { opacity: 0; transform: scale(1.01); } }
+
+  /* Offline-aware in-page banner (separate from offline.html, which
+     only appears on a full navigation with nothing cached). */
+  #kovin-offline-banner {
+    position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 18px);
+    transform: translateX(-50%) translateY(20px);
+    background: #1A1612; color: #F7F4EF; font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.8rem; font-weight: 600; padding: 11px 20px; border-radius: 100px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.28); z-index: 9999;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s ease, transform 0.3s ease;
+    white-space: nowrap; max-width: 90vw;
+  }
+  #kovin-offline-banner.is-visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+<!-- KOVIN-PWA:END -->
+<!-- KOVIN-PWA:START -->
+<div id="kovin-offline-banner" role="status" aria-live="polite">You're offline — saved products and recent guidance are still available.</div>
+<script>
+(function () {
+  'use strict';
+
+  /* ── Service worker: app-shell caching, offline fallback, push/sync-ready ── */
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    });
+  }
+
+  /* ── In-page offline/online banner (page already loaded, connection drops) ── */
+  var offlineBanner = document.getElementById('kovin-offline-banner');
+  function setOfflineState(isOffline) {
+    if (!offlineBanner) return;
+    if (isOffline) {
+      offlineBanner.textContent = "You're offline — saved products and recent guidance are still available.";
+      offlineBanner.classList.add('is-visible');
+    } else {
+      offlineBanner.textContent = 'Back online.';
+      offlineBanner.classList.add('is-visible');
+      setTimeout(function () { offlineBanner.classList.remove('is-visible'); }, 2200);
+    }
+  }
+  window.addEventListener('offline', function () { setOfflineState(true); });
+  window.addEventListener('online', function () { setOfflineState(false); });
+  if (!navigator.onLine) setOfflineState(true);
+
+  /* ── Native share — used by any element with [data-kovin-share] ── */
+  window.kovinShare = function (title, text, url) {
+    var shareUrl = url || window.location.href;
+    if (navigator.share) {
+      navigator.share({ title: title || 'Kovin', text: text || '', url: shareUrl }).catch(function () {});
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(shareUrl).then(function () {
+        if (offlineBanner) {
+          offlineBanner.textContent = 'Link copied.';
+          offlineBanner.classList.add('is-visible');
+          setTimeout(function () { offlineBanner.classList.remove('is-visible'); }, 1800);
+        }
+      }).catch(function () {});
+    }
+  };
+})();
+</script>
+<!-- KOVIN-PWA:END -->
+</body>
+</html>

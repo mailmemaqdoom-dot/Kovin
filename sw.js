@@ -6,7 +6,7 @@
  * Bump CACHE_VERSION on any deploy that changes cached files so
  * old clients pick up fresh content instead of stale cache.
  */
-const CACHE_VERSION = 'kovin-v5';
+const CACHE_VERSION = 'kovin-v6';
 
 const APP_SHELL = [
   './',
@@ -26,6 +26,7 @@ const APP_SHELL = [
   './kovin-memory.js',
   './trust.html',
   './kovin-trust.js',
+  './principles.html',
   './offline.html',
   './manifest.json',
   './icons/icon-192.png',
