@@ -41,6 +41,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="kovin-interactions.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
     <style>
         :root {
@@ -3467,28 +3468,37 @@
 
         const isMobile = () => window.matchMedia('(max-width: 768px)').matches;
 
-        /* ── Draggable bottom-sheet helper ── */
+        /* ── Draggable bottom-sheet helper ──
+           Delegates to the centralized Interaction Engine (kovin-interactions.js),
+           which tracks real drag velocity and springs back using it on release
+           instead of a fixed easing curve. Falls back to the old fixed-distance
+           behaviour only if the engine failed to load. */
         function initSheetDrag(handleId, overlayId, closeFn) {
             const handle = document.getElementById(handleId);
             const overlay = document.getElementById(overlayId);
             if (!handle || !overlay) return;
-
-            let startY = 0, currentY = 0, isDragging = false;
             const panel = handle.parentElement;
 
+            if (window.KovinMotion) {
+                window.KovinMotion.attachSheetDrag(handle, panel, overlay, {
+                    enabled: isMobile,
+                    onClose: closeFn,
+                });
+                return;
+            }
+
+            let startY = 0, currentY = 0, isDragging = false;
             handle.addEventListener('touchstart', e => {
                 if (!isMobile()) return;
                 startY = e.touches[0].clientY;
                 isDragging = true;
                 panel.style.transition = 'none';
             }, { passive: true });
-
             handle.addEventListener('touchmove', e => {
                 if (!isDragging || !isMobile()) return;
                 currentY = Math.max(0, e.touches[0].clientY - startY);
                 panel.style.transform = `translateY(${currentY}px)`;
             }, { passive: true });
-
             handle.addEventListener('touchend', () => {
                 if (!isDragging || !isMobile()) return;
                 isDragging = false;
@@ -3867,11 +3877,12 @@
             if (!overlay) return;
             overlay.classList.add('active');
             overlay.style.pointerEvents = '';
-            gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.34, ease: 'power2.out' });
+            const M = window.KovinMotion, T = M ? M.T : { FAST: 120, NORMAL: 220, LARGE: 320 }, EASE = M ? M.SPRING_EASE : 'power4.out';
+            gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: T.NORMAL / 1000, ease: 'power2.out' });
             if (isMobile()) {
-                gsap.fromTo('#cart-drawer', { y: '100%' }, { y: 0, duration: 0.48, ease: 'power4.out' });
+                gsap.fromTo('#cart-drawer', { y: '100%' }, { y: 0, duration: T.LARGE / 1000, ease: EASE });
             } else {
-                gsap.fromTo('#cart-drawer', { scale: 0.94, opacity: 0, y: 24 }, { scale: 1, opacity: 1, y: 0, duration: 0.5, ease: 'power4.out', delay: 0.04 });
+                gsap.fromTo('#cart-drawer', { scale: 0.94, opacity: 0, y: 24 }, { scale: 1, opacity: 1, y: 0, duration: T.LARGE / 1000, ease: EASE, delay: 0.04 });
             }
             /* Trap focus inside cart drawer */
             setTimeout(() => trapFocus(document.getElementById('cart-drawer') || overlay), 100);
@@ -3882,14 +3893,15 @@
             const overlay = document.getElementById('cart-overlay');
             if (!overlay) return;
             overlay.style.pointerEvents = 'none';
+            const T = window.KovinMotion ? window.KovinMotion.T : { FAST: 120, NORMAL: 220, LARGE: 320 };
             if (isMobile()) {
-                gsap.to('#cart-drawer', { y: '100%', duration: 0.34, ease: 'power3.in' });
-                gsap.to(overlay, { opacity: 0, duration: 0.34, ease: 'power2.in', delay: 0.08,
+                gsap.to('#cart-drawer', { y: '100%', duration: T.NORMAL / 1000, ease: 'power3.in' });
+                gsap.to(overlay, { opacity: 0, duration: T.NORMAL / 1000, ease: 'power2.in', delay: 0.08,
                     onComplete: () => { overlay.classList.remove('active'); overlay.style.pointerEvents = ''; }
                 });
             } else {
-                gsap.to('#cart-drawer', { scale: 0.95, opacity: 0, y: 14, duration: 0.26, ease: 'power3.in' });
-                gsap.to(overlay, { opacity: 0, duration: 0.3, ease: 'power2.in', delay: 0.04,
+                gsap.to('#cart-drawer', { scale: 0.95, opacity: 0, y: 14, duration: T.FAST / 1000, ease: 'power3.in' });
+                gsap.to(overlay, { opacity: 0, duration: T.FAST / 1000, ease: 'power2.in', delay: 0.04,
                     onComplete: () => { overlay.classList.remove('active'); overlay.style.pointerEvents = ''; }
                 });
             }
@@ -3914,13 +3926,14 @@
                 overlay.classList.add('active');
                 overlay.style.pointerEvents = '';
                 nextCheckoutStep(1);
-                gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.36, ease: 'power2.out' });
+                const M = window.KovinMotion, T = M ? M.T : { FAST: 120, NORMAL: 220, LARGE: 320 }, EASE = M ? M.SPRING_EASE : 'power4.out';
+                gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: T.NORMAL / 1000, ease: 'power2.out' });
                 if (isMobile()) {
-                    gsap.fromTo('.checkout-panel', { y: '100%' }, { y: 0, duration: 0.52, ease: 'power4.out' });
+                    gsap.fromTo('.checkout-panel', { y: '100%' }, { y: 0, duration: T.LARGE / 1000, ease: EASE });
                 } else {
                     gsap.fromTo('.checkout-panel',
                         { scale: 0.94, opacity: 0, y: 24 },
-                        { scale: 1, opacity: 1, y: 0, duration: 0.58, ease: 'power4.out', delay: 0.05 }
+                        { scale: 1, opacity: 1, y: 0, duration: T.LARGE / 1000, ease: EASE, delay: 0.05 }
                     );
                 }
                 /* Trap focus inside checkout panel */
@@ -4242,13 +4255,14 @@
             overlay.classList.add('active');
             overlay.style.pointerEvents = '';
             prevStep(1);
-            gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.36, ease: 'power2.out' });
+            const M = window.KovinMotion, T = M ? M.T : { FAST: 120, NORMAL: 220, LARGE: 320 }, EASE = M ? M.SPRING_EASE : 'power4.out';
+            gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: T.NORMAL / 1000, ease: 'power2.out' });
             if (isMobile()) {
-                gsap.fromTo('.guided-panel', { y: '100%' }, { y: 0, duration: 0.52, ease: 'power4.out' });
+                gsap.fromTo('.guided-panel', { y: '100%' }, { y: 0, duration: T.LARGE / 1000, ease: EASE });
             } else {
                 gsap.fromTo('.guided-panel',
                     { scale: 0.94, opacity: 0, y: 24 },
-                    { scale: 1, opacity: 1, y: 0, duration: 0.58, ease: 'power4.out', delay: 0.05 }
+                    { scale: 1, opacity: 1, y: 0, duration: T.LARGE / 1000, ease: EASE, delay: 0.05 }
                 );
             }
             /* Trap focus inside guided panel */
@@ -4261,16 +4275,17 @@
             releaseFocusTrap();
             const overlay = document.getElementById('guided-overlay');
             overlay.style.pointerEvents = 'none';
+            const T = window.KovinMotion ? window.KovinMotion.T : { FAST: 120, NORMAL: 220, LARGE: 320 };
             if (isMobile()) {
-                gsap.to('.guided-panel', { y: '100%', duration: 0.36, ease: 'power3.in' });
+                gsap.to('.guided-panel', { y: '100%', duration: T.NORMAL / 1000, ease: 'power3.in' });
                 gsap.to(overlay, {
-                    opacity: 0, duration: 0.36, ease: 'power2.in', delay: 0.1,
+                    opacity: 0, duration: T.NORMAL / 1000, ease: 'power2.in', delay: 0.1,
                     onComplete: () => { overlay.classList.remove('active'); overlay.style.pointerEvents = ''; announce('Guided flow closed.'); },
                 });
             } else {
-                gsap.to('.guided-panel', { scale: 0.95, opacity: 0, y: 14, duration: 0.28, ease: 'power3.in' });
+                gsap.to('.guided-panel', { scale: 0.95, opacity: 0, y: 14, duration: T.FAST / 1000, ease: 'power3.in' });
                 gsap.to(overlay, {
-                    opacity: 0, duration: 0.34, ease: 'power2.in', delay: 0.06,
+                    opacity: 0, duration: T.FAST / 1000, ease: 'power2.in', delay: 0.06,
                     onComplete: () => { overlay.classList.remove('active'); overlay.style.pointerEvents = ''; announce('Guided flow closed.'); },
                 });
             }
@@ -4486,16 +4501,17 @@
             releaseFocusTrap();
             const overlay = document.getElementById('checkout-overlay');
             overlay.style.pointerEvents = 'none';
+            const T = window.KovinMotion ? window.KovinMotion.T : { FAST: 120, NORMAL: 220, LARGE: 320 };
             if (isMobile()) {
-                gsap.to('.checkout-panel', { y: '100%', duration: 0.36, ease: 'power3.in' });
+                gsap.to('.checkout-panel', { y: '100%', duration: T.NORMAL / 1000, ease: 'power3.in' });
                 gsap.to(overlay, {
-                    opacity: 0, duration: 0.36, ease: 'power2.in', delay: 0.1,
+                    opacity: 0, duration: T.NORMAL / 1000, ease: 'power2.in', delay: 0.1,
                     onComplete: () => { overlay.classList.remove('active'); overlay.style.pointerEvents = ''; },
                 });
             } else {
-                gsap.to('.checkout-panel', { scale: 0.95, opacity: 0, y: 14, duration: 0.28, ease: 'power3.in' });
+                gsap.to('.checkout-panel', { scale: 0.95, opacity: 0, y: 14, duration: T.FAST / 1000, ease: 'power3.in' });
                 gsap.to(overlay, {
-                    opacity: 0, duration: 0.34, ease: 'power2.in', delay: 0.06,
+                    opacity: 0, duration: T.FAST / 1000, ease: 'power2.in', delay: 0.06,
                     onComplete: () => { overlay.classList.remove('active'); overlay.style.pointerEvents = ''; },
                 });
             }
@@ -4979,14 +4995,21 @@
             const overlay = document.getElementById('modal-overlay');
             overlay.classList.add('active');
             overlay.style.pointerEvents = '';
-            gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: 0.38, ease: 'power2.out' });
+            const M = window.KovinMotion, T = M ? M.T : { FAST: 120, NORMAL: 220, LARGE: 320 }, EASE = M ? M.SPRING_EASE : 'power4.out';
+            gsap.fromTo(overlay, { opacity: 0 }, { opacity: 1, duration: T.NORMAL / 1000, ease: 'power2.out' });
             if (isMobile()) {
-                gsap.fromTo('.modal-content', { y: '100%' }, { y: 0, duration: 0.52, ease: 'power4.out' });
+                gsap.fromTo('.modal-content', { y: '100%' }, { y: 0, duration: T.LARGE / 1000, ease: EASE });
             } else {
                 gsap.fromTo('.modal-content',
                     { scale: 0.93, opacity: 0, y: 28 },
-                    { scale: 1, opacity: 1, y: 0, duration: 0.6, ease: 'power4.out', delay: 0.06 }
+                    { scale: 1, opacity: 1, y: 0, duration: T.LARGE / 1000, ease: EASE, delay: 0.06 }
                 );
+            }
+            /* Shared-element transition: morph the clicked card's thumbnail
+               into the modal's image, instead of the modal image just appearing. */
+            if (M) {
+                const sourceImg = document.querySelector(`.product-card[data-id="${p.id}"] img`);
+                if (sourceImg) M.flipImage(sourceImg, img);
             }
 
             /* Trap focus inside product modal */
@@ -4999,16 +5022,17 @@
             releaseFocusTrap();
             const overlay = document.getElementById('modal-overlay');
             overlay.style.pointerEvents = 'none';
+            const T = window.KovinMotion ? window.KovinMotion.T : { FAST: 120, NORMAL: 220, LARGE: 320 };
             if (isMobile()) {
-                gsap.to('.modal-content', { y: '100%', duration: 0.36, ease: 'power3.in' });
+                gsap.to('.modal-content', { y: '100%', duration: T.NORMAL / 1000, ease: 'power3.in' });
                 gsap.to(overlay, {
-                    opacity: 0, duration: 0.36, ease: 'power2.in', delay: 0.1,
+                    opacity: 0, duration: T.NORMAL / 1000, ease: 'power2.in', delay: 0.1,
                     onComplete: () => { overlay.classList.remove('active'); overlay.style.pointerEvents = ''; announce('Product details closed.'); },
                 });
             } else {
-                gsap.to('.modal-content', { scale: 0.94, opacity: 0, y: 16, duration: 0.3, ease: 'power3.in' });
+                gsap.to('.modal-content', { scale: 0.94, opacity: 0, y: 16, duration: T.FAST / 1000, ease: 'power3.in' });
                 gsap.to(overlay, {
-                    opacity: 0, duration: 0.38, ease: 'power2.in', delay: 0.06,
+                    opacity: 0, duration: T.NORMAL / 1000, ease: 'power2.in', delay: 0.06,
                     onComplete: () => { overlay.classList.remove('active'); overlay.style.pointerEvents = ''; announce('Product details closed.'); },
                 });
             }
@@ -5367,12 +5391,17 @@
                 gsap.set(dockEl, { xPercent: -50, y: 0, opacity: 1 });
             }
 
+            /* Timing centralized via the Interaction Engine: quick (FAST) to
+               hide — nothing overshoots on the way off-screen — slightly
+               fuller (NORMAL) to return, so the reveal still feels alive. */
+            const NAV_T = window.KovinMotion ? window.KovinMotion.T : { FAST: 120, NORMAL: 220, LARGE: 320 };
+
             function showNav() {
                 if (navVisible) return;
                 navVisible = true;
                 if (headerEl) {
                     headerEl.style.pointerEvents = '';
-                    gsap.to(headerEl, { y: 0, opacity: 1, duration: 0.42, ease: 'power3.out', overwrite: true });
+                    gsap.to(headerEl, { y: 0, opacity: 1, duration: NAV_T.NORMAL / 1000, ease: 'power3.out', overwrite: true });
                 }
             }
             function hideNav() {
@@ -5380,7 +5409,7 @@
                 navVisible = false;
                 if (headerEl) {
                     gsap.to(headerEl, {
-                        y: -100, opacity: 0, duration: 0.30, ease: 'power3.in', overwrite: true,
+                        y: -100, opacity: 0, duration: NAV_T.FAST / 1000, ease: 'power3.in', overwrite: true,
                         onComplete: () => { if (headerEl) headerEl.style.pointerEvents = 'none'; },
                     });
                 }
@@ -5389,13 +5418,13 @@
                 if (dockVisible || !dockEl) return;
                 dockVisible = true;
                 dockEl.style.pointerEvents = '';
-                gsap.to(dockEl, { y: 0, opacity: 1, duration: 0.42, ease: 'power3.out', overwrite: true });
+                gsap.to(dockEl, { y: 0, opacity: 1, duration: NAV_T.NORMAL / 1000, ease: 'power3.out', overwrite: true });
             }
             function hideDock() {
                 if (!dockVisible || !dockEl) return;
                 dockVisible = false;
                 gsap.to(dockEl, {
-                    y: 110, opacity: 0, duration: 0.30, ease: 'power3.in', overwrite: true,
+                    y: 110, opacity: 0, duration: NAV_T.FAST / 1000, ease: 'power3.in', overwrite: true,
                     onComplete: () => { if (dockEl) dockEl.style.pointerEvents = 'none'; },
                 });
             }
@@ -5608,6 +5637,11 @@
             applyLifeMode();
             initRetention();
             initCatalogueSearch();
+
+            /* ── 1a. Interaction Engine: card-lift touch feedback on every
+                     rendered product card. Ripple is delegated globally by
+                     the engine itself, so it already covers these for free. ── */
+            if (window.KovinMotion) window.KovinMotion.enableCardLift('.product-card');
 
             const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 

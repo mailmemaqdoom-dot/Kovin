@@ -15,6 +15,7 @@ lives in standalone JS files loaded via `<script src="...">`:
 - `kovin-memory.js` — the cross-page decision/event log (`window.KovinMemory`)
 - `knowledge-graph.js` — the rule-based recommendation reasoning engine (`window.KovinGraph`)
 - `kovin-trust.js` — a read-only aggregation over Memory + Family data (`window.KovinTrust`)
+- `kovin-interactions.js` — the centralized motion/gesture engine (`window.KovinMotion`); see [INTERACTION_AUDIT.md](INTERACTION_AUDIT.md) for what it covers and what it deliberately doesn't yet
 
 Design tokens (colors, fonts) are duplicated at the top of every page's
 `<style>` block rather than centralized — keep new pages consistent with the
