@@ -831,7 +831,27 @@
             max-width: 72%; max-height: 72%; object-fit: contain;
             transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
             position: relative; z-index: 1;
-            filter: drop-shadow(0 12px 24px rgba(26,22,18,0.12));
+            mix-blend-mode: multiply;
+            -webkit-mask-image: radial-gradient(ellipse 65% 65% at center, #000 55%, transparent 95%);
+            mask-image: radial-gradient(ellipse 65% 65% at center, #000 55%, transparent 95%);
+        }
+        /* Product photos are shot on white studio backgrounds, which
+           reads as a hard rectangle against the card's warm tone. Two
+           techniques combined: the mask feathers the photo's edges to
+           transparent so there's no rectangle to see in the first place
+           (the dominant fix — confirmed live, this is what actually
+           removes the visible box); multiply blend additionally lets
+           whatever white remains pick up the card's warm tint rather
+           than staying a colder white. (Dropped the drop-shadow filter
+           that used to be here: CSS filter forces an element into an
+           isolated rendering layer, which silently breaks mix-blend-mode
+           compositing against the page behind it.) The blend half is
+           only safe in light mode: in dark mode the card behind the
+           photo turns near-black, and multiply against black would
+           blend the photo's whites to black too — the mask still
+           applies there since it doesn't depend on color. */
+        [data-theme="dark"] .product-img-wrap img {
+            mix-blend-mode: normal;
         }
 
         /* Badge */
@@ -1002,7 +1022,8 @@
         .modal-close:hover { background: var(--copper); color: white; }
         .modal-close:focus-visible { outline: 3px solid var(--copper); outline-offset: 3px; }
         .modal-left { background: var(--paper-warm); display: flex; align-items: center; justify-content: center; padding: 56px; }
-        .modal-left img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .modal-left img { max-width: 100%; max-height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+        [data-theme="dark"] .modal-left img { mix-blend-mode: normal; }
         .modal-right { padding: 52px 52px 52px 48px; display: flex; flex-direction: column; overflow-y: auto; }
         .modal-title {
             font-family: var(--font-display);
