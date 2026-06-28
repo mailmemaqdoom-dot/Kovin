@@ -6,7 +6,7 @@
  * Bump CACHE_VERSION on any deploy that changes cached files so
  * old clients pick up fresh content instead of stale cache.
  */
-const CACHE_VERSION = 'kovin-v9';
+const CACHE_VERSION = 'kovin-v10';
 
 const APP_SHELL = [
   './',
@@ -73,24 +73,25 @@ self.addEventListener('fetch', (event) => {
   if (req.method !== 'GET') return;
 
   if (req.mode === 'navigate') {
+    /* Cloudflare Pages 308-redirects every "*.html" URL to its clean-URL
+       equivalent (lifemode.html -> /lifemode). Two different attempts to
+       "repair" that redirected Response inside respondWith() both still
+       broke in real Chrome against the real (Brotli-compressed) deploy —
+       confirmed via DevTools Network tab showing the redirect target's
+       request cancelled. Rather than keep patching that fragile path,
+       this worker now simply doesn't intercept *.html navigations at
+       all — it steps out of the way and lets the browser follow
+       Cloudflare's redirect completely natively, the same way it would
+       with no service worker installed. Every link on this site already
+       points at "*.html"; the clean URL it redirects to (no extension)
+       is unaffected by this and keeps the full cache-first + offline
+       fallback behavior below. */
+    if (/\.html?$/i.test(new URL(req.url).pathname)) return;
+
     event.respondWith(
       caches.match(req).then((cached) => {
         const network = fetch(req)
           .then((res) => {
-            /* Cloudflare Pages 308-redirects every "*.html" URL to its
-               clean-URL equivalent (lifemode.html -> /lifemode). Once
-               fetch() follows that redirect, res.redirected is true —
-               and Chrome hard-fails (ERR_FAILED) if a navigation
-               FetchEvent is respondWith()'d with a redirected Response.
-               Rebuilding a plain Response from the same body/status/
-               headers clears that flag, since it's only ever set by
-               the fetch algorithm itself, never by the Response
-               constructor. This was the actual cause of every internal
-               link throwing ERR_FAILED once this service worker was
-               the one controlling the tab. */
-            if (res && res.redirected) {
-              res = new Response(res.body, { status: res.status, statusText: res.statusText, headers: res.headers });
-            }
             if (res && res.ok) {
               const copy = res.clone();
               caches.open(CACHE_VERSION).then((cache) => cache.put(req, copy));
