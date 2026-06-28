@@ -6,7 +6,7 @@
  * Bump CACHE_VERSION on any deploy that changes cached files so
  * old clients pick up fresh content instead of stale cache.
  */
-const CACHE_VERSION = 'kovin-v8';
+const CACHE_VERSION = 'kovin-v9';
 
 const APP_SHELL = [
   './',
@@ -77,6 +77,20 @@ self.addEventListener('fetch', (event) => {
       caches.match(req).then((cached) => {
         const network = fetch(req)
           .then((res) => {
+            /* Cloudflare Pages 308-redirects every "*.html" URL to its
+               clean-URL equivalent (lifemode.html -> /lifemode). Once
+               fetch() follows that redirect, res.redirected is true —
+               and Chrome hard-fails (ERR_FAILED) if a navigation
+               FetchEvent is respondWith()'d with a redirected Response.
+               Rebuilding a plain Response from the same body/status/
+               headers clears that flag, since it's only ever set by
+               the fetch algorithm itself, never by the Response
+               constructor. This was the actual cause of every internal
+               link throwing ERR_FAILED once this service worker was
+               the one controlling the tab. */
+            if (res && res.redirected) {
+              res = new Response(res.body, { status: res.status, statusText: res.statusText, headers: res.headers });
+            }
             if (res && res.ok) {
               const copy = res.clone();
               caches.open(CACHE_VERSION).then((cache) => cache.put(req, copy));
