@@ -813,6 +813,25 @@
             background: radial-gradient(circle at 50% 110%, rgba(227,83,54,0.06) 0%, transparent 65%);
             pointer-events: none;
         }
+        /* Premium staging, not camouflage: Apple/Samsung product pages
+           never hide a photo's studio background — they give the
+           product generous negative space and a soft ground-contact
+           shadow, so it reads as deliberately staged rather than cut
+           out. A blurred radial ellipse standing in for that shadow,
+           sized to roughly where the product's base would land. */
+        .product-img-wrap::before {
+            content: '';
+            position: absolute;
+            left: 50%; bottom: 16%;
+            width: 44%; height: 20px;
+            transform: translateX(-50%);
+            background: radial-gradient(ellipse, rgba(26,22,18,0.24) 0%, transparent 72%);
+            filter: blur(5px);
+            pointer-events: none;
+        }
+        [data-theme="dark"] .product-img-wrap::before {
+            background: radial-gradient(ellipse, rgba(0,0,0,0.55) 0%, transparent 72%);
+        }
         /* ── Image skeleton shimmer (shows while loading) ── */
         @keyframes img-shimmer {
             from { background-position: 200% 0; }
@@ -828,28 +847,19 @@
             background: var(--paper-warm);
         }
         .product-img-wrap img {
-            max-width: 72%; max-height: 72%; object-fit: contain;
+            max-width: 60%; max-height: 60%; object-fit: contain;
             transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease;
             position: relative; z-index: 1;
             mix-blend-mode: multiply;
-            -webkit-mask-image: radial-gradient(ellipse 65% 65% at center, #000 55%, transparent 95%);
-            mask-image: radial-gradient(ellipse 65% 65% at center, #000 55%, transparent 95%);
         }
-        /* Product photos are shot on white studio backgrounds, which
-           reads as a hard rectangle against the card's warm tone. Two
-           techniques combined: the mask feathers the photo's edges to
-           transparent so there's no rectangle to see in the first place
-           (the dominant fix — confirmed live, this is what actually
-           removes the visible box); multiply blend additionally lets
-           whatever white remains pick up the card's warm tint rather
-           than staying a colder white. (Dropped the drop-shadow filter
-           that used to be here: CSS filter forces an element into an
-           isolated rendering layer, which silently breaks mix-blend-mode
-           compositing against the page behind it.) The blend half is
-           only safe in light mode: in dark mode the card behind the
-           photo turns near-black, and multiply against black would
-           blend the photo's whites to black too — the mask still
-           applies there since it doesn't depend on color. */
+        /* A light multiply still helps any white the photo carries pick
+           up the card's warm tint, but it's a finishing touch now, not
+           the fix — the real change is the extra breathing room (72%
+           down to 60%) and the shadow above, which is what actually
+           makes this read as staged rather than pasted on. Multiply is
+           only safe in light mode: in dark mode the card turns
+           near-black, and multiply against black would blend the
+           photo's whites to black too. */
         [data-theme="dark"] .product-img-wrap img {
             mix-blend-mode: normal;
         }
