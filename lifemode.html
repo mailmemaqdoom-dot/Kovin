@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="kovin-memory.js"></script>
 <style>
 
 /* ══════════════════════════════════════════════════
@@ -576,6 +577,12 @@ img { display: block; max-width: 100%; }
   function enterMode() {
     if (!currentMode) return;
     try { localStorage.setItem('kovin-life-mode', currentMode.id); } catch (e) {}
+    if (window.KovinMemory) {
+      KovinMemory.log('life_mode_change', {
+        title: `Switched Life Mode to ${currentMode.title}`,
+        detail: currentMode.guidance[0] || currentMode.tagline,
+      });
+    }
     showToast(`Entering Kovin — ${currentMode.title}`);
     setTimeout(() => { window.location.href = 'index.html'; }, 500);
   }

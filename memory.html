@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=5.0">
+<meta name="theme-color" content="#F7F4EF">
+<meta name="description" content="Kovin Technology Memory — a beautifully kept journal of every decision, not a transaction history.">
+<title>Technology Memory · Kovin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="kovin-memory.js"></script>
+<style>
+
+/* ══════════════════════════════════════════════════
+   KOVIN TECHNOLOGY MEMORY
+   "Kovin remembers my technology journey better
+    than I do."
+══════════════════════════════════════════════════ */
+:root {
+  --ink:          #1A1612;
+  --paper:        #F7F4EF;
+  --paper-warm:   #EDE8E0;
+  --paper-dim:    #E5DDD4;
+  --copper:       #E35336;
+  --copper-deep:  #C9432A;
+  --sand:         #F4A460;
+  --wood:         #7B5940;
+  --border:       rgba(26,22,18,0.08);
+  --border-strong:rgba(26,22,18,0.16);
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+  --ease-out:     cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html { height: 100%; scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--paper);
+  color: var(--ink);
+  min-height: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+button { font: inherit; color: inherit; cursor: pointer; border: none; background: none; -webkit-tap-highlight-color: transparent; }
+a { color: inherit; text-decoration: none; -webkit-tap-highlight-color: transparent; }
+img { display: block; max-width: 100%; }
+ul { padding: 0; list-style: none; }
+:focus-visible { outline: 2px solid var(--copper); outline-offset: 3px; border-radius: 4px; }
+
+/* ══ Header ══ */
+.mem-header {
+  position: sticky; top: 0; z-index: 100;
+  height: calc(56px + env(safe-area-inset-top, 0px));
+  padding: env(safe-area-inset-top, 0px) 18px 0;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(247,244,239,0.86);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3);
+  backdrop-filter: blur(18px) saturate(1.3);
+  border-bottom: 1px solid var(--border);
+}
+.mem-back { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: var(--paper-warm); border: 1px solid var(--border); color: var(--ink); flex-shrink: 0; }
+.mem-back svg { width: 16px; height: 16px; }
+.mem-header-title { display: flex; flex-direction: column; align-items: center; }
+.mem-wordmark { font-family: var(--font-display); font-size: 1.22rem; font-weight: 500; letter-spacing: -0.02em; }
+.mem-wordmark span { color: var(--copper); }
+.mem-eyebrow-tag { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.4; margin-top: 1px; }
+.mem-spacer { width: 36px; flex-shrink: 0; }
+
+/* ══ Intro ══ */
+.mem-intro { padding: 26px 20px 6px; }
+.mem-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 0.66rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--copper); margin-bottom: 14px;
+}
+.mem-eyebrow::before, .mem-eyebrow::after { content: ''; width: 16px; height: 1.5px; background: currentColor; opacity: 0.5; }
+.mem-intro h1 { font-family: var(--font-display); font-weight: 500; letter-spacing: -0.02em; font-size: clamp(1.9rem, 7.5vw, 2.5rem); line-height: 1.12; margin-bottom: 12px; }
+.mem-intro p { font-size: 0.88rem; line-height: 1.65; opacity: 0.6; max-width: 400px; }
+
+/* ══ Reflection card ══ */
+.mem-reflection { margin: 22px 20px 6px; background: var(--ink); color: var(--paper); border-radius: 22px; padding: 22px 20px; }
+.mem-reflect-item { padding: 14px 0; border-top: 1px solid rgba(247,244,239,0.12); }
+.mem-reflect-item:first-child { border-top: none; padding-top: 0; }
+.mem-reflect-q { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--sand); margin-bottom: 6px; }
+.mem-reflect-a { font-family: var(--font-display); font-size: 1.05rem; font-weight: 400; line-height: 1.45; }
+
+/* ══ Section shell ══ */
+.mem-section { padding: 30px 20px; }
+.mem-section.is-divided { border-top: 1px solid var(--border); }
+.mem-section-eyebrow { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--copper); margin-bottom: 10px; }
+.mem-section-title { font-family: var(--font-display); font-weight: 500; letter-spacing: -0.018em; font-size: clamp(1.3rem, 5.2vw, 1.6rem); line-height: 1.2; margin-bottom: 6px; }
+.mem-section-sub { font-size: 0.82rem; opacity: 0.55; line-height: 1.55; margin-bottom: 18px; max-width: 380px; }
+
+/* ══ Filter chips ══ */
+.mem-chip-row { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 18px; -webkit-overflow-scrolling: touch; }
+.mem-chip-row::-webkit-scrollbar { display: none; }
+.mem-chip {
+  flex: 0 0 auto; padding: 9px 15px; border-radius: 100px; background: var(--paper-warm); border: 1.5px solid var(--border);
+  font-size: 0.79rem; font-weight: 600; transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.mem-chip.is-active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+/* ══ Journey timeline (Memory Cards) ══ */
+.mem-timeline { position: relative; padding-left: 30px; }
+.mem-timeline::before { content: ''; position: absolute; left: 8px; top: 6px; bottom: 6px; width: 1.5px; background: var(--border-strong); }
+.mem-card { position: relative; padding-bottom: 18px; }
+.mem-card:last-child { padding-bottom: 0; }
+.mem-card-dot {
+  position: absolute; left: -30px; top: 3px; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--paper); border: 2px solid var(--border-strong); display: flex; align-items: center; justify-content: center; font-size: 0.6rem;
+}
+.mem-card.type-purchased .mem-card-dot, .mem-card.type-second_opinion .mem-card-dot { background: var(--copper); border-color: var(--copper); }
+.mem-card-inner { background: var(--paper-warm); border: 1px solid var(--border); border-radius: 16px; padding: 13px 15px; }
+.mem-card-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+.mem-card-date { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.42; }
+.mem-card-type { font-size: 0.66rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--copper-deep); }
+.mem-card-title { font-size: 0.9rem; font-weight: 700; line-height: 1.35; margin-bottom: 3px; }
+.mem-card-detail { font-size: 0.81rem; opacity: 0.6; line-height: 1.5; }
+.mem-card-price { display: inline-block; margin-top: 6px; font-size: 0.78rem; font-weight: 700; color: var(--copper); }
+
+/* ══ Decision Moments ══ */
+.mem-moment-list { display: flex; flex-direction: column; gap: 12px; }
+.mem-moment-card { border: 1.5px solid var(--ink); border-radius: 20px; padding: 19px 18px; }
+.mem-moment-badge { display: inline-flex; align-items: center; gap: 7px; font-size: 0.64rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--copper); margin-bottom: 10px; }
+.mem-moment-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--copper); }
+.mem-moment-title { font-family: var(--font-display); font-size: 1.16rem; font-weight: 500; line-height: 1.3; margin-bottom: 8px; }
+.mem-moment-detail { font-size: 0.84rem; line-height: 1.58; opacity: 0.65; }
+.mem-moment-date { font-size: 0.7rem; opacity: 0.4; margin-top: 10px; }
+
+/* ══ Technology Milestones ══ */
+.mem-milestone-list { display: flex; flex-direction: column; gap: 0; }
+.mem-milestone-row { display: flex; align-items: center; gap: 14px; padding: 13px 0; border-top: 1px solid var(--border); }
+.mem-milestone-row:first-child { border-top: none; }
+.mem-milestone-icon { width: 38px; height: 38px; border-radius: 11px; background: var(--paper-warm); display: flex; align-items: center; justify-content: center; font-size: 1.05rem; flex-shrink: 0; }
+.mem-milestone-body { flex: 1; min-width: 0; }
+.mem-milestone-title { font-size: 0.86rem; font-weight: 600; line-height: 1.35; }
+.mem-milestone-sub { font-size: 0.76rem; opacity: 0.52; margin-top: 2px; line-height: 1.4; }
+.mem-milestone-date { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; opacity: 0.38; white-space: nowrap; }
+
+/* ══ Future Suggestions ══ */
+.mem-suggest-list { display: flex; flex-direction: column; gap: 10px; }
+.mem-suggest-card { display: flex; align-items: center; gap: 13px; background: var(--paper-warm); border-radius: 16px; padding: 15px 16px; }
+.mem-suggest-icon { width: 38px; height: 38px; border-radius: 11px; background: var(--paper); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.05rem; }
+.mem-suggest-body { flex: 1; min-width: 0; }
+.mem-suggest-title { font-size: 0.86rem; font-weight: 700; }
+.mem-suggest-detail { font-size: 0.78rem; opacity: 0.55; line-height: 1.48; margin-top: 2px; }
+.mem-suggest-arrow { width: 15px; height: 15px; opacity: 0.3; flex-shrink: 0; }
+
+.mem-footer { padding: 30px 20px calc(env(safe-area-inset-bottom, 0px) + 36px); text-align: center; }
+.mem-footer-word { font-family: var(--font-display); font-size: 1.1rem; opacity: 0.5; }
+
+/* ══ Desktop ══ */
+@media (min-width: 720px) {
+  body { background: var(--paper-dim); }
+  #app-shell { max-width: 480px; margin: 0 auto; background: var(--paper); box-shadow: 0 0 80px rgba(0,0,0,0.08); min-height: 100dvh; }
+  .mem-header { max-width: 480px; left: 50%; transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}
+
+</style>
+</head>
+<body>
+
+<div id="app-shell">
+
+  <header class="mem-header">
+    <a href="index.html" class="mem-back" aria-label="Back to Kovin">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    </a>
+    <div class="mem-header-title">
+      <span class="mem-wordmark">Kov<span>·</span>in</span>
+      <span class="mem-eyebrow-tag">Technology Memory</span>
+    </div>
+    <span class="mem-spacer" aria-hidden="true"></span>
+  </header>
+
+  <div class="mem-intro">
+    <span class="mem-eyebrow">Decisions, not transactions</span>
+    <h1>A journal of your technology journey.</h1>
+    <p>Not an order history. Every choice, every option you ruled out, every conversation — kept in one place, the way you'd actually remember it.</p>
+  </div>
+
+  <div class="mem-reflection">
+    <div class="mem-reflect-item">
+      <div class="mem-reflect-q">How have your needs changed?</div>
+      <div class="mem-reflect-a" id="reflectNeeds"></div>
+    </div>
+    <div class="mem-reflect-item">
+      <div class="mem-reflect-q">What have you learned?</div>
+      <div class="mem-reflect-a" id="reflectLearned"></div>
+    </div>
+    <div class="mem-reflect-item">
+      <div class="mem-reflect-q">How has Kovin helped?</div>
+      <div class="mem-reflect-a" id="reflectHelped"></div>
+    </div>
+  </div>
+
+  <!-- ░░ Journey Timeline ░░ -->
+  <section class="mem-section is-divided">
+    <div class="mem-section-eyebrow">Journey Timeline</div>
+    <div class="mem-section-title">Every memory card Kovin kept.</div>
+    <p class="mem-section-sub">Not a receipt list — the actual moments behind each decision, in the order they happened.</p>
+    <div class="mem-chip-row" id="filterChips"></div>
+    <div class="mem-timeline" id="timelineList"></div>
+  </section>
+
+  <!-- ░░ Decision Moments ░░ -->
+  <section class="mem-section is-divided">
+    <div class="mem-section-eyebrow">Decision Moments</div>
+    <div class="mem-section-title">The choices that actually mattered.</div>
+    <p class="mem-section-sub">A handful of moments worth more weight than the rest of the timeline.</p>
+    <div class="mem-moment-list" id="momentList"></div>
+  </section>
+
+  <!-- ░░ Technology Milestones ░░ -->
+  <section class="mem-section is-divided">
+    <div class="mem-section-eyebrow">Technology Milestones</div>
+    <div class="mem-section-title">How ownership has aged.</div>
+    <div class="mem-milestone-list" id="milestoneList"></div>
+  </section>
+
+  <!-- ░░ Future Suggestions ░░ -->
+  <section class="mem-section is-divided">
+    <div class="mem-section-eyebrow">Future Suggestions</div>
+    <div class="mem-section-title">What might be worth doing next.</div>
+    <p class="mem-section-sub">Only suggested when the journal actually supports it — never just to prompt a purchase.</p>
+    <div class="mem-suggest-list" id="suggestList"></div>
+  </section>
+
+  <footer class="mem-footer">
+    <div class="mem-footer-word">Kov<span style="color:var(--copper);">·</span>in</div>
+  </footer>
+
+</div><!-- /app-shell -->
+
+<script>
+/* ══════════════════════════════════════════════════
+   KOVIN TECHNOLOGY MEMORY — RENDER
+══════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  if (!window.KovinMemory) return;
+  var M = window.KovinMemory;
+  var TYPE_META = M.TYPE_META;
+
+  var FILTERS = [
+    { key: 'all', label: 'All' },
+    { key: 'decisions', label: 'Decisions' },
+    { key: 'consultations', label: 'Consultations' },
+    { key: 'milestones', label: 'Milestones' },
+    { key: 'diary', label: 'Diary' },
+  ];
+
+  var state = { filter: 'all' };
+
+  function formatDate(dateStr) {
+    var d = new Date(dateStr + 'T00:00:00');
+    var months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return months[d.getMonth()] + ' ' + d.getFullYear();
+  }
+
+  function renderFilters() {
+    var $row = document.getElementById('filterChips');
+    $row.innerHTML = FILTERS.map(function (f) {
+      return '<button class="mem-chip' + (f.key === state.filter ? ' is-active' : '') + '" data-key="' + f.key + '">' + f.label + '</button>';
+    }).join('');
+    Array.prototype.forEach.call($row.querySelectorAll('.mem-chip'), function (btn, i) {
+      btn.addEventListener('click', function () { state.filter = FILTERS[i].key; render(); });
+    });
+  }
+
+  function renderTimeline() {
+    var entries = M.getTimeline('desc').filter(function (e) {
+      if (state.filter === 'all') return true;
+      var meta = TYPE_META[e.type];
+      return meta && meta.group === state.filter;
+    });
+    var $list = document.getElementById('timelineList');
+    $list.innerHTML = entries.length ? entries.map(function (e) {
+      var meta = TYPE_META[e.type] || { label: e.type, icon: '•' };
+      var price = e.meta && e.meta.price ? '<span class="mem-card-price">' + e.meta.price + '</span>' : '';
+      return '<div class="mem-card type-' + e.type + '">' +
+        '<span class="mem-card-dot" aria-hidden="true"></span>' +
+        '<div class="mem-card-inner">' +
+        '<div class="mem-card-meta"><span class="mem-card-date">' + formatDate(e.date) + '</span><span class="mem-card-type">' + meta.icon + ' ' + meta.label + '</span></div>' +
+        '<div class="mem-card-title">' + e.title + '</div>' +
+        '<div class="mem-card-detail">' + e.detail + '</div>' + price +
+        '</div></div>';
+    }).join('') : '<p class="mem-section-sub">Nothing recorded in this category yet.</p>';
+  }
+
+  function renderMoments() {
+    var entries = M.getTimeline('desc').filter(function (e) {
+      return ['purchased', 'rejected', 'second_opinion', 'confidence_change'].indexOf(e.type) !== -1;
+    }).slice(0, 4);
+    document.getElementById('momentList').innerHTML = entries.map(function (e) {
+      var meta = TYPE_META[e.type];
+      return '<div class="mem-moment-card">' +
+        '<div class="mem-moment-badge">' + meta.icon + ' ' + meta.label + '</div>' +
+        '<div class="mem-moment-title">' + e.title + '</div>' +
+        '<p class="mem-moment-detail">' + e.detail + '</p>' +
+        '<div class="mem-moment-date">' + formatDate(e.date) + '</div>' +
+        '</div>';
+    }).join('');
+  }
+
+  function renderMilestones() {
+    var entries = M.getTimeline('desc').filter(function (e) {
+      var meta = TYPE_META[e.type];
+      return meta && meta.group === 'milestones';
+    });
+    document.getElementById('milestoneList').innerHTML = entries.map(function (e) {
+      var meta = TYPE_META[e.type];
+      return '<div class="mem-milestone-row">' +
+        '<div class="mem-milestone-icon">' + meta.icon + '</div>' +
+        '<div class="mem-milestone-body"><div class="mem-milestone-title">' + e.title + '</div><div class="mem-milestone-sub">' + e.detail + '</div></div>' +
+        '<div class="mem-milestone-date">' + formatDate(e.date) + '</div>' +
+        '</div>';
+    }).join('');
+  }
+
+  function renderSuggestions() {
+    var suggestions = M.getFutureSuggestions();
+    document.getElementById('suggestList').innerHTML = suggestions.map(function (s) {
+      var external = /^https?:/.test(s.href);
+      return '<a class="mem-suggest-card" href="' + s.href + '"' + (external ? ' target="_blank" rel="noopener noreferrer"' : '') + '>' +
+        '<div class="mem-suggest-icon">→</div>' +
+        '<div class="mem-suggest-body"><div class="mem-suggest-title">' + s.title + '</div><div class="mem-suggest-detail">' + s.detail + '</div></div>' +
+        '<svg class="mem-suggest-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>' +
+        '</a>';
+    }).join('');
+  }
+
+  function renderReflection() {
+    var r = M.getReflection();
+    document.getElementById('reflectNeeds').textContent = r.needsChanged;
+    document.getElementById('reflectLearned').textContent = r.learned;
+    document.getElementById('reflectHelped').textContent = r.kovinHelped;
+  }
+
+  function render() {
+    renderFilters();
+    renderTimeline();
+    renderMoments();
+    renderMilestones();
+    renderSuggestions();
+    renderReflection();
+
+    var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (window.gsap && !reduced) {
+      gsap.killTweensOf(['.mem-card', '.mem-moment-card', '.mem-milestone-row']);
+      gsap.fromTo('.mem-card', { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.35, stagger: 0.04, ease: 'power2.out' });
+      gsap.fromTo('.mem-moment-card', { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.4, stagger: 0.07, ease: 'power2.out', delay: 0.1 });
+      gsap.fromTo('.mem-milestone-row', { opacity: 0, x: -8 }, { opacity: 1, x: 0, duration: 0.35, stagger: 0.05, ease: 'power2.out', delay: 0.1 });
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', render);
+})();
+</script>
+<!-- KOVIN-PWA:START -->
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icons/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Kovin">
+<meta name="mobile-web-app-capable" content="yes">
+<style>
+  /* Native-feeling cross-page transitions in browsers that support
+     the View Transitions API (Chrome/Edge on Android, desktop).
+     Everywhere else this is silently ignored — plain navigation. */
+  @view-transition { navigation: auto; }
+  ::view-transition-old(root), ::view-transition-new(root) {
+    animation-duration: 0.32s;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  ::view-transition-old(root) { animation-name: kovin-fade-out; }
+  ::view-transition-new(root) { animation-name: kovin-fade-in; }
+  @keyframes kovin-fade-out { to { opacity: 0; transform: scale(0.99); } }
+  @keyframes kovin-fade-in { from { opacity: 0; transform: scale(1.01); } }
+
+  /* Offline-aware in-page banner (separate from offline.html, which
+     only appears on a full navigation with nothing cached). */
+  #kovin-offline-banner {
+    position: fixed; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 18px);
+    transform: translateX(-50%) translateY(20px);
+    background: #1A1612; color: #F7F4EF; font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.8rem; font-weight: 600; padding: 11px 20px; border-radius: 100px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.28); z-index: 9999;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s ease, transform 0.3s ease;
+    white-space: nowrap; max-width: 90vw;
+  }
+  #kovin-offline-banner.is-visible { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+<!-- KOVIN-PWA:END -->
+<!-- KOVIN-PWA:START -->
+<div id="kovin-offline-banner" role="status" aria-live="polite">You're offline — saved products and recent guidance are still available.</div>
+<script>
+(function () {
+  'use strict';
+
+  /* ── Service worker: app-shell caching, offline fallback, push/sync-ready ── */
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js').catch(function () {});
+    });
+  }
+
+  /* ── In-page offline/online banner (page already loaded, connection drops) ── */
+  var offlineBanner = document.getElementById('kovin-offline-banner');
+  function setOfflineState(isOffline) {
+    if (!offlineBanner) return;
+    if (isOffline) {
+      offlineBanner.textContent = "You're offline — saved products and recent guidance are still available.";
+      offlineBanner.classList.add('is-visible');
+    } else {
+      offlineBanner.textContent = 'Back online.';
+      offlineBanner.classList.add('is-visible');
+      setTimeout(function () { offlineBanner.classList.remove('is-visible'); }, 2200);
+    }
+  }
+  window.addEventListener('offline', function () { setOfflineState(true); });
+  window.addEventListener('online', function () { setOfflineState(false); });
+  if (!navigator.onLine) setOfflineState(true);
+
+  /* ── Native share — used by any element with [data-kovin-share] ── */
+  window.kovinShare = function (title, text, url) {
+    var shareUrl = url || window.location.href;
+    if (navigator.share) {
+      navigator.share({ title: title || 'Kovin', text: text || '', url: shareUrl }).catch(function () {});
+    } else if (navigator.clipboard) {
+      navigator.clipboard.writeText(shareUrl).then(function () {
+        if (offlineBanner) {
+          offlineBanner.textContent = 'Link copied.';
+          offlineBanner.classList.add('is-visible');
+          setTimeout(function () { offlineBanner.classList.remove('is-visible'); }, 1800);
+        }
+      }).catch(function () {});
+    }
+  };
+})();
+</script>
+<!-- KOVIN-PWA:END -->
+</body>
+</html>
